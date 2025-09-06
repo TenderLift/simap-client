@@ -1,0 +1,83 @@
+{
+  "name": "@tenderlift/simap-client",
+  "version": "0.0.1",
+  "description": "Production-grade TypeScript client for the SIMAP (Swiss Public Procurement) API",
+  "private": false,
+  "type": "module",
+  "sideEffects": false,
+  "homepage": "https://github.com/tenderlift/simap-client#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tenderlift/simap-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tenderlift/simap-client/issues"
+  },
+  "keywords": [
+    "simap",
+    "procurement",
+    "switzerland",
+    "swiss",
+    "api-client",
+    "typescript",
+    "openapi",
+    "public-procurement",
+    "tender"
+  ],
+  "author": "TenderLift <support@tenderlift.ch>",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "gen": "openapi-ts -f openapi-ts.config.ts",
+    "lint": "xo",
+    "lint:fix": "xo --fix",
+    "test": "pnpm test:node && pnpm test:workers && pnpm test:e2e",
+    "test:node": "vitest run -c vitest.config.node.ts",
+    "test:workers": "vitest run -c vitest.config.ts",
+    "test:e2e": "vitest run -c vitest.config.node.ts test/simap-api.e2e.test.ts",
+    "test:types": "tsd",
+    "test:watch": "vitest",
+    "prepare": "lefthook install",
+    "prepublishOnly": "pnpm typecheck && pnpm build"
+  },
+  "tsd": {
+    "directory": "test"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.8.70",
+    "@cloudflare/workers-types": "^4.20250906.0",
+    "@hey-api/openapi-ts": "^0.82.4",
+    "@types/node": "^24.3.1",
+    "lefthook": "^1.12.3",
+    "miniflare": "^4.20250902.0",
+    "msw": "^2.11.1",
+    "tsd": "^0.33.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4",
+    "xo": "^1.2.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@10.14.0"
+}

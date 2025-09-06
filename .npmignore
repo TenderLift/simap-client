@@ -1,0 +1,4 @@
+src/**/*.test.ts
+*.log
+tsconfig*.json
+tsup.config.ts
