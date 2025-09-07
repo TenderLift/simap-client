@@ -1,5 +1,39 @@
 # Changelog
 
+## 0.1.0
+
+### Minor Changes
+
+- 61a3ebd: Initial release of the SIMAP TypeScript client library
+
+  ## Features
+
+  - 🚀 Full TypeScript support with comprehensive type definitions
+  - 🌐 Multi-runtime compatibility (Node.js 18+, Cloudflare Workers, Edge environments)
+  - 📦 Lightweight bundle size (<10KB gzipped)
+  - 🔄 Auto-generated from official SIMAP OpenAPI specification
+  - 🛡️ Built-in error handling with typed error responses
+  - 🔑 Simple authentication helper functions
+  - ✅ Comprehensive test coverage (85+ tests)
+
+  ## Endpoints Supported
+
+  - Canton/region reference data
+  - Country and language lookups
+  - Project search and filtering
+  - Publication details retrieval
+  - CPV/CPC/BKP code classifications
+
+  ## Quality
+
+  - XO linting with Prettier formatting
+  - Pre-commit hooks with Lefthook
+  - Automated CI/CD with GitHub Actions
+  - Daily OpenAPI spec drift detection
+  - Bundle size monitoring
+
+  This initial release provides a solid foundation for interacting with the SIMAP API in TypeScript projects.
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
@@ -24,17 +58,20 @@ First public release of the SIMAP TypeScript client library.
 ### Supported Endpoints
 
 #### Reference Data
+
 - Canton/region listings
 - Country and language lookups
 - TED activity codes
 - Selection criteria
 
 #### Project Operations
+
 - Public project search with filtering
 - Project header retrieval by ID
 - Publication details access
 
 #### Classification Systems
+
 - CPV (Common Procurement Vocabulary) codes
 - CPC (Central Product Classification) codes
 - BKP (Swiss construction classification) codes
