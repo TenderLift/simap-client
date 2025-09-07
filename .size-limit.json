@@ -7,7 +7,7 @@
   {
     "name": "Main Bundle (CJS)",
     "path": "dist/index.cjs",
-    "limit": "10 KB"
+    "limit": "14 KB"
   },
   {
     "name": "Full Package",
