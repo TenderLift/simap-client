@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/@tenderlift/simap-client.svg)](https://www.npmjs.com/package/@tenderlift/simap-client)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![codecov](https://codecov.io/gh/tenderlift/simap-client/graph/badge.svg?token=YOUR_TOKEN)](https://codecov.io/gh/tenderlift/simap-client)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/@tenderlift/simap-client)](https://bundlephobia.com/package/@tenderlift/simap-client)
 
 TypeScript client for the SIMAP (Swiss Public Procurement) API, auto-generated from [the official OpenAPI specification](https://www.simap.ch/api/specifications/simap.yaml).

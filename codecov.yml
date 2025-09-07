@@ -1,0 +1,56 @@
+# Codecov configuration for simap-client
+# https://docs.codecov.io/docs/codecovyml-reference
+
+coverage:
+  # Set coverage targets and thresholds
+  status:
+    project:
+      default:
+        # Fail if total coverage drops below 70%
+        target: 70%
+        # Allow 2% coverage drop without failing
+        threshold: 2%
+        base: auto
+        # Only count lines actually covered
+        if_not_found: success
+        if_ci_failed: error
+        informational: false
+        only_pulls: false
+    
+    patch:
+      default:
+        # Require 80% coverage on new/modified code in PRs
+        target: 80%
+        threshold: 0%
+        base: auto
+        if_not_found: success
+        if_ci_failed: error
+        informational: false
+        only_pulls: false
+
+# Parser configuration
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+# Comment configuration for PRs
+comment:
+  layout: "reach,diff,flags,files,footer"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+  show_carryforward_flags: false
+  show_critical_paths: true
+
+# Ignore certain paths from coverage
+ignore:
+  - "test/**/*"
+  - "dist/**/*"
+  - "**/*.config.*"
+  - "src/generated/**/*" # Ignore auto-generated code
+  - "scripts/**/*"

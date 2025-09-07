@@ -96,10 +96,12 @@ jobs:
       - name: Run tests with coverage
         run: pnpm test:node --coverage
       
-      # Optional: Upload coverage to Codecov
-      # - name: Upload coverage to Codecov
-      #   uses: codecov/codecov-action@v4
-      #   with:
-      #     token: ${{ secrets.CODECOV_TOKEN }}
-      #     files: ./coverage/lcov.info
-      #     fail_ci_if_error: false
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # Optional for public repos, but recommended
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: simap-client
+          fail_ci_if_error: false # Don't fail CI if upload fails
+          verbose: true
