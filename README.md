@@ -1,7 +1,7 @@
 # @tenderlift/simap-client
 
 [![npm version](https://img.shields.io/npm/v/@tenderlift/simap-client.svg)](https://www.npmjs.com/package/@tenderlift/simap-client)
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/fork/github/TenderLift/simap-client/tree/main/examples?file=basic-usage.ts&title=SIMAP%20Client%20Demo&terminal=start)
+[![Try Demo](https://img.shields.io/badge/Try%20Demo-StackBlitz-blue?logo=stackblitz)](https://stackblitz.com/github/TenderLift/simap-client-demo)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/@tenderlift/simap-client)](https://bundlephobia.com/package/@tenderlift/simap-client)
 
