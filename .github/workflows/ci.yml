@@ -105,3 +105,63 @@ jobs:
           name: simap-client
           fail_ci_if_error: false # Don't fail CI if upload fails
           verbose: true
+
+  build-and-attest:
+    name: Build and Attest
+    runs-on: ubuntu-latest
+    needs: [test, verify-generated] # Only run after tests pass
+    permissions:
+      id-token: write # Required for signing attestations
+      attestations: write # Required for creating attestations
+      contents: read # Required for accessing code
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.14.0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Build package
+        run: pnpm build
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-files
+          path: |
+            dist/
+            package.json
+            pnpm-lock.yaml
+            README.md
+            LICENSE
+            NOTICE
+            CHANGELOG.md
+          retention-days: 7
+      
+      - name: Attest build provenance for dist files
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: |
+            dist/**/*.js
+            dist/**/*.cjs
+            dist/**/*.d.ts
+            dist/**/*.d.cts
+      
+      - name: Attest build provenance for package files
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: |
+            package.json
+            pnpm-lock.yaml
