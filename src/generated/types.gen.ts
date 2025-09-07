@@ -79,186 +79,115 @@
  * - E0076 = URL-field in the request body either contains invalid characters, is incorrectly escaped, contains no or an unknown protocol
  *
  */
-export type ErrorCode =
-	| 'E0000'
-	| 'E0001'
-	| 'E0002'
-	| 'E0003'
-	| 'E0004'
-	| 'E0005'
-	| 'E0006'
-	| 'E0007'
-	| 'E0008'
-	| 'E0009'
-	| 'E0010'
-	| 'E0011'
-	| 'E0012'
-	| 'E0013'
-	| 'E0014'
-	| 'E0015'
-	| 'E0016'
-	| 'E0017'
-	| 'E0020'
-	| 'E0021'
-	| 'E0022'
-	| 'E0024'
-	| 'E0025'
-	| 'E0027'
-	| 'E0028'
-	| 'E0029'
-	| 'E0030'
-	| 'E0031'
-	| 'E0032'
-	| 'E0034'
-	| 'E0035'
-	| 'E0036'
-	| 'E0037'
-	| 'E0038'
-	| 'E0039'
-	| 'E0040'
-	| 'E0041'
-	| 'E0042'
-	| 'E0043'
-	| 'E0044'
-	| 'E0045'
-	| 'E0046'
-	| 'E0047'
-	| 'E0048'
-	| 'E0049'
-	| 'E0050'
-	| 'E0051'
-	| 'E0052'
-	| 'E0053'
-	| 'E0054'
-	| 'E0055'
-	| 'E0056'
-	| 'E0057'
-	| 'E0059'
-	| 'E0060'
-	| 'E0061'
-	| 'E0062'
-	| 'E0063'
-	| 'E0064'
-	| 'E0065'
-	| 'E0066'
-	| 'E0067'
-	| 'E0068'
-	| 'E0069'
-	| 'E0070'
-	| 'E0071'
-	| 'E0072'
-	| 'E0073'
-	| 'E0074'
-	| 'E0075'
-	| 'E0076';
+export type ErrorCode = 'E0000' | 'E0001' | 'E0002' | 'E0003' | 'E0004' | 'E0005' | 'E0006' | 'E0007' | 'E0008' | 'E0009' | 'E0010' | 'E0011' | 'E0012' | 'E0013' | 'E0014' | 'E0015' | 'E0016' | 'E0017' | 'E0020' | 'E0021' | 'E0022' | 'E0024' | 'E0025' | 'E0027' | 'E0028' | 'E0029' | 'E0030' | 'E0031' | 'E0032' | 'E0034' | 'E0035' | 'E0036' | 'E0037' | 'E0038' | 'E0039' | 'E0040' | 'E0041' | 'E0042' | 'E0043' | 'E0044' | 'E0045' | 'E0046' | 'E0047' | 'E0048' | 'E0049' | 'E0050' | 'E0051' | 'E0052' | 'E0053' | 'E0054' | 'E0055' | 'E0056' | 'E0057' | 'E0059' | 'E0060' | 'E0061' | 'E0062' | 'E0063' | 'E0064' | 'E0065' | 'E0066' | 'E0067' | 'E0068' | 'E0069' | 'E0070' | 'E0071' | 'E0072' | 'E0073' | 'E0074' | 'E0075' | 'E0076';
 
 export type ServerErrorAttributes = {
-	/**
-	 * Details about the error. Usually this will be very short or empty to not disclose any technical details to attackers.
-	 */
-	message?: string;
-	path: string;
-	status: number;
-	timestamp: string;
-	errorCode: ErrorCode;
-	missingFields?: string[];
+    /**
+     * Details about the error. Usually this will be very short or empty to not disclose any technical details to attackers.
+     */
+    message?: string;
+    path: string;
+    status: number;
+    timestamp: string;
+    errorCode: ErrorCode;
+    missingFields?: Array<string>;
 };
 
 export type Canton = {
-	id: string;
-	/**
-	 * NUTS3 is an european regional code to classify regions for statistics and other comparisons.
-	 *
-	 * This field describes the nuts3 code for the canton.
-	 *
-	 * [Also see: eurostat - NUTS](https://ec.europa.eu/eurostat/web/nuts/background)
-	 *
-	 */
-	nuts3: string;
+    id: string;
+    /**
+     * NUTS3 is an european regional code to classify regions for statistics and other comparisons.
+     *
+     * This field describes the nuts3 code for the canton.
+     *
+     * [Also see: eurostat - NUTS](https://ec.europa.eu/eurostat/web/nuts/background)
+     *
+     */
+    nuts3: string;
 };
 
 export type Cantons = {
-	cantons: Canton[];
+    cantons: Array<Canton>;
 };
 
 export type Translation = {
-	de?: string;
-	en?: string;
-	fr?: string;
-	it?: string;
+    de?: string;
+    en?: string;
+    fr?: string;
+    it?: string;
 };
 
 export type Country = {
-	/**
-	 * The `id` is the iso alpha 2 code of the country i.e. the two character country code.
-	 * e.g. `CH` for Switzerland.
-	 *
-	 */
-	id: string;
-	/**
-	 * The iso alpha 3 code i.e. the three character country code.
-	 * e.g. `CHE` for Switzerland.
-	 *
-	 */
-	isoAlpha3: string;
-	/**
-	 * Is true when this country is a EU member state.
-	 *
-	 */
-	euMember: boolean;
-	/**
-	 * Is true when this country has NUTS (Nomenclature of territorial units for statistics) codes.
-	 * Those are EU, EFTA (European Free Trade Association) members and candidate countries for EU membership.
-	 *
-	 * [Also see: eurostat - NUTS](https://ec.europa.eu/eurostat/web/nuts/non-eu-regions) for an overview and more information.
-	 *
-	 */
-	hasNutsCodes: boolean;
-	label: Translation;
+    /**
+     * The `id` is the iso alpha 2 code of the country i.e. the two character country code.
+     * e.g. `CH` for Switzerland.
+     *
+     */
+    id: string;
+    /**
+     * The iso alpha 3 code i.e. the three character country code.
+     * e.g. `CHE` for Switzerland.
+     *
+     */
+    isoAlpha3: string;
+    /**
+     * Is true when this country is a EU member state.
+     *
+     */
+    euMember: boolean;
+    /**
+     * Is true when this country has NUTS (Nomenclature of territorial units for statistics) codes.
+     * Those are EU, EFTA (European Free Trade Association) members and candidate countries for EU membership.
+     *
+     * [Also see: eurostat - NUTS](https://ec.europa.eu/eurostat/web/nuts/non-eu-regions) for an overview and more information.
+     *
+     */
+    hasNutsCodes: boolean;
+    label: Translation;
 };
 
 export type Countries = {
-	countries: Country[];
+    countries: Array<Country>;
 };
 
 export type Language = {
-	id: string;
+    id: string;
 };
 
 export type Languages = {
-	languages: Language[];
+    languages: Array<Language>;
 };
 
 export type MainActivity = {
-	id: string;
-	label: Translation;
-	readonly isSectorActivity: boolean;
-	readonly tedCode: string;
+    id: string;
+    label: Translation;
+    readonly isSectorActivity: boolean;
+    readonly tedCode: string;
 };
 
 export type MainActivities = {
-	mainActivities: MainActivity[];
+    mainActivities: Array<MainActivity>;
 };
 
 export type TranslationSanitizedHtml = {
-	de?: string;
-	en?: string;
-	fr?: string;
-	it?: string;
+    de?: string;
+    en?: string;
+    fr?: string;
+    it?: string;
 };
 
 export type Criterion = {
-	/**
-	 * For a new criterion supply a uuid, to update an existing criterion use the provided uuid.
-	 *
-	 */
-	id: string;
-	description: TranslationSanitizedHtml;
-	verification?: TranslationSanitizedHtml;
+    /**
+     * For a new criterion supply a uuid, to update an existing criterion use the provided uuid.
+     *
+     */
+    id: string;
+    description: TranslationSanitizedHtml;
+    verification?: TranslationSanitizedHtml;
 };
 
 export type Criteria = {
-	criteria: Criterion[];
+    criteria: Array<Criterion>;
 };
 
 /**
@@ -277,22 +206,21 @@ export type SustainabilityFormType = 'nh01' | 'nh02' | 'nh03' | 'nh04' | 'nh05';
  * Defines mapping of sustainability form question to form types as a dictionary
  *
  */
-export type SustainabilityFormMappings = Record<
-	string,
-	SustainabilityFormType[]
->;
+export type SustainabilityFormMappings = {
+    [key: string]: Array<SustainabilityFormType>;
+};
 
 export type CpvCode = {
-	code: string;
-	label?: Translation;
+    code: string;
+    label?: Translation;
 };
 
 export type CpvCodeNode = CpvCode & {
-	hasChildren: boolean;
+    hasChildren: boolean;
 };
 
 export type CpvCodes = {
-	codes: CpvCodeNode[];
+    codes: Array<CpvCodeNode>;
 };
 
 /**
@@ -301,352 +229,327 @@ export type CpvCodes = {
 export type SystemLanguage = 'de' | 'en' | 'fr' | 'it';
 
 export type CpvCodesSearchResult = {
-	code: string;
-	label: Translation;
-	codes: CpvCodesSearchResult[];
+    code: string;
+    label: Translation;
+    codes: Array<CpvCodesSearchResult>;
 };
 
 export type CpvCodesSearchResults = {
-	codes: CpvCodesSearchResult[];
+    codes: Array<CpvCodesSearchResult>;
 };
 
 export type CpcCode = {
-	code: string;
-	label?: Translation;
+    code: string;
+    label?: Translation;
 };
 
 export type CpcCodeNode = CpcCode;
 
 export type CpcCodes = {
-	codes: CpcCodeNode[];
+    codes: Array<CpcCodeNode>;
 };
 
 export type BkpCode = {
-	code: string;
-	label?: Translation;
+    code: string;
+    label?: Translation;
 };
 
 export type BkpCodeNode = BkpCode & {
-	hasChildren: boolean;
+    hasChildren: boolean;
 };
 
 export type BkpCodes = {
-	codes: BkpCodeNode[];
+    codes: Array<BkpCodeNode>;
 };
 
 export type BkpCodesSearchResult = {
-	code: string;
-	label: Translation;
-	codes: BkpCodesSearchResult[];
+    code: string;
+    label: Translation;
+    codes: Array<BkpCodesSearchResult>;
 };
 
 export type BkpCodesSearchResults = {
-	codes: BkpCodesSearchResult[];
+    codes: Array<BkpCodesSearchResult>;
 };
 
 export type NpkCode = {
-	code: string;
-	label?: Translation;
+    code: string;
+    label?: Translation;
 };
 
 export type NpkCodeNode = NpkCode & {
-	hasChildren: boolean;
+    hasChildren: boolean;
 };
 
 export type NpkCodes = {
-	codes: NpkCodeNode[];
+    codes: Array<NpkCodeNode>;
 };
 
 export type NpkCodesSearchResult = {
-	code: string;
-	label: Translation;
-	codes: NpkCodesSearchResult[];
+    code: string;
+    label: Translation;
+    codes: Array<NpkCodesSearchResult>;
 };
 
 export type NpkCodesSearchResults = {
-	codes: NpkCodesSearchResult[];
+    codes: Array<NpkCodesSearchResult>;
 };
 
 export type EbkptCode = {
-	code: string;
-	label?: Translation;
+    code: string;
+    label?: Translation;
 };
 
 export type EbkptCodeNode = EbkptCode & {
-	hasChildren: boolean;
+    hasChildren: boolean;
 };
 
 export type EbkptCodes = {
-	codes: EbkptCodeNode[];
+    codes: Array<EbkptCodeNode>;
 };
 
 export type EbkptCodesSearchResult = {
-	code: string;
-	label: Translation;
-	codes: EbkptCodesSearchResult[];
+    code: string;
+    label: Translation;
+    codes: Array<EbkptCodesSearchResult>;
 };
 
 export type EbkptCodesSearchResults = {
-	codes: EbkptCodesSearchResult[];
+    codes: Array<EbkptCodesSearchResult>;
 };
 
 export type EbkphCode = {
-	code: string;
-	label?: Translation;
+    code: string;
+    label?: Translation;
 };
 
 export type EbkphCodeNode = EbkphCode & {
-	hasChildren: boolean;
+    hasChildren: boolean;
 };
 
 export type EbkphCodes = {
-	codes: EbkphCodeNode[];
+    codes: Array<EbkphCodeNode>;
 };
 
 export type EbkphCodesSearchResult = {
-	code: string;
-	label: Translation;
-	codes: EbkphCodesSearchResult[];
+    code: string;
+    label: Translation;
+    codes: Array<EbkphCodesSearchResult>;
 };
 
 export type EbkphCodesSearchResults = {
-	codes: EbkphCodesSearchResult[];
+    codes: Array<EbkphCodesSearchResult>;
 };
 
 export type OagCode = {
-	code: string;
-	label?: Translation;
+    code: string;
+    label?: Translation;
 };
 
 export type OagCodeNode = OagCode & {
-	hasChildren: boolean;
+    hasChildren: boolean;
 };
 
 export type OagCodes = {
-	codes: OagCodeNode[];
+    codes: Array<OagCodeNode>;
 };
 
 export type OagCodesSearchResult = {
-	code: string;
-	label: Translation;
-	codes: OagCodesSearchResult[];
+    code: string;
+    label: Translation;
+    codes: Array<OagCodesSearchResult>;
 };
 
 export type OagCodesSearchResults = {
-	codes: OagCodesSearchResult[];
+    codes: Array<OagCodesSearchResult>;
 };
 
-export type ProcOfficeType =
-	| 'central_federation'
-	| 'decentral_federation'
-	| 'other_federation'
-	| 'foreign'
-	| 'cantonal'
-	| 'other_cantonal'
-	| 'communal'
-	| 'other_communal';
+export type ProcOfficeType = 'central_federation' | 'decentral_federation' | 'other_federation' | 'foreign' | 'cantonal' | 'other_cantonal' | 'communal' | 'other_communal';
 
 export type InstitutionMinimal = {
-	id: string;
-	name: Translation;
-	/**
-	 * The types of procurement offices that this institution supervises.
-	 */
-	handlesProcOfficesTypes?: ProcOfficeType[];
-	/**
-	 * If true users can create new procurement offices under this institution.
-	 */
-	userCanCreateProcOffice?: boolean;
+    id: string;
+    name: Translation;
+    /**
+     * The types of procurement offices that this institution supervises.
+     */
+    handlesProcOfficesTypes?: Array<ProcOfficeType>;
+    /**
+     * If true users can create new procurement offices under this institution.
+     */
+    userCanCreateProcOffice?: boolean;
 };
 
 export type Institution = InstitutionMinimal & {
-	/**
-	 * The responsible competence centre, if not set see the parent institution.
-	 */
-	compCentreId?: string | undefined;
-	/**
-	 * If true, this institution supervises one or more institutions.
-	 * Use the id of this institution as `parentInstitutionId` on the GET request the get these institutions.
-	 *
-	 */
-	hasInstitutions: boolean;
-	/**
-	 * If true this institution supervises one or more procurement offices.
-	 * Get the available offices with `GET /procoffices/v1/treeview`.
-	 *
-	 */
-	hasProcOffices: boolean;
+    /**
+     * The responsible competence centre, if not set see the parent institution.
+     */
+    compCentreId?: string | null;
+    /**
+     * If true, this institution supervises one or more institutions.
+     * Use the id of this institution as `parentInstitutionId` on the GET request the get these institutions.
+     *
+     */
+    hasInstitutions: boolean;
+    /**
+     * If true this institution supervises one or more procurement offices.
+     * Get the available offices with `GET /procoffices/v1/treeview`.
+     *
+     */
+    hasProcOffices: boolean;
 };
 
 export type Institutions = {
-	institutions: Institution[];
+    institutions: Array<Institution>;
 };
 
 export type InstitutionSearchResult = InstitutionMinimal & {
-	/**
-	 * The responsible competence centre, if not set see the parent institution.
-	 */
-	compCentreId?: string | undefined;
-	/**
-	 * The list will contain the lower level institutions if they contain procurement offices that matched the search query
-	 *
-	 */
-	institutions: InstitutionSearchResult[];
-	/**
-	 * The list will contain the procurement offices that matched the search query
-	 *
-	 */
-	procOffices: ProcOfficePublicData[];
+    /**
+     * The responsible competence centre, if not set see the parent institution.
+     */
+    compCentreId?: string | null;
+    /**
+     * The list will contain the lower level institutions if they contain procurement offices that matched the search query
+     *
+     */
+    institutions: Array<InstitutionSearchResult>;
+    /**
+     * The list will contain the procurement offices that matched the search query
+     *
+     */
+    procOffices: Array<ProcOfficePublicData>;
 };
 
 /**
  * Public available procurement office data.
  */
 export type ProcOfficePublicData = {
-	id: string;
-	name: string;
-	type: ProcOfficeType;
-	institutionId: string;
-	compCentreId: string;
+    id: string;
+    name: string;
+    type: ProcOfficeType;
+    institutionId: string;
+    compCentreId: string;
 };
 
 export type InstitutionSearchResults = {
-	institutions: InstitutionSearchResult[];
+    institutions: Array<InstitutionSearchResult>;
 };
 
 /**
  * The phoneNumber parameter is in the internation format (E.164)
  */
 export type User = {
-	id?: string;
-	email?: string;
-	/**
-	 * The phoneNumber is in the international format (E.164)
-	 */
-	phoneNumber?: string;
-	firstName?: string;
-	lastName?: string;
-	language?: SystemLanguage;
-	createdAt?: string;
-	updatedAt?: string;
-	active?: boolean;
-	passwordLastChanged?: string;
+    id?: string;
+    email?: string;
+    /**
+     * The phoneNumber is in the international format (E.164)
+     */
+    phoneNumber?: string;
+    firstName?: string;
+    lastName?: string;
+    language?: SystemLanguage;
+    createdAt?: string;
+    updatedAt?: string;
+    active?: boolean;
+    passwordLastChanged?: string;
 };
 
 export type RollingPagination = {
-	lastItem: string;
-	itemsPerPage: number;
+    lastItem: string;
+    itemsPerPage: number;
 };
 
 export type UsersSearchResult = {
-	users: User[];
-	pagination: RollingPagination;
+    users: Array<User>;
+    pagination: RollingPagination;
 };
 
-export type MembershipType =
-	| 'procurement_office'
-	| 'vendor'
-	| 'competence_centre';
+export type MembershipType = 'procurement_office' | 'vendor' | 'competence_centre';
 
 export type OrganizationBase = {
-	membershipType: MembershipType;
-	orgId: string;
-	organization: Translation;
+    membershipType: MembershipType;
+    orgId: string;
+    organization: Translation;
 };
 
 export type UserDeletionResult = {
-	/**
-	 * List with organizations the user is the last admin and can therefore not be deleted
-	 *
-	 */
-	lastOrganizationsAdmin?: unknown;
+    /**
+     * List with organizations the user is the last admin and can therefore not be deleted
+     *
+     */
+    lastOrganizationsAdmin?: unknown;
 };
 
-export type UserDeletionResultResponse = UserDeletionResult &
-	ServerErrorAttributes;
+export type UserDeletionResultResponse = UserDeletionResult & ServerErrorAttributes;
 
 export type UserEditable = {
-	firstName?: string;
-	lastName?: string;
-	/**
-	 * The phoneNumber in the international format (E.164) or an empty string in case you want to delete the phone number
-	 */
-	phoneNumber?: string;
-	language?: SystemLanguage;
+    firstName?: string;
+    lastName?: string;
+    /**
+     * The phoneNumber in the international format (E.164) or an empty string in case you want to delete the phone number
+     */
+    phoneNumber?: string;
+    language?: SystemLanguage;
 };
 
 export type ImpersonateTokens = {
-	access_token?: string;
-	refresh_token?: string;
-	id_token?: string;
-	user_id?: string;
+    access_token?: string;
+    refresh_token?: string;
+    id_token?: string;
+    user_id?: string;
 };
 
 export type UserMinimal = {
-	id?: string;
-	firstName?: string;
-	lastName?: string;
-	email?: string;
+    id?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
 };
 
 /**
- * List of all assignable roles, listed in expected sort ordering
+ * list of all assignable roles, listed in expected sort ordering
  */
-export type AssignableRole =
-	| 'subscription_user'
-	| 'procurement_project_contributor'
-	| 'procurement_user'
-	| 'procurement_admin'
-	| 'vendor_user'
-	| 'vendor_admin'
-	| 'competence_centre_print_user'
-	| 'competence_centre_admin'
-	| 'simap_admin';
+export type AssignableRole = 'subscription_user' | 'procurement_project_contributor' | 'procurement_user' | 'procurement_admin' | 'vendor_user' | 'vendor_admin' | 'competence_centre_print_user' | 'competence_centre_admin' | 'simap_admin';
 
 /**
  * User with organization and role
  */
 export type UserWithOrgAndRole = UserMinimal & {
-	organization?: string;
-	role: AssignableRole;
-	/**
-	 * - If an organization is defined: active displays if the user is an accepted member in that organization.
-	 * - Otherwise: if the user is active
-	 *
-	 */
-	active: boolean;
+    organization?: string;
+    role: AssignableRole;
+    /**
+     * - If an organization is defined: active displays if the user is an accepted member in that organization.
+     * - Otherwise: if the user is active
+     *
+     */
+    active: boolean;
 };
 
 export type UsersWithOrgAndRoleSearchResult = {
-	users: UserWithOrgAndRole[];
-	pagination: RollingPagination;
+    users: Array<UserWithOrgAndRole>;
+    pagination: RollingPagination;
 };
 
-export type MembershipStatus =
-	| 'requested'
-	| 'accepted'
-	| 'rejected'
-	| 'disabled';
+export type MembershipStatus = 'requested' | 'accepted' | 'rejected' | 'disabled';
 
 export type OrganizationMembership = OrganizationBase & {
-	role: AssignableRole;
-	membershipStatus: MembershipStatus;
+    role: AssignableRole;
+    membershipStatus: MembershipStatus;
 };
 
 export type OrganizationMemberships = {
-	memberships: OrganizationMembership[];
+    memberships: Array<OrganizationMembership>;
 };
 
 export type CompCentreType = 'federation' | 'canton' | 'city';
 
 export type CompCentre = {
-	id: string;
-	name: Translation;
-	centreType: CompCentreType;
+    id: string;
+    name: Translation;
+    centreType: CompCentreType;
 };
 
 export type CompCentres = {
-	compCentres: CompCentre[];
+    compCentres: Array<CompCentre>;
 };
 
 export type ProcOfficeStatus = 'requested' | 'confirmed' | 'rejected';
@@ -655,25 +558,25 @@ export type ProcOfficeStatus = 'requested' | 'confirmed' | 'rejected';
  * Procurement office with minimal information for the list view / selection.
  */
 export type ProcOfficeListEntry = {
-	id: string;
-	name: string;
-	type: ProcOfficeType;
-	/**
-	 * Each procurement office is assigned to an institution.
-	 *
-	 * This list represents the institution hierarchy for this procurement office,
-	 * where the first entry is the top level institution and the last entry the institution that is assigned to the procurement office.
-	 *
-	 */
-	institutionNameHierarchy: Translation[];
-	createdBy: UserMinimal;
-	organizationInContract?: boolean;
-	status: ProcOfficeStatus;
+    id: string;
+    name: string;
+    type: ProcOfficeType;
+    /**
+     * Each procurement office is assigned to an institution.
+     *
+     * This list represents the institution hierarchy for this procurement office,
+     * where the first entry is the top level institution and the last entry the institution that is assigned to the procurement office.
+     *
+     */
+    institutionNameHierarchy: Array<Translation>;
+    createdBy: UserMinimal;
+    organizationInContract?: boolean;
+    status: ProcOfficeStatus;
 };
 
 export type ProcOfficeSearchResult = {
-	procOffices: ProcOfficeListEntry[];
-	pagination: RollingPagination;
+    procOffices: Array<ProcOfficeListEntry>;
+    pagination: RollingPagination;
 };
 
 /**
@@ -681,31 +584,31 @@ export type ProcOfficeSearchResult = {
  *
  */
 export type BaseAddress = {
-	/**
-	 * In general we only require swiss addresses to have a postal code as
-	 * we allow foreign addresses from places that do not use postal codes.
-	 *
-	 * In certain cases, e.g. for a procurement office, we require the postal code for an address in a country that has NUTS codes.
-	 *
-	 */
-	postalCode?: string;
-	/**
-	 * The ISO 3166 two letter country code. The list with the ids / codes can be get from `GET /api/countries/v1`
-	 *
-	 */
-	countryId?: string;
-	/**
-	 * The two letter abbreviation of a swiss canton e.g `BE`.
-	 *
-	 * Not in every instance is this value required, and if it's a required value then only when the address is from switzerland.
-	 *
-	 */
-	cantonId?: string;
+    /**
+     * In general we only require swiss addresses to have a postal code as
+     * we allow foreign addresses from places that do not use postal codes.
+     *
+     * In certain cases, e.g. for a procurement office, we require the postal code for an address in a country that has NUTS codes.
+     *
+     */
+    postalCode?: string;
+    /**
+     * The ISO 3166 two letter country code. The list with the ids / codes can be get from `GET /api/countries/v1`
+     *
+     */
+    countryId?: string;
+    /**
+     * The two letter abbreviation of a swiss canton e.g `BE`.
+     *
+     * Not in every instance is this value required, and if it's a required value then only when the address is from switzerland.
+     *
+     */
+    cantonId?: string;
 };
 
 export type Address = BaseAddress & {
-	street: string;
-	city: string;
+    street: string;
+    city: string;
 };
 
 /**
@@ -715,108 +618,98 @@ export type Address = BaseAddress & {
  * it's currently not actively required and enforced for the competence centre contact, can be used if desired.
  *
  */
-export type CompCentreContact = Address &
-	UserMinimal & {
-		/**
-		 * The competence centre id in which the contact is created.
-		 * Only the competence centre id of the logged in competence centre admin is allowed.
-		 *
-		 */
-		compCentreId: string;
-		phone?: string;
-		websiteUrl?: string;
-		usedForSupport?: boolean;
-		usedForLegalInformation?: boolean;
-		description: Translation;
-		additionalInformation?: Translation;
-	};
+export type CompCentreContact = Address & UserMinimal & {
+    /**
+     * The competence centre id in which the contact is created.
+     * Only the competence centre id of the logged in competence centre admin is allowed.
+     *
+     */
+    compCentreId: string;
+    phone?: string;
+    websiteUrl?: string;
+    usedForSupport?: boolean;
+    usedForLegalInformation?: boolean;
+    description: Translation;
+    additionalInformation?: Translation;
+};
 
 export type TranslationUrl = {
-	de?: string;
-	en?: string;
-	fr?: string;
-	it?: string;
+    de?: string;
+    en?: string;
+    fr?: string;
+    it?: string;
 };
 
 export type CompCentreUrl = {
-	id: string;
-	title: Translation;
-	url: TranslationUrl;
-	description?: Translation;
-	compCentreId: string;
+    id: string;
+    title: Translation;
+    url: TranslationUrl;
+    description?: Translation;
+    compCentreId: string;
 };
 
-export type Weekdays =
-	| 'sunday'
-	| 'monday'
-	| 'tuesday'
-	| 'wednesday'
-	| 'thursday'
-	| 'friday'
-	| 'saturday';
+export type Weekdays = 'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday';
 
 export type PublicationDateRule = {
-	id: string;
-	weekday: Weekdays;
-	editorialDeadlineDaysBefore: number;
-	/**
-	 * Precision is hh:mm, meaning it is truncated to minutes. For instance, 12:05:01.001 will be treated as 12:05.
-	 * The given time is always in timezone Europe/Zurich at the corresponding date.
-	 *
-	 */
-	editorialDeadlineAtTime: string;
+    id: string;
+    weekday: Weekdays;
+    editorialDeadlineDaysBefore: number;
+    /**
+     * Precision is hh:mm, meaning it is truncated to minutes. For instance, 12:05:01.001 will be treated as 12:05.
+     * The given time is always in timezone Europe/Zurich at the corresponding date.
+     *
+     */
+    editorialDeadlineAtTime: string;
 };
 
 export type PublicationDateExceptionType = 'cancellation' | 'addition';
 
 export type PublicationDateException = {
-	id: string;
-	exceptionType: PublicationDateExceptionType;
-	/**
-	 * Depending on the exceptionType, either the cancellation date (in case of cancellation)
-	 * or the additional publication date (in case of addition).
-	 *
-	 */
-	exceptionDate: string;
-	note: string;
-	/**
-	 * Required if exceptionType is `addition`, otherwise it must be null.
-	 *
-	 */
-	editorialDeadlineDaysBefore?: number;
-	/**
-	 * Required if exceptionType is `addition`, otherwise it must be null.
-	 * Precision is hh:mm, meaning it is truncated to minutes. For instance, 12:05:01.001 will be treated as 12:05.
-	 * The given time is always in timezone Europe/Zurich at the corresponding date.
-	 *
-	 */
-	editorialDeadlineAtTime?: string;
+    id: string;
+    exceptionType: PublicationDateExceptionType;
+    /**
+     * Depending on the exceptionType, either the cancellation date (in case of cancellation)
+     * or the additional publication date (in case of addition).
+     *
+     */
+    exceptionDate: string;
+    note: string;
+    /**
+     * Required if exceptionType is `addition`, otherwise it must be null.
+     *
+     */
+    editorialDeadlineDaysBefore?: number;
+    /**
+     * Required if exceptionType is `addition`, otherwise it must be null.
+     * Precision is hh:mm, meaning it is truncated to minutes. For instance, 12:05:01.001 will be treated as 12:05.
+     * The given time is always in timezone Europe/Zurich at the corresponding date.
+     *
+     */
+    editorialDeadlineAtTime?: string;
 };
 
 export type Publisher = {
-	id: string;
-	name: string;
-	/**
-	 * Indicates whether this publisher publishes the official journal (Amtsblatt) or not
-	 *
-	 */
-	publishesToOfficialJournal: boolean;
-	publicationDateRules: PublicationDateRule[];
-	/**
-	 * A publisher can define exceptions to the above rules. On one hand a publisher can cancel a publication date and on the other additional publication dates can be defined (e.g. as replacement of a cancelled date). This list contains only exceptions for today or the future.
-	 */
-	publicationDateExceptionsOfTodayOrFuture: PublicationDateException[];
+    id: string;
+    name: string;
+    /**
+     * Indicates whether this publisher publishes the official journal (Amtsblatt) or not
+     *
+     */
+    publishesToOfficialJournal: boolean;
+    publicationDateRules: Array<PublicationDateRule>;
+    /**
+     * A publisher can define exceptions to the above rules. On one hand a publisher can cancel a publication date and on the other additional publication dates can be defined (e.g. as replacement of a cancelled date). This list contains only exceptions for today or the future.
+     */
+    publicationDateExceptionsOfTodayOrFuture: Array<PublicationDateException>;
 };
 
 export type CompCentreDetail = CompCentre & {
-	contacts: CompCentreContact[];
-	urls: CompCentreUrl[];
-	publisher: Publisher;
+    contacts: Array<CompCentreContact>;
+    urls: Array<CompCentreUrl>;
+    publisher: Publisher;
 };
 
-export type CompCentreRole =
-	| 'competence_centre_admin'
-	| 'competence_centre_print_user';
+export type CompCentreRole = 'competence_centre_admin' | 'competence_centre_print_user';
 
 /**
  * Either identify the user via userId (in case of an existing user) or via email but not both.
@@ -824,65 +717,55 @@ export type CompCentreRole =
  *
  */
 export type CompCentreJoin = {
-	userId?: string;
-	email?: string;
-	role: CompCentreRole;
+    userId?: string;
+    email?: string;
+    role: CompCentreRole;
 };
 
 export type CompCentreMembership = 'accepted';
 
 export type CompCentreMember = User & {
-	membership?: CompCentreMembership;
-	role?: CompCentreRole;
+    membership?: CompCentreMembership;
+    role?: CompCentreRole;
 };
 
 export type CompCentreMembers = {
-	compCentreMembers: CompCentreMember[];
+    compCentreMembers: Array<CompCentreMember>;
 };
 
 export type AttachedUser = UserMinimal & {
-	active: boolean;
-	organizationName: Translation;
-	role: AssignableRole;
+    active: boolean;
+    organizationName: Translation;
+    role: AssignableRole;
 };
 
 export type AttachedUserSearchResult = {
-	attachedUsers?: AttachedUser[];
-	pagination: RollingPagination;
+    attachedUsers?: Array<AttachedUser>;
+    pagination: RollingPagination;
 };
 
-export type RemediesNoticeType =
-	| 'tender'
-	| 'competition'
-	| 'study_contract'
-	| 'tender_award'
-	| 'competition_award'
-	| 'study_contract_award'
-	| 'direct_award'
-	| 'abandonment'
-	| 'revocation'
-	| 'participant_selection';
+export type RemediesNoticeType = 'tender' | 'competition' | 'study_contract' | 'tender_award' | 'competition_award' | 'study_contract_award' | 'direct_award' | 'abandonment' | 'revocation' | 'participant_selection';
 
 export type RemediesNoticeTemplateRequest = {
-	id: string;
-	/**
-	 * The responsible competence centre
-	 */
-	compCentreId: string;
-	name: string;
-	remediesNoticeType: RemediesNoticeType;
-	notice: Translation;
-	stateContractArea?: boolean;
+    id: string;
+    /**
+     * The responsible competence centre
+     */
+    compCentreId: string;
+    name: string;
+    remediesNoticeType: RemediesNoticeType;
+    notice: Translation;
+    stateContractArea?: boolean;
 };
 
 export type RemediesNoticeTemplate = RemediesNoticeTemplateRequest & {
-	createdAt: string;
-	updatedAt: string;
+    createdAt: string;
+    updatedAt: string;
 };
 
 export type RemediesNoticeTemplatesSearchResult = {
-	remediesNoticeTemplates: RemediesNoticeTemplate[];
-	pagination: RollingPagination;
+    remediesNoticeTemplates: Array<RemediesNoticeTemplate>;
+    pagination: RollingPagination;
 };
 
 /**
@@ -897,34 +780,16 @@ export type RemediesNoticeTemplatesSearchResult = {
  * - direct_award only includes direct_award publications created on the new simap.ch (i.e. not for an external publication).
  *
  */
-export type PubDraftTemplatePubTypeFilter =
-	| 'advance_notice'
-	| 'request_for_information'
-	| 'tender'
-	| 'competition'
-	| 'study_contract'
-	| 'award_tender'
-	| 'award_study_contract'
-	| 'award_competition'
-	| 'direct_award';
+export type PubDraftTemplatePubTypeFilter = 'advance_notice' | 'request_for_information' | 'tender' | 'competition' | 'study_contract' | 'award_tender' | 'award_study_contract' | 'award_competition' | 'direct_award';
 
-export type PubProjectType =
-	| 'tender'
-	| 'competition'
-	| 'study_contract'
-	| 'request_for_information';
+export type PubProjectType = 'tender' | 'competition' | 'study_contract' | 'request_for_information';
 
 /**
  * - direct = currently only entails publications with type direct_award for direct award procedure (Freihändige Vergabe)
  * - no_process = This process type is used to describe projects that are not a part of an official procurement process. Currently only entails publications/projects of type `request_for_information`
  *
  */
-export type PubProcessType =
-	| 'open'
-	| 'selective'
-	| 'invitation'
-	| 'direct'
-	| 'no_process';
+export type PubProcessType = 'open' | 'selective' | 'invitation' | 'direct' | 'no_process';
 
 /**
  * This type is a mix of types. Respective types can be found in PubType and ProjectType.
@@ -933,41 +798,30 @@ export type PubProcessType =
  * Following types also exist in ProjectType: tender, competition and study_contract.
  *
  */
-export type PubType =
-	| 'request_for_information'
-	| 'advance_notice'
-	| 'abandonment'
-	| 'direct_award'
-	| 'award'
-	| 'revocation'
-	| 'participant_selection'
-	| 'selective_offering_phase'
-	| 'tender'
-	| 'competition'
-	| 'study_contract';
+export type PubType = 'request_for_information' | 'advance_notice' | 'abandonment' | 'direct_award' | 'award' | 'revocation' | 'participant_selection' | 'selective_offering_phase' | 'tender' | 'competition' | 'study_contract';
 
 /**
  * Information used for a pub-draft template search/overview entry
  */
 export type PubDraftTemplateSearchResultEntry = {
-	projectType: PubProjectType;
-	processType: PubProcessType;
-	pubType: PubType;
-	projectId: string;
-	pubId: string;
-	title: Translation;
+    projectType: PubProjectType;
+    processType: PubProcessType;
+    pubType: PubType;
+    projectId: string;
+    pubId: string;
+    title: Translation;
 };
 
 /**
  * Result of pub-draft template search
  */
 export type PubDraftTemplateSearchResult = {
-	templates: PubDraftTemplateSearchResultEntry[];
-	pagination: RollingPagination;
+    templates: Array<PubDraftTemplateSearchResultEntry>;
+    pagination: RollingPagination;
 };
 
 export type CompCentreUrls = {
-	urls: CompCentreUrl[];
+    urls: Array<CompCentreUrl>;
 };
 
 /**
@@ -978,57 +832,57 @@ export type CompCentreUrls = {
 export type PublicationNumber = string;
 
 export type BasePublicationData = {
-	projectType: PubProjectType;
-	processType: PubProcessType;
-	publicationNumber: PublicationNumber;
-	pubType: PubType;
-	/**
-	 * True if this is pub draft is a correction
-	 *
-	 */
-	corrected: boolean;
+    projectType: PubProjectType;
+    processType: PubProcessType;
+    publicationNumber: PublicationNumber;
+    pubType: PubType;
+    /**
+     * True if this is pub draft is a correction
+     *
+     */
+    corrected: boolean;
 };
 
 export type PublicationToPublish = BasePublicationData & {
-	/**
-	 * Id of the pub draft / publication
-	 *
-	 */
-	id: string;
-	projectId: string;
-	projectTitle: Translation;
-	publicationDate: string;
-	/**
-	 * The editorial deadline for the selected publication date.
-	 */
-	editorialDeadline: string;
-	procOfficeName: string;
+    /**
+     * id of the pub draft / publication
+     *
+     */
+    id: string;
+    projectId: string;
+    projectTitle: Translation;
+    publicationDate: string;
+    /**
+     * The editorial deadline for the selected publication date.
+     */
+    editorialDeadline: string;
+    procOfficeName: string;
 };
 
 export type PublicationsToPublish = {
-	publicationsToPublish?: PublicationToPublish[];
+    publicationsToPublish?: Array<PublicationToPublish>;
 };
 
 export type PubDraftPlannedForPublication = {
-	procOfficeName: string;
-	projectId: string;
-	pubDraftId: string;
-	publicationNumber: string;
+    procOfficeName: string;
+    projectId: string;
+    pubDraftId: string;
+    publicationNumber: string;
 };
 
 export type PubDraftsPlannedForPublication = {
-	pubDrafts: PubDraftPlannedForPublication[];
+    pubDrafts: Array<PubDraftPlannedForPublication>;
 };
 
 export type ProcOfficeTree = {
-	procOffices: ProcOfficePublicData[];
+    procOffices: Array<ProcOfficePublicData>;
 };
 
 export type Contact = {
-	organization: string;
-	firstName: string;
-	lastName: string;
-	email?: string;
+    organization: string;
+    firstName: string;
+    lastName: string;
+    email?: string;
 };
 
 /**
@@ -1048,35 +902,35 @@ export type InternationalPhoneNumber = string;
  *
  */
 export type ProcOffice = ProcOfficePublicData & {
-	language: SystemLanguage;
-	mainActivity: MainActivity;
-	organizationInContractContact?: Contact;
-	address: Address;
-	phone: InternationalPhoneNumber;
-	email: string;
-	url?: string;
-	otherInfo?: string;
-	status?: ProcOfficeStatus;
-	statusComment?: string;
-	/**
-	 * Each procurement office is assigned to an institution.
-	 *
-	 * This list represents the institution hierarchy for this procurement office,
-	 * where the first entry is the top level institution and the last entry the institution that is assigned to the procurement office.
-	 *
-	 */
-	readonly institutionNameHierarchy?: Translation[];
+    language: SystemLanguage;
+    mainActivity: MainActivity;
+    organizationInContractContact?: Contact;
+    address: Address;
+    phone: InternationalPhoneNumber;
+    email: string;
+    url?: string;
+    otherInfo?: string;
+    status?: ProcOfficeStatus;
+    statusComment?: string;
+    /**
+     * Each procurement office is assigned to an institution.
+     *
+     * This list represents the institution hierarchy for this procurement office,
+     * where the first entry is the top level institution and the last entry the institution that is assigned to the procurement office.
+     *
+     */
+    readonly institutionNameHierarchy?: Array<Translation>;
 };
 
 export type ProcOfficeRejectMessage = {
-	comment: string;
+    comment: string;
 };
 
 export type ProcOfficeJoinRequest = {
-	/**
-	 * True -> joinRequest, false -> revoke joinRequest / leave ProcOffice
-	 */
-	join: boolean;
+    /**
+     * true -> joinRequest, false -> revoke joinRequest / leave ProcOffice
+     */
+    join: boolean;
 };
 
 export type ProcOfficeMembership = 'requested' | 'accepted' | 'rejected';
@@ -1088,44 +942,36 @@ export type ProcOfficeMembership = 'requested' | 'accepted' | 'rejected';
  * * procurement_project_contributor - User having only limited access to assigned projects in the procurement office
  *
  */
-export type ProcOfficeRole =
-	| 'procurement_admin'
-	| 'procurement_user'
-	| 'procurement_project_contributor';
+export type ProcOfficeRole = 'procurement_admin' | 'procurement_user' | 'procurement_project_contributor';
 
 export type MyProcOfficeMembership = ProcOfficePublicData & {
-	membership: ProcOfficeMembership;
-	role: ProcOfficeRole;
+    membership: ProcOfficeMembership;
+    role: ProcOfficeRole;
 };
 
 export type ProcOfficeMember = User & {
-	membership: ProcOfficeMembership;
-	role: ProcOfficeRole;
+    membership: ProcOfficeMembership;
+    role: ProcOfficeRole;
 };
 
 export type ProcOfficeMembers = {
-	procOfficeMembers: ProcOfficeMember[];
-	pagination?: RollingPagination;
+    procOfficeMembers: Array<ProcOfficeMember>;
+    pagination?: RollingPagination;
 };
 
 export type ProcOfficeJoinResponse = {
-	userId: string;
-	/**
-	 * True -> request granted, false -> request denied / remove member
-	 */
-	isAllowed: boolean;
-	/**
-	 * If the join request has been declined, a justification has to be provided
-	 */
-	justification?: string;
+    userId: string;
+    /**
+     * true -> request granted, false -> request denied / remove member
+     */
+    isAllowed: boolean;
+    /**
+     * if the join request has been declined, a justification has to be provided
+     */
+    justification?: string;
 };
 
-export type PubDraftStatus =
-	| 'draft'
-	| 'validated'
-	| 'submitted'
-	| 'to_publish'
-	| 'published';
+export type PubDraftStatus = 'draft' | 'validated' | 'submitted' | 'to_publish' | 'published';
 
 /**
  * This is a specific enumeration of publication types used in the extended filter parameters of the public project search and the proc-office project manager.
@@ -1139,32 +985,9 @@ export type PubDraftStatus =
  * the old simap is also regarded as an external system and hence an external publication).
  *
  */
-export type ProjectSearchPubTypeFilter =
-	| 'advance_notice'
-	| 'request_for_information'
-	| 'tender'
-	| 'competition'
-	| 'study_contract'
-	| 'award_tender'
-	| 'award_study_contract'
-	| 'award_competition'
-	| 'direct_award'
-	| 'participant_selection'
-	| 'revocation'
-	| 'abandonment'
-	| 'selective_offering_phase';
+export type ProjectSearchPubTypeFilter = 'advance_notice' | 'request_for_information' | 'tender' | 'competition' | 'study_contract' | 'award_tender' | 'award_study_contract' | 'award_competition' | 'direct_award' | 'participant_selection' | 'revocation' | 'abandonment' | 'selective_offering_phase';
 
-export type ProjectSubType =
-	| 'construction'
-	| 'service'
-	| 'supply'
-	| 'project_competition'
-	| 'idea_competition'
-	| 'overall_performance_competition'
-	| 'project_study'
-	| 'idea_study'
-	| 'overall_performance_study'
-	| 'request_for_information';
+export type ProjectSubType = 'construction' | 'service' | 'supply' | 'project_competition' | 'idea_competition' | 'overall_performance_competition' | 'project_study' | 'idea_study' | 'overall_performance_study' | 'request_for_information';
 
 export type PubLotsType = 'with' | 'without';
 
@@ -1173,207 +996,192 @@ export type PubLotsType = 'with' | 'without';
  *
  */
 export type BaseProjectsSearchEntry = {
-	/**
-	 * The project id
-	 */
-	id: string;
-	/**
-	 * The project title
-	 */
-	title: Translation;
-	projectNumber: string;
-	projectType: PubProjectType;
-	projectSubType: ProjectSubType;
-	processType: PubProcessType;
-	lotsType: PubLotsType;
+    /**
+     * The project id
+     */
+    id: string;
+    /**
+     * The project title
+     */
+    title: Translation;
+    projectNumber: string;
+    projectType: PubProjectType;
+    projectSubType: ProjectSubType;
+    processType: PubProcessType;
+    lotsType: PubLotsType;
 };
 
 export type ProjectsSearchEntryLatestPub = {
-	/**
-	 * The publication id of the latest publication
-	 */
-	publicationId: string;
-	/**
-	 * The publication date of the latest publication
-	 */
-	publicationDate?: string;
-	/**
-	 * The number of the latest publication.
-	 */
-	publicationNumber: PublicationNumber;
-	/**
-	 * The type of the latest publication.
-	 */
-	pubType: PubType;
-	/**
-	 * If the latest publication is corrected.
-	 *
-	 */
-	corrected: boolean;
+    /**
+     * The publication id of the latest publication
+     */
+    publicationId: string;
+    /**
+     * The publication date of the latest publication
+     */
+    publicationDate?: string;
+    /**
+     * The number of the latest publication.
+     */
+    publicationNumber: PublicationNumber;
+    /**
+     * The type of the latest publication.
+     */
+    pubType: PubType;
+    /**
+     * If the latest publication is corrected.
+     *
+     */
+    corrected: boolean;
 };
 
-export type ProcOfficeProjectsOverviewEntryLot =
-	ProjectsSearchEntryLatestPub & {
-		lotId: string;
-		lotNumber: number;
-		lotTitle: Translation;
-		/**
-		 * Status of the latest referencing pub draft or publication like an award.
-		 *
-		 */
-		publicationStatus?: PubDraftStatus;
-		/**
-		 * Editorial deadline of the latest referencing pub draft or publication like an award.
-		 *
-		 */
-		editorialDeadline?: string;
-	};
+export type ProcOfficeProjectsOverviewEntryLot = ProjectsSearchEntryLatestPub & {
+    lotId: string;
+    lotNumber: number;
+    lotTitle: Translation;
+    /**
+     * Status of the latest referencing pub draft or publication like an award.
+     *
+     */
+    publicationStatus?: PubDraftStatus;
+    /**
+     * Editorial deadline of the latest referencing pub draft or publication like an award.
+     *
+     */
+    editorialDeadline?: string;
+};
 
-export type ProcOfficeProjectsOverviewEntry = BaseProjectsSearchEntry &
-	ProjectsSearchEntryLatestPub & {
-		internalReference?: string;
-		/**
-		 * Status of the latest pub draft of the project.
-		 *
-		 */
-		publicationStatus: PubDraftStatus;
-		/**
-		 * Editorial deadline of the latest pub draft of the project.
-		 *
-		 */
-		editorialDeadline?: string;
-		lots: ProcOfficeProjectsOverviewEntryLot[];
-	};
+export type ProcOfficeProjectsOverviewEntry = BaseProjectsSearchEntry & ProjectsSearchEntryLatestPub & {
+    internalReference?: string;
+    /**
+     * Status of the latest pub draft of the project.
+     *
+     */
+    publicationStatus: PubDraftStatus;
+    /**
+     * Editorial deadline of the latest pub draft of the project.
+     *
+     */
+    editorialDeadline?: string;
+    lots: Array<ProcOfficeProjectsOverviewEntryLot>;
+};
 
 export type ProcOfficeProjectsOverview = {
-	projects: ProcOfficeProjectsOverviewEntry[];
-	pagination: RollingPagination;
+    projects: Array<ProcOfficeProjectsOverviewEntry>;
+    pagination: RollingPagination;
 };
 
 export type PubOrderType = 'construction' | 'service' | 'supply';
 
-export type PubStudyType =
-	| 'project_study'
-	| 'idea_study'
-	| 'overall_performance_study';
+export type PubStudyType = 'project_study' | 'idea_study' | 'overall_performance_study';
 
-export type PubCompetitionType =
-	| 'project_competition'
-	| 'idea_competition'
-	| 'overall_performance_competition';
+export type PubCompetitionType = 'project_competition' | 'idea_competition' | 'overall_performance_competition';
 
 /**
- * Base project fields needed to identify type of project
+ * base project fields needed to identify type of project
  */
 export type ProjectTypeFields = {
-	projectNumber: string;
-	projectType: PubProjectType;
-	processType: PubProcessType;
-	orderType?: PubOrderType;
-	studyType?: PubStudyType;
-	competitionType?: PubCompetitionType;
-	lotsType: PubLotsType;
+    projectNumber: string;
+    projectType: PubProjectType;
+    processType: PubProcessType;
+    orderType?: PubOrderType;
+    studyType?: PubStudyType;
+    competitionType?: PubCompetitionType;
+    lotsType: PubLotsType;
 };
 
 /**
  * Base project data used by the proc office and public models
  */
 export type BaseProjectData = ProjectTypeFields & {
-	id: string;
+    id: string;
 };
 
 export type PubDraftLotId = {
-	id: string;
+    id: string;
 };
 
 export type PubDraftLotDescriptionCreate = PubDraftLotId & {
-	title?: Translation;
+    title?: Translation;
 };
 
 export type PubDraftLotDescription = PubDraftLotDescriptionCreate & {
-	lotNumber: number;
+    lotNumber: number;
 };
 
-export type ProcOfficeProjectHeaderDatesNonPublished =
-	ProcOfficeProjectHeaderDatesInterface & {
-		status: 'draft' | 'validated' | 'submitted' | 'to_publish';
-	} & {
-		editorialDeadline?: string;
-		publicationDate?: string;
-	};
+export type ProcOfficeProjectHeaderDatesNonPublished = ProcOfficeProjectHeaderDatesInterface & {
+    status: 'draft' | 'validated' | 'submitted' | 'to_publish';
+} & {
+    editorialDeadline?: string;
+    publicationDate?: string;
+};
 
 /**
  * Represents the default header dates model for pub-drafts with additional header date properties.
  */
-export type ProcOfficeProjectHeaderDatesPublishedAdditionalDefault =
-	ProcOfficeProjectHeaderDatesPublishedAdditionalInterface & {
-		processType?: 'open' | 'invitation' | 'no_process';
-	} & PublicProjectHeaderDatesAdditionalDefault;
+export type ProcOfficeProjectHeaderDatesPublishedAdditionalDefault = ProcOfficeProjectHeaderDatesPublishedAdditionalInterface & {
+    processType?: 'open' | 'invitation' | 'no_process';
+} & PublicProjectHeaderDatesAdditionalDefault;
 
-export type ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase =
-	ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface & {
-		pubType?: 'advance_notice' | 'tender' | 'competition' | 'study_contract';
-	} & PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase;
+export type ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase = ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface & {
+    pubType?: 'advance_notice' | 'tender' | 'competition' | 'study_contract';
+} & PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase;
 
 /**
  * Helper used for code generation, see ProcOfficeProjectHeaderDatesPublishedAdditional for the actual definition
  */
-export type ProcOfficeProjectHeaderDatesPublishedAdditionalInterface =
-	ProcOfficeProjectHeaderDatesPublishedInterface & {
-		pubType?: 'ProcOfficeProjectHeaderDatesPublishedAdditionalInterface';
-	};
+export type ProcOfficeProjectHeaderDatesPublishedAdditionalInterface = ProcOfficeProjectHeaderDatesPublishedInterface & {
+    pubType?: 'ProcOfficeProjectHeaderDatesPublishedAdditionalInterface';
+};
 
 /**
  * Helper used for code generation, see ProcOfficeProjectHeaderDatesPublishedAdditionalSelective for the actual definition
  */
-export type ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface =
-	ProcOfficeProjectHeaderDatesPublishedAdditionalInterface & {
-		processType?: 'ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface';
-	};
+export type ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface = ProcOfficeProjectHeaderDatesPublishedAdditionalInterface & {
+    processType?: 'ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface';
+};
 
 /**
- * Additional dates relevant for publications in the selective process which have additional dates except for
+ * additional dates relevant for publications in the selective process which have additional dates except for
  * selective_offering_phase which uses the default additional dates.
  *
  */
-export type PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase =
-	PublicProjectHeaderDatesAdditionalSelectiveInterface & {
-		pubType?: 'advance_notice' | 'tender' | 'competition' | 'study_contract';
-	} & PublicProjectHeaderDatesBase & {
-			/**
-			 * QNA round dates.
-			 * Only available if vendor of logged in user showed interest in the project or the user belongs to a procurement_office.
-			 *
-			 */
-			qnas?: PublicationQna[];
-			/**
-			 * Contains the date until which vendors can submit requests to participate at the offer.
-			 *
-			 * Can be `null` when the only publication in the project is of type `advanced_notice` as there the value is optional.
-			 *
-			 */
-			participationRequestDeadline?: string;
-			participationRequestOpening?: DateOptionalTime;
-			offerSubmissionDeadline?: DateOptionalTime;
-		};
+export type PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase = PublicProjectHeaderDatesAdditionalSelectiveInterface & {
+    pubType?: 'advance_notice' | 'tender' | 'competition' | 'study_contract';
+} & PublicProjectHeaderDatesBase & {
+    /**
+     * QNA round dates.
+     * Only available if vendor of logged in user showed interest in the project or the user belongs to a procurement_office.
+     *
+     */
+    qnas?: Array<PublicationQna>;
+    /**
+     * Contains the date until which vendors can submit requests to participate at the offer.
+     *
+     * Can be `null` when the only publication in the project is of type `advanced_notice` as there the value is optional.
+     *
+     */
+    participationRequestDeadline?: string;
+    participationRequestOpening?: DateOptionalTime;
+    offerSubmissionDeadline?: DateOptionalTime;
+};
 
-export type PublicProjectHeaderDatesAdditionalDefault =
-	PublicProjectHeaderDatesAdditionalInterface & {
-		processType?: 'open' | 'invitation' | 'no_process';
-	} & PublicProjectHeaderDatesBase & {
-			/**
-			 * QNA round dates.
-			 * Only available if vendor of logged in user is eligible to see qna rounds or the user belongs to a procurement_office.
-			 *
-			 */
-			qnas?: PublicationQna[];
-			/**
-			 * Can be `null` when the only publication in the project is of type `advanced_notice` as there the value is optional.
-			 *
-			 */
-			offerDeadline?: string;
-			offerOpening?: DateOptionalTime;
-		};
+export type PublicProjectHeaderDatesAdditionalDefault = PublicProjectHeaderDatesAdditionalInterface & {
+    processType?: 'open' | 'invitation' | 'no_process';
+} & PublicProjectHeaderDatesBase & {
+    /**
+     * QNA round dates.
+     * Only available if vendor of logged in user is eligible to see qna rounds or the user belongs to a procurement_office.
+     *
+     */
+    qnas?: Array<PublicationQna>;
+    /**
+     * Can be `null` when the only publication in the project is of type `advanced_notice` as there the value is optional.
+     *
+     */
+    offerDeadline?: string;
+    offerOpening?: DateOptionalTime;
+};
 
 /**
  * Header dates model for publications in the selective process are again split into two categories based on their
@@ -1381,85 +1189,73 @@ export type PublicProjectHeaderDatesAdditionalDefault =
  * (see PublicProjectHeaderDates).
  *
  */
-export type PublicProjectHeaderDatesAdditionalSelective =
-	| ({
-			pubType: 'selective_offering_phase';
-	  } & PublicProjectHeaderDatesAdditionalDefault)
-	| ({
-			pubType: 'advance_notice' | 'tender' | 'competition' | 'study_contract';
-	  } & PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase);
+export type PublicProjectHeaderDatesAdditionalSelective = ({
+    pubType: 'selective_offering_phase';
+} & PublicProjectHeaderDatesAdditionalDefault) | ({
+    pubType: 'advance_notice' | 'tender' | 'competition' | 'study_contract';
+} & PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase);
 
 /**
  * Header dates for publications which have additional date properties (see PublicProjectHeaderDates) are split
  * again into two categories, this time based on their `processType`.
  *
  */
-export type PublicProjectHeaderDatesAdditional =
-	| ({
-			processType: 'open' | 'invitation' | 'no_process';
-	  } & PublicProjectHeaderDatesAdditionalDefault)
-	| ({
-			processType: 'selective';
-	  } & PublicProjectHeaderDatesAdditionalSelective);
+export type PublicProjectHeaderDatesAdditional = ({
+    processType: 'open' | 'invitation' | 'no_process';
+} & PublicProjectHeaderDatesAdditionalDefault) | ({
+    processType: 'selective';
+} & PublicProjectHeaderDatesAdditionalSelective);
 
 export type PublicProjectHeaderDatesInterface = {
-	pubType: PubType;
+    pubType: PubType;
 };
 
 export type PublicProjectHeaderDatesBase = {
-	publicationDate: string;
+    publicationDate: string;
 };
 
-export type PublicProjectHeaderDatesDefault =
-	PublicProjectHeaderDatesInterface & {
-		pubType:
-			| 'abandonment'
-			| 'direct_award'
-			| 'award'
-			| 'revocation'
-			| 'participant_selection';
-	} & PublicProjectHeaderDatesBase;
+export type PublicProjectHeaderDatesDefault = PublicProjectHeaderDatesInterface & {
+    pubType: 'abandonment' | 'direct_award' | 'award' | 'revocation' | 'participant_selection';
+} & PublicProjectHeaderDatesBase;
 
 /**
  * Helper used for code generation, see PublicProjectHeaderDatesAdditional for the actual definition
  */
-export type PublicProjectHeaderDatesAdditionalInterface =
-	PublicProjectHeaderDatesInterface & {
-		pubType: 'PublicProjectHeaderDatesAdditionalInterface';
-	} & {
-		processType: PubProcessType;
-	};
+export type PublicProjectHeaderDatesAdditionalInterface = PublicProjectHeaderDatesInterface & {
+    pubType: 'PublicProjectHeaderDatesAdditionalInterface';
+} & {
+    processType: PubProcessType;
+};
 
 export type PubBaseQna = {
-	id: string;
-	/**
-	 * - Required in case publication is a call-for-bids
-	 * - Optional in case publication is an advance-notice
-	 *
-	 */
-	date?: string;
-	note?: Translation;
-	/**
-	 * Link to external system where the qna rounds are executed. Optional field and only available if qna_round_source_type is defined as 'external_system'
-	 *
-	 */
-	externalLink?: string;
+    id: string;
+    /**
+     * - Required in case publication is a call-for-bids
+     * - Optional in case publication is an advance-notice
+     *
+     */
+    date?: string;
+    note?: Translation;
+    /**
+     * Link to external system where the qna rounds are executed. Optional field and only available if qna_round_source_type is defined as 'external_system'
+     *
+     */
+    externalLink?: string;
 };
 
 export type PublicationQna = PubBaseQna;
 
 export type DateOptionalTime = {
-	dateTime: string;
-	ignoreTime: boolean;
+    dateTime: string;
+    ignoreTime: boolean;
 };
 
 /**
  * Helper used for code generation, see PublicProjectHeaderDatesAdditionalSelective for the actual definition
  */
-export type PublicProjectHeaderDatesAdditionalSelectiveInterface =
-	PublicProjectHeaderDatesAdditionalInterface & {
-		processType?: 'PublicProjectHeaderDatesAdditionalSelectiveInterface';
-	};
+export type PublicProjectHeaderDatesAdditionalSelectiveInterface = PublicProjectHeaderDatesAdditionalInterface & {
+    processType?: 'PublicProjectHeaderDatesAdditionalSelectiveInterface';
+};
 
 /**
  * Header dates model for pub-drafts in the selective process are again split into two categories based on their
@@ -1467,47 +1263,36 @@ export type PublicProjectHeaderDatesAdditionalSelectiveInterface =
  * (see ProcOfficeProjectHeaderDatesPublished).
  *
  */
-export type ProcOfficeProjectHeaderDatesPublishedAdditionalSelective =
-	| ({
-			pubType: 'selective_offering_phase';
-	  } & ProcOfficeProjectHeaderDatesPublishedAdditionalDefault)
-	| ({
-			pubType: 'advance_notice' | 'tender' | 'competition' | 'study_contract';
-	  } & ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase);
+export type ProcOfficeProjectHeaderDatesPublishedAdditionalSelective = ({
+    pubType: 'selective_offering_phase';
+} & ProcOfficeProjectHeaderDatesPublishedAdditionalDefault) | ({
+    pubType: 'advance_notice' | 'tender' | 'competition' | 'study_contract';
+} & ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase);
 
 /**
  * Header dates for pub-types which have additional date properties (see ProcOfficeProjectHeaderDatesPublished) are split
  * again into two categories, this time based on their `processType`.
  *
  */
-export type ProcOfficeProjectHeaderDatesPublishedAdditional =
-	| ({
-			processType: 'open' | 'invitation' | 'no_process';
-	  } & ProcOfficeProjectHeaderDatesPublishedAdditionalDefault)
-	| ({
-			processType: 'selective';
-	  } & ProcOfficeProjectHeaderDatesPublishedAdditionalSelective);
+export type ProcOfficeProjectHeaderDatesPublishedAdditional = ({
+    processType: 'open' | 'invitation' | 'no_process';
+} & ProcOfficeProjectHeaderDatesPublishedAdditionalDefault) | ({
+    processType: 'selective';
+} & ProcOfficeProjectHeaderDatesPublishedAdditionalSelective);
 
-export type ProcOfficeProjectHeaderDatesPublishedInterface =
-	ProcOfficeProjectHeaderDatesInterface & {
-		status: 'ProcOfficeProjectHeaderDatesPublishedInterface';
-	};
+export type ProcOfficeProjectHeaderDatesPublishedInterface = ProcOfficeProjectHeaderDatesInterface & {
+    status: 'ProcOfficeProjectHeaderDatesPublishedInterface';
+};
 
-export type ProcOfficeProjectHeaderDatesPublishedDefault =
-	ProcOfficeProjectHeaderDatesPublishedInterface & {
-		pubType?:
-			| 'abandonment'
-			| 'direct_award'
-			| 'award'
-			| 'revocation'
-			| 'participant_selection';
-	} & PublicProjectHeaderDatesDefault;
+export type ProcOfficeProjectHeaderDatesPublishedDefault = ProcOfficeProjectHeaderDatesPublishedInterface & {
+    pubType?: 'abandonment' | 'direct_award' | 'award' | 'revocation' | 'participant_selection';
+} & PublicProjectHeaderDatesDefault;
 
 /**
  * Helper used for code generation, see ProcOfficeProjectHeaderDates for the actual definition
  */
 export type ProcOfficeProjectHeaderDatesInterface = {
-	status: PubDraftStatus;
+    status: PubDraftStatus;
 };
 
 /**
@@ -1515,47 +1300,32 @@ export type ProcOfficeProjectHeaderDatesInterface = {
  * additional date properties are provided.
  *
  */
-export type ProcOfficeProjectHeaderDatesPublished =
-	| ({
-			pubType:
-				| 'request_for_information'
-				| 'abandonment'
-				| 'direct_award'
-				| 'award'
-				| 'revocation'
-				| 'participant_selection';
-	  } & ProcOfficeProjectHeaderDatesPublishedDefault)
-	| ({
-			pubType:
-				| 'advance_notice'
-				| 'tender'
-				| 'competition'
-				| 'study_contract'
-				| 'selective_offering_phase';
-	  } & ProcOfficeProjectHeaderDatesPublishedAdditional);
+export type ProcOfficeProjectHeaderDatesPublished = ({
+    pubType: 'request_for_information' | 'abandonment' | 'direct_award' | 'award' | 'revocation' | 'participant_selection';
+} & ProcOfficeProjectHeaderDatesPublishedDefault) | ({
+    pubType: 'advance_notice' | 'tender' | 'competition' | 'study_contract' | 'selective_offering_phase';
+} & ProcOfficeProjectHeaderDatesPublishedAdditional);
 
 /**
  * Different header date models are used for pub-drafts discriminated by several properties, starting with its `status`,
  * splitting them into two categories: non-published and published pub-drafts.
  *
  */
-export type ProcOfficeProjectHeaderDates =
-	| ({
-			status: 'draft' | 'validated' | 'submitted' | 'to_publish';
-	  } & ProcOfficeProjectHeaderDatesNonPublished)
-	| ({
-			status: 'published';
-	  } & ProcOfficeProjectHeaderDatesPublished);
+export type ProcOfficeProjectHeaderDates = ({
+    status: 'draft' | 'validated' | 'submitted' | 'to_publish';
+} & ProcOfficeProjectHeaderDatesNonPublished) | ({
+    status: 'published';
+} & ProcOfficeProjectHeaderDatesPublished);
 
 export type ProcOfficeProjectHeaderPubDraft = BasePublicationData & {
-	id: string;
-	title?: Translation;
-	status: PubDraftStatus;
-	dates: ProcOfficeProjectHeaderDates;
+    id: string;
+    title?: Translation;
+    status: PubDraftStatus;
+    dates: ProcOfficeProjectHeaderDates;
 };
 
 export type ProcOfficeProjectHeaderLot = PubDraftLotDescription & {
-	latestPubDraft: ProcOfficeProjectHeaderPubDraft;
+    latestPubDraft: ProcOfficeProjectHeaderPubDraft;
 };
 
 /**
@@ -1565,29 +1335,26 @@ export type ProcOfficeProjectHeaderLot = PubDraftLotDescription & {
  * - `share`                   general action, copy a share-link of the current project, implemented in the frontend only
  *
  */
-export type ProcOfficeProjectOtherActions =
-	| 'create_abandonment'
-	| 'edit_internal_reference'
-	| 'share';
+export type ProcOfficeProjectOtherActions = 'create_abandonment' | 'edit_internal_reference' | 'share';
 
 /**
  * Model that holds the current possible actions for a project which apply on a project level.
  *
  */
 export type ProcOfficeProjectOther = {
-	actions: ProcOfficeProjectOtherActions[];
-	/**
-	 * Only defined if action create_abandonment is defined in actions and the project has lots.
-	 * In such a case it indicates whether the whole project can be abandoned or not, i.e. all lots have the same status
-	 * and can be abandoned.
-	 *
-	 * For instance, if a project has two lots A and B and lot A was already awarded and then revoked, i.e. can now be
-	 * abandoned again and lot B was not awarded yet, then both can be abandoned, but since they have a different status
-	 * (lot A has status revoked_published and lot B has status call_for_bids_published) then project cannot be
-	 * abandoned as a whole. Instead, the lots have to be abandoned individually.
-	 *
-	 */
-	canProjectBeAbandoned?: boolean | undefined;
+    actions: Array<ProcOfficeProjectOtherActions>;
+    /**
+     * Only defined if action create_abandonment is defined in actions and the project has lots.
+     * In such a case it indicates whether the whole project can be abandoned or not, i.e. all lots have the same status
+     * and can be abandoned.
+     *
+     * For instance, if a project has two lots A and B and lot A was already awarded and then revoked, i.e. can now be
+     * abandoned again and lot B was not awarded yet, then both can be abandoned, but since they have a different status
+     * (lot A has status revoked_published and lot B has status call_for_bids_published) then project cannot be
+     * abandoned as a whole. Instead, the lots have to be abandoned individually.
+     *
+     */
+    canProjectBeAbandoned?: boolean | null;
 };
 
 /**
@@ -1613,13 +1380,7 @@ export type ProcOfficeProjectOther = {
  * - `create_award`
  *
  */
-export type ProcOfficePubPrimaryActions =
-	| 'edit'
-	| 'submit'
-	| 'create_call_for_bids'
-	| 'create_award'
-	| 'create_participant_selection'
-	| 'create_selective_offering_phase';
+export type ProcOfficePubPrimaryActions = 'edit' | 'submit' | 'create_call_for_bids' | 'create_award' | 'create_participant_selection' | 'create_selective_offering_phase';
 
 /**
  * ## possible actions on drafts
@@ -1647,24 +1408,16 @@ export type ProcOfficePubSecondaryActions = 'edit' | 'withdraw';
  * - `pdf_export`            general action, possible after a draft is `to_publish`, implemented in the frontend only
  *
  */
-export type ProcOfficePubOtherActions =
-	| 'delete_project'
-	| 'delete_draft'
-	| 'pdf_export'
-	| 'create_correction'
-	| 'create_abandonment'
-	| 'create_revocation'
-	| 'copy'
-	| 'update_award_statistics';
+export type ProcOfficePubOtherActions = 'delete_project' | 'delete_draft' | 'pdf_export' | 'create_correction' | 'create_abandonment' | 'create_revocation' | 'copy' | 'update_award_statistics';
 
 /**
  * Model with primary, secondary and other actions for a data driven navigation on the public and draft projects
  *
  */
 export type ProcOfficePubActions = {
-	primary?: ProcOfficePubPrimaryActions;
-	secondary?: ProcOfficePubSecondaryActions;
-	other: ProcOfficePubOtherActions[];
+    primary?: ProcOfficePubPrimaryActions;
+    secondary?: ProcOfficePubSecondaryActions;
+    other: Array<ProcOfficePubOtherActions>;
 };
 
 /**
@@ -1707,56 +1460,41 @@ export type ProcOfficePubActions = {
  *
  */
 export type ProcOfficeProjectActions = {
-	projectOther: ProcOfficeProjectOther;
-	withoutLots?: ProcOfficePubActions;
-	/**
-	 * Only defined if the project is with lots where the property names are the lot ids
-	 *
-	 */
-	lots?: Record<string, ProcOfficePubActions> | undefined;
+    projectOther: ProcOfficeProjectOther;
+    withoutLots?: ProcOfficePubActions;
+    /**
+     * Only defined if the project is with lots where the property names are the lot ids
+     *
+     */
+    lots?: {
+        [key: string]: ProcOfficePubActions;
+    } | null;
 };
 
 export type ProcOfficeProjectHeader = BaseProjectData & {
-	internalReference?: string;
-	/**
-	 * Lots information of this project. Only provided if project was created with lotsType 'with'
-	 */
-	lots?: ProcOfficeProjectHeaderLot[];
-	latestPubDraft?: ProcOfficeProjectHeaderPubDraft;
-	actions: ProcOfficeProjectActions;
+    internalReference?: string;
+    /**
+     * Lots information of this project. Only provided if project was created with lotsType 'with'
+     */
+    lots?: Array<ProcOfficeProjectHeaderLot>;
+    latestPubDraft?: ProcOfficeProjectHeaderPubDraft;
+    actions: ProcOfficeProjectActions;
 };
 
 export type ProcOfficeUserNotificationSettings = {
-	notifyOnNewQnaQuestions: boolean;
+    notifyOnNewQnaQuestions: boolean;
 };
 
 export type UpdateArchiveStatus = {
-	/**
-	 * True will archive the project, false will unarchive it.
-	 */
-	archive: boolean;
+    /**
+     * true will archive the project, false will unarchive it.
+     */
+    archive: boolean;
 };
 
-export type ProcOfficePubDraftTemplateOrgTypeFilter =
-	| 'comp_centre'
-	| 'proc_office';
+export type ProcOfficePubDraftTemplateOrgTypeFilter = 'comp_centre' | 'proc_office';
 
-export type InvolvedVendorStatus =
-	| 'interest_shown'
-	| 'interest_withdrawn'
-	| 'offer_digital_submission'
-	| 'offer_external_submission'
-	| 'offer_opened'
-	| 'awarded'
-	| 'participation_request_digital_submission'
-	| 'participation_request_external_submission'
-	| 'participation_request_opened'
-	| 'qualified'
-	| 'request_for_information_submission_opened'
-	| 'request_for_information_external_submission'
-	| 'request_for_information_digital_submission'
-	| 'invited'
-	| 'invitation_declined';
+export type InvolvedVendorStatus = 'interest_shown' | 'interest_withdrawn' | 'offer_digital_submission' | 'offer_external_submission' | 'offer_opened' | 'awarded' | 'participation_request_digital_submission' | 'participation_request_external_submission' | 'participation_request_opened' | 'qualified' | 'request_for_information_submission_opened' | 'request_for_information_external_submission' | 'request_for_information_digital_submission' | 'invited' | 'invitation_declined';
 
 /**
  * Type of action a proc-office member can perform in a project which is related to vendors.
@@ -1770,13 +1508,7 @@ export type InvolvedVendorStatus =
  * - `export_vendor_list`            Export all vendors which are related to the project (interest_withdraw or invitation_declined) included
  *
  */
-export type ProcOfficeProjectVendorActionType =
-	| 'mark_vendor_invited'
-	| 'mark_vendor_interest_shown'
-	| 'send_message'
-	| 'export_participation_protocol'
-	| 'export_offer_protocol'
-	| 'export_vendor_list';
+export type ProcOfficeProjectVendorActionType = 'mark_vendor_invited' | 'mark_vendor_interest_shown' | 'send_message' | 'export_participation_protocol' | 'export_offer_protocol' | 'export_vendor_list';
 
 /**
  * Model that holds the current possible proc-office actions for vendors of a project.
@@ -1784,45 +1516,47 @@ export type ProcOfficeProjectVendorActionType =
  *
  */
 export type ProcOfficeProjectVendorActions = {
-	/**
-	 * Only defined if the project is without lots
-	 *
-	 */
-	withoutLots?: ProcOfficeProjectVendorActionType[] | undefined;
-	/**
-	 * Only defined if the project is with lots where the property names are the lot ids
-	 *
-	 */
-	lots?: Record<string, ProcOfficeProjectVendorActionType[]> | undefined;
+    /**
+     * Only defined if the project is without lots
+     *
+     */
+    withoutLots?: Array<ProcOfficeProjectVendorActionType> | null;
+    /**
+     * Only defined if the project is with lots where the property names are the lot ids
+     *
+     */
+    lots?: {
+        [key: string]: Array<ProcOfficeProjectVendorActionType>;
+    } | null;
 };
 
 export type VendorMinimal = {
-	id: string;
-	name: string;
+    id: string;
+    name: string;
 };
 
 export type InvolvedVendor = VendorMinimal & {
-	/**
-	 * Reference to lot in case status is per lot
-	 */
-	lotId?: string;
-	status: InvolvedVendorStatus;
-	/**
-	 * DateTime when the status changed, when the vendor changed to this status. e.g
-	 * * when the status is `interest_shown` it's the date-time the vendor showed interest
-	 * * when the status is `offer_external_submission` it's the date-time when the proc office marked an external submission for the vendor
-	 * * when the status is `awarded` it's the date the award publication was published.
-	 *
-	 */
-	statusChangedAt: DateOptionalTime;
-	user?: UserMinimal;
-	address: Address;
-	offerExternalSubmissionDateTime?: DateOptionalTime;
-	offerDigitalSubmissionDateTime?: DateOptionalTime;
-	participationExternalSubmissionDateTime?: DateOptionalTime;
-	participationDigitalSubmissionDateTime?: DateOptionalTime;
-	rfiExternalSubmissionDateTime?: DateOptionalTime;
-	rfiDigitalSubmissionDateTime?: DateOptionalTime;
+    /**
+     * Reference to lot in case status is per lot
+     */
+    lotId?: string;
+    status: InvolvedVendorStatus;
+    /**
+     * DateTime when the status changed, when the vendor changed to this status. e.g
+     * * when the status is `interest_shown` it's the date-time the vendor showed interest
+     * * when the status is `offer_external_submission` it's the date-time when the proc office marked an external submission for the vendor
+     * * when the status is `awarded` it's the date the award publication was published.
+     *
+     */
+    statusChangedAt: DateOptionalTime;
+    user?: UserMinimal;
+    address: Address;
+    offerExternalSubmissionDateTime?: DateOptionalTime;
+    offerDigitalSubmissionDateTime?: DateOptionalTime;
+    participationExternalSubmissionDateTime?: DateOptionalTime;
+    participationDigitalSubmissionDateTime?: DateOptionalTime;
+    rfiExternalSubmissionDateTime?: DateOptionalTime;
+    rfiDigitalSubmissionDateTime?: DateOptionalTime;
 };
 
 /**
@@ -1835,55 +1569,51 @@ export type InvolvedVendor = VendorMinimal & {
  * - `mark_request_for_information_external_submission` Mark and set the rfi submission date (and time) for a vendor which sent there rfi response externally (e.g via Swiss Post)
  *
  */
-export type ProcOfficeVendorActionType =
-	| 'show_vendor_digital_submissions'
-	| 'mark_offer_external_submission'
-	| 'mark_participation_external_submission'
-	| 'mark_request_for_information_external_submission';
+export type ProcOfficeVendorActionType = 'show_vendor_digital_submissions' | 'mark_offer_external_submission' | 'mark_participation_external_submission' | 'mark_request_for_information_external_submission';
 
 export type InvolvedVendorWithActions = InvolvedVendor & {
-	vendorProjectActions: ProcOfficeVendorActionType[];
+    vendorProjectActions: Array<ProcOfficeVendorActionType>;
 };
 
 export type InvolvedVendorSearchResult = {
-	projectActions: ProcOfficeProjectVendorActions;
-	involvedVendors: InvolvedVendorWithActions[];
-	pagination: RollingPagination;
+    projectActions: ProcOfficeProjectVendorActions;
+    involvedVendors: Array<InvolvedVendorWithActions>;
+    pagination: RollingPagination;
 };
 
 export type ExternalDocumentSubmission = {
-	documentArrivalDateTime: DateOptionalTime;
-	/**
-	 * List of lotId's this submission is assigned to. If null, submission will be assigned to all lots in the project
-	 */
-	lotIds?: string[];
+    documentArrivalDateTime: DateOptionalTime;
+    /**
+     * List of lotId's this submission is assigned to. If null, submission will be assigned to all lots in the project
+     */
+    lotIds?: Array<string>;
 };
 
 export type InvolvedVendorSubmissionResult = {
-	involvedVendors: InvolvedVendorWithActions[];
+    involvedVendors: Array<InvolvedVendorWithActions>;
 };
 
 export type SendMessageRequest = {
-	/**
-	 * Optional: search involved vendors by `vendorName` (requires at least 3 characters)
-	 * Note, that the message cannot be sent to the involved vendor in case it has not defined a contact
-	 *
-	 */
-	search?: string;
-	status?: InvolvedVendorStatus;
-	/**
-	 * Subject of the message
-	 *
-	 */
-	subject: string;
-	body: string;
-	language: SystemLanguage;
-	/**
-	 * Optional: further emails can be specified which shall receive this message in addition, next to the involved
-	 * vendors which have a specified contact.
-	 *
-	 */
-	additionalEmails?: string[];
+    /**
+     * Optional: search involved vendors by `vendorName` (requires at least 3 characters)
+     * Note, that the message cannot be sent to the involved vendor in case it has not defined a contact
+     *
+     */
+    search?: string;
+    status?: InvolvedVendorStatus;
+    /**
+     * subject of the message
+     *
+     */
+    subject: string;
+    body: string;
+    language: SystemLanguage;
+    /**
+     * Optional: further emails can be specified which shall receive this message in addition, next to the involved
+     * vendors which have a specified contact.
+     *
+     */
+    additionalEmails?: Array<string>;
 };
 
 export type QnaRoundState = 'created' | 'open' | 'closed';
@@ -1892,76 +1622,76 @@ export type QnaRoundState = 'created' | 'open' | 'closed';
  * The question round
  */
 export type QnaRound = {
-	/**
-	 * The id of the qna round.
-	 *
-	 */
-	id: string;
-	/**
-	 * The project-id where this qna-round shall be attached.
-	 *
-	 */
-	projectId: string;
-	/**
-	 * The number of the qna round.
-	 *
-	 */
-	qnaRoundNumber: number;
-	qnaRoundState: QnaRoundState;
-	/**
-	 * The question round is open until midnight of this date.
-	 *
-	 */
-	qnaRoundEndDate: string;
-	/**
-	 * Lot id to which this qna round is assigned, null if qna round is assigned to whole project
-	 *
-	 */
-	lotId?: string;
-	/**
-	 * True if access to qna round is restricted to a subset of vendors showing interest.
-	 * True in process `invitation`.
-	 *
-	 */
-	restricted?: boolean;
+    /**
+     * The id of the qna round.
+     *
+     */
+    id: string;
+    /**
+     * The project-id where this qna-round shall be attached.
+     *
+     */
+    projectId: string;
+    /**
+     * The number of the qna round.
+     *
+     */
+    qnaRoundNumber: number;
+    qnaRoundState: QnaRoundState;
+    /**
+     * The question round is open until midnight of this date.
+     *
+     */
+    qnaRoundEndDate: string;
+    /**
+     * Lot id to which this qna round is assigned, null if qna round is assigned to whole project
+     *
+     */
+    lotId?: string;
+    /**
+     * True if access to qna round is restricted to a subset of vendors showing interest.
+     * True in process `invitation`.
+     *
+     */
+    restricted?: boolean;
 };
 
 export type Question = {
-	id: string;
-	question: string;
-	/**
-	 * The lot id to which the question belongs to or empty if all lots are concerned.
-	 *
-	 */
-	lotId?: string;
+    id: string;
+    question: string;
+    /**
+     * The lot id to which the question belongs to or empty if all lots are concerned.
+     *
+     */
+    lotId?: string;
 };
 
 export type QnaAnswerState = 'draft' | 'published' | 'changed' | 'unanswered';
 
 export type Qna = Question & {
-	questionAskedAt: string;
-	/**
-	 * The number which was been assigned to the question
-	 *
-	 */
-	questionNumber: number;
-	answer?: string;
-	answerState: QnaAnswerState;
-	/**
-	 * Only added if visible to the current user
-	 */
-	userAskedQuestion?: UserMinimal;
-	/**
-	 * Only added if visible to the current user
-	 */
-	vendorAskedQuestion?: VendorMinimal;
+    questionAskedAt: string;
+    /**
+     * The number which was been assigned to the question
+     *
+     */
+    questionNumber: number;
+    answer?: string;
+    answerState: QnaAnswerState;
+    /**
+     * Only added if visible to the current user
+     */
+    userAskedQuestion?: UserMinimal;
+    /**
+     * Only added if visible to the current user
+     */
+    vendorAskedQuestion?: VendorMinimal;
 };
 
 /**
  * List of qna's (question answer pair)
  */
 export type Qnas = {
-	qnas?: Qna[];
+    qnas?: Array<Qna>;
 };
 
 /**
@@ -1973,13 +1703,13 @@ export type QnaRoundWithQnas = QnaRound & Qnas;
  * QnaRoundsWithQnas
  */
 export type QnaRoundsWithQnas = {
-	qnaRounds: QnaRoundWithQnas[];
+    qnaRounds: Array<QnaRoundWithQnas>;
 };
 
 export type InvolvedVendorProtocolResult = {
-	involvedVendors: InvolvedVendor[];
-	offerDeadline?: string;
-	participationDeadline?: string;
+    involvedVendors: Array<InvolvedVendor>;
+    offerDeadline?: string;
+    participationDeadline?: string;
 };
 
 /**
@@ -2010,133 +1740,102 @@ export type InvolvedVendorProtocolResult = {
  * abandonment, participant_selection)
  *
  */
-export type ProjectDocumentSourceType =
-	| 'advance_notice'
-	| 'request_for_information'
-	| 'tender'
-	| 'competition'
-	| 'study_contract'
-	| 'correction'
-	| 'direct_award'
-	| 'tender_award'
-	| 'competition_award'
-	| 'study_contract_award'
-	| 'selective_offering_phase'
-	| 'qna';
+export type ProjectDocumentSourceType = 'advance_notice' | 'request_for_information' | 'tender' | 'competition' | 'study_contract' | 'correction' | 'direct_award' | 'tender_award' | 'competition_award' | 'study_contract_award' | 'selective_offering_phase' | 'qna';
 
-export type DocumentContentType =
-	| 'application/zip'
-	| 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-	| 'text/plain'
-	| 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-	| 'image/png'
-	| 'application/pdf'
-	| 'application/vnd.ms-outlook'
-	| 'video/mpeg'
-	| 'video/mp4'
-	| 'image/jpeg'
-	| 'application/gzip'
-	| 'image/gif'
-	| 'application/vnd.openxmlformats-officedocument.wordprocessingml.template'
-	| 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-	| 'text/csv'
-	| 'application/x-7z-compressed'
-	| 'application/acad'
-	| 'image/vnd.dwg'
-	| 'application/octet-stream';
+export type DocumentContentType = 'application/zip' | 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' | 'text/plain' | 'application/vnd.openxmlformats-officedocument.presentationml.presentation' | 'image/png' | 'application/pdf' | 'application/vnd.ms-outlook' | 'video/mpeg' | 'video/mp4' | 'image/jpeg' | 'application/gzip' | 'image/gif' | 'application/vnd.openxmlformats-officedocument.wordprocessingml.template' | 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' | 'text/csv' | 'application/x-7z-compressed' | 'application/acad' | 'image/vnd.dwg' | 'application/octet-stream';
 
 export type BaseDocument = {
-	/**
-	 * Id of the document
-	 */
-	id: string;
-	fileName: string;
-	/**
-	 * File size in bytes
-	 */
-	fileSize: number;
-	contentType: DocumentContentType;
-	/**
-	 * Date and time of the document created and upload.
-	 *
-	 */
-	createdAt: string;
+    /**
+     * id of the document
+     */
+    id: string;
+    fileName: string;
+    /**
+     * file size in bytes
+     */
+    fileSize: number;
+    contentType: DocumentContentType;
+    /**
+     * Date and time of the document created and upload.
+     *
+     */
+    createdAt: string;
 };
 
 export type BaseProjectDocument = BaseDocument & {
-	/**
-	 * Id of the associated project
-	 */
-	projectId: string;
-	sourceType?: ProjectDocumentSourceType;
-	languages: SystemLanguage[];
-	note?: string;
-	/**
-	 * The id of the qna round if document is associated to a qna round
-	 */
-	qnaRoundId?: string;
-	/**
-	 * The number of the qna round if document is associated to a qna round
-	 *
-	 */
-	qnaRoundNumber?: number;
-	/**
-	 * Date and time of the document deletion if document was associated to a published publication.
-	 *
-	 */
-	deletedAfterPublishingAt?: string;
-	/**
-	 * Date and time of the document upload if document is associated to a publication and was uploaded
-	 * after publishing it.
-	 *
-	 */
-	uploadedAfterPublishingAt?: string;
+    /**
+     * id of the associated project
+     */
+    projectId: string;
+    sourceType?: ProjectDocumentSourceType;
+    languages: Array<SystemLanguage>;
+    note?: string;
+    /**
+     * The id of the qna round if document is associated to a qna round
+     */
+    qnaRoundId?: string;
+    /**
+     * The number of the qna round if document is associated to a qna round
+     *
+     */
+    qnaRoundNumber?: number;
+    /**
+     * Date and time of the document deletion if document was associated to a published publication.
+     *
+     */
+    deletedAfterPublishingAt?: string;
+    /**
+     * Date and time of the document upload if document is associated to a publication and was uploaded
+     * after publishing it.
+     *
+     */
+    uploadedAfterPublishingAt?: string;
 };
 
 export type ProjectDocument = BaseProjectDocument & {
-	pubDraftId?: string;
-	lotDescription?: PubDraftLotDescription;
+    pubDraftId?: string;
+    lotDescription?: PubDraftLotDescription;
 };
 
 export type ProjectDocuments = {
-	documents: ProjectDocument[];
+    documents: Array<ProjectDocument>;
 };
 
 export type DownloadToken = {
-	token: string;
+    token: string;
 };
 
 export type BaseDocumentUploadMeta = {
-	/**
-	 * Name of the file including the file extension -- if a path is provided e.g. foo/bar.txt then foo is ignored
-	 * and only bar.txt is considered as file name.
-	 *
-	 */
-	fileName: string;
+    /**
+     * Name of the file including the file extension -- if a path is provided e.g. foo/bar.txt then foo is ignored
+     * and only bar.txt is considered as file name.
+     *
+     */
+    fileName: string;
 };
 
 export type ProjectDocumentUpdate = BaseDocumentUploadMeta & {
-	languages: SystemLanguage[];
-	/**
-	 * Optional reference to a lot
-	 */
-	lotId?: string;
-	note?: string;
+    languages: Array<SystemLanguage>;
+    /**
+     * optional reference to a lot
+     */
+    lotId?: string;
+    note?: string;
 };
 
 /**
- * Either pubDraftId or qnaRoundId has to be specified (not both at the same time)
+ * either pubDraftId or qnaRoundId has to be specified (not both at the same time)
  *
  */
 export type ProjectDocumentUploadMeta = ProjectDocumentUpdate & {
-	/**
-	 * If document is assigned to a publication
-	 */
-	pubDraftId?: string;
-	/**
-	 * If document is assigned to qna round
-	 */
-	qnaRoundId?: string;
+    /**
+     * if document is assigned to a publication
+     */
+    pubDraftId?: string;
+    /**
+     * if document is assigned to qna round
+     */
+    qnaRoundId?: string;
 };
 
 /**
@@ -2145,113 +1844,108 @@ export type ProjectDocumentUploadMeta = ProjectDocumentUpdate & {
  *
  */
 export type ProjectDocumentUploadMultipart = {
-	meta: ProjectDocumentUploadMeta;
-	file: Blob | File;
+    meta: ProjectDocumentUploadMeta;
+    file: Blob | File;
 };
 
 export type ProcOfficeProjectContributor = {
-	user: UserMinimal;
-	projectId: string;
+    user: UserMinimal;
+    projectId: string;
 };
 
 export type ProcOfficeProjectContributors = {
-	projectContributors: ProcOfficeProjectContributor[];
-	pagination?: RollingPagination;
+    projectContributors: Array<ProcOfficeProjectContributor>;
+    pagination?: RollingPagination;
 };
 
 export type ProcOfficeProjectInternalReference = {
-	internalReference?: string | undefined;
+    internalReference?: string | null;
 };
 
 /**
  * Base project info to be able to identify project
  */
 export type BaseProjectInfo = ProjectTypeFields & {
-	projectId: string;
+    projectId: string;
 };
 
-export type VendorDigitalSubmissionType =
-	| 'offer_digital_submission'
-	| 'participation_request_digital_submission'
-	| 'request_for_information_digital_submission';
+export type VendorDigitalSubmissionType = 'offer_digital_submission' | 'participation_request_digital_submission' | 'request_for_information_digital_submission';
 
 export type ProcOfficeVendorDigitalSubmissionActionType = 'open';
 
 export type VendorDigitalSubmissionInfo = {
-	submissionDate?: string;
-	/**
-	 * Provided if the digital vendor submission, along with all documents, was deleted due to exceeding the maximum storage duration.
-	 */
-	deletedAt?: string;
+    submissionDate?: string;
+    /**
+     * Provided if the digital vendor submission, along with all documents, was deleted due to exceeding the maximum storage duration.
+     */
+    deletedAt?: string;
 };
 
 export type VendorDigitalSubmissionDocument = BaseDocument & {
-	/**
-	 * Id of the vendor digital submission
-	 */
-	vendorDigitalSubmissionId: string;
-	/**
-	 * Id of lotId, the submisions is related to or null, if document is for the whole submission.
-	 */
-	lotId?: string;
-	createdByUser: string;
+    /**
+     * Id of the vendor digital submission
+     */
+    vendorDigitalSubmissionId: string;
+    /**
+     * Id of lotId, the submisions is related to or null, if document is for the whole submission.
+     */
+    lotId?: string;
+    createdByUser: string;
 };
 
 export type VendorDigitalSubmissionDocuments = {
-	documents: VendorDigitalSubmissionDocument[];
+    documents: Array<VendorDigitalSubmissionDocument>;
 };
 
 export type PublicationLotDescription = {
-	id: string;
-	lotNumber: number;
-	title: Translation;
+    id: string;
+    lotNumber: number;
+    title: Translation;
 };
 
-export type VendorDigitalSubmissionLot = PublicationLotDescription &
-	VendorDigitalSubmissionDocuments;
+export type VendorDigitalSubmissionLot = PublicationLotDescription & VendorDigitalSubmissionDocuments;
 
 export type VendorDigitalSubmissionDetailInfo = VendorDigitalSubmissionInfo & {
-	documents?: VendorDigitalSubmissionDocuments;
-	/**
-	 * Lot specific information to the submission. Only provided if project has lotsType 'with'.
-	 */
-	lots: VendorDigitalSubmissionLot[];
-	/**
-	 * Deadline until when the current submission can be submitted
-	 */
-	submissionDeadline: string;
+    documents?: VendorDigitalSubmissionDocuments;
+    /**
+     * lot specific information to the submission. Only provided if project has lotsType 'with'.
+     */
+    lots: Array<VendorDigitalSubmissionLot>;
+    /**
+     * Deadline until when the current submission can be submitted
+     */
+    submissionDeadline: string;
 };
 
 export type ProcOfficeVendorDigitalSubmission = {
-	vendorDigitalSubmissionId?: string;
-	vendorDigitalSubmissionType: VendorDigitalSubmissionType;
-	actions: ProcOfficeVendorDigitalSubmissionActionType[];
-	detail?: VendorDigitalSubmissionDetailInfo;
+    vendorDigitalSubmissionId?: string;
+    vendorDigitalSubmissionType: VendorDigitalSubmissionType;
+    actions: Array<ProcOfficeVendorDigitalSubmissionActionType>;
+    detail?: VendorDigitalSubmissionDetailInfo;
 };
 
 export type ProcOfficeVendorDigitalSubmissions = BaseProjectInfo & {
-	involvedVendor: InvolvedVendor;
-	submissions: ProcOfficeVendorDigitalSubmission[];
+    involvedVendor: InvolvedVendor;
+    submissions: Array<ProcOfficeVendorDigitalSubmission>;
 };
 
-export type ProcOfficeVendorDigitalSubmissionOpenResult =
-	ProcOfficeVendorDigitalSubmission & {
-		involvedVendor: InvolvedVendor;
-	};
+export type ProcOfficeVendorDigitalSubmissionOpenResult = ProcOfficeVendorDigitalSubmission & {
+    involvedVendor: InvolvedVendor;
+};
 
 export type VendorSearchResult = {
-	id: string;
-	uidNo?: string;
-	dunsNo?: string;
-	name: string;
-	isBiddingConsortium: boolean;
-	address: Address;
-	active: boolean;
+    id: string;
+    uidNo?: string;
+    dunsNo?: string;
+    name: string;
+    isBiddingConsortium: boolean;
+    address: Address;
+    active: boolean;
 };
 
 export type VendorSearchResults = {
-	vendors: VendorSearchResult[];
-	pagination: RollingPagination;
+    vendors: Array<VendorSearchResult>;
+    pagination: RollingPagination;
 };
 
 /**
@@ -2260,14 +1954,14 @@ export type VendorSearchResults = {
 export type CompanySize = 'micro' | 'small' | 'medium' | 'large';
 
 export type VendorUserPublic = {
-	id?: string;
-	firstName?: string;
-	lastName?: string;
-	organizationUnit?: string | undefined;
+    id?: string;
+    firstName?: string;
+    lastName?: string;
+    organizationUnit?: string | null;
 };
 
 export type VendorUser = VendorUserPublic & {
-	email?: string;
+    email?: string;
 };
 
 /**
@@ -2314,86 +2008,48 @@ export type VendorUser = VendorUserPublic & {
  * - 0571 Rechtsform unbestimmt oder unbekannt
  *
  */
-export type LegalFormCode =
-	| '0101'
-	| '0103'
-	| '0104'
-	| '0105'
-	| '0106'
-	| '0107'
-	| '0108'
-	| '0109'
-	| '0110'
-	| '0111'
-	| '0113'
-	| '0114'
-	| '0115'
-	| '0116'
-	| '0117'
-	| '0118'
-	| '0119'
-	| '0151'
-	| '0220'
-	| '0221'
-	| '0222'
-	| '0223'
-	| '0224'
-	| '0230'
-	| '0231'
-	| '0232'
-	| '0233'
-	| '0234'
-	| '0302'
-	| '0312'
-	| '0327'
-	| '0328'
-	| '0329'
-	| '0355'
-	| '0361'
-	| '0362'
-	| '0441'
-	| '0571';
+export type LegalFormCode = '0101' | '0103' | '0104' | '0105' | '0106' | '0107' | '0108' | '0109' | '0110' | '0111' | '0113' | '0114' | '0115' | '0116' | '0117' | '0118' | '0119' | '0151' | '0220' | '0221' | '0222' | '0223' | '0224' | '0230' | '0231' | '0232' | '0233' | '0234' | '0302' | '0312' | '0327' | '0328' | '0329' | '0355' | '0361' | '0362' | '0441' | '0571';
 
 export type Vendor = {
-	id: string;
-	uidNo?: string | undefined;
-	dunsNo?: string | undefined;
-	companySize?: CompanySize;
-	name: string;
-	additionalName?: string | undefined;
-	/**
-	 * C/o
-	 */
-	careOf?: string | undefined;
-	address: Address;
-	phone?: InternationalPhoneNumber;
-	email?: string;
-	url?: string | undefined;
-	/**
-	 * The publicly visible vendor admins.
-	 */
-	publicVendorAdmins?: VendorUser[];
-	/**
-	 * Deprecated: replaced with `legalFormCode`. Only existing values are expose read-only. Please map to one of the existing mapping.
-	 *
-	 */
-	readonly legalForm?: string | undefined;
-	legalFormCode?: LegalFormCode;
-	legalFormSinceDate?: string | undefined;
-	businessPurpose?: string | undefined;
-	businessDomicile?: string | undefined;
-	isBiddingConsortium?: boolean;
-	leadingVendor?: string | undefined;
+    id: string;
+    uidNo?: string | null;
+    dunsNo?: string | null;
+    companySize?: CompanySize;
+    name: string;
+    additionalName?: string | null;
+    /**
+     * c/o
+     */
+    careOf?: string | null;
+    address: Address;
+    phone?: InternationalPhoneNumber;
+    email?: string;
+    url?: string | null;
+    /**
+     * The publicly visible vendor admins.
+     */
+    publicVendorAdmins?: Array<VendorUser>;
+    /**
+     * Deprecated: replaced with `legalFormCode`. Only existing values are expose read-only. Please map to one of the existing mapping.
+     *
+     */
+    readonly legalForm?: string | null;
+    legalFormCode?: LegalFormCode;
+    legalFormSinceDate?: string | null;
+    businessPurpose?: string | null;
+    businessDomicile?: string | null;
+    isBiddingConsortium?: boolean;
+    leadingVendor?: string | null;
 };
 
 export type VendorDetail = Vendor & {
-	typeOfServices?: PubOrderType[];
-	cpvCodes?: CpvCode[];
-	bkpCodes?: BkpCode[];
-	ebkphCodes?: EbkphCode[];
-	ebkptCodes?: EbkptCode[];
-	npkCodes?: NpkCode[];
-	oagCodes?: OagCode[];
+    typeOfServices?: Array<PubOrderType>;
+    cpvCodes?: Array<CpvCode>;
+    bkpCodes?: Array<BkpCode>;
+    ebkphCodes?: Array<EbkphCode>;
+    ebkptCodes?: Array<EbkptCode>;
+    npkCodes?: Array<NpkCode>;
+    oagCodes?: Array<OagCode>;
 };
 
 /**
@@ -2403,80 +2059,80 @@ export type VendorDetail = Vendor & {
 export type VendorCreate = Vendor;
 
 export type VendorPublic = VendorMinimal & {
-	uidNo?: string;
-	dunsNo?: string;
-	additionalName?: string | undefined;
-	url?: string | undefined;
-	address?: Address;
-	vendorContacts?: VendorUserPublic[];
-	companySize?: CompanySize;
-	typeOfServices?: PubOrderType[];
-	cpvCodes?: CpvCode[];
-	bkpCodes?: BkpCode[];
-	ebkphCodes?: EbkphCode[];
-	ebkptCodes?: EbkptCode[];
-	npkCodes?: NpkCode[];
-	oagCodes?: OagCode[];
-	businessPurpose?: string;
-	isBiddingConsortium?: boolean;
-	leadingVendor?: string;
+    uidNo?: string;
+    dunsNo?: string;
+    additionalName?: string | null;
+    url?: string | null;
+    address?: Address;
+    vendorContacts?: Array<VendorUserPublic>;
+    companySize?: CompanySize;
+    typeOfServices?: Array<PubOrderType>;
+    cpvCodes?: Array<CpvCode>;
+    bkpCodes?: Array<BkpCode>;
+    ebkphCodes?: Array<EbkphCode>;
+    ebkptCodes?: Array<EbkptCode>;
+    npkCodes?: Array<NpkCode>;
+    oagCodes?: Array<OagCode>;
+    businessPurpose?: string;
+    isBiddingConsortium?: boolean;
+    leadingVendor?: string;
 };
 
 export type VerifyVendorUid = {
-	id: string;
-	/**
-	 * Format: (CHE|ADM)-ZZZ.ZZZ.ZZZ
-	 * * The first three letters represent the category, either CHE or ADM.
-	 * * The nine numbers represent the id, every "Z" is a single digit 0-9
-	 * * Example: CHE-123.456.789
-	 *
-	 */
-	uidNo: string;
+    id: string;
+    /**
+     * format: (CHE|ADM)-ZZZ.ZZZ.ZZZ
+     * * The first three letters represent the category, either CHE or ADM.
+     * * The nine numbers represent the id, every "Z" is a single digit 0-9
+     * * Example: CHE-123.456.789
+     *
+     */
+    uidNo: string;
 };
 
 export type VerifyVendorDuns = {
-	id: string;
-	/**
-	 * Format: ZZ-ZZZ-ZZZZ or without dashes
-	 * * The nine numbers represent the id, every "Z" is a single digit 0-9
-	 * * Example: "15-048-3782"
-	 *
-	 */
-	dunsNo: string;
+    id: string;
+    /**
+     * format: ZZ-ZZZ-ZZZZ or without dashes
+     * * The nine numbers represent the id, every "Z" is a single digit 0-9
+     * * Example: "15-048-3782"
+     *
+     */
+    dunsNo: string;
 };
 
 export type VendorMissingVerification = {
-	/**
-	 * The date when the first reminder is sent, normally when half of the available time has expired.
-	 *
-	 */
-	firstReminder: string;
-	/**
-	 * The date when the second reminder is sent, normally 30 days remain.
-	 *
-	 */
-	secondReminder: string;
-	/**
-	 * After this date the deactivation process will be started.
-	 *
-	 */
-	deactivateAfter: string;
-	/**
-	 * The days can be zero or negative if the `deactivateAfter` date is passed but the deactivation process is not yet compleated.
-	 *
-	 */
-	daysUntilDeactivation: number;
+    /**
+     * The date when the first reminder is sent, normally when half of the available time has expired.
+     *
+     */
+    firstReminder: string;
+    /**
+     * The date when the second reminder is sent, normally 30 days remain.
+     *
+     */
+    secondReminder: string;
+    /**
+     * After this date the deactivation process will be started.
+     *
+     */
+    deactivateAfter: string;
+    /**
+     * The days can be zero or negative if the `deactivateAfter` date is passed but the deactivation process is not yet compleated.
+     *
+     */
+    daysUntilDeactivation: number;
 };
 
 export type MyVendor = Vendor & {
-	missingVerification?: VendorMissingVerification;
+    missingVerification?: VendorMissingVerification;
 };
 
 export type VendorJoinRequest = {
-	/**
-	 * True -> request to join, false -> revoke join Request / leave vendor
-	 */
-	join: boolean;
+    /**
+     * true -> request to join, false -> revoke join Request / leave vendor
+     */
+    join: boolean;
 };
 
 export type VendorMembership = 'requested' | 'accepted' | 'rejected';
@@ -2484,72 +2140,72 @@ export type VendorMembership = 'requested' | 'accepted' | 'rejected';
 export type VendorMemberRole = 'vendor_admin' | 'vendor_user';
 
 export type MyVendorMembership = VendorMinimal & {
-	membership: VendorMembership;
-	role: VendorMemberRole;
+    membership: VendorMembership;
+    role: VendorMemberRole;
 };
 
 export type VendorMember = VendorUser & {
-	createdAt: string;
-	updatedAt: string;
-	membership: VendorMembership;
-	role: VendorMemberRole;
-	/**
-	 * If this member can be seen in the public register, only admins can be publicly visible.
-	 */
-	isPublic: boolean;
+    createdAt: string;
+    updatedAt: string;
+    membership: VendorMembership;
+    role: VendorMemberRole;
+    /**
+     * if this member can be seen in the public register, only admins can be publicly visible.
+     */
+    isPublic: boolean;
 };
 
 export type VendorMembers = {
-	vendorMembers: VendorMember[];
+    vendorMembers: Array<VendorMember>;
 };
 
 export type VendorJoinResponse = {
-	userId: string;
-	/**
-	 * True -> request granted, false -> request denied / remove member
-	 */
-	isAllowed: boolean;
-	/**
-	 * If the join request has been declined, a justification has to be provided
-	 */
-	justification?: string;
+    userId: string;
+    /**
+     * true -> request granted, false -> request denied / remove member
+     */
+    isAllowed: boolean;
+    /**
+     * if the join request has been declined, a justification has to be provided
+     */
+    justification?: string;
 };
 
 export type VendorUsers = {
-	vendorUsers: VendorUser[];
+    vendorUsers: Array<VendorUser>;
 };
 
 export type ThreeValuedSelection = 'yes' | 'no' | 'not_specified';
 
 export type PubProcurementAddress = {
-	countryId?: string;
-	/**
-	 * The cantonId is only a required field when the country is switzerland otherwise it's optional
-	 *
-	 */
-	cantonId?: string;
-	/**
-	 * The postalcode is only a required field when the country is switzerland otherwise it's optional
-	 *
-	 */
-	postalCode?: string;
-	city?: Translation;
+    countryId?: string;
+    /**
+     * The cantonId is only a required field when the country is switzerland otherwise it's optional
+     *
+     */
+    cantonId?: string;
+    /**
+     * The postalcode is only a required field when the country is switzerland otherwise it's optional
+     *
+     */
+    postalCode?: string;
+    city?: Translation;
 };
 
 export type ProjectsSearchEntryLot = ProjectsSearchEntryLatestPub & {
-	lotId: string;
-	lotNumber: number;
-	lotTitle: Translation;
-	/**
-	 * If the latest recorded `orderAddress` was unstructured, if there is only the address description.
-	 *
-	 */
-	orderAddressOnlyDescription?: ThreeValuedSelection;
-	/**
-	 * The latest recorded `orderAddress`.
-	 *
-	 */
-	orderAddress?: PubProcurementAddress;
+    lotId: string;
+    lotNumber: number;
+    lotTitle: Translation;
+    /**
+     * If the latest recorded `orderAddress` was unstructured, if there is only the address description.
+     *
+     */
+    orderAddressOnlyDescription?: ThreeValuedSelection;
+    /**
+     * The latest recorded `orderAddress`.
+     *
+     */
+    orderAddress?: PubProcurementAddress;
 };
 
 /**
@@ -2561,63 +2217,62 @@ export type ProjectsSearchEntryLot = ProjectsSearchEntryLatestPub & {
  * publication in the project. In a project with lots, check the lot in `lots` to get the latest publication for a given lot.
  *
  */
-export type ProjectsSearchEntry = BaseProjectsSearchEntry &
-	ProjectsSearchEntryLatestPub & {
-		procOfficeName: Translation;
-		/**
-		 * If the latest recorded `orderAddress` in the project was unstructured, then there is only a address description.
-		 *
-		 * This `orderAddressOnlyDescription` is only set for a project `without` lots.
-		 * For a project `with` lots the order address is per lot, see the `lots` property.
-		 * Projects in the `direct` process and `direct_award` publications don't contain a `orderAddress`.
-		 *
-		 */
-		orderAddressOnlyDescription?: ThreeValuedSelection;
-		/**
-		 * The latest recorded `orderAddress`.
-		 *
-		 * This `oderAddress` is only set for a project `without` lots.
-		 * For a project `with` lots the order address is per lot, see the `lots` property.
-		 * Projects in the `direct` process and `direct_award` publications don't contain a `orderAddress`.
-		 *
-		 */
-		orderAddress?: PubProcurementAddress;
-		lots: ProjectsSearchEntryLot[];
-	};
+export type ProjectsSearchEntry = BaseProjectsSearchEntry & ProjectsSearchEntryLatestPub & {
+    procOfficeName: Translation;
+    /**
+     * If the latest recorded `orderAddress` in the project was unstructured, then there is only a address description.
+     *
+     * This `orderAddressOnlyDescription` is only set for a project `without` lots.
+     * For a project `with` lots the order address is per lot, see the `lots` property.
+     * Projects in the `direct` process and `direct_award` publications don't contain a `orderAddress`.
+     *
+     */
+    orderAddressOnlyDescription?: ThreeValuedSelection;
+    /**
+     * The latest recorded `orderAddress`.
+     *
+     * This `oderAddress` is only set for a project `without` lots.
+     * For a project `with` lots the order address is per lot, see the `lots` property.
+     * Projects in the `direct` process and `direct_award` publications don't contain a `orderAddress`.
+     *
+     */
+    orderAddress?: PubProcurementAddress;
+    lots: Array<ProjectsSearchEntryLot>;
+};
 
 /**
  * Public project overview
  */
 export type ProjectsSearch = {
-	projects: ProjectsSearchEntry[];
-	pagination: RollingPagination;
+    projects: Array<ProjectsSearchEntry>;
+    pagination: RollingPagination;
 };
 
 export type PublicationProjectDocument = BaseProjectDocument & {
-	publicationId?: string;
-	lotDescription?: PublicationLotDescription;
+    publicationId?: string;
+    lotDescription?: PublicationLotDescription;
 };
 
 export type PublicationProjectDocuments = {
-	documents: PublicationProjectDocument[];
+    documents: Array<PublicationProjectDocument>;
 };
 
 export type VendorUserNotificationSettings = {
-	notifyOnNewPublications: boolean;
-	notifyOnQnaChanges: boolean;
-	notifyOnDocumentChanges: boolean;
-	notifyOnSubmitDigitalSubmission: boolean;
+    notifyOnNewPublications: boolean;
+    notifyOnQnaChanges: boolean;
+    notifyOnDocumentChanges: boolean;
+    notifyOnSubmitDigitalSubmission: boolean;
 };
 
 export type VendorDocument = BaseDocument & {
-	/**
-	 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation of the vendor
-	 */
-	vendorId: string;
+    /**
+     * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation of the vendor
+     */
+    vendorId: string;
 };
 
 export type VendorDocuments = {
-	documents: VendorDocument[];
+    documents: Array<VendorDocument>;
 };
 
 export type VendorDocumentUploadMeta = BaseDocumentUploadMeta;
@@ -2628,8 +2283,8 @@ export type VendorDocumentUploadMeta = BaseDocumentUploadMeta;
  *
  */
 export type VendorDocumentUploadMultipart = {
-	meta: VendorDocumentUploadMeta;
-	file: Blob | File;
+    meta: VendorDocumentUploadMeta;
+    file: Blob | File;
 };
 
 /**
@@ -2641,192 +2296,174 @@ export type VendorDocumentUploadMultipart = {
 export type ProjectInterestStatus = 'interest_shown' | 'interest_withdrawn';
 
 export type ProjectInterestRequest = {
-	interest: ProjectInterestStatus;
+    interest: ProjectInterestStatus;
 };
 
 export type PublicationAwardDetail = PublicationAwardDetailInterface & {
-	type?: 'award';
+    type?: 'award';
 } & DetailWithOptionalPubReference & {
-		procurement: PublicationAwardProcurement;
-	};
+    procurement: PublicationAwardProcurement;
+};
 
 export type PublicationAwardDetailInterface = PublicationDetailInterface & {
-	type: 'PublicationAwardDetailInterface';
+    type: 'PublicationAwardDetailInterface';
 } & PublicationDetailWithLotReference & {
-		'project-info': PublicationAwardProjectInfo;
-		decision: PublicationAwardDecision;
-	};
+    'project-info': PublicationAwardProjectInfo;
+    decision: PublicationAwardDecision;
+};
 
-export type PublicationDirectAwardTenderProcurementService =
-	PublicationDirectAwardTenderProcurementInterface & {
-		orderType: 'service';
-	} & PublicationBaseCodes & {
-			cpcCode?: CpcCode;
-		};
+export type PublicationDirectAwardTenderProcurementService = PublicationDirectAwardTenderProcurementInterface & {
+    orderType: 'service';
+} & PublicationBaseCodes & {
+    cpcCode?: CpcCode;
+};
 
 /**
  * Interface / parent that is implemented by the PublicationDirectAwardTenderProcurement* models, used for code generation.
  *
  */
-export type PublicationDirectAwardTenderProcurementInterface =
-	PublicationDirectAwardProcurementInterface & {
-		projectType: 'tender';
-	};
+export type PublicationDirectAwardTenderProcurementInterface = PublicationDirectAwardProcurementInterface & {
+    projectType: 'tender';
+};
 
 export type PubBaseCodes = {
-	additionalCpvCodes?: CpvCode[];
-	bkpCodes?: BkpCode[];
-	ebkphCodes?: EbkphCode[];
-	ebkptCodes?: EbkptCode[];
-	npkCodes?: NpkCode[];
+    additionalCpvCodes?: Array<CpvCode>;
+    bkpCodes?: Array<BkpCode>;
+    ebkphCodes?: Array<EbkphCode>;
+    ebkptCodes?: Array<EbkptCode>;
+    npkCodes?: Array<NpkCode>;
 };
 
 export type PublicationBaseCodes = PubBaseCodes;
 
 export type PubConstructionType = 'execution' | 'planning_and_execution';
 
-export type PubConstructionCategoryOptional =
-	| 'structural_engineering'
-	| 'civil_engineering'
-	| 'not_specified';
+export type PubConstructionCategoryOptional = 'structural_engineering' | 'civil_engineering' | 'not_specified';
 
-export type PublicationDirectAwardTenderProcurementConstruction =
-	PublicationDirectAwardTenderProcurementInterface & {
-		orderType: 'construction';
-	} & PublicationBaseCodes & {
-			oagCodes: OagCode[];
-			constructionType?: PubConstructionType;
-			constructionCategory?: PubConstructionCategoryOptional;
-		};
+export type PublicationDirectAwardTenderProcurementConstruction = PublicationDirectAwardTenderProcurementInterface & {
+    orderType: 'construction';
+} & PublicationBaseCodes & {
+    oagCodes: Array<OagCode>;
+    constructionType?: PubConstructionType;
+    constructionCategory?: PubConstructionCategoryOptional;
+};
 
-export type PubSupplyType =
-	| 'buy'
-	| 'rent'
-	| 'leasing'
-	| 'lease_purchase'
-	| 'work_contract';
+export type PubSupplyType = 'buy' | 'rent' | 'leasing' | 'lease_purchase' | 'work_contract';
 
-export type PublicationDirectAwardTenderProcurementSupply =
-	PublicationDirectAwardTenderProcurementInterface & {
-		orderType: 'supply';
-	} & {
-		additionalCpvCodes: CpvCode[];
-		supplyType?: PubSupplyType;
-	};
+export type PublicationDirectAwardTenderProcurementSupply = PublicationDirectAwardTenderProcurementInterface & {
+    orderType: 'supply';
+} & {
+    additionalCpvCodes: Array<CpvCode>;
+    supplyType?: PubSupplyType;
+};
 
-export type PublicationDirectAwardProcurementInterface =
-	PubDirectAwardProcurement & {
-		externalReference?: PubAndLotReference;
-	};
+export type PublicationDirectAwardProcurementInterface = PubDirectAwardProcurement & {
+    externalReference?: PubAndLotReference;
+};
 
 export type PubProcurementTopic = 'architecture' | 'engineering' | 'other';
 
-export type PublicationDirectAwardGeneralProcurement =
-	PublicationDirectAwardProcurementInterface & {
-		projectType: 'competition' | 'study_contract';
-	} & PublicationBaseCodes & {
-			procurementTopic?: PubProcurementTopic;
-			oagCodes: OagCode[];
-			constructionCategory?: PubConstructionCategoryOptional;
-		};
+export type PublicationDirectAwardGeneralProcurement = PublicationDirectAwardProcurementInterface & {
+    projectType: 'competition' | 'study_contract';
+} & PublicationBaseCodes & {
+    procurementTopic?: PubProcurementTopic;
+    oagCodes: Array<OagCode>;
+    constructionCategory?: PubConstructionCategoryOptional;
+};
 
 export type PubDirectAwardProcurement = {
-	projectType: PubProjectType;
-	processType: PubProcessType;
-	pubType: PubType;
-	orderType?: PubOrderType;
-	orderDescription?: Translation;
-	cpvCode?: CpvCode;
+    projectType: PubProjectType;
+    processType: PubProcessType;
+    pubType: PubType;
+    orderType?: PubOrderType;
+    orderDescription?: Translation;
+    cpvCode?: CpvCode;
 };
 
 export type PublisherReference = {
-	id: string;
-	readonly name: string;
+    id: string;
+    readonly name: string;
 };
 
 export type PubReference = {
-	/**
-	 * Reference to publicationId. Null in case of a reference to an external publication.
-	 */
-	publicationId?: string;
-	pubType?: PubType;
-	projectType?: PubProjectType;
-	processType?: PubProcessType;
-	/**
-	 * True if referenced publication was a correction. Null in case of a reference to an external publication.
-	 */
-	corrected?: boolean;
-	/**
-	 * Unique publication number aka "Meldungsnummer".
-	 * Confluence: https://projects.unic.com/x/SAKMBg > Meldungsnummer
-	 *
-	 */
-	publicationNumber?: string;
-	publicationDate?: string;
-	publishers: PublisherReference[];
+    /**
+     * Reference to publicationId. Null in case of a reference to an external publication.
+     */
+    publicationId?: string;
+    pubType?: PubType;
+    projectType?: PubProjectType;
+    processType?: PubProcessType;
+    /**
+     * True if referenced publication was a correction. Null in case of a reference to an external publication.
+     */
+    corrected?: boolean;
+    /**
+     * Unique publication number aka "Meldungsnummer".
+     * Confluence: https://projects.unic.com/x/SAKMBg > Meldungsnummer
+     *
+     */
+    publicationNumber?: string;
+    publicationDate?: string;
+    publishers: Array<PublisherReference>;
 };
 
 export type LotReference = {
-	/**
-	 * Reference to lotId. Null in case of a reference to an external publication.
-	 */
-	lotId?: string;
-	lotNumber?: number;
-	lotTitle?: Translation;
+    /**
+     * Reference to lotId. Null in case of a reference to an external publication.
+     */
+    lotId?: string;
+    lotNumber?: number;
+    lotTitle?: Translation;
 };
 
-export type PubAndLotReference = PubReference &
-	LotReference & {
-		lotsType: PubLotsType;
-	};
+export type PubAndLotReference = PubReference & LotReference & {
+    lotsType: PubLotsType;
+};
 
 /**
  * PublicationDirectAwardTenderProcurement
  */
-export type PublicationDirectAwardTenderProcurement =
-	| ({
-			orderType: 'service';
-	  } & PublicationDirectAwardTenderProcurementService)
-	| ({
-			orderType: 'construction';
-	  } & PublicationDirectAwardTenderProcurementConstruction)
-	| ({
-			orderType: 'supply';
-	  } & PublicationDirectAwardTenderProcurementSupply);
+export type PublicationDirectAwardTenderProcurement = ({
+    orderType: 'service';
+} & PublicationDirectAwardTenderProcurementService) | ({
+    orderType: 'construction';
+} & PublicationDirectAwardTenderProcurementConstruction) | ({
+    orderType: 'supply';
+} & PublicationDirectAwardTenderProcurementSupply);
 
 /**
  * PublicationDirectAwardProcurement
  */
-export type PublicationDirectAwardProcurement =
-	| ({
-			projectType: 'tender';
-	  } & PublicationDirectAwardTenderProcurement)
-	| ({
-			projectType: 'competition' | 'study_contract';
-	  } & PublicationDirectAwardGeneralProcurement);
+export type PublicationDirectAwardProcurement = ({
+    projectType: 'tender';
+} & PublicationDirectAwardTenderProcurement) | ({
+    projectType: 'competition' | 'study_contract';
+} & PublicationDirectAwardGeneralProcurement) | ({
+    projectType: 'competition' | 'study_contract';
+} & PublicationDirectAwardGeneralProcurement);
 
 export type PublicationDirectAwardDetail = PublicationAwardDetailInterface & {
-	type?: 'direct_award';
+    type?: 'direct_award';
 } & {
-	procurement: PublicationDirectAwardProcurement;
+    procurement: PublicationDirectAwardProcurement;
 };
 
 export type PublicationDetailInterface = {
-	id: string;
-	type: PubType;
-	projectType: PubProjectType;
-	base?: PublicationBase;
-	/**
-	 * Reference to the TED publication, set when the publication is published on TED.
-	 * For published publications, the ted data is only present when the publication was successfully published on TED.
-	 * Else the property is `null`.
-	 *
-	 */
-	ted?: PubTedReference;
-	/**
-	 * List of publishers of this publication
-	 */
-	publishers: PublisherReference[];
+    id: string;
+    type: PubType;
+    projectType: PubProjectType;
+    base?: PublicationBase;
+    /**
+     * Reference to the TED publication, set when the publication is published on TED.
+     * For published publications, the ted data is only present when the publication was successfully published on TED.
+     * Else the property is `null`.
+     *
+     */
+    ted?: PubTedReference;
+    /**
+     * List of publishers of this publication
+     */
+    publishers: Array<PublisherReference>;
 };
 
 /**
@@ -2843,46 +2480,48 @@ export type PublicationDetailInterface = {
  * `lotsType` set to `without`. All other sections are provided but depend on `pubType`,  `procesType` and `lotsType` of the publication.
  *
  */
-export type PublicationDetailBaseDescription = Record<string, unknown>;
+export type PublicationDetailBaseDescription = {
+    [key: string]: unknown;
+};
 
 export type PubCorrectionDetailData = {
-	correctedPubId: string;
-	initialPublicationDate: string;
-	remarks?: Translation;
-	/**
-	 * Array of jsonpath pointing to nodes that have changed values in the detail result
-	 *
-	 */
-	correctionDiffKeys: string[];
+    correctedPubId: string;
+    initialPublicationDate: string;
+    remarks?: Translation;
+    /**
+     * Array of jsonpath pointing to nodes that have changed values in the detail result
+     *
+     */
+    correctionDiffKeys: Array<string>;
 };
 
 export type PublicationCorrectionDetailData = PubCorrectionDetailData;
 
 export type PublicationDetailWithCorrection = {
-	correction?: PublicationCorrectionDetailData;
+    correction?: PublicationCorrectionDetailData;
 };
 
 export type DetailWithOptionalPubReference = {
-	referencingPub?: PubReference;
+    referencingPub?: PubReference;
 };
 
 export type PubVendorWithAddressData = {
-	vendorId: string;
-	readonly vendorName: string;
-	vendorAddress?: Address;
+    vendorId: string;
+    readonly vendorName: string;
+    vendorAddress?: Address;
 };
 
 export type PubInvitedVendor = PubVendorWithAddressData;
 
 export type PubInvitedVendorsPatch = {
-	/**
-	 * True if invited vendors should get published together with the call_for_bids publication.
-	 * This means the invited vendors would be visible to the other invited vendors but not publicly visible,
-	 * as the publication itself is only visible to the invited vendors and the proc_office itself.
-	 *
-	 */
-	publishInvitedVendors?: boolean;
-	vendors?: PubInvitedVendor[];
+    /**
+     * true if invited vendors should get published together with the call_for_bids publication.
+     * This means the invited vendors would be visible to the other invited vendors but not publicly visible,
+     * as the publication itself is only visible to the invited vendors and the proc_office itself.
+     *
+     */
+    publishInvitedVendors?: boolean;
+    vendors?: Array<PubInvitedVendor>;
 };
 
 export type PubInvitedVendors = PubInvitedVendorsPatch;
@@ -2892,206 +2531,185 @@ export type PubInvitedVendors = PubInvitedVendorsPatch;
  *
  */
 export type DetailWithInvitedVendors = {
-	invitedVendors?: PubInvitedVendors;
+    invitedVendors?: PubInvitedVendors;
 };
 
-export type PublicationTenderProjectInfoOpen =
-	PublicationTenderProjectInfoInterface & {
-		processType: 'open';
-	} & PublicationBaseProjectInfoOpen & {
-			publicationTed: boolean;
-		};
+export type PublicationTenderProjectInfoOpen = PublicationTenderProjectInfoInterface & {
+    processType: 'open';
+} & PublicationBaseProjectInfoOpen & {
+    publicationTed: boolean;
+};
 
 /**
  * Interface / parent that is implemented by the  PublicationTenderProjectInfo* models, used for code generation.
  *
  */
-export type PublicationTenderProjectInfoInterface = PublicationBaseProjectInfo &
-	PubBaseProjectInfoPublicationLanguageProperties & {
-		processType: PubProcessType;
-		orderType: PubOrderType;
-	};
+export type PublicationTenderProjectInfoInterface = PublicationBaseProjectInfo & PubBaseProjectInfoPublicationLanguageProperties & {
+    processType: PubProcessType;
+    orderType: PubOrderType;
+};
 
 export type PubLotLimitationData = {
-	/**
-	 * Indicator if there is a limitation for vendors, for how many lots in the project a vendor can make an offer.
-	 * `null` means no limitation.
-	 *
-	 * Only used when the project's `lotsType` is `with`.
-	 *
-	 */
-	participantLotsLimitation?: number;
-	participantLotsLimitationNote?: Translation;
+    /**
+     * Indicator if there is a limitation for vendors, for how many lots in the project a vendor can make an offer.
+     * `null` means no limitation.
+     *
+     * Only used when the project's `lotsType` is `with`.
+     *
+     */
+    participantLotsLimitation?: number;
+    participantLotsLimitationNote?: Translation;
 };
 
 export type Currency = 'chf' | 'eur' | 'usd';
 
 export type Price = {
-	currency?: Currency;
-	price?: number;
+    currency?: Currency;
+    price?: number;
 };
 
 export type PubBaseProjectInfoOpenSelectiveBase = PubLotLimitationData & {
-	stateContractArea?: boolean;
-	/**
-	 * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft
-	 * - Can be `not_specified` in case of an advance-notice pub-draft
-	 *
-	 */
-	dialog?: ThreeValuedSelection;
-	/**
-	 * - Required in case dialog = yes and pub-draft/publication is a call-for-bids
-	 * - Optional in case pub-draft/publication is an advance-notice
-	 *
-	 */
-	dialogNote?: Translation;
-	/**
-	 * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft
-	 * - Can be `not_specified` in case of an advance-notice pub-draft
-	 *
-	 */
-	documentsWithCosts?: ThreeValuedSelection;
-	/**
-	 * - Required in case documentsWithCosts = yes and pub-draft/publication is a call-for-bids
-	 * - Optional in case pub-draft/publication is an advance-notice
-	 *
-	 */
-	documentsCosts?: Price;
-	documentsCostsNote?: Translation;
+    stateContractArea?: boolean;
+    /**
+     * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft
+     * - Can be `not_specified` in case of an advance-notice pub-draft
+     *
+     */
+    dialog?: ThreeValuedSelection;
+    /**
+     * - Required in case dialog = yes and pub-draft/publication is a call-for-bids
+     * - Optional in case pub-draft/publication is an advance-notice
+     *
+     */
+    dialogNote?: Translation;
+    /**
+     * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft
+     * - Can be `not_specified` in case of an advance-notice pub-draft
+     *
+     */
+    documentsWithCosts?: ThreeValuedSelection;
+    /**
+     * - Required in case documentsWithCosts = yes and pub-draft/publication is a call-for-bids
+     * - Optional in case pub-draft/publication is an advance-notice
+     *
+     */
+    documentsCosts?: Price;
+    documentsCostsNote?: Translation;
 };
 
-export type PublicationBaseProjectInfoOpenSelectiveBase =
-	PubBaseProjectInfoOpenSelectiveBase;
+export type PublicationBaseProjectInfoOpenSelectiveBase = PubBaseProjectInfoOpenSelectiveBase;
 
-export type PubBaseProjectInfoSelective =
-	PubBaseProjectInfoOpenSelectiveBase & {
-		/**
-		 * Number of maximal selectable participants in the "participant selection phase" (followup publication)
-		 *
-		 * Set `null` for no limitation else if set must be a positive number
-		 *
-		 */
-		participantLimitation?: number;
-	};
+export type PubBaseProjectInfoSelective = PubBaseProjectInfoOpenSelectiveBase & {
+    /**
+     * Number of maximal selectable participants in the "participant selection phase" (followup publication)
+     *
+     * Set `null` for no limitation else if set must be a positive number
+     *
+     */
+    participantLimitation?: number;
+};
 
-export type PublicationBaseProjectInfoSelective =
-	PublicationBaseProjectInfoOpenSelectiveBase & PubBaseProjectInfoSelective;
+export type PublicationBaseProjectInfoSelective = PublicationBaseProjectInfoOpenSelectiveBase & PubBaseProjectInfoSelective;
 
-export type PublicationTenderProjectInfoSelective =
-	PublicationTenderProjectInfoInterface & {
-		processType: 'selective';
-	} & PublicationBaseProjectInfoSelective & {
-			publicationTed: boolean;
-		};
+export type PublicationTenderProjectInfoSelective = PublicationTenderProjectInfoInterface & {
+    processType: 'selective';
+} & PublicationBaseProjectInfoSelective & {
+    publicationTed: boolean;
+};
 
 /**
  * @deprecated
  */
-export type PublicationTenderProjectInfoInvitation =
-	PublicationTenderProjectInfoInterface & {
-		processType: 'invitation';
-	};
+export type PublicationTenderProjectInfoInvitation = PublicationTenderProjectInfoInterface & {
+    processType: 'invitation';
+};
 
 /**
  * The char limits follow the TED limits for that field as in some cases the address is part of the data sent to TED.
  *
  */
 export type PubAddress = BaseAddress & {
-	id?: string;
-	name?: Translation;
-	contactPerson?: Translation;
-	phone?: InternationalPhoneNumber;
-	email?: string;
-	url?: TranslationUrl;
-	reference?: string;
-	street?: Translation;
-	city?: Translation;
+    id?: string;
+    name?: Translation;
+    contactPerson?: Translation;
+    phone?: InternationalPhoneNumber;
+    email?: string;
+    url?: TranslationUrl;
+    reference?: string;
+    street?: Translation;
+    city?: Translation;
 };
 
 export type PubBaseProjectInfoAddress = {
-	procOfficeAddress?: PubAddress;
-	procurementRecipientAddress?: PubAddress;
+    procOfficeAddress?: PubAddress;
+    procurementRecipientAddress?: PubAddress;
 };
 
-export type PubDocumentsSourceType =
-	| 'documents_source_simap'
-	| 'documents_source_address'
-	| 'documents_source_email'
-	| 'documents_source_url';
+export type PubDocumentsSourceType = 'documents_source_simap' | 'documents_source_address' | 'documents_source_email' | 'documents_source_url';
 
-export type PubOfferType =
-	| 'offer_digital_simap'
-	| 'offer_digital_external_platform'
-	| 'offer_external'
-	| 'offer_specific';
+export type PubOfferType = 'offer_digital_simap' | 'offer_digital_external_platform' | 'offer_external' | 'offer_specific';
 
 export type PubBaseProjectInfo = PubBaseProjectInfoAddress & {
-	title?: Translation;
-	documentsLanguages?: string[];
-	documentsLanguagesNote?: Translation;
-	documentsSourceType?: PubDocumentsSourceType;
-	documentsSourceEmail?: string;
-	documentsSourceUrl?: string;
-	documentsSourceNote?: Translation;
-	offerLanguages?: string[];
-	offerSpecificNote?: TranslationSanitizedHtml;
-	offerTypes?: PubOfferType[];
-	offerDigitalExternalPlatformUrl?: TranslationUrl;
-	documentsSourceAddress?: PubAddress;
-	offerAddress?: PubAddress;
+    title?: Translation;
+    documentsLanguages?: Array<string>;
+    documentsLanguagesNote?: Translation;
+    documentsSourceType?: PubDocumentsSourceType;
+    documentsSourceEmail?: string;
+    documentsSourceUrl?: string;
+    documentsSourceNote?: Translation;
+    offerLanguages?: Array<string>;
+    offerSpecificNote?: TranslationSanitizedHtml;
+    offerTypes?: Array<PubOfferType>;
+    offerDigitalExternalPlatformUrl?: TranslationUrl;
+    documentsSourceAddress?: PubAddress;
+    offerAddress?: PubAddress;
 };
 
 export type PublicationBaseProjectInfo = PubBaseProjectInfo;
 
 export type PubBaseProjectInfoPublicationLanguageProperties = {
-	publicationLanguages?: string[];
-	publicationLanguagesComment?: Translation;
+    publicationLanguages?: Array<string>;
+    publicationLanguagesComment?: Translation;
 };
 
-export type PublicationBaseProjectInfoOpen =
-	PublicationBaseProjectInfoOpenSelectiveBase;
+export type PublicationBaseProjectInfoOpen = PublicationBaseProjectInfoOpenSelectiveBase;
 
 /**
  * PublicationTenderProjectInfo
  * Uses the `processType` to discriminate between the models of the open, selective or invitation process.
  *
  */
-export type PublicationTenderProjectInfo =
-	| ({
-			processType: 'open';
-	  } & PublicationTenderProjectInfoOpen)
-	| ({
-			processType: 'selective';
-	  } & PublicationTenderProjectInfoSelective)
-	| ({
-			processType: 'invitation';
-	  } & PublicationTenderProjectInfoInvitation);
+export type PublicationTenderProjectInfo = ({
+    processType: 'open';
+} & PublicationTenderProjectInfoOpen) | ({
+    processType: 'selective';
+} & PublicationTenderProjectInfoSelective) | ({
+    processType: 'invitation';
+} & PublicationTenderProjectInfoInvitation);
 
 export type PublicationTenderConstructionLot = PublicationTenderLotInterface & {
-	orderType?: 'construction';
-} & PublicationBaseCodes &
-	PubTenderConstructionFields;
+    orderType?: 'construction';
+} & PublicationBaseCodes & PubTenderConstructionFields;
 
 /**
  * Interface / parent that is implemented by the PublicationTenderLot* models, used for code generation.
  *
  */
-export type PublicationTenderLotInterface = PublicationBaseLot &
-	PubTenderSpecificProcurementFields;
+export type PublicationTenderLotInterface = PublicationBaseLot & PubTenderSpecificProcurementFields;
 
 export type PublicationTenderSupplyLot = PublicationTenderLotInterface & {
-	orderType?: 'supply';
+    orderType?: 'supply';
 } & {
-	additionalCpvCodes: CpvCode[];
-	supplyType: PubSupplyType;
+    additionalCpvCodes: Array<CpvCode>;
+    supplyType: PubSupplyType;
 };
 
 export type PublicationTenderServiceLot = PublicationTenderLotInterface & {
-	orderType?: 'service';
+    orderType?: 'service';
 } & PublicationBaseCodes;
 
 export type PubProcurementOrderDescription = {
-	orderDescription?: TranslationSanitizedHtml;
+    orderDescription?: TranslationSanitizedHtml;
 };
 
 /**
@@ -3103,184 +2721,174 @@ export type PubProcurementOrderDescription = {
  * - If `not_specified` both associated fields must be not set i.e. `null` neither is to be used.
  *
  */
-export type PubDeadlineTypeOptional =
-	| 'date_time'
-	| 'days_after'
-	| 'not_specified';
+export type PubDeadlineTypeOptional = 'date_time' | 'days_after' | 'not_specified';
 
 export type DateRange = {
-	dateRange: [string, string];
+    dateRange: [
+        string,
+        string
+    ];
 };
 
 export type PubBaseProcurement = PubProcurementOrderDescription & {
-	/**
-	 * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft/publication
-	 * - Can be `not_specified` in case of an advance-notice pub-draft/publication
-	 *
-	 * If this field is `yes` then the `orderAddressDescription` is a required field and only the `countryId` in the `orderAddress` must be set.
-	 * Else the description is optional.
-	 *
-	 */
-	orderAddressOnlyDescription?: ThreeValuedSelection;
-	orderAddressDescription?: Translation;
-	/**
-	 * If `date_time` is selected then the `executionPeriod` must be set.
-	 * If `days_after` is selected then `executionDays` must be set.
-	 * Else `not_specified` both `executionPeriod` and `executionDays` must be null.
-	 *
-	 */
-	executionDeadlineType?: PubDeadlineTypeOptional;
-	executionPeriod?: DateRange;
-	executionDays?: number;
-	executionNote?: Translation;
+    /**
+     * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft/publication
+     * - Can be `not_specified` in case of an advance-notice pub-draft/publication
+     *
+     * If this field is `yes` then the `orderAddressDescription` is a required field and only the `countryId` in the `orderAddress` must be set.
+     * Else the description is optional.
+     *
+     */
+    orderAddressOnlyDescription?: ThreeValuedSelection;
+    orderAddressDescription?: Translation;
+    /**
+     * If `date_time` is selected then the `executionPeriod` must be set.
+     * If `days_after` is selected then `executionDays` must be set.
+     * Else `not_specified` both `executionPeriod` and `executionDays` must be null.
+     *
+     */
+    executionDeadlineType?: PubDeadlineTypeOptional;
+    executionPeriod?: DateRange;
+    executionDays?: number;
+    executionNote?: Translation;
 };
 
 export type PubBaseProcurementVariantsAndPartialOfferProperties = {
-	variants?: ThreeValuedSelection;
-	variantsNote?: Translation;
-	partialOffers?: ThreeValuedSelection;
-	partialOffersNote?: Translation;
+    variants?: ThreeValuedSelection;
+    variantsNote?: Translation;
+    partialOffers?: ThreeValuedSelection;
+    partialOffersNote?: Translation;
 };
 
-export type PublicationBaseProcurement = PubBaseProcurement &
-	PubBaseProcurementVariantsAndPartialOfferProperties & {
-		orderAddress?: PubProcurementAddress;
-	};
+export type PublicationBaseProcurement = PubBaseProcurement & PubBaseProcurementVariantsAndPartialOfferProperties & {
+    orderAddress?: PubProcurementAddress;
+};
 
 export type PubBaseQualificationCriteria = {
-	/**
-	 * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft/publication
-	 * - Can be `not_specified` in case of an advance-notice pub-draft/publication
-	 *
-	 * If this field is `yes` then the `qualificationCriteria` and `qualificationCreateCriteriaPDF` can be
-	 * omitted because the criteria are found in the provided documents.
-	 *
-	 */
-	qualificationCriteriaInDocuments?: ThreeValuedSelection;
-	qualificationCriteriaNote?: Translation;
-	/**
-	 * If true, will generate a downloadable PDF with the defined criteria of `qualificationCriteria`.
-	 *
-	 */
-	qualificationCriteriaAsPDF?: boolean;
+    /**
+     * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft/publication
+     * - Can be `not_specified` in case of an advance-notice pub-draft/publication
+     *
+     * If this field is `yes` then the `qualificationCriteria` and `qualificationCreateCriteriaPDF` can be
+     * omitted because the criteria are found in the provided documents.
+     *
+     */
+    qualificationCriteriaInDocuments?: ThreeValuedSelection;
+    qualificationCriteriaNote?: Translation;
+    /**
+     * If true, will generate a downloadable PDF with the defined criteria of `qualificationCriteria`.
+     *
+     */
+    qualificationCriteriaAsPDF?: boolean;
 };
 
 export type QualificationCriterion = Criterion & {
-	title: Translation;
+    title: Translation;
 };
 
-export type PublicationBaseQualificationCriteria =
-	PubBaseQualificationCriteria & {
-		qualificationCriteria: QualificationCriterion[];
-	};
+export type PublicationBaseQualificationCriteria = PubBaseQualificationCriteria & {
+    qualificationCriteria: Array<QualificationCriterion>;
+};
 
-export type AwardCriteriaSelection =
-	| 'criteria_defined'
-	| 'total_price'
-	| 'criteria_in_documents'
-	| 'not_specified';
+export type AwardCriteriaSelection = 'criteria_defined' | 'total_price' | 'criteria_in_documents' | 'not_specified';
 
 export type AwardCriterion = QualificationCriterion & {
-	title: Translation;
-	/**
-	 * The wight of the criterion in percent
-	 *
-	 */
-	weighting?: number;
-	maxPoints?: number;
-	/**
-	 * ONE criterion of the `awardCriteria` can be the criterion for the price.
-	 *
-	 * This is optional, there can be no price criterion for a publication.
-	 *
-	 * By default, false.
-	 *
-	 */
-	isPriceCriterion: boolean;
+    title: Translation;
+    /**
+     * The wight of the criterion in percent
+     *
+     */
+    weighting?: number;
+    maxPoints?: number;
+    /**
+     * ONE criterion of the `awardCriteria` can be the criterion for the price.
+     *
+     * This is optional, there can be no price criterion for a publication.
+     *
+     * By default, false.
+     *
+     */
+    isPriceCriterion: boolean;
 };
 
 export type PublicationBaseAwardCriteria = {
-	awardCriteriaSelection: AwardCriteriaSelection;
-	awardCriteriaNote?: Translation;
-	awardCriteria: AwardCriterion[];
+    awardCriteriaSelection: AwardCriteriaSelection;
+    awardCriteriaNote?: Translation;
+    awardCriteria: Array<AwardCriterion>;
 };
 
-export type PublicationBaseCriteria = PublicationBaseQualificationCriteria &
-	PublicationBaseAwardCriteria;
+export type PublicationBaseCriteria = PublicationBaseQualificationCriteria & PublicationBaseAwardCriteria;
 
 export type PubBaseCriteriaSelective = {
-	/**
-	 * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft/publication
-	 * - Can be `not_specified` in case of an advance-notice pub-draft/publication
-	 *
-	 * If this field is `yes` then the `weightedQualificationCriteria` can be omitted because
-	 * the criteria are found in the provided documents.
-	 *
-	 */
-	weightedQualificationCriteriaInDocuments?: ThreeValuedSelection;
-	weightedQualificationCriteriaNote?: Translation;
+    /**
+     * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft/publication
+     * - Can be `not_specified` in case of an advance-notice pub-draft/publication
+     *
+     * If this field is `yes` then the `weightedQualificationCriteria` can be omitted because
+     * the criteria are found in the provided documents.
+     *
+     */
+    weightedQualificationCriteriaInDocuments?: ThreeValuedSelection;
+    weightedQualificationCriteriaNote?: Translation;
 };
 
 export type WeightedQualificationCriterion = QualificationCriterion & {
-	/**
-	 * The weight of the criterion in percent
-	 *
-	 */
-	weighting?: number;
-	maxPoints?: number;
+    /**
+     * The weight of the criterion in percent
+     *
+     */
+    weighting?: number;
+    maxPoints?: number;
 };
 
 export type PublicationBaseCriteriaSelective = PubBaseCriteriaSelective & {
-	weightedQualificationCriteria: WeightedQualificationCriterion[];
+    weightedQualificationCriteria: Array<WeightedQualificationCriterion>;
 };
 
-export type PublicationBaseLot = PublicationLotDescription &
-	PublicationBaseProcurement &
-	PublicationBaseCriteria &
-	PublicationBaseCriteriaSelective;
+export type PublicationBaseLot = PublicationLotDescription & PublicationBaseProcurement & PublicationBaseCriteria & PublicationBaseCriteriaSelective;
 
 export type PubTenderSpecificProcurementFields = {
-	processType: PubProcessType;
-	orderType: PubOrderType;
-	/**
-	 * - If `date_time` is selected then the `contractPeriod` is relevant.
-	 * - If `days_after` is selected then `contractDays` is relevant.
-	 * - If `not_specified` is selected then `contractDays` and `contractPeriod` must be null
-	 *
-	 */
-	contractDeadlineType?: PubDeadlineTypeOptional;
-	/**
-	 * - Required in case contractDeadlineType = days_time
-	 *
-	 */
-	contractPeriod?: DateRange;
-	/**
-	 * - Required in case contractDeadlineType = days_after
-	 *
-	 */
-	contractDays?: number;
-	/**
-	 * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft/publication
-	 * - Can be `not_specified` in case of an advance-notice pub-draft/publication
-	 *
-	 * If `yes` then `canContractBeExtendedNote` is relevant, otherwise must be null
-	 *
-	 */
-	canContractBeExtended?: ThreeValuedSelection;
-	/**
-	 * When `canContractBeExtended` is `yes` then `canContractBeExtendedNote` can be considered but is still optional
-	 * and can still be empty. If it `canContractBeExtended` is `no` or `not_specified` then this field must be null.
-	 *
-	 */
-	canContractBeExtendedNote?: Translation;
-	options?: ThreeValuedSelection;
-	optionsNote?: Translation;
+    processType: PubProcessType;
+    orderType: PubOrderType;
+    /**
+     * - If `date_time` is selected then the `contractPeriod` is relevant.
+     * - If `days_after` is selected then `contractDays` is relevant.
+     * - If `not_specified` is selected then `contractDays` and `contractPeriod` must be null
+     *
+     */
+    contractDeadlineType?: PubDeadlineTypeOptional;
+    /**
+     * - Required in case contractDeadlineType = days_time
+     *
+     */
+    contractPeriod?: DateRange;
+    /**
+     * - Required in case contractDeadlineType = days_after
+     *
+     */
+    contractDays?: number;
+    /**
+     * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft/publication
+     * - Can be `not_specified` in case of an advance-notice pub-draft/publication
+     *
+     * If `yes` then `canContractBeExtendedNote` is relevant, otherwise must be null
+     *
+     */
+    canContractBeExtended?: ThreeValuedSelection;
+    /**
+     * When `canContractBeExtended` is `yes` then `canContractBeExtendedNote` can be considered but is still optional
+     * and can still be empty. If it `canContractBeExtended` is `no` or `not_specified` then this field must be null.
+     *
+     */
+    canContractBeExtendedNote?: Translation;
+    options?: ThreeValuedSelection;
+    optionsNote?: Translation;
 };
 
 export type PubTenderConstructionFields = {
-	oagCodes?: OagCode[];
-	constructionType?: PubConstructionType;
-	constructionCategory?: PubConstructionCategoryOptional;
+    oagCodes?: Array<OagCode>;
+    constructionType?: PubConstructionType;
+    constructionCategory?: PubConstructionCategoryOptional;
 };
 
 /**
@@ -3288,128 +2896,109 @@ export type PubTenderConstructionFields = {
  * Uses the `orderType` to discriminate between the models of the service, supply or construction type.
  *
  */
-export type PublicationTenderLot =
-	| ({
-			orderType: 'construction';
-	  } & PublicationTenderConstructionLot)
-	| ({
-			orderType: 'supply';
-	  } & PublicationTenderSupplyLot)
-	| ({
-			orderType: 'service';
-	  } & PublicationTenderServiceLot);
+export type PublicationTenderLot = ({
+    orderType: 'construction';
+} & PublicationTenderConstructionLot) | ({
+    orderType: 'supply';
+} & PublicationTenderSupplyLot) | ({
+    orderType: 'service';
+} & PublicationTenderServiceLot);
 
-export type PublicationTenderProcurementConstruction =
-	PublicationTenderProcurementInterface & {
-		orderType?: 'construction';
-	} & PublicationBaseCodes &
-		PubTenderConstructionFields;
+export type PublicationTenderProcurementConstruction = PublicationTenderProcurementInterface & {
+    orderType?: 'construction';
+} & PublicationBaseCodes & PubTenderConstructionFields;
 
 /**
  * Interface / parent that is implemented by the PublicationTenderProcurement* models, used for code generation.
  *
  */
-export type PublicationTenderProcurementInterface = PublicationBaseProcurement &
-	PubTenderSpecificProcurementFields & {
-		cpvCode?: CpvCode;
-	};
+export type PublicationTenderProcurementInterface = PublicationBaseProcurement & PubTenderSpecificProcurementFields & {
+    cpvCode?: CpvCode;
+};
 
-export type PublicationTenderProcurementSupply =
-	PublicationTenderProcurementInterface & {
-		orderType?: 'supply';
-	} & {
-		additionalCpvCodes?: CpvCode[];
-		supplyType?: PubSupplyType;
-	};
+export type PublicationTenderProcurementSupply = PublicationTenderProcurementInterface & {
+    orderType?: 'supply';
+} & {
+    additionalCpvCodes?: Array<CpvCode>;
+    supplyType?: PubSupplyType;
+};
 
-export type PublicationTenderProcurementService =
-	PublicationTenderProcurementInterface & {
-		orderType?: 'service';
-	} & PublicationBaseCodes & {
-			cpcCode?: CpcCode;
-		};
+export type PublicationTenderProcurementService = PublicationTenderProcurementInterface & {
+    orderType?: 'service';
+} & PublicationBaseCodes & {
+    cpcCode?: CpcCode;
+};
 
 /**
  * PublicationTenderProcurement
  * Uses the `orderType` to discriminate between the models of the service, supply or construction type.
  *
  */
-export type PublicationTenderProcurement =
-	| ({
-			orderType: 'construction';
-	  } & PublicationTenderProcurementConstruction)
-	| ({
-			orderType: 'supply';
-	  } & PublicationTenderProcurementSupply)
-	| ({
-			orderType: 'service';
-	  } & PublicationTenderProcurementService);
+export type PublicationTenderProcurement = ({
+    orderType: 'construction';
+} & PublicationTenderProcurementConstruction) | ({
+    orderType: 'supply';
+} & PublicationTenderProcurementSupply) | ({
+    orderType: 'service';
+} & PublicationTenderProcurementService);
 
 export type PublicationTenderTermsOpen = PublicationTenderTermsInterface & {
-	processType: 'open';
-} & PubBaseTermsOpenSelective &
-	PubBaseTermsWalkthrough;
+    processType: 'open';
+} & PubBaseTermsOpenSelective & PubBaseTermsWalkthrough;
 
 /**
  * Interface / parent that is implemented by the  PublicationTenderTerms* models, used for code generation.
  *
  */
 export type PublicationTenderTermsInterface = PublicationBaseTerms & {
-	processType: PubProcessType;
-	orderType: PubOrderType;
+    processType: PubProcessType;
+    orderType: PubOrderType;
 };
 
 export type PubBaseTermsOpenSelective = {
-	preInvolvedVendor?: Translation;
-	termsOfBusiness?: Translation;
-	termsOfPayment?: Translation;
-	includedCosts?: Translation;
-	securityDeposits?: Translation;
-	nonWTORequirements?: Translation;
+    preInvolvedVendor?: Translation;
+    termsOfBusiness?: Translation;
+    termsOfPayment?: Translation;
+    includedCosts?: Translation;
+    securityDeposits?: Translation;
+    nonWTORequirements?: Translation;
 };
 
 export type PubBaseTermsWalkthrough = {
-	walkThroughNotes?: Translation;
+    walkThroughNotes?: Translation;
 };
 
-export type PublicationTenderTermsSelective =
-	PublicationTenderTermsInterface & {
-		processType: 'selective';
-	} & PubBaseTermsOpenSelective &
-		PubBaseTermsWalkthrough;
+export type PublicationTenderTermsSelective = PublicationTenderTermsInterface & {
+    processType: 'selective';
+} & PubBaseTermsOpenSelective & PubBaseTermsWalkthrough;
 
 /**
  * @deprecated
  */
-export type PublicationTenderTermsInvitation =
-	PublicationTenderTermsInterface & {
-		processType: 'invitation';
-	} & PubBaseTermsWalkthrough;
+export type PublicationTenderTermsInvitation = PublicationTenderTermsInterface & {
+    processType: 'invitation';
+} & PubBaseTermsWalkthrough;
 
 export type PubBaseMinimalTerms = {
-	termsNote?: Translation;
-	otherRequirements?: Translation;
+    termsNote?: Translation;
+    otherRequirements?: Translation;
 };
 
-export type PubTermsType =
-	| 'defined'
-	| 'in_documents'
-	| 'none'
-	| 'not_specified';
+export type PubTermsType = 'defined' | 'in_documents' | 'none' | 'not_specified';
 
 export type PubTermCriterion = Criterion;
 
 export type PubBaseTerms = PubBaseMinimalTerms & {
-	termsType?: PubTermsType;
-	termsCriteria?: PubTermCriterion[];
-	termsCriteriaAsPDF?: boolean;
-	consortiumAllowed?: ThreeValuedSelection;
-	consortiumMultiApplicationAllowed?: ThreeValuedSelection;
-	consortiumNote?: Translation;
-	subContractorAllowed?: ThreeValuedSelection;
-	subContractorMultiApplicationAllowed?: ThreeValuedSelection;
-	subContractorNote?: Translation;
-	remediesNotice?: Translation;
+    termsType?: PubTermsType;
+    termsCriteria?: Array<PubTermCriterion>;
+    termsCriteriaAsPDF?: boolean;
+    consortiumAllowed?: ThreeValuedSelection;
+    consortiumMultiApplicationAllowed?: ThreeValuedSelection;
+    consortiumNote?: Translation;
+    subContractorAllowed?: ThreeValuedSelection;
+    subContractorMultiApplicationAllowed?: ThreeValuedSelection;
+    subContractorNote?: Translation;
+    remediesNotice?: Translation;
 };
 
 export type PublicationBaseTerms = PubBaseTerms;
@@ -3419,152 +3008,138 @@ export type PublicationBaseTerms = PubBaseTerms;
  * Uses the `processType` to discriminate between the models of the open, selective or invitation process.
  *
  */
-export type PublicationTenderTerms =
-	| ({
-			processType: 'open';
-	  } & PublicationTenderTermsOpen)
-	| ({
-			processType: 'selective';
-	  } & PublicationTenderTermsSelective)
-	| ({
-			processType: 'invitation';
-	  } & PublicationTenderTermsInvitation);
+export type PublicationTenderTerms = ({
+    processType: 'open';
+} & PublicationTenderTermsOpen) | ({
+    processType: 'selective';
+} & PublicationTenderTermsSelective) | ({
+    processType: 'invitation';
+} & PublicationTenderTermsInvitation);
 
 export type PublicationTenderDatesOpen = PublicationTenderDatesInterface & {
-	processType: 'open';
-} & PubBaseCallForBidsDates &
-	PublicationBaseDatesOpen &
-	PubTenderDatesOpen;
+    processType: 'open';
+} & PubBaseCallForBidsDates & PublicationBaseDatesOpen & PubTenderDatesOpen;
 
 /**
  * Interface / parent that is implemented by the  PublicationTenderDates* models, used for code generation.
  *
  */
-export type PublicationTenderDatesInterface =
-	PublicationBaseDatesAppointments & {
-		processType: PubProcessType;
-		orderType: PubOrderType;
-	};
+export type PublicationTenderDatesInterface = PublicationBaseDatesAppointments & {
+    processType: PubProcessType;
+    orderType: PubOrderType;
+};
 
-export type PubQnaRoundSourceType =
-	| 'simap'
-	| 'external_system'
-	| 'no_qna_rounds';
+export type PubQnaRoundSourceType = 'simap' | 'external_system' | 'no_qna_rounds';
 
 export type PubBaseDates = {
-	/**
-	 * Publication date of the current publication
-	 *
-	 */
-	publicationDate?: string;
-	/**
-	 * In case of a correction, the publication date of the initially published publication. If provided use this field to validate other fields against it.
-	 *
-	 */
-	initialPublicationDate?: string;
-	/**
-	 * Only relevant in case of an advance-notice pub-draft/publication where it denotes the predicted publication date
-	 * of the call-for-bids publication which will be based on this advance-notice
-	 *
-	 */
-	publicationDateForecast?: string | undefined;
-	offerDeadline?: string;
-	specificDeadlinesAndFormalRequirements?: Translation;
-	qnaRoundSourceType: PubQnaRoundSourceType;
+    /**
+     * Publication date of the current publication
+     *
+     */
+    publicationDate?: string;
+    /**
+     * In case of a correction, the publication date of the initially published publication. If provided use this field to validate other fields against it.
+     *
+     */
+    initialPublicationDate?: string;
+    /**
+     * Only relevant in case of an advance-notice pub-draft/publication where it denotes the predicted publication date
+     * of the call-for-bids publication which will be based on this advance-notice
+     *
+     */
+    publicationDateForecast?: string | null;
+    offerDeadline?: string;
+    specificDeadlinesAndFormalRequirements?: Translation;
+    qnaRoundSourceType: PubQnaRoundSourceType;
 };
 
 export type PubBaseCallForBidsDates = PubBaseDates & {
-	documentsAvailable?: DateRange;
-	/**
-	 * This date is exclusive, meaning that a vendor needs to show interest before the provided date.
-	 */
-	expressionOfInterestUntil?: string;
+    documentsAvailable?: DateRange;
+    /**
+     * This date is exclusive, meaning that a vendor needs to show interest before the provided date.
+     */
+    expressionOfInterestUntil?: string;
 };
 
 export type PubBaseDatesSelective = {
-	participationRequestOpening?: DateOptionalTime;
-	participationRequestOpeningNotes?: Translation;
-	selectParticipants?: DateOptionalTime;
-	selectParticipantsNotes?: Translation;
-	offerSubmission?: DateOptionalTime;
-	offerSubmissionNotes?: Translation;
-	offerValidityDeadlineType: PubDeadlineTypeOptional;
-	offerValidityDeadlineDate?: string;
-	offerValidityDeadlineDays?: number;
-	offerValidityNotes?: Translation;
+    participationRequestOpening?: DateOptionalTime;
+    participationRequestOpeningNotes?: Translation;
+    selectParticipants?: DateOptionalTime;
+    selectParticipantsNotes?: Translation;
+    offerSubmission?: DateOptionalTime;
+    offerSubmissionNotes?: Translation;
+    offerValidityDeadlineType: PubDeadlineTypeOptional;
+    offerValidityDeadlineDate?: string;
+    offerValidityDeadlineDays?: number;
+    offerValidityNotes?: Translation;
 };
 
 export type PublicationBaseDatesSelective = PubBaseDatesSelective;
 
-export type PublicationTenderDatesSelective =
-	PublicationTenderDatesInterface & {
-		processType: 'selective';
-	} & PubBaseCallForBidsDates &
-		PublicationBaseDatesSelective;
+export type PublicationTenderDatesSelective = PublicationTenderDatesInterface & {
+    processType: 'selective';
+} & PubBaseCallForBidsDates & PublicationBaseDatesSelective;
 
 export type PubTenderDates = {
-	/**
-	 * - Required in case of a call-for-bids pub-draft/publication
-	 * - Optional in case of an advance-notice pub-draft/publication
-	 *
-	 */
-	offerOpening?: DateOptionalTime;
-	offerOpeningNotes?: Translation;
+    /**
+     * - Required in case of a call-for-bids pub-draft/publication
+     * - Optional in case of an advance-notice pub-draft/publication
+     *
+     */
+    offerOpening?: DateOptionalTime;
+    offerOpeningNotes?: Translation;
 };
 
 export type PubBaseDatesOfferValidity = {
-	offerValidityDeadlineType: PubDeadlineTypeOptional;
-	offerValidityDeadlineDate?: string;
-	offerValidityDeadlineDays?: number;
-	offerValidityNotes?: Translation;
+    offerValidityDeadlineType: PubDeadlineTypeOptional;
+    offerValidityDeadlineDate?: string;
+    offerValidityDeadlineDays?: number;
+    offerValidityNotes?: Translation;
 };
 
-export type PubBaseDatesInvitation = PubBaseDates &
-	PubBaseDatesOfferValidity & {
-		/**
-		 * This date is exclusive, meaning that a vendor need to declined the invitation before the provided date.
-		 */
-		declineInvitationUntil?: string;
-	};
+export type PubBaseDatesInvitation = PubBaseDates & PubBaseDatesOfferValidity & {
+    /**
+     * This date is exclusive, meaning that a vendor need to declined the invitation before the provided date.
+     */
+    declineInvitationUntil?: string;
+};
 
 export type PublicationBaseDatesInvitation = PubBaseDatesInvitation;
 
 /**
  * @deprecated
  */
-export type PublicationTenderDatesInvitation =
-	PublicationTenderDatesInterface & {
-		processType: 'invitation';
-	} & PubTenderDates &
-		PublicationBaseDatesInvitation;
+export type PublicationTenderDatesInvitation = PublicationTenderDatesInterface & {
+    processType: 'invitation';
+} & PubTenderDates & PublicationBaseDatesInvitation;
 
 export type PublicationAppointment = {
-	id: string;
-	name: Translation;
-	date: string;
-	note: Translation;
+    id: string;
+    name: Translation;
+    date: string;
+    note: Translation;
 };
 
 export type PublicationBaseDatesAppointments = {
-	qnas: PublicationQna[];
-	otherAppointments: PublicationAppointment[];
+    qnas: Array<PublicationQna>;
+    otherAppointments: Array<PublicationAppointment>;
 };
 
 export type PubBaseDatesOpen = PubBaseDatesOfferValidity & {
-	reductionMinimumOfferDeadline: boolean;
+    reductionMinimumOfferDeadline: boolean;
 };
 
 export type PublicationBaseDatesOpen = PubBaseDatesOpen;
 
 export type PubTenderDatesOpen = PubTenderDates & {
-	/**
-	 * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft/publication
-	 * - Can be `not_specified` in case of an advance-notice pub-draft/publication
-	 *
-	 */
-	publicOfferOpening?: ThreeValuedSelection;
-	offerOpeningPostalCode?: string;
-	offerOpeningCity?: Translation;
+    /**
+     * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft/publication
+     * - Can be `not_specified` in case of an advance-notice pub-draft/publication
+     *
+     */
+    publicOfferOpening?: ThreeValuedSelection;
+    offerOpeningPostalCode?: string;
+    offerOpeningCity?: Translation;
 };
 
 /**
@@ -3572,130 +3147,111 @@ export type PubTenderDatesOpen = PubTenderDates & {
  * Uses the `processType` to discriminate between the models of the open, selective or invitation process.
  *
  */
-export type PublicationTenderDates =
-	| ({
-			processType: 'open';
-	  } & PublicationTenderDatesOpen)
-	| ({
-			processType: 'selective';
-	  } & PublicationTenderDatesSelective)
-	| ({
-			processType: 'invitation';
-	  } & PublicationTenderDatesInvitation);
+export type PublicationTenderDates = ({
+    processType: 'open';
+} & PublicationTenderDatesOpen) | ({
+    processType: 'selective';
+} & PublicationTenderDatesSelective) | ({
+    processType: 'invitation';
+} & PublicationTenderDatesInvitation);
 
-export type PublicationTenderCriteriaOpen =
-	PublicationTenderCriteriaInterface & {
-		processType: 'open';
-	};
+export type PublicationTenderCriteriaOpen = PublicationTenderCriteriaInterface & {
+    processType: 'open';
+};
 
 /**
  * Interface / parent that is implemented by the  PublicationTenderCriteria* models, used for code generation.
  *
  */
 export type PublicationTenderCriteriaInterface = PublicationBaseCriteria & {
-	processType: PubProcessType;
-	orderType: PubOrderType;
+    processType: PubProcessType;
+    orderType: PubOrderType;
 };
 
-export type PublicationTenderCriteriaSelective =
-	PublicationTenderCriteriaInterface & {
-		processType: 'selective';
-	} & PublicationBaseCriteriaSelective;
+export type PublicationTenderCriteriaSelective = PublicationTenderCriteriaInterface & {
+    processType: 'selective';
+} & PublicationBaseCriteriaSelective;
 
 /**
  * @deprecated
  */
-export type PublicationTenderCriteriaInvitation =
-	PublicationTenderCriteriaInterface & {
-		processType: 'invitation';
-	};
+export type PublicationTenderCriteriaInvitation = PublicationTenderCriteriaInterface & {
+    processType: 'invitation';
+};
 
 /**
  * PublicationTenderCriteria
  * Uses the `processType` to discriminate between the models of the open, selective or invitation process.
  *
  */
-export type PublicationTenderCriteria =
-	| ({
-			processType: 'open';
-	  } & PublicationTenderCriteriaOpen)
-	| ({
-			processType: 'selective';
-	  } & PublicationTenderCriteriaSelective)
-	| ({
-			processType: 'invitation';
-	  } & PublicationTenderCriteriaInvitation);
+export type PublicationTenderCriteria = ({
+    processType: 'open';
+} & PublicationTenderCriteriaOpen) | ({
+    processType: 'selective';
+} & PublicationTenderCriteriaSelective) | ({
+    processType: 'invitation';
+} & PublicationTenderCriteriaInvitation);
 
 export type PublicationTenderDetail = PublicationDetailInterface & {
-	type: 'tender';
-} & PublicationDetailBaseDescription &
-	PublicationDetailWithCorrection &
-	DetailWithOptionalPubReference &
-	DetailWithInvitedVendors & {
-		'project-info': PublicationTenderProjectInfo;
-		lots?: PublicationTenderLot[];
-		procurement: PublicationTenderProcurement;
-		terms: PublicationTenderTerms;
-		dates: PublicationTenderDates;
-		criteria?: PublicationTenderCriteria;
-	};
+    type: 'tender';
+} & PublicationDetailBaseDescription & PublicationDetailWithCorrection & DetailWithOptionalPubReference & DetailWithInvitedVendors & {
+    'project-info': PublicationTenderProjectInfo;
+    lots?: Array<PublicationTenderLot>;
+    procurement: PublicationTenderProcurement;
+    terms: PublicationTenderTerms;
+    dates: PublicationTenderDates;
+    criteria?: PublicationTenderCriteria;
+};
 
 export type PublicationProjectInfoOpen = PublicationProjectInfoInterface & {
-	processType: 'open';
+    processType: 'open';
 } & PublicationBaseProjectInfoOpen;
 
 /**
  * Interface / parent that is implemented by the  PublicationProjectInfo* models, used for code generation.
  *
  */
-export type PublicationProjectInfoInterface = PublicationBaseProjectInfo &
-	PubBaseProjectInfoPublicationLanguageProperties & {
-		processType: PubProcessType;
-	};
+export type PublicationProjectInfoInterface = PublicationBaseProjectInfo & PubBaseProjectInfoPublicationLanguageProperties & {
+    processType: PubProcessType;
+};
 
-export type PublicationProjectInfoSelective =
-	PublicationProjectInfoInterface & {
-		processType: 'selective';
-	} & PublicationBaseProjectInfoSelective;
+export type PublicationProjectInfoSelective = PublicationProjectInfoInterface & {
+    processType: 'selective';
+} & PublicationBaseProjectInfoSelective;
 
 /**
  * @deprecated
  */
-export type PublicationProjectInfoInvitation =
-	PublicationProjectInfoInterface & {
-		processType: 'invitation';
-	};
+export type PublicationProjectInfoInvitation = PublicationProjectInfoInterface & {
+    processType: 'invitation';
+};
 
 /**
  * PublicationProjectInfo
  * Uses the `processType` to discriminate between the models of the open, selective or invitation process.
  *
  */
-export type PublicationProjectInfo =
-	| ({
-			processType: 'open';
-	  } & PublicationProjectInfoOpen)
-	| ({
-			processType: 'selective';
-	  } & PublicationProjectInfoSelective)
-	| ({
-			processType: 'invitation';
-	  } & PublicationProjectInfoInvitation);
+export type PublicationProjectInfo = ({
+    processType: 'open';
+} & PublicationProjectInfoOpen) | ({
+    processType: 'selective';
+} & PublicationProjectInfoSelective) | ({
+    processType: 'invitation';
+} & PublicationProjectInfoInvitation);
 
-export type PublicationCompetitionLot = PublicationBaseLot &
-	PublicationBaseCodes & {
-		processType: PubProcessType;
-		procurementTopic: PubProcurementTopic;
-		oagCodes: OagCode[];
-		constructionCategory: PubConstructionCategoryOptional;
-	};
+export type PublicationCompetitionLot = PublicationBaseLot & PublicationBaseCodes & {
+    processType: PubProcessType;
+    procurementTopic: PubProcurementTopic;
+    oagCodes: Array<OagCode>;
+    constructionCategory: PubConstructionCategoryOptional;
+};
 
 export type PublicationOagCodes = {
-	oagCodes?: OagCode[];
+    oagCodes?: Array<OagCode>;
 };
 
 export type PublicationCpvCode = {
-	cpvCode?: CpvCode;
+    cpvCode?: CpvCode;
 };
 
 /**
@@ -3711,17 +3267,14 @@ export type PublicationCpvCode = {
  * - `constructionCategory`
  *
  */
-export type PublicationProcurement = PublicationBaseProcurement &
-	PublicationBaseCodes &
-	PublicationOagCodes &
-	PublicationCpvCode & {
-		processType: PubProcessType;
-		procurementTopic?: PubProcurementTopic;
-		constructionCategory?: PubConstructionCategoryOptional;
-	};
+export type PublicationProcurement = PublicationBaseProcurement & PublicationBaseCodes & PublicationOagCodes & PublicationCpvCode & {
+    processType: PubProcessType;
+    procurementTopic?: PubProcurementTopic;
+    constructionCategory?: PubConstructionCategoryOptional;
+};
 
 export type PublicationTermsExtendedOpen = PublicationTermsExtendedInterface & {
-	processType: 'open';
+    processType: 'open';
 } & PubBaseTermsOpenSelective;
 
 /**
@@ -3729,46 +3282,43 @@ export type PublicationTermsExtendedOpen = PublicationTermsExtendedInterface & {
  * Used for types study and competition.
  *
  */
-export type PublicationTermsExtendedInterface = PublicationBaseTerms &
-	PublicationBaseTermsExtended & {
-		processType: PubProcessType;
-	};
+export type PublicationTermsExtendedInterface = PublicationBaseTerms & PublicationBaseTermsExtended & {
+    processType: PubProcessType;
+};
 
-export type PublicationTermsExtendedSelective =
-	PublicationTermsExtendedInterface & {
-		processType: 'selective';
-	} & PubBaseTermsOpenSelective;
+export type PublicationTermsExtendedSelective = PublicationTermsExtendedInterface & {
+    processType: 'selective';
+} & PubBaseTermsOpenSelective;
 
 /**
  * @deprecated
  */
-export type PublicationTermsExtendedInvitation =
-	PublicationTermsExtendedInterface & {
-		processType: 'invitation';
-	};
+export type PublicationTermsExtendedInvitation = PublicationTermsExtendedInterface & {
+    processType: 'invitation';
+};
 
 export type VatType = 'no_vat' | 'full' | 'special' | 'reduced' | 'foreign_vat';
 
 export type PriceWithVat = Price & {
-	vatType?: VatType;
+    vatType?: VatType;
 };
 
 export type PubBaseTermsExtended = {
-	totalPrice?: PriceWithVat;
-	totalPriceNote?: Translation;
-	/**
-	 * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft/publication
-	 * - Can be `not_specified` in case of an advance-notice pub-draft/publication
-	 *
-	 */
-	purchasesAllowed?: ThreeValuedSelection;
-	purchaseMaxShareOfTotalPrice?: number;
-	purchaseNote?: Translation;
-	compensation?: Price;
-	compensationNote?: Translation;
-	independentExperts?: Translation;
-	bindingJuryDecision?: Translation;
-	anonymity?: Translation;
+    totalPrice?: PriceWithVat;
+    totalPriceNote?: Translation;
+    /**
+     * - Needs to be `yes` or `no` in case of a call-for-bids pub-draft/publication
+     * - Can be `not_specified` in case of an advance-notice pub-draft/publication
+     *
+     */
+    purchasesAllowed?: ThreeValuedSelection;
+    purchaseMaxShareOfTotalPrice?: number;
+    purchaseNote?: Translation;
+    compensation?: Price;
+    compensationNote?: Translation;
+    independentExperts?: Translation;
+    bindingJuryDecision?: Translation;
+    anonymity?: Translation;
 };
 
 export type PublicationBaseTermsExtended = PubBaseTermsExtended;
@@ -3780,40 +3330,35 @@ export type PublicationBaseTermsExtended = PubBaseTermsExtended;
  * Used for types study and competition.
  *
  */
-export type PublicationTermsExtended =
-	| ({
-			processType: 'open';
-	  } & PublicationTermsExtendedOpen)
-	| ({
-			processType: 'selective';
-	  } & PublicationTermsExtendedSelective)
-	| ({
-			processType: 'invitation';
-	  } & PublicationTermsExtendedInvitation);
+export type PublicationTermsExtended = ({
+    processType: 'open';
+} & PublicationTermsExtendedOpen) | ({
+    processType: 'selective';
+} & PublicationTermsExtendedSelective) | ({
+    processType: 'invitation';
+} & PublicationTermsExtendedInvitation);
 
 export type PublicationDatesOpen = PublicationDatesInterface & {
-	processType: 'open';
-} & PubBaseCallForBidsDates &
-	PublicationBaseDatesOpen;
+    processType: 'open';
+} & PubBaseCallForBidsDates & PublicationBaseDatesOpen;
 
 /**
  * Interface / parent that is implemented by the  PublicationDates* models, used for code generation.
  *
  */
 export type PublicationDatesInterface = PublicationBaseDatesAppointments & {
-	processType: PubProcessType;
+    processType: PubProcessType;
 };
 
 export type PublicationDatesSelective = PublicationDatesInterface & {
-	processType: 'selective';
-} & PubBaseCallForBidsDates &
-	PublicationBaseDatesSelective;
+    processType: 'selective';
+} & PubBaseCallForBidsDates & PublicationBaseDatesSelective;
 
 /**
  * @deprecated
  */
 export type PublicationDatesInvitation = PublicationDatesInterface & {
-	processType: 'invitation';
+    processType: 'invitation';
 } & PublicationBaseDatesInvitation;
 
 /**
@@ -3821,19 +3366,16 @@ export type PublicationDatesInvitation = PublicationDatesInterface & {
  * Uses the `processType` to discriminate between the models of the open, selective or invitation process.
  *
  */
-export type PublicationDates =
-	| ({
-			processType: 'open';
-	  } & PublicationDatesOpen)
-	| ({
-			processType: 'selective';
-	  } & PublicationDatesSelective)
-	| ({
-			processType: 'invitation';
-	  } & PublicationDatesInvitation);
+export type PublicationDates = ({
+    processType: 'open';
+} & PublicationDatesOpen) | ({
+    processType: 'selective';
+} & PublicationDatesSelective) | ({
+    processType: 'invitation';
+} & PublicationDatesInvitation);
 
 export type PublicationCriteriaOpen = PublicationCriteriaInterface & {
-	processType: 'open';
+    processType: 'open';
 };
 
 /**
@@ -3841,18 +3383,18 @@ export type PublicationCriteriaOpen = PublicationCriteriaInterface & {
  *
  */
 export type PublicationCriteriaInterface = PublicationBaseCriteria & {
-	processType: PubProcessType;
+    processType: PubProcessType;
 };
 
 export type PublicationCriteriaSelective = PublicationCriteriaInterface & {
-	processType: 'selective';
+    processType: 'selective';
 } & PublicationBaseCriteriaSelective;
 
 /**
  * @deprecated
  */
 export type PublicationCriteriaInvitation = PublicationCriteriaInterface & {
-	processType: 'invitation';
+    processType: 'invitation';
 };
 
 /**
@@ -3860,59 +3402,49 @@ export type PublicationCriteriaInvitation = PublicationCriteriaInterface & {
  * Uses the `processType` to discriminate between the models of the open, selective or invitation process.
  *
  */
-export type PublicationCriteria =
-	| ({
-			processType: 'open';
-	  } & PublicationCriteriaOpen)
-	| ({
-			processType: 'selective';
-	  } & PublicationCriteriaSelective)
-	| ({
-			processType: 'invitation';
-	  } & PublicationCriteriaInvitation);
+export type PublicationCriteria = ({
+    processType: 'open';
+} & PublicationCriteriaOpen) | ({
+    processType: 'selective';
+} & PublicationCriteriaSelective) | ({
+    processType: 'invitation';
+} & PublicationCriteriaInvitation);
 
 export type PublicationCompetitionDetail = PublicationDetailInterface & {
-	type: 'competition';
-} & PublicationDetailBaseDescription &
-	PublicationDetailWithCorrection &
-	DetailWithOptionalPubReference &
-	DetailWithInvitedVendors & {
-		'project-info': PublicationProjectInfo;
-		lots?: PublicationCompetitionLot[];
-		procurement: PublicationProcurement;
-		terms: PublicationTermsExtended;
-		dates: PublicationDates;
-		criteria?: PublicationCriteria;
-	};
+    type: 'competition';
+} & PublicationDetailBaseDescription & PublicationDetailWithCorrection & DetailWithOptionalPubReference & DetailWithInvitedVendors & {
+    'project-info': PublicationProjectInfo;
+    lots?: Array<PublicationCompetitionLot>;
+    procurement: PublicationProcurement;
+    terms: PublicationTermsExtended;
+    dates: PublicationDates;
+    criteria?: PublicationCriteria;
+};
 
-export type PublicationStudyContractLot = PublicationBaseLot &
-	PublicationBaseCodes & {
-		processType: PubProcessType;
-		procurementTopic: PubProcurementTopic;
-		oagCodes: OagCode[];
-		constructionCategory: PubConstructionCategoryOptional;
-	};
+export type PublicationStudyContractLot = PublicationBaseLot & PublicationBaseCodes & {
+    processType: PubProcessType;
+    procurementTopic: PubProcurementTopic;
+    oagCodes: Array<OagCode>;
+    constructionCategory: PubConstructionCategoryOptional;
+};
 
 export type PublicationStudyContractDetail = PublicationDetailInterface & {
-	type: 'study_contract';
-} & PublicationDetailBaseDescription &
-	PublicationDetailWithCorrection &
-	DetailWithOptionalPubReference &
-	DetailWithInvitedVendors & {
-		'project-info': PublicationProjectInfo;
-		lots?: PublicationStudyContractLot[];
-		procurement: PublicationProcurement;
-		terms: PublicationTermsExtended;
-		dates: PublicationDates;
-		criteria?: PublicationCriteria;
-	};
+    type: 'study_contract';
+} & PublicationDetailBaseDescription & PublicationDetailWithCorrection & DetailWithOptionalPubReference & DetailWithInvitedVendors & {
+    'project-info': PublicationProjectInfo;
+    lots?: Array<PublicationStudyContractLot>;
+    procurement: PublicationProcurement;
+    terms: PublicationTermsExtended;
+    dates: PublicationDates;
+    criteria?: PublicationCriteria;
+};
 
 export type PublicationDetailWithLotReference = {
-	/**
-	 * Lot information if this publication referred to a lot or null if the project was created without lots
-	 *
-	 */
-	lot?: PublicationLotDescription;
+    /**
+     * Lot information if this publication referred to a lot or null if the project was created without lots
+     *
+     */
+    lot?: PublicationLotDescription;
 };
 
 export type DetailWithPubReference = DetailWithOptionalPubReference;
@@ -3920,77 +3452,67 @@ export type DetailWithPubReference = DetailWithOptionalPubReference;
 export type ParticipantSelectionCommunication = 'individual' | 'simap';
 
 export type PublicationAwardedVendorBase = {
-	vendorId: string;
-	readonly vendorName: string;
-	vendorAddress?: Address;
+    vendorId: string;
+    readonly vendorName: string;
+    vendorAddress?: Address;
 };
 
-export type PublicationParticipantSelectionQualifiedVendor =
-	PublicationAwardedVendorBase;
+export type PublicationParticipantSelectionQualifiedVendor = PublicationAwardedVendorBase;
 
 export type PublicationParticipantSelectionInfo = {
-	participantSelectionLimitation: ThreeValuedSelection;
-	participantSelectionNote?: Translation;
-	participantSelectionCommunication: ParticipantSelectionCommunication;
-	remediesNotice?: Translation;
-	/**
-	 * List of vendors which selected to be able to provide an offer for this publication
-	 *
-	 */
-	vendors: PublicationParticipantSelectionQualifiedVendor[];
+    participantSelectionLimitation: ThreeValuedSelection;
+    participantSelectionNote?: Translation;
+    participantSelectionCommunication: ParticipantSelectionCommunication;
+    remediesNotice?: Translation;
+    /**
+     * List of vendors which selected to be able to provide an offer for this publication
+     *
+     */
+    vendors: Array<PublicationParticipantSelectionQualifiedVendor>;
 };
 
-export type PublicationParticipantSelectionDetail =
-	PublicationDetailInterface & {
-		type: 'participant_selection';
-	} & PublicationDetailWithLotReference &
-		DetailWithPubReference & {
-			'project-info': PubBaseProjectInfoAddress;
-			procurement: PublicationDirectAwardProcurement;
-			'participant-selection': PublicationParticipantSelectionInfo;
-		};
+export type PublicationParticipantSelectionDetail = PublicationDetailInterface & {
+    type: 'participant_selection';
+} & PublicationDetailWithLotReference & DetailWithPubReference & {
+    'project-info': PubBaseProjectInfoAddress;
+    procurement: PublicationDirectAwardProcurement;
+    'participant-selection': PublicationParticipantSelectionInfo;
+};
 
 export type PublicationSelectiveOfferingPhaseNotice = {
-	notice?: TranslationSanitizedHtml;
+    notice?: TranslationSanitizedHtml;
 };
 
 export type PublicationBaseDates = PubBaseDates;
 
-export type PublicationSelectiveOfferingPhaseDates =
-	PublicationBaseDatesAppointments &
-		PublicationBaseDates &
-		PublicationBaseDatesOpen;
+export type PublicationSelectiveOfferingPhaseDates = PublicationBaseDatesAppointments & PublicationBaseDates & PublicationBaseDatesOpen;
 
-export type PublicationSelectiveOfferingPhaseCriteria =
-	PublicationBaseAwardCriteria;
+export type PublicationSelectiveOfferingPhaseCriteria = PublicationBaseAwardCriteria;
 
-export type PublicationSelectiveOfferingPhaseDetail =
-	PublicationDetailInterface & {
-		type: 'selective_offering_phase';
-	} & PublicationDetailWithLotReference &
-		PublicationDetailWithCorrection & {
-			'project-info'?: PubBaseProjectInfoAddress;
-			notice: PublicationSelectiveOfferingPhaseNotice;
-			dates: PublicationSelectiveOfferingPhaseDates;
-			criteria: PublicationSelectiveOfferingPhaseCriteria;
-		};
+export type PublicationSelectiveOfferingPhaseDetail = PublicationDetailInterface & {
+    type: 'selective_offering_phase';
+} & PublicationDetailWithLotReference & PublicationDetailWithCorrection & {
+    'project-info'?: PubBaseProjectInfoAddress;
+    notice: PublicationSelectiveOfferingPhaseNotice;
+    dates: PublicationSelectiveOfferingPhaseDates;
+    criteria: PublicationSelectiveOfferingPhaseCriteria;
+};
 
-export type PubLotProcurement = PubDraftLotDescription &
-	PubProcurementOrderDescription;
+export type PubLotProcurement = PubDraftLotDescription & PubProcurementOrderDescription;
 
 export type PubRevocationDetail = {
-	procurement: PubProcurementOrderDescription;
-	/**
-	 * Lot specific procurement and lot information of the revoked publication. Only provided in case of projects
-	 * with lotsType `with` and either an array of all lot infomrations of the revoked
-	 * publication (advance_mnotice) or an array of a single lot in case the publication references a specific lot (award, participant_selection).
-	 *
-	 */
-	lots: PubLotProcurement[];
+    procurement: PubProcurementOrderDescription;
+    /**
+     * Lot specific procurement and lot information of the revoked publication. Only provided in case of projects
+     * with lotsType `with` and either an array of all lot infomrations of the revoked
+     * publication (advance_mnotice) or an array of a single lot in case the publication references a specific lot (award, participant_selection).
+     *
+     */
+    lots: Array<PubLotProcurement>;
 };
 
 export type PublicationTermsRemedies = {
-	remediesNotice?: Translation;
+    remediesNotice?: Translation;
 };
 
 /**
@@ -3999,18 +3521,17 @@ export type PublicationTermsRemedies = {
  *
  */
 export type PublicationRevocationInfo = PublicationTermsRemedies & {
-	publicationDate: string;
-	reason: Translation;
-	remarks?: Translation;
+    publicationDate: string;
+    reason: Translation;
+    remarks?: Translation;
 };
 
 export type PublicationRevocationDetail = PublicationDetailInterface & {
-	type: 'revocation';
-} & DetailWithPubReference &
-	PubRevocationDetail & {
-		revocation: PublicationRevocationInfo;
-		'project-info': PubBaseProjectInfoAddress;
-	};
+    type: 'revocation';
+} & DetailWithPubReference & PubRevocationDetail & {
+    revocation: PublicationRevocationInfo;
+    'project-info': PubBaseProjectInfoAddress;
+};
 
 /**
  * Abandonment reasons according to the swiss federal PPA law.
@@ -4020,58 +3541,47 @@ export type PublicationRevocationDetail = PublicationDetailInterface & {
  * [Art. 43 Abandonment](https://www.fedlex.admin.ch/eli/cc/2020/126/de#art_43)
  *
  */
-export type AbandonmentReason =
-	| 'a_abandon_due_to_valid_reason'
-	| 'b_no_offer_fulfills_requirements'
-	| 'c_due_to_changed_framework_conditions'
-	| 'd_offers_do_not_allow_economical_procurement'
-	| 'e_unlawful_competition_agreements'
-	| 'f_due_to_changed_requirements'
-	| 'g_other';
+export type AbandonmentReason = 'a_abandon_due_to_valid_reason' | 'b_no_offer_fulfills_requirements' | 'c_due_to_changed_framework_conditions' | 'd_offers_do_not_allow_economical_procurement' | 'e_unlawful_competition_agreements' | 'f_due_to_changed_requirements' | 'g_other';
 
 export type PubAbandonmentInfo = {
-	publicationDate?: string;
-	/**
-	 * The reason why the pub-draft/publication is abandoned.
-	 * If the value for reason is `g_other` then the field `otherReason` has to contain additional text with details about the abandonment.
-	 *
-	 */
-	reasons?: AbandonmentReason[];
-	/**
-	 * Additional text detailing why the  pub-draft/publication is abandoned.
-	 * This field is required when in the field `reason` the value `g_other` was selected.
-	 *
-	 */
-	otherReason?: Translation;
-	remarks?: Translation;
+    publicationDate?: string;
+    /**
+     * The reason why the pub-draft/publication is abandoned.
+     * If the value for reason is `g_other` then the field `otherReason` has to contain additional text with details about the abandonment.
+     *
+     */
+    reasons?: Array<AbandonmentReason>;
+    /**
+     * Additional text detailing why the  pub-draft/publication is abandoned.
+     * This field is required when in the field `reason` the value `g_other` was selected.
+     *
+     */
+    otherReason?: Translation;
+    remarks?: Translation;
 };
 
-export type PublicationAbandonmentInfo = PublicationTermsRemedies &
-	PubAbandonmentInfo;
+export type PublicationAbandonmentInfo = PublicationTermsRemedies & PubAbandonmentInfo;
 
 export type PublicationAbandonmentDetail = PublicationDetailInterface & {
-	type: 'abandonment';
+    type: 'abandonment';
 } & {
-	abandonment: PublicationAbandonmentInfo;
-	/**
-	 * The lot which was abandoned or null in case the whole project was abandoned which is always the case if
-	 * the project was created without lots
-	 *
-	 */
-	abandonedLot?: PublicationLotDescription;
-	'project-info': PubBaseProjectInfoAddress;
+    abandonment: PublicationAbandonmentInfo;
+    /**
+     * The lot which was abandoned or null in case the whole project was abandoned which is always the case if
+     * the project was created without lots
+     *
+     */
+    abandonedLot?: PublicationLotDescription;
+    'project-info': PubBaseProjectInfoAddress;
 };
 
-export type PublicationAdvanceNoticeDetailDiscriminator =
-	| ({
-			projectType: 'competition';
-	  } & PublicationCompetitionDetail)
-	| ({
-			projectType: 'study_contract';
-	  } & PublicationStudyContractDetail)
-	| ({
-			projectType: 'tender';
-	  } & PublicationTenderDetail);
+export type PublicationAdvanceNoticeDetailDiscriminator = ({
+    projectType: 'competition';
+} & PublicationCompetitionDetail) | ({
+    projectType: 'study_contract';
+} & PublicationStudyContractDetail) | ({
+    projectType: 'tender';
+} & PublicationTenderDetail);
 
 /**
  * Model for the rfi project information
@@ -4081,23 +3591,18 @@ export type PublicationRfiProjectInfo = PublicationBaseProjectInfo;
 /**
  * Model for the rfi dates
  */
-export type PublicationRfiDates = PubBaseCallForBidsDates &
-	PublicationBaseDatesAppointments;
+export type PublicationRfiDates = PubBaseCallForBidsDates & PublicationBaseDatesAppointments;
 
 export type PublicationCpcCode = {
-	cpcCode?: CpcCode;
+    cpcCode?: CpcCode;
 };
 
 /**
  * Model for the rfi procurement information
  */
-export type PublicationRfiProcurement = PublicationBaseCodes &
-	PublicationOagCodes &
-	PublicationCpvCode &
-	PublicationCpcCode &
-	PubBaseProcurement & {
-		orderAddress: PubProcurementAddress;
-	};
+export type PublicationRfiProcurement = PublicationBaseCodes & PublicationOagCodes & PublicationCpvCode & PublicationCpcCode & PubBaseProcurement & {
+    orderAddress: PubProcurementAddress;
+};
 
 /**
  * Model for the rfi terms
@@ -4105,204 +3610,184 @@ export type PublicationRfiProcurement = PublicationBaseCodes &
 export type PublicationRfiTerms = PubBaseMinimalTerms;
 
 export type PublicationRfiDetail = PublicationDetailInterface & {
-	type: 'request_for_information';
-} & PublicationDetailWithCorrection &
-	DetailWithOptionalPubReference & {
-		'project-info': PublicationRfiProjectInfo;
-		dates: PublicationRfiDates;
-		procurement: PublicationRfiProcurement;
-		terms: PublicationRfiTerms;
-	};
+    type: 'request_for_information';
+} & PublicationDetailWithCorrection & DetailWithOptionalPubReference & {
+    'project-info': PublicationRfiProjectInfo;
+    dates: PublicationRfiDates;
+    procurement: PublicationRfiProcurement;
+    terms: PublicationRfiTerms;
+};
 
 export type PublicationAwardBase = PublicationAwardBaseInterface & {
-	type?: 'award';
+    type?: 'award';
 } & PubAwardBase;
 
 export type PublicationAwardBaseInterface = PublicationBaseInterface & {
-	type?: 'PublicationAwardBaseInterface';
+    type?: 'PublicationAwardBaseInterface';
 } & PubAwardBaseInterface;
 
 export type PubDirectAwardBase = {
-	/**
-	 * True if the direct award was created as a followup of an existing award, is loosely coupled.
-	 *
-	 */
-	followupAward: boolean;
+    /**
+     * True if the direct award was created as a followup of an existing award, is loosely coupled.
+     *
+     */
+    followupAward: boolean;
 };
 
 export type AllSubKinds = {
-	orderType?: PubOrderType;
-	competitionType?: PubCompetitionType;
-	studyType?: PubStudyType;
+    orderType?: PubOrderType;
+    competitionType?: PubCompetitionType;
+    studyType?: PubStudyType;
 };
 
 export type PublicationDirectAwardBase = PublicationAwardBaseInterface & {
-	type?: 'direct_award';
-} & PubDirectAwardBase &
-	AllSubKinds;
+    type?: 'direct_award';
+} & PubDirectAwardBase & AllSubKinds;
 
 export type PublicationBaseInterface = PubData & {
-	/**
-	 * List of publishers this publication was published to.
-	 */
-	publishers: string[];
+    /**
+     * list of publishers this publication was published to.
+     */
+    publishers: Array<string>;
 };
 
 export type PublicationLotLimitationData = {
-	/**
-	 * Indicator if there is a limitation for vendors, for how many lots in the project a vendor can make an offer.
-	 *
-	 * Only used when the pub's `lotsType` is `with`.
-	 *
-	 * Set to `null` for no limitation.
-	 *
-	 */
-	participantLotsLimitation?: number;
-	participantLotsLimitationNote?: Translation;
+    /**
+     * Indicator if there is a limitation for vendors, for how many lots in the project a vendor can make an offer.
+     *
+     * Only used when the pub's `lotsType` is `with`.
+     *
+     * Set to `null` for no limitation.
+     *
+     */
+    participantLotsLimitation?: number;
+    participantLotsLimitationNote?: Translation;
 };
 
 export type PubCorrectionBase = {
-	/**
-	 * True if this pub draft is a correction
-	 *
-	 */
-	corrected: boolean;
-	correctedPubId?: string;
-	/**
-	 * The publication date of the initially published publication. If provided use this field to validate other fields against it.
-	 *
-	 */
-	initialPublicationDate?: string;
+    /**
+     * True if this pub draft is a correction
+     *
+     */
+    corrected: boolean;
+    correctedPubId?: string;
+    /**
+     * The publication date of the initially published publication. If provided use this field to validate other fields against it.
+     *
+     */
+    initialPublicationDate?: string;
 };
 
 export type PublicationCorrectionBase = PubCorrectionBase;
 
 export type ReferencingPub = {
-	/**
-	 * Reference to publication this follow-up publication was created for.
-	 *
-	 */
-	referencingPubId?: string;
+    /**
+     * Reference to publication this follow-up publication was created for.
+     *
+     */
+    referencingPubId?: string;
 };
 
 export type PublicationTenderBase = PublicationBaseInterface & {
-	type?: 'tender';
-} & PublicationLotLimitationData &
-	PublicationCorrectionBase &
-	ReferencingPub &
-	PublicationCpvCode & {
-		orderType: PubOrderType;
-		lots: PublicationLotDescription[];
-		publicationTed: boolean;
-		/**
-		 * Only provided when the `orderType` is `service`, value is optional.
-		 *
-		 */
-		cpcCode?: CpcCode;
-	};
+    type?: 'tender';
+} & PublicationLotLimitationData & PublicationCorrectionBase & ReferencingPub & PublicationCpvCode & {
+    orderType: PubOrderType;
+    lots: Array<PublicationLotDescription>;
+    publicationTed: boolean;
+    /**
+     * Only provided when the `orderType` is `service`, value is optional.
+     *
+     */
+    cpcCode?: CpcCode;
+};
 
 export type PublicationCompetitionBase = PublicationBaseInterface & {
-	type?: 'competition';
-} & PublicationLotLimitationData &
-	PublicationCorrectionBase &
-	ReferencingPub &
-	PublicationCpvCode & {
-		competitionType: PubCompetitionType;
-		lots: PublicationLotDescription[];
-	};
+    type?: 'competition';
+} & PublicationLotLimitationData & PublicationCorrectionBase & ReferencingPub & PublicationCpvCode & {
+    competitionType: PubCompetitionType;
+    lots: Array<PublicationLotDescription>;
+};
 
 export type PublicationStudyContractBase = PublicationBaseInterface & {
-	type?: 'study_contract';
-} & PublicationLotLimitationData &
-	PublicationCorrectionBase &
-	PublicationCpvCode &
-	ReferencingPub & {
-		studyType: PubStudyType;
-		lots: PublicationLotDescription[];
-	};
+    type?: 'study_contract';
+} & PublicationLotLimitationData & PublicationCorrectionBase & PublicationCpvCode & ReferencingPub & {
+    studyType: PubStudyType;
+    lots: Array<PublicationLotDescription>;
+};
 
-export type PublicationAdvanceNoticeDiscriminator =
-	| ({
-			projectType: 'competition';
-	  } & PublicationCompetitionBase)
-	| ({
-			projectType: 'study_contract';
-	  } & PublicationStudyContractBase)
-	| ({
-			projectType: 'tender';
-	  } & PublicationTenderBase);
+export type PublicationAdvanceNoticeDiscriminator = ({
+    projectType: 'competition';
+} & PublicationCompetitionBase) | ({
+    projectType: 'study_contract';
+} & PublicationStudyContractBase) | ({
+    projectType: 'tender';
+} & PublicationTenderBase);
 
 /**
  * @deprecated
  */
 export type PublicationRfiBase = PublicationBaseInterface & {
-	type?: 'request_for_information';
-} & PublicationCorrectionBase &
-	PublicationCpvCode &
-	PublicationCpcCode;
+    type?: 'request_for_information';
+} & PublicationCorrectionBase & PublicationCpvCode & PublicationCpcCode;
 
 export type ReferencingLot = {
-	/**
-	 * If the referencing publication is with lots, then this is the id of the lot for which this follow-up publication was created for.
-	 *
-	 */
-	referencingLotId?: string;
+    /**
+     * If the referencing publication is with lots, then this is the id of the lot for which this follow-up publication was created for.
+     *
+     */
+    referencingLotId?: string;
 };
 
 export type PublicationAbandonmentBase = PublicationBaseInterface & {
-	type?: 'abandonment';
-} & ReferencingPub &
-	ReferencingLot & {
-		publicationTed: boolean;
-	};
+    type?: 'abandonment';
+} & ReferencingPub & ReferencingLot & {
+    publicationTed: boolean;
+};
 
 export type PublicationRevocationBase = PublicationBaseInterface & {
-	type?: 'revocation';
+    type?: 'revocation';
 } & ReferencingPub & {
-		publicationTed: boolean;
-	};
+    publicationTed: boolean;
+};
 
 export type PublicationParticipantSelectionBase = PublicationBaseInterface & {
-	type?: 'participant_selection';
-} & ReferencingPub &
-	ReferencingLot;
+    type?: 'participant_selection';
+} & ReferencingPub & ReferencingLot;
 
 export type PublicationSelectiveOfferingPhaseBase = PublicationBaseInterface & {
-	type?: 'selective_offering_phase';
-} & PublicationCorrectionBase &
-	ReferencingPub &
-	ReferencingLot;
+    type?: 'selective_offering_phase';
+} & PublicationCorrectionBase & ReferencingPub & ReferencingLot;
 
 export type TranslationType = 'summary' | 'complete';
 
 export type TranslationLanguage = {
-	language: SystemLanguage;
-	type: TranslationType;
+    language: SystemLanguage;
+    type: TranslationType;
 };
 
 export type PubData = {
-	id: string;
-	title: Translation;
-	projectType: PubProjectType;
-	processType: PubProcessType;
-	lotsType: PubLotsType;
-	stateContractArea: boolean;
-	type: PubType;
-	/**
-	 * Unique publication number aka "Meldungsnummer".
-	 *
-	 */
-	publicationNumber: string;
-	projectId: string;
-	projectNumber?: string;
-	publicationDate?: string;
-	creationLanguage: SystemLanguage;
-	/**
-	 * The localization languages besides the `creationLanguage`
-	 *
-	 */
-	translationLanguages: TranslationLanguage[];
-	procOfficeId?: string;
+    id: string;
+    title: Translation;
+    projectType: PubProjectType;
+    processType: PubProcessType;
+    lotsType: PubLotsType;
+    stateContractArea: boolean;
+    type: PubType;
+    /**
+     * Unique publication number aka "Meldungsnummer".
+     *
+     */
+    publicationNumber: string;
+    projectId: string;
+    projectNumber?: string;
+    publicationDate?: string;
+    creationLanguage: SystemLanguage;
+    /**
+     * the localization languages besides the `creationLanguage`
+     *
+     */
+    translationLanguages: Array<TranslationLanguage>;
+    procOfficeId?: string;
 };
 
 /**
@@ -4317,300 +3802,245 @@ export type PubData = {
 export type PubAwardBaseInterface = ReferencingPub & ReferencingLot;
 
 export type PubAwardBase = {
-	/**
-	 * Only `tender` publication can be sent to TED, can be true when `pub_type` of publication referred by `referencingPubId`? is `tender`
-	 * else false
-	 *
-	 */
-	publicationTed: boolean;
+    /**
+     * Only `tender` publication can be sent to TED, can be true when `pub_type` of publication referred by `referencingPubId`? is `tender`
+     * else false
+     *
+     */
+    publicationTed: boolean;
 };
 
-export type PublicationBase =
-	| ({
-			type: 'award';
-	  } & PublicationAwardBase)
-	| ({
-			type: 'tender';
-	  } & PublicationTenderBase)
-	| ({
-			type: 'competition';
-	  } & PublicationCompetitionBase)
-	| ({
-			type: 'study_contract';
-	  } & PublicationStudyContractBase)
-	| ({
-			type: 'direct_award';
-	  } & PublicationDirectAwardBase)
-	| ({
-			type: 'advance_notice';
-	  } & PublicationAdvanceNoticeDiscriminator)
-	| ({
-			type: 'request_for_information';
-	  } & PublicationRfiBase)
-	| ({
-			type: 'abandonment';
-	  } & PublicationAbandonmentBase)
-	| ({
-			type: 'revocation';
-	  } & PublicationRevocationBase)
-	| ({
-			type: 'participant_selection';
-	  } & PublicationParticipantSelectionBase)
-	| ({
-			type: 'selective_offering_phase';
-	  } & PublicationSelectiveOfferingPhaseBase);
+export type PublicationBase = ({
+    type: 'award';
+} & PublicationAwardBase) | ({
+    type: 'tender';
+} & PublicationTenderBase) | ({
+    type: 'competition';
+} & PublicationCompetitionBase) | ({
+    type: 'study_contract';
+} & PublicationStudyContractBase) | ({
+    type: 'direct_award';
+} & PublicationDirectAwardBase) | ({
+    type: 'advance_notice';
+} & PublicationAdvanceNoticeDiscriminator) | ({
+    type: 'request_for_information';
+} & PublicationRfiBase) | ({
+    type: 'abandonment';
+} & PublicationAbandonmentBase) | ({
+    type: 'revocation';
+} & PublicationRevocationBase) | ({
+    type: 'participant_selection';
+} & PublicationParticipantSelectionBase) | ({
+    type: 'selective_offering_phase';
+} & PublicationSelectiveOfferingPhaseBase);
 
-export type PubTedStatus =
-	| 'created'
-	| 'submitted'
-	| 'published'
-	| 'rejected'
-	| 'failed';
+export type PubTedStatus = 'created' | 'submitted' | 'published' | 'rejected' | 'failed';
 
 /**
  * Reference to the related TED(Tenders Electronic Daily) publication, used when the publication is sent to and published on TED.
  *
  */
 export type PubTedReference = {
-	status: PubTedStatus;
-	/**
-	 * Direct link to the publication on the TED plattform(https://ted.europa.eu), available once it was successfully published on TED.
-	 *
-	 */
-	url?: string;
+    status: PubTedStatus;
+    /**
+     * Direct link to the publication on the TED plattform(https://ted.europa.eu), available once it was successfully published on TED.
+     *
+     */
+    url?: string;
 };
 
 export type PublicationAwardProjectInfo = {
-	title?: Translation;
-	stateContractArea?: boolean;
-	/**
-	 * Only `tender` publication can be sent to TED, can be true when `referencing_pub_type` is `tender`
-	 * else false
-	 *
-	 */
-	publicationTed?: boolean;
+    title?: Translation;
+    stateContractArea?: boolean;
+    /**
+     * Only `tender` publication can be sent to TED, can be true when `referencing_pub_type` is `tender`
+     * else false
+     *
+     */
+    publicationTed?: boolean;
 } & PubBaseProjectInfoAddress;
 
-export type TotalPriceSelection =
-	| 'price_of_selected_offers'
-	| 'price_range_of_selected_offers'
-	| 'no_specification_according_to_ppa_law';
+export type TotalPriceSelection = 'price_of_selected_offers' | 'price_range_of_selected_offers' | 'no_specification_according_to_ppa_law';
 
 export type PriceInformation = {
-	currency?: Currency;
-	vatType?: VatType;
+    currency?: Currency;
+    vatType?: VatType;
 };
 
 export type NumberRange = {
-	from?: number;
-	to?: number;
+    from?: number;
+    to?: number;
 };
 
 export type PriceRangeWithVat = PriceInformation & {
-	range?: NumberRange;
+    range?: NumberRange;
 };
 
 export type PubAwardDecision = {
-	/**
-	 * Used in publications of type `award`.
-	 * required value for awards of projectType `tender`.
-	 *
-	 */
-	numberOfSubmissions?: number;
-	totalPriceSelection?: TotalPriceSelection;
-	totalPriceSelectionNote?: Translation;
-	totalPriceRange?: PriceRangeWithVat;
-	awardDecisionDate?: string;
-	awardDecisionWithJustification: boolean;
-	awardDecisionJustification?: Translation;
-	awardDecisionJuryDescription?: Translation;
-	awardDecisionNote?: Translation;
+    /**
+     * used in publications of type `award`.
+     * required value for awards of projectType `tender`.
+     *
+     */
+    numberOfSubmissions?: number;
+    totalPriceSelection?: TotalPriceSelection;
+    totalPriceSelectionNote?: Translation;
+    totalPriceRange?: PriceRangeWithVat;
+    awardDecisionDate?: string;
+    awardDecisionWithJustification: boolean;
+    awardDecisionJustification?: Translation;
+    awardDecisionJuryDescription?: Translation;
+    awardDecisionNote?: Translation;
 };
 
 export type PublicationAwardVendorSubmission = PublicationAwardedVendorBase & {
-	price?: PriceWithVat;
-	note?: Translation;
-	rank?: number;
+    price?: PriceWithVat;
+    note?: Translation;
+    rank?: number;
 };
 
 export type PublicationAwardDecision = PubAwardDecision & {
-	remediesNotice?: Translation;
-	/**
-	 * List of vendors which have been awarded for this publication
-	 *
-	 */
-	vendors: PublicationAwardVendorSubmission[];
+    remediesNotice?: Translation;
+    /**
+     * List of vendors which have been awarded for this publication
+     *
+     */
+    vendors: Array<PublicationAwardVendorSubmission>;
 };
 
-export type PublicationAwardTenderProcurementService =
-	PublicationAwardTenderProcurementInterface & {
-		orderType: 'service';
-	} & PublicationBaseCodes & {
-			cpcCode?: CpcCode;
-		};
+export type PublicationAwardTenderProcurementService = PublicationAwardTenderProcurementInterface & {
+    orderType: 'service';
+} & PublicationBaseCodes & {
+    cpcCode?: CpcCode;
+};
 
 /**
  * Interface / parent that is implemented by the PublicationAwardTenderProcurement* models, used for code generation.
  *
  */
-export type PublicationAwardTenderProcurementInterface =
-	PublicationAwardProcurementInterface & {
-		projectType: 'tender';
-	};
-
-export type PublicationAwardTenderProcurementConstruction =
-	PublicationAwardTenderProcurementInterface & {
-		orderType: 'construction';
-	} & PublicationBaseCodes & {
-			oagCodes: OagCode[];
-			constructionType?: PubConstructionType;
-			constructionCategory?: PubConstructionCategoryOptional;
-		};
-
-export type PublicationAwardTenderProcurementSupply =
-	PublicationAwardTenderProcurementInterface & {
-		orderType: 'supply';
-	} & {
-		additionalCpvCodes: CpvCode[];
-		supplyType?: PubSupplyType;
-	};
-
-export type PublicationAwardProcurementInterface = PubAwardProcurement & {
-	externalReference?: PubAndLotReference;
+export type PublicationAwardTenderProcurementInterface = PublicationAwardProcurementInterface & {
+    projectType: 'tender';
 };
 
-export type PublicationAwardGeneralProcurement =
-	PublicationAwardProcurementInterface & {
-		projectType: 'competition' | 'study_contract';
-	} & PublicationBaseCodes & {
-			procurementTopic?: PubProcurementTopic;
-			oagCodes: OagCode[];
-			constructionCategory?: PubConstructionCategoryOptional;
-		};
+export type PublicationAwardTenderProcurementConstruction = PublicationAwardTenderProcurementInterface & {
+    orderType: 'construction';
+} & PublicationBaseCodes & {
+    oagCodes: Array<OagCode>;
+    constructionType?: PubConstructionType;
+    constructionCategory?: PubConstructionCategoryOptional;
+};
+
+export type PublicationAwardTenderProcurementSupply = PublicationAwardTenderProcurementInterface & {
+    orderType: 'supply';
+} & {
+    additionalCpvCodes: Array<CpvCode>;
+    supplyType?: PubSupplyType;
+};
+
+export type PublicationAwardProcurementInterface = PubAwardProcurement & {
+    externalReference?: PubAndLotReference;
+};
+
+export type PublicationAwardGeneralProcurement = PublicationAwardProcurementInterface & {
+    projectType: 'competition' | 'study_contract';
+} & PublicationBaseCodes & {
+    procurementTopic?: PubProcurementTopic;
+    oagCodes: Array<OagCode>;
+    constructionCategory?: PubConstructionCategoryOptional;
+};
 
 export type PubAwardProcurement = PubDirectAwardProcurement & {
-	projectOrderDescription?: Translation;
+    projectOrderDescription?: Translation;
 };
 
 /**
  * PublicationAwardTenderProcurement
  */
-export type PublicationAwardTenderProcurement =
-	| ({
-			orderType: 'service';
-	  } & PublicationAwardTenderProcurementService)
-	| ({
-			orderType: 'construction';
-	  } & PublicationAwardTenderProcurementConstruction)
-	| ({
-			orderType: 'supply';
-	  } & PublicationAwardTenderProcurementSupply);
+export type PublicationAwardTenderProcurement = ({
+    orderType: 'service';
+} & PublicationAwardTenderProcurementService) | ({
+    orderType: 'construction';
+} & PublicationAwardTenderProcurementConstruction) | ({
+    orderType: 'supply';
+} & PublicationAwardTenderProcurementSupply);
 
 /**
  * PublicationAwardProcurement
  */
-export type PublicationAwardProcurement =
-	| ({
-			projectType: 'tender';
-	  } & PublicationAwardTenderProcurement)
-	| ({
-			projectType: 'competition' | 'study_contract';
-	  } & PublicationAwardGeneralProcurement);
+export type PublicationAwardProcurement = ({
+    projectType: 'tender';
+} & PublicationAwardTenderProcurement) | ({
+    projectType: 'competition' | 'study_contract';
+} & PublicationAwardGeneralProcurement) | ({
+    projectType: 'competition' | 'study_contract';
+} & PublicationAwardGeneralProcurement);
 
-export type PublicationDetail =
-	| ({
-			type: 'tender';
-	  } & PublicationTenderDetail)
-	| ({
-			type: 'competition';
-	  } & PublicationCompetitionDetail)
-	| ({
-			type: 'study_contract';
-	  } & PublicationStudyContractDetail)
-	| ({
-			type: 'award';
-	  } & PublicationAwardDetail)
-	| ({
-			type: 'direct_award';
-	  } & PublicationDirectAwardDetail)
-	| ({
-			type: 'participant_selection';
-	  } & PublicationParticipantSelectionDetail)
-	| ({
-			type: 'selective_offering_phase';
-	  } & PublicationSelectiveOfferingPhaseDetail)
-	| ({
-			type: 'revocation';
-	  } & PublicationRevocationDetail)
-	| ({
-			type: 'abandonment';
-	  } & PublicationAbandonmentDetail)
-	| ({
-			type: 'advance_notice';
-	  } & PublicationAdvanceNoticeDetailDiscriminator)
-	| ({
-			type: 'request_for_information';
-	  } & PublicationRfiDetail);
+export type PublicationDetail = ({
+    type: 'tender';
+} & PublicationTenderDetail) | ({
+    type: 'competition';
+} & PublicationCompetitionDetail) | ({
+    type: 'study_contract';
+} & PublicationStudyContractDetail) | ({
+    type: 'award';
+} & PublicationAwardDetail) | ({
+    type: 'direct_award';
+} & PublicationDirectAwardDetail) | ({
+    type: 'participant_selection';
+} & PublicationParticipantSelectionDetail) | ({
+    type: 'selective_offering_phase';
+} & PublicationSelectiveOfferingPhaseDetail) | ({
+    type: 'revocation';
+} & PublicationRevocationDetail) | ({
+    type: 'abandonment';
+} & PublicationAbandonmentDetail) | ({
+    type: 'advance_notice';
+} & PublicationAdvanceNoticeDetailDiscriminator) | ({
+    type: 'request_for_information';
+} & PublicationRfiDetail);
 
 /**
  * Different header date models are used for publications discriminated by several properties, starting with its
  * `pubType`  because for some additional dates are provided.
  *
  */
-export type PublicProjectHeaderDates =
-	| ({
-			pubType:
-				| 'request_for_information'
-				| 'abandonment'
-				| 'direct_award'
-				| 'award'
-				| 'revocation'
-				| 'participant_selection';
-	  } & PublicProjectHeaderDatesDefault)
-	| ({
-			pubType:
-				| 'advance_notice'
-				| 'tender'
-				| 'competition'
-				| 'study_contract'
-				| 'selective_offering_phase';
-	  } & PublicProjectHeaderDatesAdditional);
+export type PublicProjectHeaderDates = ({
+    pubType: 'request_for_information' | 'abandonment' | 'direct_award' | 'award' | 'revocation' | 'participant_selection';
+} & PublicProjectHeaderDatesDefault) | ({
+    pubType: 'advance_notice' | 'tender' | 'competition' | 'study_contract' | 'selective_offering_phase';
+} & PublicProjectHeaderDatesAdditional);
 
 export type PublicProjectHeaderPublication = BasePublicationData & {
-	id: string;
-	title?: Translation;
-	dates: PublicProjectHeaderDates;
+    id: string;
+    title?: Translation;
+    dates: PublicProjectHeaderDates;
 };
 
 export type VendorDigitalSubmissionStatus = 'draft' | 'submitted';
 
 export type PublicProjectHeaderVendorDigitalSubmissionInfo = {
-	id: string;
-	submissionType: VendorDigitalSubmissionType;
-	submissionStatus: VendorDigitalSubmissionStatus;
-	/**
-	 * If `true` the submission contains at least one document, can be submitted.
-	 *
-	 * If `false` the submission contains no documents, is empty. Can not be submitted.
-	 *
-	 */
-	hasDocuments: boolean;
+    id: string;
+    submissionType: VendorDigitalSubmissionType;
+    submissionStatus: VendorDigitalSubmissionStatus;
+    /**
+     * If `true` the submission contains at least one document, can be submitted.
+     *
+     * If `false` the submission contains no documents, is empty. Can not be submitted.
+     *
+     */
+    hasDocuments: boolean;
 };
 
 export type PublicProjectHeaderLot = PublicationLotDescription & {
-	latestPublication: PublicProjectHeaderPublication;
-	latestVendorDigitalSubmission?: PublicProjectHeaderVendorDigitalSubmissionInfo;
+    latestPublication: PublicProjectHeaderPublication;
+    latestVendorDigitalSubmission?: PublicProjectHeaderVendorDigitalSubmissionInfo;
 };
 
 /**
  * - This enum consists of status in enum `ProjectInterestStatus` plus the corresponding equivalent in processType invitation
  *
  */
-export type ProjectInvitedOrInterestedVendorStatus =
-	| 'invited'
-	| 'invitation_declined'
-	| 'interest_shown'
-	| 'interest_withdrawn';
+export type ProjectInvitedOrInterestedVendorStatus = 'invited' | 'invitation_declined' | 'interest_shown' | 'interest_withdrawn';
 
 /**
  * ## share
@@ -4647,12 +4077,7 @@ export type PublicProjectOtherActionType = 'share';
  * - the vendor is active and has shown interest in the project
  *
  */
-export type VendorPrimaryProjectActionType =
-	| 'show_interest'
-	| 'create_digital_offer'
-	| 'create_digital_participation_request'
-	| 'create_digital_rfi_response'
-	| 'submit_digital_submission';
+export type VendorPrimaryProjectActionType = 'show_interest' | 'create_digital_offer' | 'create_digital_participation_request' | 'create_digital_rfi_response' | 'submit_digital_submission';
 
 /**
  * ## Following actions are available:
@@ -4661,177 +4086,174 @@ export type VendorPrimaryProjectActionType =
  * - `decline_invitation`      Decline an invitation to a project from a procurement office
  *
  */
-export type VendorSecondaryProjectActionType =
-	| 'withdraw_interest'
-	| 'edit_digital_submission'
-	| 'decline_invitation';
+export type VendorSecondaryProjectActionType = 'withdraw_interest' | 'edit_digital_submission' | 'decline_invitation';
 
 /**
  * - `pdf_export`                Create a PDF export of the selected project, implemented in the frontend only.
  * - `delete_digital_submission` Delete a not yet submitted vendor digital submission
  *
  */
-export type PublicProjectActionType =
-	| 'pdf_export'
-	| 'delete_digital_submission';
+export type PublicProjectActionType = 'pdf_export' | 'delete_digital_submission';
 
 /**
  * Model with primary, secondary and other actions for a data driven navigation on public projects
  *
  */
 export type VendorPubActions = {
-	primary?: VendorPrimaryProjectActionType;
-	secondary?: VendorSecondaryProjectActionType;
-	/**
-	 * Contains the actions available for the public on level publication
-	 */
-	readonly other: PublicProjectActionType[];
+    primary?: VendorPrimaryProjectActionType;
+    secondary?: VendorSecondaryProjectActionType;
+    /**
+     * Contains the actions available for the public on level publication
+     */
+    readonly other: Array<PublicProjectActionType>;
 };
 
 export type PublicProjectActions = {
-	/**
-	 * Contains the actions available for the public on level project
-	 */
-	readonly projectOther: PublicProjectOtherActionType[];
-	withoutLots?: VendorPubActions;
-	/**
-	 * Only defined if the project is with lots where the property names are the lot ids
-	 *
-	 */
-	lots?: Record<string, VendorPubActions> | undefined;
+    /**
+     * Contains the actions available for the public on level project
+     */
+    readonly projectOther: Array<PublicProjectOtherActionType>;
+    withoutLots?: VendorPubActions;
+    /**
+     * Only defined if the project is with lots where the property names are the lot ids
+     *
+     */
+    lots?: {
+        [key: string]: VendorPubActions;
+    } | null;
 };
 
 export type PublicProjectHeader = BaseProjectData & {
-	/**
-	 * Lots information of this project. Only provided if project was created with lotsType 'with'
-	 */
-	lots?: PublicProjectHeaderLot[];
-	latestPublication?: PublicProjectHeaderPublication;
-	latestVendorDigitalSubmission?: PublicProjectHeaderVendorDigitalSubmissionInfo;
-	vendorStatus?: ProjectInvitedOrInterestedVendorStatus;
-	actions: PublicProjectActions;
+    /**
+     * Lots information of this project. Only provided if project was created with lotsType 'with'
+     */
+    lots?: Array<PublicProjectHeaderLot>;
+    latestPublication?: PublicProjectHeaderPublication;
+    latestVendorDigitalSubmission?: PublicProjectHeaderVendorDigitalSubmissionInfo;
+    vendorStatus?: ProjectInvitedOrInterestedVendorStatus;
+    actions: PublicProjectActions;
 };
 
 /**
  * Past Publication Entry
  */
 export type PastPublicationsEntry = BasePublicationData & {
-	id: string;
-	publicationDate: string;
-	lotNumber?: number;
+    id: string;
+    publicationDate: string;
+    lotNumber?: number;
 };
 
 /**
  * Past publications
  */
 export type PastPublications = {
-	pastPublications: PastPublicationsEntry[];
+    pastPublications: Array<PastPublicationsEntry>;
 };
 
 export type NotificationFrequency = 'daily' | 'weekly';
 
 export type SubscriptionFilters = {
-	/**
-	 * Search input, either empty or requires at least 3 valid characters.
-	 *
-	 */
-	search?: string;
-	/**
-	 * Quick-filter: if defined then publications need to be one of the given types
-	 *
-	 */
-	projectSubTypes?: ProjectSubType[];
-	/**
-	 * Quick-filter: if defined then publications need to be issued by one of the selected organizations or as a children of the selected organizations
-	 * (procurement-offices, institution or competence centre).
-	 *
-	 */
-	issuedByOrganizations?: string[];
-	/**
-	 * Extended-filter: if defined, projects are filtered by one of the provided projects processTypes
-	 *
-	 */
-	processTypes?: PubProcessType[];
-	/**
-	 * Extended-filter: if defined, projects are filtered by one of the provided pubTypeFilter values matching newest publication.
-	 *
-	 */
-	newestPubTypes?: ProjectSearchPubTypeFilter[];
-	/**
-	 * Extended-filter: if defined, projects are filtered by one of the provided CPV codes defined in any publications
-	 *
-	 */
-	cpvCodes?: CpvCode[];
-	/**
-	 * Extended-filter: if defined, projects are filtered by one of the provided CPC codes defined in any publications
-	 *
-	 */
-	cpcCodes?: CpcCode[];
-	/**
-	 * Extended-filter: if defined, projects are filtered by one of the provided BKP codes defined in any publications
-	 *
-	 */
-	bkpCodes?: BkpCode[];
-	/**
-	 * Extended-filter: if defined, projects are filtered by one of the provided eBKP-h codes defined in any publications
-	 *
-	 */
-	ebkphCodes?: EbkphCode[];
-	/**
-	 * Extended-filter: if defined, projects are filtered by one of the provided eBKP-t codes defined in any publications
-	 *
-	 */
-	ebkptCodes?: EbkptCode[];
-	/**
-	 * Extended-filter: if defined, projects are filtered by one of the provided NPK codes defined in any publications
-	 *
-	 */
-	npkCodes?: NpkCode[];
-	/**
-	 * Extended-filter: if defined, projects are filtered by one of the provided OAG codes defined in any publications
-	 *
-	 */
-	oagCodes?: OagCode[];
-	/**
-	 * Filter for projects that take place in Switzerland.
-	 *
-	 * If `true` will only return projects where the country of the `orderAddress` is `CH` - Switzerland.
-	 * If `false` or omitted will apply no filter return all projects (swiss projects included).
-	 *
-	 * Specifically if the country in one of the defined `orderAddress`es is Switzerland.
-	 * If a project is `with` lots, a project is found if at least one of the lot order addresses contains Switzerland.
-	 *
-	 * Not every publication defines a `orderAddress`. Projects with only such publications will be ignored with this filter.
-	 *
-	 */
-	orderAddressCountryOnlySwitzerland?: boolean;
-	/**
-	 * List of two letter abbreviation of a swiss canton e.g. `BE,FR,VD`.
-	 *
-	 * Filter for projects that take place in one of the specified cantons in Switzerland.
-	 *
-	 * Returns the projects where the canton of one of the defined `orderAddress`es is in the given list.
-	 * If a project is `with` lots, a project is found if at least one of the lot order addresses contain one of the defined cantons.
-	 *
-	 * Not every publication defines a `orderAddress` and a proc office can describe a `orderAddress` in a unstructured way, only as a description.
-	 * Projects with only such publications will be ignored with this filter.
-	 *
-	 */
-	orderAddressCantons?: string[];
+    /**
+     * Search input, either empty or requires at least 3 valid characters.
+     *
+     */
+    search?: string;
+    /**
+     * quick-filter: if defined then publications need to be one of the given types
+     *
+     */
+    projectSubTypes?: Array<ProjectSubType>;
+    /**
+     * quick-filter: if defined then publications need to be issued by one of the selected organizations or as a children of the selected organizations
+     * (procurement-offices, institution or competence centre).
+     *
+     */
+    issuedByOrganizations?: Array<string>;
+    /**
+     * extended-filter: if defined, projects are filtered by one of the provided projects processTypes
+     *
+     */
+    processTypes?: Array<PubProcessType>;
+    /**
+     * extended-filter: if defined, projects are filtered by one of the provided pubTypeFilter values matching newest publication.
+     *
+     */
+    newestPubTypes?: Array<ProjectSearchPubTypeFilter>;
+    /**
+     * extended-filter: if defined, projects are filtered by one of the provided CPV codes defined in any publications
+     *
+     */
+    cpvCodes?: Array<CpvCode>;
+    /**
+     * extended-filter: if defined, projects are filtered by one of the provided CPC codes defined in any publications
+     *
+     */
+    cpcCodes?: Array<CpcCode>;
+    /**
+     * extended-filter: if defined, projects are filtered by one of the provided BKP codes defined in any publications
+     *
+     */
+    bkpCodes?: Array<BkpCode>;
+    /**
+     * extended-filter: if defined, projects are filtered by one of the provided eBKP-h codes defined in any publications
+     *
+     */
+    ebkphCodes?: Array<EbkphCode>;
+    /**
+     * extended-filter: if defined, projects are filtered by one of the provided eBKP-t codes defined in any publications
+     *
+     */
+    ebkptCodes?: Array<EbkptCode>;
+    /**
+     * extended-filter: if defined, projects are filtered by one of the provided NPK codes defined in any publications
+     *
+     */
+    npkCodes?: Array<NpkCode>;
+    /**
+     * extended-filter: if defined, projects are filtered by one of the provided OAG codes defined in any publications
+     *
+     */
+    oagCodes?: Array<OagCode>;
+    /**
+     * Filter for projects that take place in Switzerland.
+     *
+     * If `true` will only return projects where the country of the `orderAddress` is `CH` - Switzerland.
+     * If `false` or omitted will apply no filter return all projects (swiss projects included).
+     *
+     * Specifically if the country in one of the defined `orderAddress`es is Switzerland.
+     * If a project is `with` lots, a project is found if at least one of the lot order addresses contains Switzerland.
+     *
+     * Not every publication defines a `orderAddress`. Projects with only such publications will be ignored with this filter.
+     *
+     */
+    orderAddressCountryOnlySwitzerland?: boolean;
+    /**
+     * List of two letter abbreviation of a swiss canton e.g. `BE,FR,VD`.
+     *
+     * Filter for projects that take place in one of the specified cantons in Switzerland.
+     *
+     * Returns the projects where the canton of one of the defined `orderAddress`es is in the given list.
+     * If a project is `with` lots, a project is found if at least one of the lot order addresses contain one of the defined cantons.
+     *
+     * Not every publication defines a `orderAddress` and a proc office can describe a `orderAddress` in a unstructured way, only as a description.
+     * Projects with only such publications will be ignored with this filter.
+     *
+     */
+    orderAddressCantons?: Array<string>;
 };
 
 export type SubscriptionUpdate = {
-	name: string;
-	notificationFrequency: NotificationFrequency;
-	filters: SubscriptionFilters;
+    name: string;
+    notificationFrequency: NotificationFrequency;
+    filters: SubscriptionFilters;
 };
 
 export type Subscription = SubscriptionUpdate & {
-	id: string;
+    id: string;
 };
 
 export type Subscriptions = {
-	subscriptions?: Subscription[];
+    subscriptions?: Array<Subscription>;
 };
 
 /**
@@ -4839,386 +4261,347 @@ export type Subscriptions = {
  *
  */
 export type PubDraftAwardBaseInterface = PubDraftBaseInterface & {
-	type?: 'PubDraftAwardBaseInterface';
-} & PubAwardBaseInterface &
-	AllSubKinds & {
-		/**
-		 * Sustainability forms, the procurement office can choose from in an award publication.
-		 * Currently supported is either [nh01] or [nh02, nh03, nh04, nh05] or null if no sustainability keyfigures are required.
-		 *
-		 */
-		readonly sustainabilityFormTypes?: SustainabilityFormType[];
-	};
+    type?: 'PubDraftAwardBaseInterface';
+} & PubAwardBaseInterface & AllSubKinds & {
+    /**
+     * Sustainability forms, the procurement office can choose from in an award publication.
+     * Currently supported is either [nh01] or [nh02, nh03, nh04, nh05] or null if no sustainability keyfigures are required.
+     *
+     */
+    readonly sustainabilityFormTypes?: Array<SustainabilityFormType>;
+};
 
 export type PubDraftDirectAwardBase = PubDraftAwardBaseInterface & {
-	type?: 'direct_award';
+    type?: 'direct_award';
 } & PubDirectAwardBase;
 
 export type PubDraftAwardBase = PubDraftAwardBaseInterface & {
-	type?: 'award';
+    type?: 'award';
 } & PubAwardBase;
 
 export type PubDraftTenderBase = PubDraftCallForBidsBaseInterface & {
-	type?: 'tender';
-} & PubDraftLotLimitationData &
-	ReferencingPub & {
-		orderType: PubOrderType;
-		lots: PubDraftLotDescription[];
-		publicationTed?: boolean;
-		cpvCode?: CpvCode;
-		/**
-		 * Only in use when the `orderType` is `service` and when in use is an optional value.
-		 *
-		 */
-		cpcCode?: CpcCode;
-	};
+    type?: 'tender';
+} & PubDraftLotLimitationData & ReferencingPub & {
+    orderType: PubOrderType;
+    lots: Array<PubDraftLotDescription>;
+    publicationTed?: boolean;
+    cpvCode?: CpvCode;
+    /**
+     * Only in use when the `orderType` is `service` and when in use is an optional value.
+     *
+     */
+    cpcCode?: CpcCode;
+};
 
 /**
  * Interface / parent of a generic call-for-bids pub-draft base
  *
  */
 export type PubDraftCallForBidsBaseInterface = PubDraftBaseInterface & {
-	type?: 'PubDraftCallForBidsBaseInterface';
+    type?: 'PubDraftCallForBidsBaseInterface';
 } & PubDraftCorrectionBase;
 
 export type PubDraftLotLimitationData = {
-	/**
-	 * Indicator if there is a limitation for vendors, for how many lots in the project a vendor can make an offer.
-	 *
-	 * Only used when the pub's `lotsType` is `with`.
-	 *
-	 * Set `null` for no limitation.
-	 *
-	 */
-	participantLotsLimitation?: number;
-	participantLotsLimitationNote?: Translation;
+    /**
+     * Indicator if there is a limitation for vendors, for how many lots in the project a vendor can make an offer.
+     *
+     * Only used when the pub's `lotsType` is `with`.
+     *
+     * Set `null` for no limitation.
+     *
+     */
+    participantLotsLimitation?: number;
+    participantLotsLimitationNote?: Translation;
 };
 
 export type PubDraftCompetitionBase = PubDraftCallForBidsBaseInterface & {
-	type?: 'competition';
-} & PubDraftLotLimitationData &
-	ReferencingPub & {
-		competitionType: PubCompetitionType;
-		lots?: PubDraftLotDescription[];
-		cpvCode?: CpvCode;
-	};
+    type?: 'competition';
+} & PubDraftLotLimitationData & ReferencingPub & {
+    competitionType: PubCompetitionType;
+    lots?: Array<PubDraftLotDescription>;
+    cpvCode?: CpvCode;
+};
 
 export type PubDraftStudyContractBase = PubDraftCallForBidsBaseInterface & {
-	type?: 'study_contract';
-} & PubDraftLotLimitationData &
-	ReferencingPub & {
-		studyType: PubStudyType;
-		lots?: PubDraftLotDescription[];
-		cpvCode?: CpvCode;
-	};
+    type?: 'study_contract';
+} & PubDraftLotLimitationData & ReferencingPub & {
+    studyType: PubStudyType;
+    lots?: Array<PubDraftLotDescription>;
+    cpvCode?: CpvCode;
+};
 
 export type PubDraftBaseInterface = PubDraftData & {
-	status: PubDraftStatus;
-	/**
-	 * The editorial deadline for the selected publication date, the pub draft must be submitted before this date and time.
-	 */
-	editorialDeadline?: string;
-	/**
-	 * The date and time when the pub draft was submitted for publication
-	 */
-	submissionDate?: string;
-	/**
-	 * List of publishers this pub-draft will get or was published to.
-	 */
-	publishers: string[];
+    status: PubDraftStatus;
+    /**
+     * The editorial deadline for the selected publication date, the pub draft must be submitted before this date and time.
+     */
+    editorialDeadline?: string;
+    /**
+     * The date and time when the pub draft was submitted for publication
+     */
+    submissionDate?: string;
+    /**
+     * list of publishers this pub-draft will get or was published to.
+     */
+    publishers: Array<string>;
 };
 
 export type PubDraftCorrectionBase = PubCorrectionBase;
 
-export type PubDraftAdvanceNoticeDiscriminator =
-	| ({
-			projectType: 'competition';
-	  } & PubDraftCompetitionBase)
-	| ({
-			projectType: 'study_contract';
-	  } & PubDraftStudyContractBase)
-	| ({
-			projectType: 'tender';
-	  } & PubDraftTenderBase);
+export type PubDraftAdvanceNoticeDiscriminator = ({
+    projectType: 'competition';
+} & PubDraftCompetitionBase) | ({
+    projectType: 'study_contract';
+} & PubDraftStudyContractBase) | ({
+    projectType: 'tender';
+} & PubDraftTenderBase);
 
 /**
- * Cpc code model that includes the validation annotation for the patching
+ * cpc code model that includes the validation annotation for the patching
  */
 export type PubDraftCpcCode = {
-	cpcCode?: CpcCode;
+    cpcCode?: CpcCode;
 };
 
 /**
- * Cpv code model that includes the validation annotation for the patching
+ * cpv code model that includes the validation annotation for the patching
  */
 export type PubDraftCpvCode = {
-	cpvCode?: CpvCode;
+    cpvCode?: CpvCode;
 };
 
 /**
  * @deprecated
  */
 export type PubDraftRfiBase = PubDraftBaseInterface & {
-	type?: 'request_for_information';
-} & PubDraftCorrectionBase &
-	PubDraftCpcCode &
-	PubDraftCpvCode;
+    type?: 'request_for_information';
+} & PubDraftCorrectionBase & PubDraftCpcCode & PubDraftCpvCode;
 
 export type PubDraftAbandonmentBase = PubDraftBaseInterface & {
-	type?: 'abandonment';
-} & AllSubKinds &
-	ReferencingPub &
-	ReferencingLot & {
-		publicationTed?: boolean;
-	};
-
-export type PubDraftRevocationBase = PubDraftBaseInterface & {
-	type?: 'revocation';
-} & AllSubKinds &
-	ReferencingPub & {
-		publicationTed: boolean;
-		/**
-		 * False if revoked publication was not published (on simap). This is the case for:
-		 * * participant_selection with individual communication
-		 *
-		 */
-		revokedPubPublished: boolean;
-	};
-
-export type PubDraftParticipantSelectionBase = PubDraftBaseInterface & {
-	type?: 'participant_selection';
-} & AllSubKinds &
-	ReferencingPub &
-	ReferencingLot;
-
-export type PubDraftSelectiveOfferingPhaseBase = PubDraftBaseInterface & {
-	type?: 'selective_offering_phase';
-} & PubDraftCorrectionBase &
-	AllSubKinds &
-	ReferencingPub &
-	ReferencingLot & {
-		/**
-		 * True if pub_draft of participant_selection was published on simap
-		 *
-		 */
-		participantSelectionPublished?: boolean;
-	};
-
-export type PubDraftData = PubData & {
-	internalReference?: string;
-	/**
-	 * True if this pub-draft is a template
-	 */
-	isTemplate: boolean;
-	/**
-	 * Reference to competence centre. Only valid if 'template' is set to true and mutual exclusive to 'procOfficeId'.
-	 */
-	competenceCentreId?: string;
+    type?: 'abandonment';
+} & AllSubKinds & ReferencingPub & ReferencingLot & {
+    publicationTed?: boolean;
 };
 
-export type PubDraftBase =
-	| ({
-			type: 'award';
-	  } & PubDraftAwardBase)
-	| ({
-			type: 'tender';
-	  } & PubDraftTenderBase)
-	| ({
-			type: 'competition';
-	  } & PubDraftCompetitionBase)
-	| ({
-			type: 'study_contract';
-	  } & PubDraftStudyContractBase)
-	| ({
-			type: 'direct_award';
-	  } & PubDraftDirectAwardBase)
-	| ({
-			type: 'advance_notice';
-	  } & PubDraftAdvanceNoticeDiscriminator)
-	| ({
-			type: 'request_for_information';
-	  } & PubDraftRfiBase)
-	| ({
-			type: 'abandonment';
-	  } & PubDraftAbandonmentBase)
-	| ({
-			type: 'revocation';
-	  } & PubDraftRevocationBase)
-	| ({
-			type: 'participant_selection';
-	  } & PubDraftParticipantSelectionBase)
-	| ({
-			type: 'selective_offering_phase';
-	  } & PubDraftSelectiveOfferingPhaseBase);
+export type PubDraftRevocationBase = PubDraftBaseInterface & {
+    type?: 'revocation';
+} & AllSubKinds & ReferencingPub & {
+    publicationTed: boolean;
+    /**
+     * False if revoked publication was not published (on simap). This is the case for:
+     * * participant_selection with individual communication
+     *
+     */
+    revokedPubPublished: boolean;
+};
+
+export type PubDraftParticipantSelectionBase = PubDraftBaseInterface & {
+    type?: 'participant_selection';
+} & AllSubKinds & ReferencingPub & ReferencingLot;
+
+export type PubDraftSelectiveOfferingPhaseBase = PubDraftBaseInterface & {
+    type?: 'selective_offering_phase';
+} & PubDraftCorrectionBase & AllSubKinds & ReferencingPub & ReferencingLot & {
+    /**
+     * True if pub_draft of participant_selection was published on simap
+     *
+     */
+    participantSelectionPublished?: boolean;
+};
+
+export type PubDraftData = PubData & {
+    internalReference?: string;
+    /**
+     * True if this pub-draft is a template
+     */
+    isTemplate: boolean;
+    /**
+     * Reference to competence centre. Only valid if 'template' is set to true and mutual exclusive to 'procOfficeId'.
+     */
+    competenceCentreId?: string;
+};
+
+export type PubDraftBase = ({
+    type: 'award';
+} & PubDraftAwardBase) | ({
+    type: 'tender';
+} & PubDraftTenderBase) | ({
+    type: 'competition';
+} & PubDraftCompetitionBase) | ({
+    type: 'study_contract';
+} & PubDraftStudyContractBase) | ({
+    type: 'direct_award';
+} & PubDraftDirectAwardBase) | ({
+    type: 'advance_notice';
+} & PubDraftAdvanceNoticeDiscriminator) | ({
+    type: 'request_for_information';
+} & PubDraftRfiBase) | ({
+    type: 'abandonment';
+} & PubDraftAbandonmentBase) | ({
+    type: 'revocation';
+} & PubDraftRevocationBase) | ({
+    type: 'participant_selection';
+} & PubDraftParticipantSelectionBase) | ({
+    type: 'selective_offering_phase';
+} & PubDraftSelectiveOfferingPhaseBase);
 
 export type PubDraftCreationRequest = {
-	title?: Translation;
-	type?: PubType;
-	processType?: PubProcessType;
-	orderType?: PubOrderType;
-	studyType?: PubStudyType;
-	competitionType?: PubCompetitionType;
-	/**
-	 * Required if `type` is `tender`, `study_contract` and `competition`
-	 *
-	 */
-	directAward?: boolean;
-	lotsType?: PubLotsType;
-	creationLanguage?: SystemLanguage;
-	/**
-	 * Internal dossier reference, reference of the project for the proc office.
-	 * The reference is not available in the published publications.
-	 *
-	 * Can be set when creating a new project / a new initial publication.
-	 *
-	 * To update the reference for an existing project use:
-	 *
-	 * `PATCH /api/procoffices/v1/my/projects/{projectId}/internal-reference`
-	 *
-	 */
-	internalReference?: string;
-	/**
-	 * Required if `type` is `award`
-	 *
-	 */
-	referencingPubId?: string;
-	/**
-	 * Required if `type` is `award`. Only for publication / project with lots.
-	 *
-	 */
-	referencingLotId?: string;
-	/**
-	 * True if a correction of a pub-draft should be created.
-	 *
-	 */
-	correction?: boolean;
-	/**
-	 * True if the pub_draft should get created as a template. Be aware that when creating a pub-drat as a template, certain constraints apply as:
-	 * - the pub-draft cannot reference another pub or lot
-	 * - the pub-draft cannot be marked as correction
-	 *
-	 */
-	isTemplate?: boolean;
-	/**
-	 * Project id of the template project which should be used to copy and create a new initial publication and project. If provided, all other parameter are ignored.
-	 *
-	 */
-	createFromTemplateProjectId?: string;
+    title?: Translation;
+    type?: PubType;
+    processType?: PubProcessType;
+    orderType?: PubOrderType;
+    studyType?: PubStudyType;
+    competitionType?: PubCompetitionType;
+    /**
+     * required if `type` is `tender`, `study_contract` and `competition`
+     *
+     */
+    directAward?: boolean;
+    lotsType?: PubLotsType;
+    creationLanguage?: SystemLanguage;
+    /**
+     * Internal dossier reference, reference of the project for the proc office.
+     * The reference is not available in the published publications.
+     *
+     * Can be set when creating a new project / a new initial publication.
+     *
+     * To update the reference for an existing project use:
+     *
+     * `PATCH /api/procoffices/v1/my/projects/{projectId}/internal-reference`
+     *
+     */
+    internalReference?: string;
+    /**
+     * Required if `type` is `award`
+     *
+     */
+    referencingPubId?: string;
+    /**
+     * Required if `type` is `award`. Only for publication / project with lots.
+     *
+     */
+    referencingLotId?: string;
+    /**
+     * True if a correction of a pub-draft should be created.
+     *
+     */
+    correction?: boolean;
+    /**
+     * True if the pub_draft should get created as a template. Be aware that when creating a pub-drat as a template, certain constraints apply as:
+     * - the pub-draft cannot reference another pub or lot
+     * - the pub-draft cannot be marked as correction
+     *
+     */
+    isTemplate?: boolean;
+    /**
+     * Project id of the template project which should be used to copy and create a new initial publication and project. If provided, all other parameter are ignored.
+     *
+     */
+    createFromTemplateProjectId?: string;
 };
 
 export type PubDraftCopyRequest = {
-	copyFrom: string;
+    copyFrom: string;
 };
 
 export type PubDraftAwardDetail = PubDraftAwardDetailInterface & {
-	type?: 'award';
+    type?: 'award';
 } & DetailWithOptionalPubReference & {
-		procurement: PubDraftAwardProcurement;
-	};
+    procurement: PubDraftAwardProcurement;
+};
 
 export type PubDraftAwardDetailInterface = PubDraftDetailInterface & {
-	type: 'PubDraftAwardDetailInterface';
+    type: 'PubDraftAwardDetailInterface';
 } & PubDraftDetailWithLotReference & {
-		'project-info': PubDraftAwardProjectInfo;
-		decision: PubDraftAwardDecisionDetail;
-		statistics: PubDraftAwardStatistics;
-	};
+    'project-info': PubDraftAwardProjectInfo;
+    decision: PubDraftAwardDecisionDetail;
+    statistics: PubDraftAwardStatistics;
+};
 
-export type PubDraftDirectAwardTenderProcurementService =
-	PubDraftDirectAwardTenderProcurementInterface & {
-		orderType: 'service';
-	} & PubDraftBaseCodes & {
-			cpcCode?: CpcCode;
-		};
+export type PubDraftDirectAwardTenderProcurementService = PubDraftDirectAwardTenderProcurementInterface & {
+    orderType: 'service';
+} & PubDraftBaseCodes & {
+    cpcCode?: CpcCode;
+};
 
 /**
  * Interface / parent that is implemented by the PubDraftDirectAwardTenderProcurement* models, used for code generation.
  *
  */
-export type PubDraftDirectAwardTenderProcurementInterface =
-	PubDraftDirectAwardProcurementInterface & {
-		projectType?: 'PubDraftDirectAwardTenderProcurementInterface';
-	};
+export type PubDraftDirectAwardTenderProcurementInterface = PubDraftDirectAwardProcurementInterface & {
+    projectType?: 'PubDraftDirectAwardTenderProcurementInterface';
+};
 
 export type PubDraftBaseCodes = PubBaseCodes;
 
-export type PubDraftDirectAwardTenderProcurementConstruction =
-	PubDraftDirectAwardTenderProcurementInterface & {
-		orderType: 'construction';
-	} & PubDraftBaseCodes & {
-			oagCodes?: OagCode[];
-			constructionType?: PubConstructionType;
-			constructionCategory?: PubConstructionCategoryOptional;
-		};
+export type PubDraftDirectAwardTenderProcurementConstruction = PubDraftDirectAwardTenderProcurementInterface & {
+    orderType: 'construction';
+} & PubDraftBaseCodes & {
+    oagCodes?: Array<OagCode>;
+    constructionType?: PubConstructionType;
+    constructionCategory?: PubConstructionCategoryOptional;
+};
 
-export type PubDraftDirectAwardTenderProcurementSupply =
-	PubDraftDirectAwardTenderProcurementInterface & {
-		orderType: 'supply';
-	} & {
-		additionalCpvCodes?: CpvCode[];
-		supplyType?: PubSupplyType;
-	};
+export type PubDraftDirectAwardTenderProcurementSupply = PubDraftDirectAwardTenderProcurementInterface & {
+    orderType: 'supply';
+} & {
+    additionalCpvCodes?: Array<CpvCode>;
+    supplyType?: PubSupplyType;
+};
 
 /**
  * Uses the `orderType` to discriminate between the models for of the construction, supply or service type for the tender procurement pub draft.
  *
  */
-export type PubDraftDirectAwardTenderProcurement =
-	| ({
-			orderType: 'service';
-	  } & PubDraftDirectAwardTenderProcurementService)
-	| ({
-			orderType: 'construction';
-	  } & PubDraftDirectAwardTenderProcurementConstruction)
-	| ({
-			orderType: 'supply';
-	  } & PubDraftDirectAwardTenderProcurementSupply);
+export type PubDraftDirectAwardTenderProcurement = ({
+    orderType: 'service';
+} & PubDraftDirectAwardTenderProcurementService) | ({
+    orderType: 'construction';
+} & PubDraftDirectAwardTenderProcurementConstruction) | ({
+    orderType: 'supply';
+} & PubDraftDirectAwardTenderProcurementSupply);
 
-export type PubDraftDirectAwardProcurementInterface =
-	PubDirectAwardProcurement & {
-		externalReference?: PubAndLotReference;
-	};
+export type PubDraftDirectAwardProcurementInterface = PubDirectAwardProcurement & {
+    externalReference?: PubAndLotReference;
+};
 
-export type PubDraftDirectAwardGeneralProcurement =
-	PubDraftDirectAwardProcurementInterface & {
-		projectType?: 'competition' | 'study_contract';
-	} & PubDraftBaseCodes & {
-			procurementTopic?: PubProcurementTopic;
-			oagCodes?: OagCode[];
-			constructionCategory?: PubConstructionCategoryOptional;
-		};
+export type PubDraftDirectAwardGeneralProcurement = PubDraftDirectAwardProcurementInterface & {
+    projectType?: 'competition' | 'study_contract';
+} & PubDraftBaseCodes & {
+    procurementTopic?: PubProcurementTopic;
+    oagCodes?: Array<OagCode>;
+    constructionCategory?: PubConstructionCategoryOptional;
+};
 
 /**
  * Use the project type to discriminate between the models.
  *
  */
-export type PubDraftDirectAwardProcurement =
-	| ({
-			projectType: 'competition' | 'study_contract';
-	  } & PubDraftDirectAwardGeneralProcurement)
-	| ({
-			projectType: 'tender';
-	  } & PubDraftDirectAwardTenderProcurement);
+export type PubDraftDirectAwardProcurement = ({
+    projectType: 'competition' | 'study_contract';
+} & PubDraftDirectAwardGeneralProcurement) | ({
+    projectType: 'tender';
+} & PubDraftDirectAwardTenderProcurement);
 
 export type PubDraftDirectAwardDetail = PubDraftAwardDetailInterface & {
-	type?: 'direct_award';
+    type?: 'direct_award';
 } & {
-	procurement: PubDraftDirectAwardProcurement;
+    procurement: PubDraftDirectAwardProcurement;
 };
 
 /**
  * Interface / parent that is implemented by the  PubDraft*Detail models, used for code generation.
  */
 export type PubDraftDetailInterface = {
-	id: string;
-	type: PubType;
-	projectType: PubProjectType;
-	base?: PubDraftBase;
-	ted?: PubTedReference;
-	/**
-	 * List of publishers of this publication
-	 */
-	publishers: PublisherReference[];
+    id: string;
+    type: PubType;
+    projectType: PubProjectType;
+    base?: PubDraftBase;
+    ted?: PubTedReference;
+    /**
+     * List of publishers of this publication
+     */
+    publishers: Array<PublisherReference>;
 };
 
 /**
@@ -5235,45 +4618,43 @@ export type PubDraftDetailInterface = {
  * `lotsType` set to `without`. All other sections are provided but depend on `pubType`,  `processType` and `lotsType` of the publication draft.
  *
  */
-export type PubDraftDetailBaseDescription = Record<string, unknown>;
+export type PubDraftDetailBaseDescription = {
+    [key: string]: unknown;
+};
 
 export type PubDraftCorrectionDetailData = PubCorrectionDetailData;
 
 export type PubDraftDetailWithCorrection = {
-	correction?: PubDraftCorrectionDetailData;
+    correction?: PubDraftCorrectionDetailData;
 };
 
-export type PubDraftTenderProjectInfoOpen =
-	PubDraftTenderProjectInfoInterface & {
-		processType: 'open';
-	} & PubBaseProjectInfoOpen & {
-			publicationTed?: boolean;
-		};
+export type PubDraftTenderProjectInfoOpen = PubDraftTenderProjectInfoInterface & {
+    processType: 'open';
+} & PubBaseProjectInfoOpen & {
+    publicationTed?: boolean;
+};
 
 /**
  * Interface / parent that is implemented by the  PubDraftTenderProjectInfo* models, used for code generation.
  *
  */
-export type PubDraftTenderProjectInfoInterface = PubBaseProjectInfo &
-	PubBaseProjectInfoPublicationLanguageProperties & {
-		processType: PubProcessType;
-		orderType: PubOrderType;
-	};
+export type PubDraftTenderProjectInfoInterface = PubBaseProjectInfo & PubBaseProjectInfoPublicationLanguageProperties & {
+    processType: PubProcessType;
+    orderType: PubOrderType;
+};
 
-export type PubDraftTenderProjectInfoSelective =
-	PubDraftTenderProjectInfoInterface & {
-		processType: 'selective';
-	} & PubBaseProjectInfoSelective & {
-			publicationTed?: boolean;
-		};
+export type PubDraftTenderProjectInfoSelective = PubDraftTenderProjectInfoInterface & {
+    processType: 'selective';
+} & PubBaseProjectInfoSelective & {
+    publicationTed?: boolean;
+};
 
 /**
  * @deprecated
  */
-export type PubDraftTenderProjectInfoInvitation =
-	PubDraftTenderProjectInfoInterface & {
-		processType: 'invitation';
-	};
+export type PubDraftTenderProjectInfoInvitation = PubDraftTenderProjectInfoInterface & {
+    processType: 'invitation';
+};
 
 export type PubBaseProjectInfoOpen = PubBaseProjectInfoOpenSelectiveBase;
 
@@ -5282,144 +4663,125 @@ export type PubBaseProjectInfoOpen = PubBaseProjectInfoOpenSelectiveBase;
  * Uses the `processType` to discriminate between the models of the open, selective or invitation process for the tender project info pub draft.
  *
  */
-export type PubDraftTenderProjectInfo =
-	| ({
-			processType: 'open';
-	  } & PubDraftTenderProjectInfoOpen)
-	| ({
-			processType: 'selective';
-	  } & PubDraftTenderProjectInfoSelective)
-	| ({
-			processType: 'invitation';
-	  } & PubDraftTenderProjectInfoInvitation);
+export type PubDraftTenderProjectInfo = ({
+    processType: 'open';
+} & PubDraftTenderProjectInfoOpen) | ({
+    processType: 'selective';
+} & PubDraftTenderProjectInfoSelective) | ({
+    processType: 'invitation';
+} & PubDraftTenderProjectInfoInvitation);
 
 export type PubDraftTenderConstructionLot = PubDraftTenderLotInterface & {
-	orderType?: 'construction';
-} & PubDraftBaseCodes &
-	PubTenderConstructionFields;
+    orderType?: 'construction';
+} & PubDraftBaseCodes & PubTenderConstructionFields;
 
 /**
  * Interface / parent that is implemented by the PubDraftTenderLot* models, used for code generation.
  *
  */
-export type PubDraftTenderLotInterface = PubDraftBaseLot &
-	PubTenderSpecificProcurementFields;
+export type PubDraftTenderLotInterface = PubDraftBaseLot & PubTenderSpecificProcurementFields;
 
 export type PubDraftTenderSupplyLot = PubDraftTenderLotInterface & {
-	orderType?: 'supply';
+    orderType?: 'supply';
 } & {
-	additionalCpvCodes?: CpvCode[];
-	supplyType?: PubSupplyType;
+    additionalCpvCodes?: Array<CpvCode>;
+    supplyType?: PubSupplyType;
 };
 
 export type PubDraftTenderServiceLot = PubDraftTenderLotInterface & {
-	orderType?: 'service';
+    orderType?: 'service';
 } & PubDraftBaseCodes;
 
-export type PubDraftBaseProcurement = PubBaseProcurement &
-	PubBaseProcurementVariantsAndPartialOfferProperties & {
-		orderAddress?: PubProcurementAddress;
-	};
+export type PubDraftBaseProcurement = PubBaseProcurement & PubBaseProcurementVariantsAndPartialOfferProperties & {
+    orderAddress?: PubProcurementAddress;
+};
 
 export type PubDraftQualificationCriterion = Criterion & {
-	title: Translation;
+    title: Translation;
 };
 
 export type PubDraftBaseQualificationCriteria = PubBaseQualificationCriteria & {
-	qualificationCriteria?: PubDraftQualificationCriterion[];
+    qualificationCriteria?: Array<PubDraftQualificationCriterion>;
 };
 
 export type PubDraftAwardCriterion = PubDraftQualificationCriterion & {
-	title: Translation;
-	/**
-	 * The wight of the criterion in percent
-	 *
-	 */
-	weighting?: number;
-	maxPoints?: number;
-	/**
-	 * ONE criterion of the `awardCriteria` can be the criterion for the price.
-	 *
-	 * This is optional, there can be no price criterion for a publication.
-	 *
-	 * By default, false.
-	 *
-	 */
-	isPriceCriterion?: boolean;
+    title: Translation;
+    /**
+     * The wight of the criterion in percent
+     *
+     */
+    weighting?: number;
+    maxPoints?: number;
+    /**
+     * ONE criterion of the `awardCriteria` can be the criterion for the price.
+     *
+     * This is optional, there can be no price criterion for a publication.
+     *
+     * By default, false.
+     *
+     */
+    isPriceCriterion?: boolean;
 };
 
 export type PubDraftBaseAwardCriteria = {
-	awardCriteriaSelection: AwardCriteriaSelection;
-	awardCriteriaNote?: Translation;
-	awardCriteria: PubDraftAwardCriterion[];
+    awardCriteriaSelection: AwardCriteriaSelection;
+    awardCriteriaNote?: Translation;
+    awardCriteria: Array<PubDraftAwardCriterion>;
 };
 
-export type PubDraftBaseCriteria = PubDraftBaseQualificationCriteria &
-	PubDraftBaseAwardCriteria;
+export type PubDraftBaseCriteria = PubDraftBaseQualificationCriteria & PubDraftBaseAwardCriteria;
 
-export type PubDraftWeightedQualificationCriterion =
-	PubDraftQualificationCriterion & {
-		/**
-		 * The weight of the criterion in percent
-		 *
-		 */
-		weighting?: number;
-		maxPoints?: number;
-	};
+export type PubDraftWeightedQualificationCriterion = PubDraftQualificationCriterion & {
+    /**
+     * The weight of the criterion in percent
+     *
+     */
+    weighting?: number;
+    maxPoints?: number;
+};
 
 export type PubDraftBaseCriteriaSelective = PubBaseCriteriaSelective & {
-	weightedQualificationCriteria?: PubDraftWeightedQualificationCriterion[];
+    weightedQualificationCriteria?: Array<PubDraftWeightedQualificationCriterion>;
 };
 
-export type PubDraftBaseLot = PubDraftLotDescription &
-	PubDraftBaseProcurement &
-	PubDraftBaseCriteria &
-	PubDraftBaseCriteriaSelective;
+export type PubDraftBaseLot = PubDraftLotDescription & PubDraftBaseProcurement & PubDraftBaseCriteria & PubDraftBaseCriteriaSelective;
 
 /**
  * Uses the `orderType` to discriminate between the models of the service, supply or construction type.
  *
  */
-export type PubDraftTenderLot =
-	| ({
-			orderType: 'construction';
-	  } & PubDraftTenderConstructionLot)
-	| ({
-			orderType: 'supply';
-	  } & PubDraftTenderSupplyLot)
-	| ({
-			orderType: 'service';
-	  } & PubDraftTenderServiceLot);
+export type PubDraftTenderLot = ({
+    orderType: 'construction';
+} & PubDraftTenderConstructionLot) | ({
+    orderType: 'supply';
+} & PubDraftTenderSupplyLot) | ({
+    orderType: 'service';
+} & PubDraftTenderServiceLot);
 
-export type PubDraftTenderProcurementConstruction =
-	PubDraftTenderProcurementInterface & {
-		orderType?: 'construction';
-	} & PubDraftBaseCodes &
-		PubTenderConstructionFields;
+export type PubDraftTenderProcurementConstruction = PubDraftTenderProcurementInterface & {
+    orderType?: 'construction';
+} & PubDraftBaseCodes & PubTenderConstructionFields;
 
 /**
  * Interface / parent that is implemented by the PubDraftTenderProcurement* models, used for code generation.
  *
  */
-export type PubDraftTenderProcurementInterface = PubDraftBaseProcurement &
-	PubTenderSpecificProcurementFields & {
-		cpvCode?: CpvCode;
-	};
+export type PubDraftTenderProcurementInterface = PubDraftBaseProcurement & PubTenderSpecificProcurementFields & {
+    cpvCode?: CpvCode;
+};
 
-export type PubDraftTenderProcurementSupply =
-	PubDraftTenderProcurementInterface & {
-		orderType?: 'supply';
-	} & {
-		additionalCpvCodes?: CpvCode[];
-		supplyType?: PubSupplyType;
-	};
+export type PubDraftTenderProcurementSupply = PubDraftTenderProcurementInterface & {
+    orderType?: 'supply';
+} & {
+    additionalCpvCodes?: Array<CpvCode>;
+    supplyType?: PubSupplyType;
+};
 
-export type PubDraftTenderProcurementService =
-	PubDraftTenderProcurementInterface & {
-		orderType?: 'service';
-	} & PubDraftBaseCodes & {
-			cpcCode?: CpcCode;
-		};
+export type PubDraftTenderProcurementService = PubDraftTenderProcurementInterface & {
+    orderType?: 'service';
+} & PubDraftBaseCodes & {
+    cpcCode?: CpcCode;
+};
 
 /**
  * PubDraftTenderProcurement
@@ -5434,55 +4796,50 @@ export type PubDraftTenderProcurementService =
  * - `orderDescription`
  *
  */
-export type PubDraftTenderProcurement =
-	| ({
-			orderType: 'construction';
-	  } & PubDraftTenderProcurementConstruction)
-	| ({
-			orderType: 'supply';
-	  } & PubDraftTenderProcurementSupply)
-	| ({
-			orderType: 'service';
-	  } & PubDraftTenderProcurementService);
+export type PubDraftTenderProcurement = ({
+    orderType: 'construction';
+} & PubDraftTenderProcurementConstruction) | ({
+    orderType: 'supply';
+} & PubDraftTenderProcurementSupply) | ({
+    orderType: 'service';
+} & PubDraftTenderProcurementService);
 
 export type PubDraftTenderTermsOpen = PubDraftTenderTermsInterface & {
-	processType: 'open';
-} & PubBaseTermsOpenSelective &
-	PubBaseTermsWalkthrough;
+    processType: 'open';
+} & PubBaseTermsOpenSelective & PubBaseTermsWalkthrough;
 
 /**
  * Interface / parent that is implemented by the  PubDraftTenderTerms* models, used for code generation.
  *
  */
 export type PubDraftTenderTermsInterface = PubDraftBaseTerms & {
-	processType: PubProcessType;
-	orderType: PubOrderType;
+    processType: PubProcessType;
+    orderType: PubOrderType;
 };
 
 export type PubDraftTenderTermsSelective = PubDraftTenderTermsInterface & {
-	processType: 'selective';
-} & PubBaseTermsOpenSelective &
-	PubBaseTermsWalkthrough;
+    processType: 'selective';
+} & PubBaseTermsOpenSelective & PubBaseTermsWalkthrough;
 
 /**
  * @deprecated
  */
 export type PubDraftTenderTermsInvitation = PubDraftTenderTermsInterface & {
-	processType: 'invitation';
+    processType: 'invitation';
 } & PubBaseTermsWalkthrough;
 
 export type PubDraftTermsRemedies = {
-	remediesNotice?: Translation;
+    remediesNotice?: Translation;
 };
 
 export type PubDraftTermsRemediesChanged = PubDraftTermsRemedies & {
-	/**
-	 * This flag indicates that the remedies notice on the publication differs from the
-	 * current remedies notice template of the same publication type and state contract area in
-	 * associated competence centre.
-	 *
-	 */
-	readonly hasRemediesNoticeChanged?: boolean;
+    /**
+     * This flag indicates that the remedies notice on the publication differs from the
+     * current remedies notice template of the same publication type and state contract area in
+     * associated competence centre.
+     *
+     */
+    readonly hasRemediesNoticeChanged?: boolean;
 };
 
 export type PubDraftBaseTerms = PubDraftTermsRemediesChanged & PubBaseTerms;
@@ -5492,75 +4849,68 @@ export type PubDraftBaseTerms = PubDraftTermsRemediesChanged & PubBaseTerms;
  * Uses the `processType` to discriminate between the models of the open, selective or invitation process for the tender terms pub draft.
  *
  */
-export type PubDraftTenderTerms =
-	| ({
-			processType: 'open';
-	  } & PubDraftTenderTermsOpen)
-	| ({
-			processType: 'selective';
-	  } & PubDraftTenderTermsSelective)
-	| ({
-			processType: 'invitation';
-	  } & PubDraftTenderTermsInvitation);
+export type PubDraftTenderTerms = ({
+    processType: 'open';
+} & PubDraftTenderTermsOpen) | ({
+    processType: 'selective';
+} & PubDraftTenderTermsSelective) | ({
+    processType: 'invitation';
+} & PubDraftTenderTermsInvitation);
 
 export type PubDraftTenderDatesOpen = PubDraftTenderDatesInterface & {
-	processType: 'open';
-} & PubBaseCallForBidsDates &
-	PubBaseDatesOpen &
-	PubTenderDatesOpen;
+    processType: 'open';
+} & PubBaseCallForBidsDates & PubBaseDatesOpen & PubTenderDatesOpen;
 
 /**
  * Interface / parent that is implemented by the  PubDraftTenderDates* models, used for code generation.
  *
  */
 export type PubDraftTenderDatesInterface = PubDraftBaseDatesAppointments & {
-	processType: PubProcessType;
-	orderType: PubOrderType;
+    processType: PubProcessType;
+    orderType: PubOrderType;
 };
 
 export type PubDraftTenderDatesSelective = PubDraftTenderDatesInterface & {
-	processType: 'selective';
-} & PubBaseCallForBidsDates &
-	PubBaseDatesSelective;
+    processType: 'selective';
+} & PubBaseCallForBidsDates & PubBaseDatesSelective;
 
 /**
  * @deprecated
  */
 export type PubDraftTenderDatesInvitation = PubDraftTenderDatesInterface & {
-	processType: 'invitation';
-} & PubTenderDates &
-	PubBaseDatesInvitation;
+    processType: 'invitation';
+} & PubTenderDates & PubBaseDatesInvitation;
 
 export type PubDraftQna = PubBaseQna & {
-	/**
-	 * Specified in case this pub-draft is a correction of a call-for-bids, null otherwise.
-	 * In case of a correction, it denotes the date before the correction already associated to a qna round (i.e. can also be the same as `date` in case it was not modified).
-	 *
-	 */
-	readonly qnaRoundEndDate?: string | undefined;
-	/**
-	 * True if this qna round is still editable. Only true if qna round is not attached to an already published and closed qna round.
-	 *
-	 */
-	isEditable?: boolean;
-	/**
-	 * True if the qna round can still get removed from the publication. Only true if this qna round doesn't reference an already
-	 * published qna round.
-	 *
-	 */
-	isRemovable?: boolean;
+    /**
+     * Specified in case this pub-draft is a correction of a call-for-bids, null otherwise.
+     * In case of a correction, it denotes the date before the correction already associated to a qna round (i.e. can also be the same as `date` in case it was not modified).
+     *
+     */
+    readonly qnaRoundEndDate?: string | null;
+    /**
+     * True if this qna round is still editable. Only true if qna round is not attached to an already published and closed qna round.
+     *
+     */
+    isEditable?: boolean;
+    /**
+     * True if the qna round can still get removed from the publication. Only true if this qna round doesn't reference an already
+     * published qna round.
+     *
+     */
+    isRemovable?: boolean;
 };
 
 export type PubDraftAppointment = {
-	id: string;
-	name?: Translation;
-	date?: string;
-	note?: Translation;
+    id: string;
+    name?: Translation;
+    date?: string;
+    note?: Translation;
 };
 
 export type PubDraftBaseDatesAppointments = {
-	qnas: PubDraftQna[];
-	otherAppointments: PubDraftAppointment[];
+    qnas: Array<PubDraftQna>;
+    otherAppointments: Array<PubDraftAppointment>;
 };
 
 /**
@@ -5568,19 +4918,16 @@ export type PubDraftBaseDatesAppointments = {
  * Uses the `processType` to discriminate between the models of the open, selective or invitation process for the tender dates pub draft.
  *
  */
-export type PubDraftTenderDates =
-	| ({
-			processType: 'open';
-	  } & PubDraftTenderDatesOpen)
-	| ({
-			processType: 'selective';
-	  } & PubDraftTenderDatesSelective)
-	| ({
-			processType: 'invitation';
-	  } & PubDraftTenderDatesInvitation);
+export type PubDraftTenderDates = ({
+    processType: 'open';
+} & PubDraftTenderDatesOpen) | ({
+    processType: 'selective';
+} & PubDraftTenderDatesSelective) | ({
+    processType: 'invitation';
+} & PubDraftTenderDatesInvitation);
 
 export type PubDraftTenderCriteriaOpen = PubDraftTenderCriteriaInterface & {
-	processType: 'open';
+    processType: 'open';
 };
 
 /**
@@ -5588,105 +4935,92 @@ export type PubDraftTenderCriteriaOpen = PubDraftTenderCriteriaInterface & {
  *
  */
 export type PubDraftTenderCriteriaInterface = PubDraftBaseCriteria & {
-	processType: PubProcessType;
-	orderType: PubOrderType;
+    processType: PubProcessType;
+    orderType: PubOrderType;
 };
 
-export type PubDraftTenderCriteriaSelective =
-	PubDraftTenderCriteriaInterface & {
-		processType: 'selective';
-	} & PubDraftBaseCriteriaSelective;
+export type PubDraftTenderCriteriaSelective = PubDraftTenderCriteriaInterface & {
+    processType: 'selective';
+} & PubDraftBaseCriteriaSelective;
 
 /**
  * @deprecated
  */
-export type PubDraftTenderCriteriaInvitation =
-	PubDraftTenderCriteriaInterface & {
-		processType: 'invitation';
-	};
+export type PubDraftTenderCriteriaInvitation = PubDraftTenderCriteriaInterface & {
+    processType: 'invitation';
+};
 
 /**
  * PubDraftTenderCriteria
  * Uses the `processType` to discriminate between the models of the open, selective or invitation process for the tender criteria pub draft.
  *
  */
-export type PubDraftTenderCriteria =
-	| ({
-			processType: 'open';
-	  } & PubDraftTenderCriteriaOpen)
-	| ({
-			processType: 'selective';
-	  } & PubDraftTenderCriteriaSelective)
-	| ({
-			processType: 'invitation';
-	  } & PubDraftTenderCriteriaInvitation);
+export type PubDraftTenderCriteria = ({
+    processType: 'open';
+} & PubDraftTenderCriteriaOpen) | ({
+    processType: 'selective';
+} & PubDraftTenderCriteriaSelective) | ({
+    processType: 'invitation';
+} & PubDraftTenderCriteriaInvitation);
 
 export type PubDraftTenderDetail = PubDraftDetailInterface & {
-	type: 'tender';
-} & PubDraftDetailBaseDescription &
-	PubDraftDetailWithCorrection &
-	DetailWithOptionalPubReference &
-	DetailWithInvitedVendors & {
-		'project-info': PubDraftTenderProjectInfo;
-		lots?: PubDraftTenderLot[];
-		procurement: PubDraftTenderProcurement;
-		terms: PubDraftTenderTerms;
-		dates: PubDraftTenderDates;
-		criteria?: PubDraftTenderCriteria;
-	};
+    type: 'tender';
+} & PubDraftDetailBaseDescription & PubDraftDetailWithCorrection & DetailWithOptionalPubReference & DetailWithInvitedVendors & {
+    'project-info': PubDraftTenderProjectInfo;
+    lots?: Array<PubDraftTenderLot>;
+    procurement: PubDraftTenderProcurement;
+    terms: PubDraftTenderTerms;
+    dates: PubDraftTenderDates;
+    criteria?: PubDraftTenderCriteria;
+};
 
 export type PubDraftProjectInfoOpen = PubDraftProjectInfoInterface & {
-	processType: 'open';
+    processType: 'open';
 } & PubBaseProjectInfoOpen;
 
 /**
  * Interface / parent that is implemented by the PubProjectInfo* models, used for code generation.
  *
  */
-export type PubDraftProjectInfoInterface = PubBaseProjectInfo &
-	PubBaseProjectInfoPublicationLanguageProperties & {
-		processType: PubProcessType;
-	};
+export type PubDraftProjectInfoInterface = PubBaseProjectInfo & PubBaseProjectInfoPublicationLanguageProperties & {
+    processType: PubProcessType;
+};
 
 export type PubDraftProjectInfoSelective = PubDraftProjectInfoInterface & {
-	processType: 'selective';
+    processType: 'selective';
 } & PubBaseProjectInfoSelective;
 
 /**
  * @deprecated
  */
 export type PubDraftProjectInfoInvitation = PubDraftProjectInfoInterface & {
-	processType: 'invitation';
+    processType: 'invitation';
 };
 
 /**
  * Use the `processType` to discriminate between the models of the open, selective or invitation process.
  *
  */
-export type PubDraftProjectInfo =
-	| ({
-			processType: 'open';
-	  } & PubDraftProjectInfoOpen)
-	| ({
-			processType: 'selective';
-	  } & PubDraftProjectInfoSelective)
-	| ({
-			processType: 'invitation';
-	  } & PubDraftProjectInfoInvitation);
+export type PubDraftProjectInfo = ({
+    processType: 'open';
+} & PubDraftProjectInfoOpen) | ({
+    processType: 'selective';
+} & PubDraftProjectInfoSelective) | ({
+    processType: 'invitation';
+} & PubDraftProjectInfoInvitation);
 
-export type PubDraftCompetitionLot = PubDraftBaseLot &
-	PubDraftBaseCodes & {
-		processType: PubProcessType;
-		procurementTopic: PubProcurementTopic;
-		oagCodes?: OagCode[];
-		constructionCategory: PubConstructionCategoryOptional;
-	};
+export type PubDraftCompetitionLot = PubDraftBaseLot & PubDraftBaseCodes & {
+    processType: PubProcessType;
+    procurementTopic: PubProcurementTopic;
+    oagCodes?: Array<OagCode>;
+    constructionCategory: PubConstructionCategoryOptional;
+};
 
 /**
- * Oag codes model that includes the validation annotation for the patching
+ * oag codes model that includes the validation annotation for the patching
  */
 export type PubDraftOagCodes = {
-	oagCodes?: OagCode[];
+    oagCodes?: Array<OagCode>;
 };
 
 /**
@@ -5698,17 +5032,14 @@ export type PubDraftOagCodes = {
  * - `orderDescription`
  *
  */
-export type PubDraftProcurement = PubDraftBaseProcurement &
-	PubDraftBaseCodes &
-	PubDraftOagCodes &
-	PubDraftCpvCode & {
-		processType: PubProcessType;
-		procurementTopic?: PubProcurementTopic;
-		constructionCategory?: PubConstructionCategoryOptional;
-	};
+export type PubDraftProcurement = PubDraftBaseProcurement & PubDraftBaseCodes & PubDraftOagCodes & PubDraftCpvCode & {
+    processType: PubProcessType;
+    procurementTopic?: PubProcurementTopic;
+    constructionCategory?: PubConstructionCategoryOptional;
+};
 
 export type PubDraftTermsExtendedOpen = PubDraftTermsExtendedInterface & {
-	processType: 'open';
+    processType: 'open';
 } & PubBaseTermsOpenSelective;
 
 /**
@@ -5716,20 +5047,19 @@ export type PubDraftTermsExtendedOpen = PubDraftTermsExtendedInterface & {
  * Used for types study and competition.
  *
  */
-export type PubDraftTermsExtendedInterface = PubDraftBaseTerms &
-	PubBaseTermsExtended & {
-		processType: PubProcessType;
-	};
+export type PubDraftTermsExtendedInterface = PubDraftBaseTerms & PubBaseTermsExtended & {
+    processType: PubProcessType;
+};
 
 export type PubDraftTermsExtendedSelective = PubDraftTermsExtendedInterface & {
-	processType: 'selective';
+    processType: 'selective';
 } & PubBaseTermsOpenSelective;
 
 /**
  * @deprecated
  */
 export type PubDraftTermsExtendedInvitation = PubDraftTermsExtendedInterface & {
-	processType: 'invitation';
+    processType: 'invitation';
 };
 
 /**
@@ -5738,59 +5068,51 @@ export type PubDraftTermsExtendedInvitation = PubDraftTermsExtendedInterface & {
  * process for the terms pub draft if the draft is a study or competition.
  *
  */
-export type PubDraftTermsExtended =
-	| ({
-			processType: 'open';
-	  } & PubDraftTermsExtendedOpen)
-	| ({
-			processType: 'selective';
-	  } & PubDraftTermsExtendedSelective)
-	| ({
-			processType: 'invitation';
-	  } & PubDraftTermsExtendedInvitation);
+export type PubDraftTermsExtended = ({
+    processType: 'open';
+} & PubDraftTermsExtendedOpen) | ({
+    processType: 'selective';
+} & PubDraftTermsExtendedSelective) | ({
+    processType: 'invitation';
+} & PubDraftTermsExtendedInvitation);
 
 export type PubDraftDatesOpen = PubDraftDatesInterface & {
-	processType: 'open';
-} & PubBaseCallForBidsDates &
-	PubBaseDatesOpen;
+    processType: 'open';
+} & PubBaseCallForBidsDates & PubBaseDatesOpen;
 
 /**
  * Interface / parent that is implemented by the  PubDraftDates* models, used for code generation.
  *
  */
 export type PubDraftDatesInterface = PubDraftBaseDatesAppointments & {
-	processType: PubProcessType;
+    processType: PubProcessType;
 };
 
 export type PubDraftDatesSelective = PubDraftDatesInterface & {
-	processType: 'selective';
-} & PubBaseCallForBidsDates &
-	PubBaseDatesSelective;
+    processType: 'selective';
+} & PubBaseCallForBidsDates & PubBaseDatesSelective;
 
 /**
  * @deprecated
  */
 export type PubDraftDatesInvitation = PubDraftDatesInterface & {
-	processType: 'invitation';
+    processType: 'invitation';
 } & PubBaseDatesInvitation;
 
 /**
  * Use the `processType` to discriminate between the models of the open, selective or invitation process.
  *
  */
-export type PubDraftDates =
-	| ({
-			processType: 'open';
-	  } & PubDraftDatesOpen)
-	| ({
-			processType: 'selective';
-	  } & PubDraftDatesSelective)
-	| ({
-			processType: 'invitation';
-	  } & PubDraftDatesInvitation);
+export type PubDraftDates = ({
+    processType: 'open';
+} & PubDraftDatesOpen) | ({
+    processType: 'selective';
+} & PubDraftDatesSelective) | ({
+    processType: 'invitation';
+} & PubDraftDatesInvitation);
 
 export type PubDraftCriteriaOpen = PubDraftCriteriaInterface & {
-	processType: 'open';
+    processType: 'open';
 };
 
 /**
@@ -5798,18 +5120,18 @@ export type PubDraftCriteriaOpen = PubDraftCriteriaInterface & {
  *
  */
 export type PubDraftCriteriaInterface = PubDraftBaseCriteria & {
-	processType: PubProcessType;
+    processType: PubProcessType;
 };
 
 export type PubDraftCriteriaSelective = PubDraftCriteriaInterface & {
-	processType: 'selective';
+    processType: 'selective';
 } & PubDraftBaseCriteriaSelective;
 
 /**
  * @deprecated
  */
 export type PubDraftCriteriaInvitation = PubDraftCriteriaInterface & {
-	processType: 'invitation';
+    processType: 'invitation';
 };
 
 /**
@@ -5817,115 +5139,101 @@ export type PubDraftCriteriaInvitation = PubDraftCriteriaInterface & {
  * Uses the `processType` to discriminate between the models of the open, selective or invitation process for the tender criteria pub draft.
  *
  */
-export type PubDraftCriteria =
-	| ({
-			processType: 'open';
-	  } & PubDraftCriteriaOpen)
-	| ({
-			processType: 'selective';
-	  } & PubDraftCriteriaSelective)
-	| ({
-			processType: 'invitation';
-	  } & PubDraftCriteriaInvitation);
+export type PubDraftCriteria = ({
+    processType: 'open';
+} & PubDraftCriteriaOpen) | ({
+    processType: 'selective';
+} & PubDraftCriteriaSelective) | ({
+    processType: 'invitation';
+} & PubDraftCriteriaInvitation);
 
 export type PubDraftCompetitionDetail = PubDraftDetailInterface & {
-	type: 'competition';
-} & PubDraftDetailBaseDescription &
-	PubDraftDetailWithCorrection &
-	DetailWithOptionalPubReference &
-	DetailWithInvitedVendors & {
-		'project-info': PubDraftProjectInfo;
-		lots?: PubDraftCompetitionLot[];
-		procurement: PubDraftProcurement;
-		terms: PubDraftTermsExtended;
-		dates: PubDraftDates;
-		criteria?: PubDraftCriteria;
-	};
+    type: 'competition';
+} & PubDraftDetailBaseDescription & PubDraftDetailWithCorrection & DetailWithOptionalPubReference & DetailWithInvitedVendors & {
+    'project-info': PubDraftProjectInfo;
+    lots?: Array<PubDraftCompetitionLot>;
+    procurement: PubDraftProcurement;
+    terms: PubDraftTermsExtended;
+    dates: PubDraftDates;
+    criteria?: PubDraftCriteria;
+};
 
-export type PubDraftStudyContractLot = PubDraftBaseLot &
-	PubDraftBaseCodes & {
-		processType: PubProcessType;
-		procurementTopic: PubProcurementTopic;
-		oagCodes?: OagCode[];
-		constructionCategory: PubConstructionCategoryOptional;
-	};
+export type PubDraftStudyContractLot = PubDraftBaseLot & PubDraftBaseCodes & {
+    processType: PubProcessType;
+    procurementTopic: PubProcurementTopic;
+    oagCodes?: Array<OagCode>;
+    constructionCategory: PubConstructionCategoryOptional;
+};
 
 export type PubDraftStudyContractDetail = PubDraftDetailInterface & {
-	type: 'study_contract';
-} & PubDraftDetailBaseDescription &
-	PubDraftDetailWithCorrection &
-	DetailWithOptionalPubReference &
-	DetailWithInvitedVendors & {
-		'project-info': PubDraftProjectInfo;
-		lots?: PubDraftStudyContractLot[];
-		procurement: PubDraftProcurement;
-		terms: PubDraftTermsExtended;
-		dates: PubDraftDates;
-		criteria?: PubDraftCriteria;
-	};
+    type: 'study_contract';
+} & PubDraftDetailBaseDescription & PubDraftDetailWithCorrection & DetailWithOptionalPubReference & DetailWithInvitedVendors & {
+    'project-info': PubDraftProjectInfo;
+    lots?: Array<PubDraftStudyContractLot>;
+    procurement: PubDraftProcurement;
+    terms: PubDraftTermsExtended;
+    dates: PubDraftDates;
+    criteria?: PubDraftCriteria;
+};
 
 export type PubDraftDetailWithLotReference = {
-	/**
-	 * Lot information if this pub-draft referred to a lot or null if the project was created without lots
-	 *
-	 */
-	lot?: PubDraftLotDescription;
+    /**
+     * Lot information if this pub-draft referred to a lot or null if the project was created without lots
+     *
+     */
+    lot?: PubDraftLotDescription;
 };
 
 export type PubDraftAwardedVendor = {
-	vendorId: string;
-	readonly vendorName: string;
-	vendorAddress?: Address;
+    vendorId: string;
+    readonly vendorName: string;
+    vendorAddress?: Address;
 };
 
-export type PubDraftParticipantSelectionQualifiedVendor =
-	PubDraftAwardedVendor & {
-		/**
-		 * True if vendor was qualified for the second phase of the selective process
-		 *
-		 */
-		awarded: boolean;
-	};
+export type PubDraftParticipantSelectionQualifiedVendor = PubDraftAwardedVendor & {
+    /**
+     * True if vendor was qualified for the second phase of the selective process
+     *
+     */
+    awarded: boolean;
+};
 
 export type PubDraftParticipantSelectionInfo = PubDraftTermsRemediesChanged & {
-	participantSelectionLimitation: ThreeValuedSelection;
-	participantSelectionNote?: Translation;
-	participantSelectionCommunication: ParticipantSelectionCommunication;
-	/**
-	 * List of vendors which submitted an offer or have been awarded for this publication
-	 *
-	 */
-	vendors: PubDraftParticipantSelectionQualifiedVendor[];
-	publicationDate?: string;
+    participantSelectionLimitation: ThreeValuedSelection;
+    participantSelectionNote?: Translation;
+    participantSelectionCommunication: ParticipantSelectionCommunication;
+    /**
+     * List of vendors which submitted an offer or have been awarded for this publication
+     *
+     */
+    vendors: Array<PubDraftParticipantSelectionQualifiedVendor>;
+    publicationDate?: string;
 };
 
 export type PubDraftParticipantSelectionDetail = PubDraftDetailInterface & {
-	type: 'participant_selection';
-} & PubDraftDetailWithLotReference &
-	DetailWithPubReference & {
-		'project-info': PubBaseProjectInfoAddress;
-		procurement: PubDraftDirectAwardProcurement;
-		'participant-selection': PubDraftParticipantSelectionInfo;
-	};
-
-export type PubDraftSelectiveOfferingPhaseNotice = {
-	notice?: TranslationSanitizedHtml;
+    type: 'participant_selection';
+} & PubDraftDetailWithLotReference & DetailWithPubReference & {
+    'project-info': PubBaseProjectInfoAddress;
+    procurement: PubDraftDirectAwardProcurement;
+    'participant-selection': PubDraftParticipantSelectionInfo;
 };
 
-export type PubDraftSelectiveOfferingPhaseDates =
-	PubDraftBaseDatesAppointments & PubBaseDates & PubBaseDatesOpen;
+export type PubDraftSelectiveOfferingPhaseNotice = {
+    notice?: TranslationSanitizedHtml;
+};
+
+export type PubDraftSelectiveOfferingPhaseDates = PubDraftBaseDatesAppointments & PubBaseDates & PubBaseDatesOpen;
 
 export type PubDraftSelectiveOfferingPhaseCriteria = PubDraftBaseAwardCriteria;
 
 export type PubDraftSelectiveOfferingPhaseDetail = PubDraftDetailInterface & {
-	type: 'selective_offering_phase';
-} & PubDraftDetailWithLotReference &
-	PubDraftDetailWithCorrection & {
-		'project-info': PubBaseProjectInfoAddress;
-		notice: PubDraftSelectiveOfferingPhaseNotice;
-		dates: PubDraftSelectiveOfferingPhaseDates;
-		criteria: PubDraftSelectiveOfferingPhaseCriteria;
-	};
+    type: 'selective_offering_phase';
+} & PubDraftDetailWithLotReference & PubDraftDetailWithCorrection & {
+    'project-info': PubBaseProjectInfoAddress;
+    notice: PubDraftSelectiveOfferingPhaseNotice;
+    dates: PubDraftSelectiveOfferingPhaseDates;
+    criteria: PubDraftSelectiveOfferingPhaseCriteria;
+};
 
 /**
  * Note that in the case the revokation is for a rfi, the `remediesNotice` fields are not used, in a rfi this information doesn't exist.
@@ -5933,53 +5241,48 @@ export type PubDraftSelectiveOfferingPhaseDetail = PubDraftDetailInterface & {
  *
  */
 export type PubDraftRevocationInfo = PubDraftTermsRemediesChanged & {
-	publicationDate?: string;
-	reason?: Translation;
-	remarks?: Translation;
+    publicationDate?: string;
+    reason?: Translation;
+    remarks?: Translation;
 };
 
 export type PubDraftRevocationDetail = PubDraftDetailInterface & {
-	type: 'revocation';
-} & DetailWithPubReference &
-	PubRevocationDetail & {
-		revocation: PubDraftRevocationInfo;
-		'project-info': PubBaseProjectInfoAddress;
-		procurement?: PubProcurementOrderDescription;
-		/**
-		 * Lot specific procurement and lot information of the revoked publication. Only provided in case of projects
-		 * with lotsType `with` and either an array of all lot information of the revoked
-		 * publication (advance_notice) or an array of a single lot in case the publication references a specific lot (award, participant_selection).
-		 *
-		 */
-		lots?: PubLotProcurement[];
-	};
-
-export type PubDraftAbandonmentInfo = PubDraftTermsRemediesChanged &
-	PubAbandonmentInfo;
-
-export type PubDraftAbandonmentDetail = PubDraftDetailInterface & {
-	type: 'abandonment';
-} & {
-	abandonment: PubDraftAbandonmentInfo;
-	/**
-	 * The lot which was abandoned or null in case the whole project was abandoned which is always the case if
-	 * the project was created without lots
-	 *
-	 */
-	abandonedLot?: PubDraftLotDescription;
-	'project-info': PubBaseProjectInfoAddress;
+    type: 'revocation';
+} & DetailWithPubReference & PubRevocationDetail & {
+    revocation: PubDraftRevocationInfo;
+    'project-info': PubBaseProjectInfoAddress;
+    procurement?: PubProcurementOrderDescription;
+    /**
+     * Lot specific procurement and lot information of the revoked publication. Only provided in case of projects
+     * with lotsType `with` and either an array of all lot information of the revoked
+     * publication (advance_notice) or an array of a single lot in case the publication references a specific lot (award, participant_selection).
+     *
+     */
+    lots?: Array<PubLotProcurement>;
 };
 
-export type PubDraftAdvanceNoticeDetailDiscriminator =
-	| ({
-			projectType: 'competition';
-	  } & PubDraftCompetitionDetail)
-	| ({
-			projectType: 'study_contract';
-	  } & PubDraftStudyContractDetail)
-	| ({
-			projectType: 'tender';
-	  } & PubDraftTenderDetail);
+export type PubDraftAbandonmentInfo = PubDraftTermsRemediesChanged & PubAbandonmentInfo;
+
+export type PubDraftAbandonmentDetail = PubDraftDetailInterface & {
+    type: 'abandonment';
+} & {
+    abandonment: PubDraftAbandonmentInfo;
+    /**
+     * The lot which was abandoned or null in case the whole project was abandoned which is always the case if
+     * the project was created without lots
+     *
+     */
+    abandonedLot?: PubDraftLotDescription;
+    'project-info': PubBaseProjectInfoAddress;
+};
+
+export type PubDraftAdvanceNoticeDetailDiscriminator = ({
+    projectType: 'competition';
+} & PubDraftCompetitionDetail) | ({
+    projectType: 'study_contract';
+} & PubDraftStudyContractDetail) | ({
+    projectType: 'tender';
+} & PubDraftTenderDetail);
 
 /**
  * Model for the rfi project information
@@ -5989,19 +5292,14 @@ export type PubDraftRfiProjectInfo = PubBaseProjectInfo;
 /**
  * Model for the rfi dates
  */
-export type PubDraftRfiDates = PubBaseCallForBidsDates &
-	PubDraftBaseDatesAppointments;
+export type PubDraftRfiDates = PubBaseCallForBidsDates & PubDraftBaseDatesAppointments;
 
 /**
  * Model for the rfi procurement information
  */
-export type PubDraftRfiProcurement = PubDraftBaseCodes &
-	PubDraftOagCodes &
-	PubDraftCpvCode &
-	PubDraftCpcCode &
-	PubBaseProcurement & {
-		orderAddress?: PubProcurementAddress;
-	};
+export type PubDraftRfiProcurement = PubDraftBaseCodes & PubDraftOagCodes & PubDraftCpvCode & PubDraftCpcCode & PubBaseProcurement & {
+    orderAddress?: PubProcurementAddress;
+};
 
 /**
  * Model for the rfi terms
@@ -6009,45 +5307,43 @@ export type PubDraftRfiProcurement = PubDraftBaseCodes &
 export type PubDraftRfiTerms = PubBaseMinimalTerms;
 
 export type PubDraftRfiDetail = PubDraftDetailInterface & {
-	type: 'request_for_information';
-} & DetailWithOptionalPubReference &
-	PubDraftDetailWithCorrection & {
-		'project-info': PubDraftRfiProjectInfo;
-		dates: PubDraftRfiDates;
-		procurement: PubDraftRfiProcurement;
-		terms: PubDraftRfiTerms;
-	};
+    type: 'request_for_information';
+} & DetailWithOptionalPubReference & PubDraftDetailWithCorrection & {
+    'project-info': PubDraftRfiProjectInfo;
+    dates: PubDraftRfiDates;
+    procurement: PubDraftRfiProcurement;
+    terms: PubDraftRfiTerms;
+};
 
 export type PubDraftAwardProjectInfo = {
-	title?: Translation;
-	stateContractArea?: boolean;
-	/**
-	 * Only `tender` publication can be sent to TED, can be true when `referencing_pub_type` is `tender`
-	 * else false
-	 *
-	 */
-	publicationTed?: boolean;
+    title?: Translation;
+    stateContractArea?: boolean;
+    /**
+     * Only `tender` publication can be sent to TED, can be true when `referencing_pub_type` is `tender`
+     * else false
+     *
+     */
+    publicationTed?: boolean;
 } & PubBaseProjectInfoAddress;
 
-export type PubDraftAwardDecisionExport = PubDraftTermsRemedies &
-	PubAwardDecision;
+export type PubDraftAwardDecisionExport = PubDraftTermsRemedies & PubAwardDecision;
 
 export type PubDraftStatisticsAwardedVendor = PubVendorWithAddressData & {
-	price?: PriceWithVat;
+    price?: PriceWithVat;
 };
 
 export type PubDraftAwardVendorSubmission = PubDraftStatisticsAwardedVendor & {
-	note?: Translation;
-	rank?: number;
-	/**
-	 * True if vendor was awarded for this publication.
-	 *
-	 */
-	awarded: boolean;
+    note?: Translation;
+    rank?: number;
+    /**
+     * True if vendor was awarded for this publication.
+     *
+     */
+    awarded: boolean;
 };
 
 export type PubDraftAwardDecisionDetail = PubDraftAwardDecisionExport & {
-	vendors: PubDraftAwardVendorSubmission[];
+    vendors: Array<PubDraftAwardVendorSubmission>;
 };
 
 /**
@@ -6055,609 +5351,490 @@ export type PubDraftAwardDecisionDetail = PubDraftAwardDecisionExport & {
  * https://www.fedlex.admin.ch/eli/cc/1996/609_609_609/de#art_XII_I
  *
  */
-export type JustificationDirectAward =
-	| 'a1_no_offer'
-	| 'a2_no_offer_fulfilled_entry_conditions'
-	| 'a3_no_vendor_fulfilled_entry_conditions'
-	| 'a4_offers_coordinated_same_demands'
-	| 'b1_specific_vendor_work_of_art'
-	| 'b2_specific_vendor_patent_or_copyright'
-	| 'b3_specific_vendor_technical_reasons'
-	| 'c1_additional_delivery_same_vendor_not_interchangeable'
-	| 'c2_additional_delivery_same_vendor_considerable_extra_costs'
-	| 'd_unpredictable_urgent'
-	| 'e_commodity_exchange_products'
-	| 'f_prototype'
-	| 'g_special_sale_due_to_liquidation_or_receivership'
-	| 'h1_award_winner_conforms_publication'
-	| 'h2_award_winner_with_independent_jury_and_promised_contract';
+export type JustificationDirectAward = 'a1_no_offer' | 'a2_no_offer_fulfilled_entry_conditions' | 'a3_no_vendor_fulfilled_entry_conditions' | 'a4_offers_coordinated_same_demands' | 'b1_specific_vendor_work_of_art' | 'b2_specific_vendor_patent_or_copyright' | 'b3_specific_vendor_technical_reasons' | 'c1_additional_delivery_same_vendor_not_interchangeable' | 'c2_additional_delivery_same_vendor_considerable_extra_costs' | 'd_unpredictable_urgent' | 'e_commodity_exchange_products' | 'f_prototype' | 'g_special_sale_due_to_liquidation_or_receivership' | 'h1_award_winner_conforms_publication' | 'h2_award_winner_with_independent_jury_and_promised_contract';
 
 export type PubDraftAwardStatistics = {
-	totalPrice?: PriceWithVat;
-	justificationDirectAward?: JustificationDirectAward;
-	vendors: PubDraftStatisticsAwardedVendor[];
+    totalPrice?: PriceWithVat;
+    justificationDirectAward?: JustificationDirectAward;
+    vendors: Array<PubDraftStatisticsAwardedVendor>;
 };
 
-export type PubDraftAwardTenderProcurementService =
-	PubDraftAwardTenderProcurementInterface & {
-		orderType: 'service';
-	} & PubDraftBaseCodes & {
-			cpcCode?: CpcCode;
-		};
+export type PubDraftAwardTenderProcurementService = PubDraftAwardTenderProcurementInterface & {
+    orderType: 'service';
+} & PubDraftBaseCodes & {
+    cpcCode?: CpcCode;
+};
 
 /**
  * Interface / parent that is implemented by the PubDraftAwardTenderProcurement* models, used for code generation.
  *
  */
-export type PubDraftAwardTenderProcurementInterface =
-	PubDraftAwardProcurementInterface & {
-		projectType?: 'PubDraftAwardTenderProcurementInterface';
-	};
+export type PubDraftAwardTenderProcurementInterface = PubDraftAwardProcurementInterface & {
+    projectType?: 'PubDraftAwardTenderProcurementInterface';
+};
 
-export type PubDraftAwardTenderProcurementConstruction =
-	PubDraftAwardTenderProcurementInterface & {
-		orderType: 'construction';
-	} & PubDraftBaseCodes & {
-			oagCodes?: OagCode[];
-			constructionType?: PubConstructionType;
-			constructionCategory?: PubConstructionCategoryOptional;
-		};
+export type PubDraftAwardTenderProcurementConstruction = PubDraftAwardTenderProcurementInterface & {
+    orderType: 'construction';
+} & PubDraftBaseCodes & {
+    oagCodes?: Array<OagCode>;
+    constructionType?: PubConstructionType;
+    constructionCategory?: PubConstructionCategoryOptional;
+};
 
-export type PubDraftAwardTenderProcurementSupply =
-	PubDraftAwardTenderProcurementInterface & {
-		orderType: 'supply';
-	} & {
-		additionalCpvCodes?: CpvCode[];
-		supplyType?: PubSupplyType;
-	};
+export type PubDraftAwardTenderProcurementSupply = PubDraftAwardTenderProcurementInterface & {
+    orderType: 'supply';
+} & {
+    additionalCpvCodes?: Array<CpvCode>;
+    supplyType?: PubSupplyType;
+};
 
 /**
  * Uses the `orderType` to discriminate between the models for of the construction, supply or service type for the tender procurement pub draft.
  *
  */
-export type PubDraftAwardTenderProcurement =
-	| ({
-			orderType: 'service';
-	  } & PubDraftAwardTenderProcurementService)
-	| ({
-			orderType: 'construction';
-	  } & PubDraftAwardTenderProcurementConstruction)
-	| ({
-			orderType: 'supply';
-	  } & PubDraftAwardTenderProcurementSupply);
+export type PubDraftAwardTenderProcurement = ({
+    orderType: 'service';
+} & PubDraftAwardTenderProcurementService) | ({
+    orderType: 'construction';
+} & PubDraftAwardTenderProcurementConstruction) | ({
+    orderType: 'supply';
+} & PubDraftAwardTenderProcurementSupply);
 
 export type PubDraftAwardProcurementInterface = PubAwardProcurement & {
-	externalReference?: PubAndLotReference;
+    externalReference?: PubAndLotReference;
 };
 
-export type PubDraftAwardGeneralProcurement =
-	PubDraftAwardProcurementInterface & {
-		projectType?: 'competition' | 'study_contract';
-	} & PubDraftBaseCodes & {
-			procurementTopic?: PubProcurementTopic;
-			oagCodes?: OagCode[];
-			constructionCategory?: PubConstructionCategoryOptional;
-		};
+export type PubDraftAwardGeneralProcurement = PubDraftAwardProcurementInterface & {
+    projectType?: 'competition' | 'study_contract';
+} & PubDraftBaseCodes & {
+    procurementTopic?: PubProcurementTopic;
+    oagCodes?: Array<OagCode>;
+    constructionCategory?: PubConstructionCategoryOptional;
+};
 
 /**
  * Use the project type to discriminate between the models.
  *
  */
-export type PubDraftAwardProcurement =
-	| ({
-			projectType: 'competition' | 'study_contract';
-	  } & PubDraftAwardGeneralProcurement)
-	| ({
-			projectType: 'tender';
-	  } & PubDraftAwardTenderProcurement);
+export type PubDraftAwardProcurement = ({
+    projectType: 'competition' | 'study_contract';
+} & PubDraftAwardGeneralProcurement) | ({
+    projectType: 'tender';
+} & PubDraftAwardTenderProcurement);
 
 /**
  * Full detail of a publication draft
  */
-export type PubDraftDetail =
-	| ({
-			type: 'tender';
-	  } & PubDraftTenderDetail)
-	| ({
-			type: 'competition';
-	  } & PubDraftCompetitionDetail)
-	| ({
-			type: 'study_contract';
-	  } & PubDraftStudyContractDetail)
-	| ({
-			type: 'award';
-	  } & PubDraftAwardDetail)
-	| ({
-			type: 'direct_award';
-	  } & PubDraftDirectAwardDetail)
-	| ({
-			type: 'participant_selection';
-	  } & PubDraftParticipantSelectionDetail)
-	| ({
-			type: 'selective_offering_phase';
-	  } & PubDraftSelectiveOfferingPhaseDetail)
-	| ({
-			type: 'revocation';
-	  } & PubDraftRevocationDetail)
-	| ({
-			type: 'abandonment';
-	  } & PubDraftAbandonmentDetail)
-	| ({
-			type: 'advance_notice';
-	  } & PubDraftAdvanceNoticeDetailDiscriminator)
-	| ({
-			type: 'request_for_information';
-	  } & PubDraftRfiDetail);
+export type PubDraftDetail = ({
+    type: 'tender';
+} & PubDraftTenderDetail) | ({
+    type: 'competition';
+} & PubDraftCompetitionDetail) | ({
+    type: 'study_contract';
+} & PubDraftStudyContractDetail) | ({
+    type: 'award';
+} & PubDraftAwardDetail) | ({
+    type: 'direct_award';
+} & PubDraftDirectAwardDetail) | ({
+    type: 'participant_selection';
+} & PubDraftParticipantSelectionDetail) | ({
+    type: 'selective_offering_phase';
+} & PubDraftSelectiveOfferingPhaseDetail) | ({
+    type: 'revocation';
+} & PubDraftRevocationDetail) | ({
+    type: 'abandonment';
+} & PubDraftAbandonmentDetail) | ({
+    type: 'advance_notice';
+} & PubDraftAdvanceNoticeDetailDiscriminator) | ({
+    type: 'request_for_information';
+} & PubDraftRfiDetail);
 
 export type WizardState = {
-	state?: Record<string, unknown>;
+    state?: {
+        [key: string]: unknown;
+    };
 };
 
 export type PubDraftTranslationLanguages = {
-	/**
-	 * The localization languages besides the `creationLanguage`
-	 *
-	 */
-	translationLanguages?: TranslationLanguage[];
+    /**
+     * the localization languages besides the `creationLanguage`
+     *
+     */
+    translationLanguages?: Array<TranslationLanguage>;
 };
 
 export type PubDraftLotsReorder = {
-	lots: PubDraftLotId[];
+    lots: Array<PubDraftLotId>;
 };
 
 export type PubDraftLots = {
-	lots: PubDraftLotDescription[];
+    lots: Array<PubDraftLotDescription>;
 };
 
-export type PubDraftAwardDecisionStep = PubDraftAwardDecisionDetail &
-	PubDraftTermsRemediesChanged & {
-		publicationDate?: string;
-	};
+export type PubDraftAwardDecisionStep = PubDraftAwardDecisionDetail & PubDraftTermsRemediesChanged & {
+    publicationDate?: string;
+};
 
 export type SupportedSustainabilityFormTypes = {
-	/**
-	 * The property is required in the response and ignored in the request
-	 *
-	 */
-	readonly usedInSustainabilityFormTypes?: SustainabilityFormType[];
+    /**
+     * The property is required in the response and ignored in the request
+     *
+     */
+    readonly usedInSustainabilityFormTypes?: Array<SustainabilityFormType>;
 };
 
 export type A1 = SupportedSustainabilityFormTypes & {
-	isStandardizedService: boolean;
+    isStandardizedService: boolean;
 };
 
-export type A2ProcurementCharacteristics =
-	| 'durable'
-	| 'standing_order'
-	| 'complex'
-	| 'intellectual_achievement'
-	| 'innovative'
-	| 'not_relevant';
+export type A2ProcurementCharacteristics = 'durable' | 'standing_order' | 'complex' | 'intellectual_achievement' | 'innovative' | 'not_relevant';
 
 export type A2 = SupportedSustainabilityFormTypes & {
-	procurementCharacteristics?: A2ProcurementCharacteristics[];
+    procurementCharacteristics?: Array<A2ProcurementCharacteristics>;
 };
 
 export type A3ProcurementComplexity = 'small' | 'medium' | 'large';
 
 export type A3 = SupportedSustainabilityFormTypes & {
-	procurementComplexity: A3ProcurementComplexity;
+    procurementComplexity: A3ProcurementComplexity;
 };
 
 export type A4 = SupportedSustainabilityFormTypes & {
-	/**
-	 * Award criteria weights are not relevant for 'direct award' and 'competition'
-	 *
-	 */
-	isAwardCriteriaWeightsRelevant: boolean;
-	priceWeight?: number;
-	sustainabilityWeight?: number;
-	innovationWeight?: number;
-	offerPlausibilityWeight?: number;
-	otherQualityCriteriaWeight?: number;
-	priceReliabilityWeight?: number;
-	otherWeight?: number;
+    /**
+     * Award criteria weights are not relevant for 'direct award' and 'competition'
+     *
+     */
+    isAwardCriteriaWeightsRelevant: boolean;
+    priceWeight?: number;
+    sustainabilityWeight?: number;
+    innovationWeight?: number;
+    offerPlausibilityWeight?: number;
+    otherQualityCriteriaWeight?: number;
+    priceReliabilityWeight?: number;
+    otherWeight?: number;
 };
 
 export type A5CheckCriteria = 'yes' | 'no' | 'unknown' | 'not_relevant';
 
-export type A5CriteriaTypes =
-	| 'price'
-	| 'social_criteria'
-	| 'quality'
-	| 'ecology'
-	| 'innovation';
+export type A5CriteriaTypes = 'price' | 'social_criteria' | 'quality' | 'ecology' | 'innovation';
 
 export type A5 = SupportedSustainabilityFormTypes & {
-	checkCriteria: A5CheckCriteria;
-	criteriaTypes?: A5CriteriaTypes[];
+    checkCriteria: A5CheckCriteria;
+    criteriaTypes?: Array<A5CriteriaTypes>;
 };
 
-export type B1QualityRelatedCriteria =
-	| 'qualification_criteria'
-	| 'technical_specifications'
-	| 'award_criteria'
-	| 'no';
+export type B1QualityRelatedCriteria = 'qualification_criteria' | 'technical_specifications' | 'award_criteria' | 'no';
 
 export type B1 = SupportedSustainabilityFormTypes & {
-	qualityRelatedCriteria?: B1QualityRelatedCriteria[];
+    qualityRelatedCriteria?: Array<B1QualityRelatedCriteria>;
 };
 
-export type B2QualityRelatedLabelsRequirements =
-	| 'yes'
-	| 'no'
-	| 'not_sme_friendly'
-	| 'not_relevant';
+export type B2QualityRelatedLabelsRequirements = 'yes' | 'no' | 'not_sme_friendly' | 'not_relevant';
 
 export type B2 = SupportedSustainabilityFormTypes & {
-	qualityRelatedLabelsRequirements: B2QualityRelatedLabelsRequirements;
-	/**
-	 * List all labels required like Max Havelaar.
-	 * This field is required if the field qualityRelatedLabelRequirement is set to yes.
-	 *
-	 */
-	qualityRelatedLabels?: string;
+    qualityRelatedLabelsRequirements: B2QualityRelatedLabelsRequirements;
+    /**
+     * List all labels required like Max Havelaar.
+     * This field is required if the field qualityRelatedLabelRequirement is set to yes.
+     *
+     */
+    qualityRelatedLabels?: string;
 };
 
 export type C1 = SupportedSustainabilityFormTypes & {
-	isCountryOfOriginForGoodsAsked: boolean;
-	/**
-	 * The ISO 3166 two letter country code. The list with the ids / codes can be get from `GET /api/countries/v1`
-	 *
-	 */
-	countryOfOriginForGoods?: string;
-	comment?: string;
+    isCountryOfOriginForGoodsAsked: boolean;
+    /**
+     * The ISO 3166 two letter country code. The list with the ids / codes can be get from `GET /api/countries/v1`
+     *
+     */
+    countryOfOriginForGoods?: string;
+    comment?: string;
 };
 
 export type YesNoNotRelevant = 'yes' | 'no' | 'not_relevant';
 
-export type D1EvaluationCriteriaDimensionsDefined =
-	| 'society'
-	| 'economy'
-	| 'environment';
+export type D1EvaluationCriteriaDimensionsDefined = 'society' | 'economy' | 'environment';
 
 export type D1 = SupportedSustainabilityFormTypes & {
-	isOverallProjectLead: boolean;
-	isKbobRecommendationPartOfContract?: boolean;
-	evaluationCriteriaDimensionDefined?: YesNoNotRelevant;
-	evaluationCriteriaDimensionsDefined?: D1EvaluationCriteriaDimensionsDefined[];
+    isOverallProjectLead: boolean;
+    isKbobRecommendationPartOfContract?: boolean;
+    evaluationCriteriaDimensionDefined?: YesNoNotRelevant;
+    evaluationCriteriaDimensionsDefined?: Array<D1EvaluationCriteriaDimensionsDefined>;
 };
 
 export type D2 = SupportedSustainabilityFormTypes & {
-	isKbobRecommendationPartOfContract: boolean;
+    isKbobRecommendationPartOfContract: boolean;
 };
 
 export type D3 = SupportedSustainabilityFormTypes & {
-	standardsPartOfContract: YesNoNotRelevant;
+    standardsPartOfContract: YesNoNotRelevant;
 };
 
-export type E1ElementCostsConsidered =
-	| 'acquisition'
-	| 'operation'
-	| 'maintenance'
-	| 'disposal'
-	| 'organization'
-	| 'external';
+export type E1ElementCostsConsidered = 'acquisition' | 'operation' | 'maintenance' | 'disposal' | 'organization' | 'external';
 
 export type E1 = SupportedSustainabilityFormTypes & {
-	lifeCycleCostsConsidered: YesNoNotRelevant;
-	reason?: string;
-	elementCostsConsidered?: E1ElementCostsConsidered[];
+    lifeCycleCostsConsidered: YesNoNotRelevant;
+    reason?: string;
+    elementCostsConsidered?: Array<E1ElementCostsConsidered>;
 };
 
-export type EcologicalSocialSocietalCriteria =
-	| 'self_declaration'
-	| 'agb'
-	| 'specification'
-	| 'draft_contract';
+export type EcologicalSocialSocietalCriteria = 'self_declaration' | 'agb' | 'specification' | 'draft_contract';
 
 export type F1 = SupportedSustainabilityFormTypes & {
-	safetyRegulationsDemanded?: EcologicalSocialSocietalCriteria[];
-	comment?: string;
+    safetyRegulationsDemanded?: Array<EcologicalSocialSocietalCriteria>;
+    comment?: string;
 };
 
 export type F2 = SupportedSustainabilityFormTypes & {
-	iloCoreAgreementsDemanded?: EcologicalSocialSocietalCriteria[];
-	comment?: string;
+    iloCoreAgreementsDemanded?: Array<EcologicalSocialSocietalCriteria>;
+    comment?: string;
 };
 
 export type F3 = SupportedSustainabilityFormTypes & {
-	evidencesSocialCriteriaComplianceProvided?: EcologicalSocialSocietalCriteria[];
-	comment?: string;
+    evidencesSocialCriteriaComplianceProvided?: Array<EcologicalSocialSocietalCriteria>;
+    comment?: string;
 };
 
-export type F4ClarificationsSocialCriteriaCompliance =
-	| 'consulting'
-	| 'inspection';
+export type F4ClarificationsSocialCriteriaCompliance = 'consulting' | 'inspection';
 
 export type F4 = SupportedSustainabilityFormTypes & {
-	isClarificationSocialCriteriaComplianceDone: boolean;
-	clarificationsSocialCriteriaCompliance?: F4ClarificationsSocialCriteriaCompliance[];
-	otherClarifications?: string;
+    isClarificationSocialCriteriaComplianceDone: boolean;
+    clarificationsSocialCriteriaCompliance?: Array<F4ClarificationsSocialCriteriaCompliance>;
+    otherClarifications?: string;
 };
 
 export type F5 = SupportedSustainabilityFormTypes & {
-	isSubcontractorSocialCriteriaComplianceDemanded: boolean;
-	subcontractorSocialCriteriaComplianceCommitments?: EcologicalSocialSocietalCriteria[];
-	comment?: string;
+    isSubcontractorSocialCriteriaComplianceDemanded: boolean;
+    subcontractorSocialCriteriaComplianceCommitments?: Array<EcologicalSocialSocietalCriteria>;
+    comment?: string;
 };
 
 export type F6 = SupportedSustainabilityFormTypes & {
-	isKbobContractAgreementDemanded: boolean;
-	isSafetyRegulationComplianceDemanded?: boolean;
-	isIloCoreAgreementDemanded?: boolean;
-	isEvidenceOfSocialCriteriaDemanded?: boolean;
-	isSubcontractorSocialCriteriaComplianceDemanded?: boolean;
+    isKbobContractAgreementDemanded: boolean;
+    isSafetyRegulationComplianceDemanded?: boolean;
+    isIloCoreAgreementDemanded?: boolean;
+    isEvidenceOfSocialCriteriaDemanded?: boolean;
+    isSubcontractorSocialCriteriaComplianceDemanded?: boolean;
 };
 
 export type F7a = SupportedSustainabilityFormTypes & {
-	standardsDemanded: YesNoNotRelevant;
-	comment?: string;
+    standardsDemanded: YesNoNotRelevant;
+    comment?: string;
 };
 
 export type F7b = SupportedSustainabilityFormTypes & {
-	standardsDemanded: YesNoNotRelevant;
-	comment?: string;
+    standardsDemanded: YesNoNotRelevant;
+    comment?: string;
 };
 
 export type F8 = SupportedSustainabilityFormTypes & {
-	standardsDemanded: YesNoNotRelevant;
-	comment?: string;
+    standardsDemanded: YesNoNotRelevant;
+    comment?: string;
 };
 
 export type F9 = SupportedSustainabilityFormTypes & {
-	standardsDemanded: YesNoNotRelevant;
-	comment?: string;
+    standardsDemanded: YesNoNotRelevant;
+    comment?: string;
 };
 
 export type G1 = SupportedSustainabilityFormTypes & {
-	environmentalProtectionsDemanded?: EcologicalSocialSocietalCriteria[];
-	comment?: string;
+    environmentalProtectionsDemanded?: Array<EcologicalSocialSocietalCriteria>;
+    comment?: string;
 };
 
 export type G2 = SupportedSustainabilityFormTypes & {
-	isEnvironmentalProtectionDemanded: boolean;
+    isEnvironmentalProtectionDemanded: boolean;
 };
 
-export type G3EcologicalCriteriaExpressed =
-	| 'technical_specifications'
-	| 'award_criteria'
-	| 'combination_of_technical_specifications_and_award_criteria'
-	| 'suitability_criteria';
+export type G3EcologicalCriteriaExpressed = 'technical_specifications' | 'award_criteria' | 'combination_of_technical_specifications_and_award_criteria' | 'suitability_criteria';
 
 export type G3 = SupportedSustainabilityFormTypes & {
-	hasEcologicalCriteriaExpressed?: boolean;
-	ecologicalCriteriaExpressed?: G3EcologicalCriteriaExpressed[];
+    hasEcologicalCriteriaExpressed?: boolean;
+    ecologicalCriteriaExpressed?: Array<G3EcologicalCriteriaExpressed>;
 };
 
 export type G4 = SupportedSustainabilityFormTypes & {
-	ecologicalCriteriaDemanded?: string;
+    ecologicalCriteriaDemanded?: string;
 };
 
 export type G5 = SupportedSustainabilityFormTypes & {
-	/**
-	 * If isNoEvidence set to false, either a text in environmentalEvidence or in otherEvidence or in both is required
-	 *
-	 */
-	environmentalEvidence?: string;
-	/**
-	 * If isNoEvidence set to false, either a text in environmentalEvidence or in otherEvidence or in both is required
-	 *
-	 */
-	otherEvidence?: string;
-	isNoEvidence?: boolean;
+    /**
+     * If isNoEvidence set to false, either a text in environmentalEvidence or in otherEvidence or in both is required
+     *
+     */
+    environmentalEvidence?: string;
+    /**
+     * If isNoEvidence set to false, either a text in environmentalEvidence or in otherEvidence or in both is required
+     *
+     */
+    otherEvidence?: string;
+    isNoEvidence?: boolean;
 };
 
 export type G6BestFulfilment = 'yes' | 'no' | 'identical';
 
 export type G6 = SupportedSustainabilityFormTypes & {
-	bestFulfilment: G6BestFulfilment;
+    bestFulfilment: G6BestFulfilment;
 };
 
 export type G7a = SupportedSustainabilityFormTypes & {
-	standardsDemanded: YesNoNotRelevant;
+    standardsDemanded: YesNoNotRelevant;
 };
 
 export type G7b = SupportedSustainabilityFormTypes & {
-	standardsDemanded: YesNoNotRelevant;
+    standardsDemanded: YesNoNotRelevant;
 };
 
 export type G7c = SupportedSustainabilityFormTypes & {
-	standardsDemanded: YesNoNotRelevant;
+    standardsDemanded: YesNoNotRelevant;
 };
 
 export type G7d = SupportedSustainabilityFormTypes & {
-	standardsDemanded: YesNoNotRelevant;
+    standardsDemanded: YesNoNotRelevant;
 };
 
-export type G8OtherEcologicalCriteriaSelected =
-	| 'suitability_criteria'
-	| 'technical_specifications'
-	| 'award_criteria'
-	| 'service_description';
+export type G8OtherEcologicalCriteriaSelected = 'suitability_criteria' | 'technical_specifications' | 'award_criteria' | 'service_description';
 
 export type G8 = SupportedSustainabilityFormTypes & {
-	otherEcologicalCriteriaDemanded: YesNoNotRelevant;
-	otherEcologicalCriteriaSelected?: G8OtherEcologicalCriteriaSelected[];
+    otherEcologicalCriteriaDemanded: YesNoNotRelevant;
+    otherEcologicalCriteriaSelected?: Array<G8OtherEcologicalCriteriaSelected>;
 };
 
-export type G9EcologicalTopicsDepicted =
-	| 'energy_consumption'
-	| 'climate_protection'
-	| 'material_consumption'
-	| 'water_consumption'
-	| 'avoidance_of_pollutants'
-	| 'product_life'
-	| 'recycling'
-	| 'environmental_note'
-	| 'not_relevant';
+export type G9EcologicalTopicsDepicted = 'energy_consumption' | 'climate_protection' | 'material_consumption' | 'water_consumption' | 'avoidance_of_pollutants' | 'product_life' | 'recycling' | 'environmental_note' | 'not_relevant';
 
 export type G9 = SupportedSustainabilityFormTypes & {
-	ecologicalTopicsDepicted?: G9EcologicalTopicsDepicted[];
+    ecologicalTopicsDepicted?: Array<G9EcologicalTopicsDepicted>;
 };
 
 export type H1 = SupportedSustainabilityFormTypes & {
-	innovativeSolutionsAvailable: YesNoNotRelevant;
+    innovativeSolutionsAvailable: YesNoNotRelevant;
 };
 
-export type H2InnovationSupportingProcurementProcedures =
-	| 'functional_tender'
-	| 'dialogue_procedure'
-	| 'competition_procedure'
-	| 'study_procedure'
-	| 'allowance_of_variants'
-	| 'couvert_method';
+export type H2InnovationSupportingProcurementProcedures = 'functional_tender' | 'dialogue_procedure' | 'competition_procedure' | 'study_procedure' | 'allowance_of_variants' | 'couvert_method';
 
 export type H2 = SupportedSustainabilityFormTypes & {
-	innovationSupportingProcurementProcedures: YesNoNotRelevant;
-	innovationSupportingProcurementProceduresUsed?: H2InnovationSupportingProcurementProcedures[];
-	otherInnovationSupportingProcurementProceduresUsed?: string;
+    innovationSupportingProcurementProcedures: YesNoNotRelevant;
+    innovationSupportingProcurementProceduresUsed?: Array<H2InnovationSupportingProcurementProcedures>;
+    otherInnovationSupportingProcurementProceduresUsed?: string;
 };
 
-export type H3InnovationSupportingServicesCriteria =
-	| 'suitability_criteria'
-	| 'technical_specifications'
-	| 'award_criteria'
-	| 'service_description';
+export type H3InnovationSupportingServicesCriteria = 'suitability_criteria' | 'technical_specifications' | 'award_criteria' | 'service_description';
 
 export type H3 = SupportedSustainabilityFormTypes & {
-	innovationSupportingServicesCriteriaChosen: YesNoNotRelevant;
-	innovationSupportingServicesCriteria?: H3InnovationSupportingServicesCriteria[];
+    innovationSupportingServicesCriteriaChosen: YesNoNotRelevant;
+    innovationSupportingServicesCriteria?: Array<H3InnovationSupportingServicesCriteria>;
 };
 
-export type H4InnovationSupportingProcurementKinds =
-	| 'technological_innovation'
-	| 'social_innovation'
-	| 'efficient_resources_usage'
-	| 'process_innovation'
-	| 'not_relevant';
+export type H4InnovationSupportingProcurementKinds = 'technological_innovation' | 'social_innovation' | 'efficient_resources_usage' | 'process_innovation' | 'not_relevant';
 
 export type H4 = SupportedSustainabilityFormTypes & {
-	innovationSupportingProcurementKinds?: H4InnovationSupportingProcurementKinds[];
-	otherInnovationSupportingProcurementKinds?: string;
+    innovationSupportingProcurementKinds?: Array<H4InnovationSupportingProcurementKinds>;
+    otherInnovationSupportingProcurementKinds?: string;
 };
 
-export type I1aCompatibleMeasures =
-	| 'division_into_lots'
-	| 'admission_partial_offers'
-	| 'admission_bidding_consortiums'
-	| 'admission_subcontractors';
+export type I1aCompatibleMeasures = 'division_into_lots' | 'admission_partial_offers' | 'admission_bidding_consortiums' | 'admission_subcontractors';
 
 export type I1a = SupportedSustainabilityFormTypes & {
-	compatibleMeasuresMet: YesNoNotRelevant;
-	compatibleMeasures?: I1aCompatibleMeasures[];
-	otherCompatibleMeasures?: string;
+    compatibleMeasuresMet: YesNoNotRelevant;
+    compatibleMeasures?: Array<I1aCompatibleMeasures>;
+    otherCompatibleMeasures?: string;
 };
 
-export type I1bCompatibleMeasures =
-	| 'division_into_lots'
-	| 'admission_bidding_consortiums'
-	| 'processing_individual_service_providers';
+export type I1bCompatibleMeasures = 'division_into_lots' | 'admission_bidding_consortiums' | 'processing_individual_service_providers';
 
 export type I1b = SupportedSustainabilityFormTypes & {
-	compatibleMeasuresMet: YesNoNotRelevant;
-	compatibleMeasures?: I1bCompatibleMeasures[];
-	otherCompatibleMeasures?: string;
+    compatibleMeasuresMet: YesNoNotRelevant;
+    compatibleMeasures?: Array<I1bCompatibleMeasures>;
+    otherCompatibleMeasures?: string;
 };
 
-export type I2CompatibleMeasures =
-	| 'late_proof_request'
-	| 'waiver_cost_intensive_evidence'
-	| 'waiver_charging_fees';
+export type I2CompatibleMeasures = 'late_proof_request' | 'waiver_cost_intensive_evidence' | 'waiver_charging_fees';
 
 export type I2 = SupportedSustainabilityFormTypes & {
-	compatibleMeasuresMet: YesNoNotRelevant;
-	compatibleMeasures?: I2CompatibleMeasures[];
+    compatibleMeasuresMet: YesNoNotRelevant;
+    compatibleMeasures?: Array<I2CompatibleMeasures>;
 };
 
-export type I3AwardRecipients =
-	| 'tenderer_without_subcontractors'
-	| 'tenderer_with_subcontractors'
-	| 'bidding_consortium'
-	| 'lots_different_bidders';
+export type I3AwardRecipients = 'tenderer_without_subcontractors' | 'tenderer_with_subcontractors' | 'bidding_consortium' | 'lots_different_bidders';
 
 export type I3 = SupportedSustainabilityFormTypes & {
-	awardRecipients?: I3AwardRecipients[];
+    awardRecipients?: Array<I3AwardRecipients>;
 };
 
-export type I4NumberRangeOfEmployees =
-	| 'one_to_9'
-	| 'ten_to_49'
-	| 'fifty_to_249'
-	| 'greater_than_249';
+export type I4NumberRangeOfEmployees = 'one_to_9' | 'ten_to_49' | 'fifty_to_249' | 'greater_than_249';
 
 export type I4 = SupportedSustainabilityFormTypes & {
-	numberRangeOfEmployees: I4NumberRangeOfEmployees;
+    numberRangeOfEmployees: I4NumberRangeOfEmployees;
 };
 
 export type J1 = SupportedSustainabilityFormTypes & {
-	hasRejectedBidders: boolean;
-	numberOfRejectedBidders?: number;
-	totalNumberOfBidders?: number;
+    hasRejectedBidders: boolean;
+    numberOfRejectedBidders?: number;
+    totalNumberOfBidders?: number;
 };
 
 export type J2 = SupportedSustainabilityFormTypes & {
-	hasRejectedBidders: boolean;
-	numberOfRejectedBidders?: number;
-	totalNumberOfBidders?: number;
+    hasRejectedBidders: boolean;
+    numberOfRejectedBidders?: number;
+    totalNumberOfBidders?: number;
 };
 
 export type PubDraftAwardSustainabilityForm = {
-	contactFirstName?: string;
-	contactLastName?: string;
-	contactFunction?: string;
-	contactPhone?: string;
-	selectedSustainabilityFormType?: SustainabilityFormType;
-	a1?: A1;
-	a2?: A2;
-	a3?: A3;
-	a4?: A4;
-	a5?: A5;
-	b1?: B1;
-	b2?: B2;
-	c1?: C1;
-	d1?: D1;
-	d2?: D2;
-	d3?: D3;
-	e1?: E1;
-	f1?: F1;
-	f2?: F2;
-	f3?: F3;
-	f4?: F4;
-	f5?: F5;
-	f6?: F6;
-	f7a?: F7a;
-	f7b?: F7b;
-	f8?: F8;
-	f9?: F9;
-	g1?: G1;
-	g2?: G2;
-	g3?: G3;
-	g4?: G4;
-	g5?: G5;
-	g6?: G6;
-	g7a?: G7a;
-	g7b?: G7b;
-	g7c?: G7c;
-	g7d?: G7d;
-	g8?: G8;
-	g9?: G9;
-	h1?: H1;
-	h2?: H2;
-	h3?: H3;
-	h4?: H4;
-	i1a?: I1a;
-	i1b?: I1b;
-	i2?: I2;
-	i3?: I3;
-	i4?: I4;
-	j1?: J1;
-	j2?: J2;
+    contactFirstName?: string;
+    contactLastName?: string;
+    contactFunction?: string;
+    contactPhone?: string;
+    selectedSustainabilityFormType?: SustainabilityFormType;
+    a1?: A1;
+    a2?: A2;
+    a3?: A3;
+    a4?: A4;
+    a5?: A5;
+    b1?: B1;
+    b2?: B2;
+    c1?: C1;
+    d1?: D1;
+    d2?: D2;
+    d3?: D3;
+    e1?: E1;
+    f1?: F1;
+    f2?: F2;
+    f3?: F3;
+    f4?: F4;
+    f5?: F5;
+    f6?: F6;
+    f7a?: F7a;
+    f7b?: F7b;
+    f8?: F8;
+    f9?: F9;
+    g1?: G1;
+    g2?: G2;
+    g3?: G3;
+    g4?: G4;
+    g5?: G5;
+    g6?: G6;
+    g7a?: G7a;
+    g7b?: G7b;
+    g7c?: G7c;
+    g7d?: G7d;
+    g8?: G8;
+    g9?: G9;
+    h1?: H1;
+    h2?: H2;
+    h3?: H3;
+    h4?: H4;
+    i1a?: I1a;
+    i1b?: I1b;
+    i2?: I2;
+    i3?: I3;
+    i4?: I4;
+    j1?: J1;
+    j2?: J2;
 };
 
 export type PubDraftCorrectionInfo = {
-	publicationDate?: string;
-	remarks?: Translation;
+    publicationDate?: string;
+    remarks?: Translation;
 };
 
 /**
@@ -6690,379 +5867,317 @@ export type PubDraftCorrectionInfo = {
  * - `ted_validation` - validation error reported by the TED SDK
  *
  */
-export type ValidationErrorReason =
-	| 'required'
-	| 'must_be_null'
-	| 'must_be_empty'
-	| 'min'
-	| 'max'
-	| 'sub_selection_invalid'
-	| 'failed_range'
-	| 'invalid_publication_day'
-	| 'past_editorial_deadline'
-	| 'invalid_award_criteria_selection'
-	| 'unsupported_value'
-	| 'awarded_vendors_non_unique_rank'
-	| 'decision_date_after_publication_date'
-	| 'wrong_sustainability_form_selected'
-	| 'duplicate_values'
-	| 'invalid_email_format'
-	| 'invalid_phone_format'
-	| 'invalid_pattern'
-	| 'invalid_size'
-	| 'general_error'
-	| 'invalid_order'
-	| 'past_publication_date'
-	| 'before_previous_publication_date'
-	| 'past_offer_deadline'
-	| 'publication_ted_requires_price_selection'
-	| 'not_specified_not_allowed'
-	| 'ted_validation';
+export type ValidationErrorReason = 'required' | 'must_be_null' | 'must_be_empty' | 'min' | 'max' | 'sub_selection_invalid' | 'failed_range' | 'invalid_publication_day' | 'past_editorial_deadline' | 'invalid_award_criteria_selection' | 'unsupported_value' | 'awarded_vendors_non_unique_rank' | 'decision_date_after_publication_date' | 'wrong_sustainability_form_selected' | 'duplicate_values' | 'invalid_email_format' | 'invalid_phone_format' | 'invalid_pattern' | 'invalid_size' | 'general_error' | 'invalid_order' | 'past_publication_date' | 'before_previous_publication_date' | 'past_offer_deadline' | 'publication_ted_requires_price_selection' | 'not_specified_not_allowed' | 'ted_validation';
 
 export type ValidationError = {
-	/**
-	 * The validated field, if it's an nested object, it will be the object-path to the validated field in the object.
-	 *
-	 * Example:
-	 * { "person": { "name": null } -> "person.name"
-	 *
-	 * { "list": [ { "a": "valid" }, { "a": null } ] } -> "list[1].a"
-	 *
-	 */
-	field: string;
-	invalidValue?: unknown;
-	errorKey: ValidationErrorReason;
-	message?: string;
+    /**
+     * The validated field, if it's an nested object, it will be the object-path to the validated field in the object.
+     *
+     * Example:
+     * { "person": { "name": null } -> "person.name"
+     *
+     * { "list": [ { "a": "valid" }, { "a": null } ] } -> "list[1].a"
+     *
+     */
+    field: string;
+    invalidValue?: unknown;
+    errorKey: ValidationErrorReason;
+    message?: string;
 };
 
 export type ValidationResults = {
-	/**
-	 * As the keys of the map the values of the `PubSteps` enum will be used to provide some structural safety.
-	 *
-	 * Note the special case for the lot keys, see the endpoint / enum description.
-	 *
-	 */
-	validationResults: Record<string, ValidationError[]>;
+    /**
+     * As the keys of the map the values of the `PubSteps` enum will be used to provide some structural safety.
+     *
+     * Note the special case for the lot keys, see the endpoint / enum description.
+     *
+     */
+    validationResults: {
+        [key: string]: Array<ValidationError>;
+    };
 };
 
 export type RoleAndOrganizationChange = {
-	role: AssignableRole;
-	orgId?: string;
+    role: AssignableRole;
+    orgId?: string;
 };
 
 export type RoleAndOrganization = RoleAndOrganizationChange & {
-	org?: Translation;
-	/**
-	 * Indication if the organization is inactive (true) or active (false).
-	 * A procurement office is inactive as long as it is not confirmed by a competence centre admin.
-	 * If the organization is not a procurement office the property value is null because other organizations than a
-	 * procurement office have no such thing like active or inactive.
-	 *
-	 */
-	isOrgInactive?: boolean;
-	/**
-	 * The currently active role and organization the user has selected.
-	 */
-	active: boolean;
+    org?: Translation;
+    /**
+     * Indication if the organization is inactive (true) or active (false).
+     * A procurement office is inactive as long as it is not confirmed by a competence centre admin.
+     * If the organization is not a procurement office the property value is null because other organizations than a
+     * procurement office have no such thing like active or inactive.
+     *
+     */
+    isOrgInactive?: boolean;
+    /**
+     * The currently active role and organization the user has selected.
+     */
+    active: boolean;
 };
 
 export type RolesAndOrganizations = {
-	rolesAndOrganizations: RoleAndOrganization[];
+    rolesAndOrganizations: Array<RoleAndOrganization>;
 };
 
 export type Publishers = {
-	publishers: Publisher[];
+    publishers: Array<Publisher>;
 };
 
 export type QnaPublishResponse = {
-	id: string;
-	answerState: QnaAnswerState;
+    id: string;
+    answerState: QnaAnswerState;
 };
 
 /**
  * List of qna's (question answer pair)
  */
 export type QnaPublishResponses = {
-	qnaPublishResponse?: QnaPublishResponse[];
+    qnaPublishResponse?: Array<QnaPublishResponse>;
 };
 
 export type QnaUpdate = Question & {
-	answer?: string;
-	vendorAskedQuestion?: VendorMinimal;
+    answer?: string;
+    vendorAskedQuestion?: VendorMinimal;
 };
 
 export type TestScenarioBase = {
-	title?: Translation;
-	basePublicationType?: PubType;
-	baseProcessType?: PubProcessType;
-	baseLotsType?: PubLotsType;
-	baseOrderType?: PubOrderType;
-	baseStudyType?: PubStudyType;
-	baseCompetitionType?: PubCompetitionType;
-	basePublicationDate?: string;
-	followUpPublicationDate?: string;
-	followUpPublished?: boolean;
-	/**
-	 * Type of offers allowed for this publication. At least one value must be provided if the property is defined.
-	 *
-	 */
-	offerTypes?: PubOfferType[];
-	offerDeadline?: string;
-	/**
-	 * Ids of vendors which should get registered with 'interest_shown' on the project as depending on the scenario it won't be possible to show interest after publication was published. No
-	 * additional validation is performed in the backend.
-	 *
-	 */
-	interestedVendorIds?: string[];
-	/**
-	 * If `baseLotsType` is set to `with` can specify the number of lot's which should get created in the base publication. Default to 1 if not specified.
-	 *
-	 */
-	numberOfLots?: number;
-	/**
-	 * If `baseLotsType` is set to `with` specifies the lot index for which the follow up publications should get created. Defaults to 0.
-	 *
-	 */
-	followUpLotIndex?: number;
+    title?: Translation;
+    basePublicationType?: PubType;
+    baseProcessType?: PubProcessType;
+    baseLotsType?: PubLotsType;
+    baseOrderType?: PubOrderType;
+    baseStudyType?: PubStudyType;
+    baseCompetitionType?: PubCompetitionType;
+    basePublicationDate?: string;
+    followUpPublicationDate?: string;
+    followUpPublished?: boolean;
+    /**
+     * type of offers allowed for this publication. At least one value must be provided if the property is defined.
+     *
+     */
+    offerTypes?: Array<PubOfferType>;
+    offerDeadline?: string;
+    /**
+     * Ids of vendors which should get registered with 'interest_shown' on the project as depending on the scenario it won't be possible to show interest after publication was published. No
+     * additional validation is performed in the backend.
+     *
+     */
+    interestedVendorIds?: Array<string>;
+    /**
+     * If `baseLotsType` is set to `with` can specify the number of lot's which should get created in the base publication. Default to 1 if not specified.
+     *
+     */
+    numberOfLots?: number;
+    /**
+     * If `baseLotsType` is set to `with` specifies the lot index for which the follow up publications should get created. Defaults to 0.
+     *
+     */
+    followUpLotIndex?: number;
 };
 
 export type AdvanceNoticeBase = {
-	advanceNoticePublicationDate?: string;
-	/**
-	 * If true, then an advance notice is created and the call-for-bids will be based on it, otherwise only a call-for-bids is created
-	 *
-	 */
-	createAdvanceNotice?: boolean;
+    advanceNoticePublicationDate?: string;
+    /**
+     * if true, then an advance notice is created and the call-for-bids will be based on it, otherwise only a call-for-bids is created
+     *
+     */
+    createAdvanceNotice?: boolean;
 };
 
 export type VendorDigitalSubmissionScenario = {
-	vendorId: string;
-	latestSubmissionStatus?: VendorDigitalSubmissionStatus;
-	submissionDateTime?: string;
-	/**
-	 * If `true` automatically generates a document and attaches it to the submission.
-	 * If the project is with lots, one document is generated for the generic part and another one for the lot specific part.
-	 *
-	 */
-	generateAndUploadDocuments?: boolean;
+    vendorId: string;
+    latestSubmissionStatus?: VendorDigitalSubmissionStatus;
+    submissionDateTime?: string;
+    /**
+     * If `true` automatically generates a document and attaches it to the submission.
+     * If the project is with lots, one document is generated for the generic part and another one for the lot specific part.
+     *
+     */
+    generateAndUploadDocuments?: boolean;
 };
 
 export type WithVendorDigitalSubmission = {
-	vendorDigitalSubmissions?: VendorDigitalSubmissionScenario[];
+    vendorDigitalSubmissions?: Array<VendorDigitalSubmissionScenario>;
 };
 
-export type AbandonmentTestScenario = TestScenarioBase &
-	AdvanceNoticeBase &
-	WithVendorDigitalSubmission;
+export type AbandonmentTestScenario = TestScenarioBase & AdvanceNoticeBase & WithVendorDigitalSubmission;
 
 export type TestScenarioResult = {
-	projectId: string;
-	basePublicationId: string;
-	followUpPublicationId?: string;
-	nextFollowUpPublicationId?: string;
-	/**
-	 * Will return the ids of all created lots if basePublication was created with `lotsType` `with`, otherwise empty array.
-	 *
-	 */
-	lotIds?: string[];
-	/**
-	 * Will return the id of the lot, for which the follow-up publication(s) where created. Null if created with `lotsType` `without`.
-	 *
-	 */
-	followUpLotId?: string;
+    projectId: string;
+    basePublicationId: string;
+    followUpPublicationId?: string;
+    nextFollowUpPublicationId?: string;
+    /**
+     * Will return the ids of all created lots if basePublication was created with `lotsType` `with`, otherwise empty array.
+     *
+     */
+    lotIds?: Array<string>;
+    /**
+     * Will return the id of the lot, for which the follow-up publication(s) where created. Null if created with `lotsType` `without`.
+     *
+     */
+    followUpLotId?: string;
 };
 
 export type QnaRoundBase = {
-	qnaRoundSourceType?: PubQnaRoundSourceType;
-	/**
-	 * Number of qna rounds created for this publication. Only applicable of 'qnaRoundSourceType' is not set to 'no_qna_rounds'
-	 *
-	 */
-	numberOfQnaRounds?: number;
+    qnaRoundSourceType?: PubQnaRoundSourceType;
+    /**
+     * Number of qna rounds created for this publication. Only applicable of 'qnaRoundSourceType' is not set to 'no_qna_rounds'
+     *
+     */
+    numberOfQnaRounds?: number;
 };
 
 export type InitialPublicationTestScenarioBase = {
-	/**
-	 * True, if this initial publication should get published. If false, initial publication will get created in status 'draft'. Defaults to false.
-	 *
-	 */
-	initialPublicationPublished?: boolean;
+    /**
+     * true, if this initial publication should get published. If false, initial publication will get created in status 'draft'. Defaults to false.
+     *
+     */
+    initialPublicationPublished?: boolean;
 };
 
-export type AdvanceNoticeTestScenario = TestScenarioBase &
-	QnaRoundBase &
-	InitialPublicationTestScenarioBase;
+export type AdvanceNoticeTestScenario = TestScenarioBase & QnaRoundBase & InitialPublicationTestScenarioBase;
 
 export type PubWithQualifiedVendorsBase = {
-	/**
-	 * Ids of qualified vendors for this project and defined lot via followUpLotIndex. Be aware that qualified vendors are automatically marked as interestedVendors having submitted a participation offer
-	 *
-	 */
-	qualifiedVendorIds?: string[];
+    /**
+     * Ids of qualified vendors for this project and defined lot via followUpLotIndex. Be aware that qualified vendors are automatically marked as interestedVendors having submitted a participation offer
+     *
+     */
+    qualifiedVendorIds?: Array<string>;
 };
 
 export type PubWithAwardedVendorsBase = {
-	/**
-	 * Ids of qualified vendors for this project and defined lot via followUpLotIndex. Be aware that qualified vendors are automatically marked as interestedVendors having submitted an offer
-	 *
-	 */
-	awardedVendorIds?: string[];
+    /**
+     * Ids of qualified vendors for this project and defined lot via followUpLotIndex. Be aware that qualified vendors are automatically marked as interestedVendors having submitted an offer
+     *
+     */
+    awardedVendorIds?: Array<string>;
 };
 
-export type AwardTestScenario = TestScenarioBase &
-	AdvanceNoticeBase &
-	PubWithQualifiedVendorsBase &
-	PubWithAwardedVendorsBase &
-	WithVendorDigitalSubmission & {
-		awardOfferDeadlineDays?: number;
-	};
+export type AwardTestScenario = TestScenarioBase & AdvanceNoticeBase & PubWithQualifiedVendorsBase & PubWithAwardedVendorsBase & WithVendorDigitalSubmission & {
+    awardOfferDeadlineDays?: number;
+};
 
-export type CallForBidsTestScenario = TestScenarioBase &
-	AdvanceNoticeBase &
-	InitialPublicationTestScenarioBase &
-	QnaRoundBase &
-	WithVendorDigitalSubmission & {
-		/**
-		 * Ids of vendors which should get invited to this call_for_bids publication. Only available if process_type is set to 'invitation'
-		 *
-		 */
-		invitedVendors?: string[];
-	};
+export type CallForBidsTestScenario = TestScenarioBase & AdvanceNoticeBase & InitialPublicationTestScenarioBase & QnaRoundBase & WithVendorDigitalSubmission & {
+    /**
+     * Ids of vendors which should get invited to this call_for_bids publication. Only available if process_type is set to 'invitation'
+     *
+     */
+    invitedVendors?: Array<string>;
+};
 
-export type CorrectionTestScenario = TestScenarioBase &
-	AdvanceNoticeBase &
-	QnaRoundBase &
-	PubWithQualifiedVendorsBase &
-	WithVendorDigitalSubmission;
+export type CorrectionTestScenario = TestScenarioBase & AdvanceNoticeBase & QnaRoundBase & PubWithQualifiedVendorsBase & WithVendorDigitalSubmission;
 
-export type DirectAwardTestScenario = TestScenarioBase &
-	InitialPublicationTestScenarioBase &
-	PubWithAwardedVendorsBase;
+export type DirectAwardTestScenario = TestScenarioBase & InitialPublicationTestScenarioBase & PubWithAwardedVendorsBase;
 
-export type ParticipantSelectionTestScenario = TestScenarioBase &
-	AdvanceNoticeBase &
-	PubWithQualifiedVendorsBase &
-	WithVendorDigitalSubmission & {
-		participantSelectionCommunication?: ParticipantSelectionCommunication;
-		participantSelectionAddress?: PubAddress;
-	};
+export type ParticipantSelectionTestScenario = TestScenarioBase & AdvanceNoticeBase & PubWithQualifiedVendorsBase & WithVendorDigitalSubmission & {
+    participantSelectionCommunication?: ParticipantSelectionCommunication;
+    participantSelectionAddress?: PubAddress;
+};
 
-export type SelectiveOfferingPhaseTestScenario = TestScenarioBase &
-	AdvanceNoticeBase &
-	QnaRoundBase &
-	PubWithQualifiedVendorsBase &
-	WithVendorDigitalSubmission & {
-		participantSelectionCommunication?: ParticipantSelectionCommunication;
-		participantSelectionAddress?: PubAddress;
-	};
+export type SelectiveOfferingPhaseTestScenario = TestScenarioBase & AdvanceNoticeBase & QnaRoundBase & PubWithQualifiedVendorsBase & WithVendorDigitalSubmission & {
+    participantSelectionCommunication?: ParticipantSelectionCommunication;
+    participantSelectionAddress?: PubAddress;
+};
 
-export type RevocationTestScenario = TestScenarioBase &
-	AdvanceNoticeBase &
-	PubWithQualifiedVendorsBase &
-	PubWithAwardedVendorsBase &
-	WithVendorDigitalSubmission;
+export type RevocationTestScenario = TestScenarioBase & AdvanceNoticeBase & PubWithQualifiedVendorsBase & PubWithAwardedVendorsBase & WithVendorDigitalSubmission;
 
-export type RequestForInformationTestScenario = TestScenarioBase &
-	InitialPublicationTestScenarioBase &
-	QnaRoundBase &
-	WithVendorDigitalSubmission;
+export type RequestForInformationTestScenario = TestScenarioBase & InitialPublicationTestScenarioBase & QnaRoundBase & WithVendorDigitalSubmission;
 
-export type WtoStatisticsProcOfficeType =
-	| 'central_or_decentral_federation'
-	| 'other_federation';
+export type WtoStatisticsProcOfficeType = 'central_or_decentral_federation' | 'other_federation';
 
 export type WtoStatisticsOrganizationType = 'canton' | 'proc_office';
 
 export type WtoStatisticsTotal = {
-	totalCHF: number;
-	numberOfOrders: number;
+    totalCHF: number;
+    numberOfOrders: number;
 };
 
 export type WtoStatisticsTotalsByOrigin = {
-	ch?: WtoStatisticsTotal;
-	eu?: WtoStatisticsTotal;
-	usa?: WtoStatisticsTotal;
-	other?: WtoStatisticsTotal;
+    ch?: WtoStatisticsTotal;
+    eu?: WtoStatisticsTotal;
+    usa?: WtoStatisticsTotal;
+    other?: WtoStatisticsTotal;
 };
 
 export type WtoStatisticsTotalsByCategoryTotals = {
-	service?: WtoStatisticsTotal;
-	supply?: WtoStatisticsTotal;
-	construction?: WtoStatisticsTotal;
-	origins: WtoStatisticsTotalsByOrigin;
+    service?: WtoStatisticsTotal;
+    supply?: WtoStatisticsTotal;
+    construction?: WtoStatisticsTotal;
+    origins: WtoStatisticsTotalsByOrigin;
 };
 
-export type WtoStatisticsTotalsDirectAwardByCategoryEntry =
-	WtoStatisticsTotalsByCategoryTotals & {
-		totals?: WtoStatisticsTotal;
-	};
+export type WtoStatisticsTotalsDirectAwardByCategoryEntry = WtoStatisticsTotalsByCategoryTotals & {
+    totals?: WtoStatisticsTotal;
+};
 
 /**
  * Total of direct awards (Freihändige Vergaben) by top-level 'justificationDirectAward' answers.
  *
  */
 export type WtoStatisticsTotalsDirectAwardByCategory = {
-	a?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
-	b?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
-	c?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
-	d?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
-	e?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
-	f?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
-	g?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
-	h?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
+    a?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
+    b?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
+    c?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
+    d?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
+    e?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
+    f?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
+    g?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
+    h?: WtoStatisticsTotalsDirectAwardByCategoryEntry;
 };
 
 export type WtoStatisticsOverallTotals = {
-	/**
-	 * Total of all awards and direct awards.
-	 *
-	 */
-	overall?: WtoStatisticsTotal;
-	/**
-	 * Total of all awards and direct awards for the service category.
-	 *
-	 */
-	service?: WtoStatisticsTotal;
-	/**
-	 * Total of all awards and direct awards for the service supply.
-	 *
-	 */
-	supply?: WtoStatisticsTotal;
-	/**
-	 * Total of all awards and direct awards for the construction supply.
-	 *
-	 */
-	construction?: WtoStatisticsTotal;
-	/**
-	 * Total for the origins of all awards and direct awards.
-	 *
-	 */
-	origins: WtoStatisticsTotalsByOrigin;
-	/**
-	 * Total of all direct awards (Freihändige Vergaben).
-	 *
-	 */
-	directAward?: WtoStatisticsTotal;
-	directAwardByCategory: WtoStatisticsTotalsDirectAwardByCategory;
+    /**
+     * Total of all awards and direct awards.
+     *
+     */
+    overall?: WtoStatisticsTotal;
+    /**
+     * Total of all awards and direct awards for the service category.
+     *
+     */
+    service?: WtoStatisticsTotal;
+    /**
+     * Total of all awards and direct awards for the service supply.
+     *
+     */
+    supply?: WtoStatisticsTotal;
+    /**
+     * Total of all awards and direct awards for the construction supply.
+     *
+     */
+    construction?: WtoStatisticsTotal;
+    /**
+     * Total for the origins of all awards and direct awards.
+     *
+     */
+    origins: WtoStatisticsTotalsByOrigin;
+    /**
+     * Total of all direct awards (Freihändige Vergaben).
+     *
+     */
+    directAward?: WtoStatisticsTotal;
+    directAwardByCategory: WtoStatisticsTotalsDirectAwardByCategory;
 };
 
 /**
  * This object contains statistics values aggregated by the same organization.
  */
 export type WtoStatisticsTotalsByOrganizationEntry = {
-	organizationId: string;
-	organizationName: string;
-	totals?: WtoStatisticsTotal;
+    organizationId: string;
+    organizationName: string;
+    totals?: WtoStatisticsTotal;
 };
 
 /**
  * This object contains statistics values aggregated by the same organization and cpvCode.
  */
-export type WtoStatisticsTotalsByCategoryEntry =
-	WtoStatisticsTotalsByOrganizationEntry &
-		WtoStatisticsTotalsByCategoryTotals & {
-			cpvCode: string;
-		};
+export type WtoStatisticsTotalsByCategoryEntry = WtoStatisticsTotalsByOrganizationEntry & WtoStatisticsTotalsByCategoryTotals & {
+    cpvCode: string;
+};
 
 /**
  * This object contains statistics values grouped by top-level 'justificationDirectAward' answers and aggregated by the same organization and cpvCode below those groups.
@@ -7071,42 +6186,42 @@ export type WtoStatisticsTotalsByCategoryEntry =
  *
  */
 export type WtoStatisticsDirectAwardTotalsByCategory = {
-	a: WtoStatisticsTotalsByCategoryEntry[];
-	b: WtoStatisticsTotalsByCategoryEntry[];
-	c: WtoStatisticsTotalsByCategoryEntry[];
-	d: WtoStatisticsTotalsByCategoryEntry[];
-	e: WtoStatisticsTotalsByCategoryEntry[];
-	f: WtoStatisticsTotalsByCategoryEntry[];
-	g: WtoStatisticsTotalsByCategoryEntry[];
-	h: WtoStatisticsTotalsByCategoryEntry[];
+    a: Array<WtoStatisticsTotalsByCategoryEntry>;
+    b: Array<WtoStatisticsTotalsByCategoryEntry>;
+    c: Array<WtoStatisticsTotalsByCategoryEntry>;
+    d: Array<WtoStatisticsTotalsByCategoryEntry>;
+    e: Array<WtoStatisticsTotalsByCategoryEntry>;
+    f: Array<WtoStatisticsTotalsByCategoryEntry>;
+    g: Array<WtoStatisticsTotalsByCategoryEntry>;
+    h: Array<WtoStatisticsTotalsByCategoryEntry>;
 };
 
 /**
  * Export of aggregated values of WTO related awards and direct_awards
  */
 export type WtoStatisticsExport = {
-	/**
-	 * Considered awards having a publication date bigger or equals to the `from` date.
-	 */
-	from: string;
-	/**
-	 * Considered awards having a publication date smaller or equals to the `to` date.
-	 */
-	to: string;
-	/**
-	 * Exchange rate of euro to chf used to convert and aggregate the total prices of awards with currency 'eur'.
-	 */
-	euroExchangeRate: number;
-	/**
-	 * Exchange rate of usd to chf used to convert and aggregate the total prices of awards with currency 'usd'.
-	 */
-	usdExchangeRate: number;
-	aggregatedByOrganizationType?: WtoStatisticsOrganizationType;
-	procOfficeTypeFilter?: WtoStatisticsProcOfficeType;
-	overallTotals: WtoStatisticsOverallTotals;
-	awardAndDirectAwardTotalsByOrganization: WtoStatisticsTotalsByOrganizationEntry[];
-	awardAndDirectAwardTotalsByCategory: WtoStatisticsTotalsByCategoryEntry[];
-	directAwardTotalsByCategory: WtoStatisticsDirectAwardTotalsByCategory;
+    /**
+     * considered awards having a publication date bigger or equals to the `from` date.
+     */
+    from: string;
+    /**
+     * considered awards having a publication date smaller or equals to the `to` date.
+     */
+    to: string;
+    /**
+     * exchange rate of euro to chf used to convert and aggregate the total prices of awards with currency 'eur'.
+     */
+    euroExchangeRate: number;
+    /**
+     * exchange rate of usd to chf used to convert and aggregate the total prices of awards with currency 'usd'.
+     */
+    usdExchangeRate: number;
+    aggregatedByOrganizationType?: WtoStatisticsOrganizationType;
+    procOfficeTypeFilter?: WtoStatisticsProcOfficeType;
+    overallTotals: WtoStatisticsOverallTotals;
+    awardAndDirectAwardTotalsByOrganization: Array<WtoStatisticsTotalsByOrganizationEntry>;
+    awardAndDirectAwardTotalsByCategory: Array<WtoStatisticsTotalsByCategoryEntry>;
+    directAwardTotalsByCategory: WtoStatisticsDirectAwardTotalsByCategory;
 };
 
 /**
@@ -7122,12 +6237,7 @@ export type WtoStatisticsExport = {
  * * about - tabs: organisation, business regulations, statues, GTC
  *
  */
-export type PageName =
-	| 'start_page'
-	| 'help'
-	| 'topical'
-	| 'procurement'
-	| 'about';
+export type PageName = 'start_page' | 'help' | 'topical' | 'procurement' | 'about';
 
 /**
  * The TabName is a identifier for a tab displaying content which is editable by the simap-admin.
@@ -7149,34 +6259,21 @@ export type PageName =
  * * gtc - general terms and conditions
  *
  */
-export type TabName =
-	| 'start_page'
-	| 'news'
-	| 'agenda'
-	| 'release_notes'
-	| 'further_information_on_public_procurement'
-	| 'exclusion_from_public_procurement'
-	| 'eu_wto_efta'
-	| 'institutions_and_associations'
-	| 'wto_statistics'
-	| 'organisation'
-	| 'business_regulations'
-	| 'statutes'
-	| 'gtc';
+export type TabName = 'start_page' | 'news' | 'agenda' | 'release_notes' | 'further_information_on_public_procurement' | 'exclusion_from_public_procurement' | 'eu_wto_efta' | 'institutions_and_associations' | 'wto_statistics' | 'organisation' | 'business_regulations' | 'statutes' | 'gtc';
 
 /**
  * Basic properties for a content-component. Extra properties are added depending on the discriminator type
  */
 export type ContentComponent = {
-	id: string;
-	componentType: ComponentType;
-	position: number;
+    id: string;
+    componentType: ComponentType;
+    position: number;
 };
 
 export type ContentComponentInfoBox = ContentComponent & {
-	componentType: 'info_box';
+    componentType: 'info_box';
 } & {
-	content: TranslationSanitizedHtml;
+    content: TranslationSanitizedHtml;
 };
 
 /**
@@ -7192,64 +6289,61 @@ export type ContentComponentInfoBox = ContentComponent & {
 export type ComponentType = 'link' | 'content_news' | 'info_box' | 'video';
 
 export type TabComponent = {
-	name: TabName;
-	/**
-	 * Editable content components by the simap_admin located at this tab.
-	 */
-	contentComponents: ContentComponent[];
+    name: TabName;
+    /**
+     * Editable content components by the simap_admin located at this tab.
+     */
+    contentComponents: Array<ContentComponent>;
 };
 
 export type PageComponent = {
-	name: PageName;
-	/**
-	 * Contains the tabs which has editable content components
-	 */
-	readonly tabs: TabComponent[];
+    name: PageName;
+    /**
+     * Contains the tabs which has editable content components
+     */
+    readonly tabs: Array<TabComponent>;
 };
 
 export type VendorDigitalSubmission = VendorDigitalSubmissionInfo & {
-	id: string;
-	submissionType: VendorDigitalSubmissionType;
-	vendorId: string;
-	submissionStatus: VendorDigitalSubmissionStatus;
-	submittedBy?: UserMinimal;
+    id: string;
+    submissionType: VendorDigitalSubmissionType;
+    vendorId: string;
+    submissionStatus: VendorDigitalSubmissionStatus;
+    submittedBy?: UserMinimal;
 };
 
-export type VendorDigitalSubmissionDetail = VendorDigitalSubmissionDetailInfo &
-	VendorDigitalSubmission;
+export type VendorDigitalSubmissionDetail = VendorDigitalSubmissionDetailInfo & VendorDigitalSubmission;
 
 export type VendorDigitalSubmissionDetails = BaseProjectInfo & {
-	submissions: VendorDigitalSubmissionDetail[];
+    submissions: Array<VendorDigitalSubmissionDetail>;
 };
 
-export type VendorDigitalSubmissionBase = BaseProjectInfo &
-	VendorDigitalSubmission & {
-		projectTitle: Translation;
-		referencingLot?: PublicationLotDescription;
-		/**
-		 * List of lots available for submission, only provided for projects with lots.
-		 *
-		 */
-		availableLots: PublicationLotDescription[];
-		/**
-		 * List of lots selected for submission, only used for projects with lots.
-		 *
-		 */
-		selectedLots: string[];
-	};
+export type VendorDigitalSubmissionBase = BaseProjectInfo & VendorDigitalSubmission & {
+    projectTitle: Translation;
+    referencingLot?: PublicationLotDescription;
+    /**
+     * List of lots available for submission, only provided for projects with lots.
+     *
+     */
+    availableLots: Array<PublicationLotDescription>;
+    /**
+     * List of lots selected for submission, only used for projects with lots.
+     *
+     */
+    selectedLots: Array<string>;
+};
 
 export type VendorDigitalSubmissionCreate = {
-	submissionType: VendorDigitalSubmissionType;
-	lotIds?: string[];
+    submissionType: VendorDigitalSubmissionType;
+    lotIds?: Array<string>;
 };
 
-export type VendorDigitalSubmissionDocumentUploadMeta =
-	BaseDocumentUploadMeta & {
-		/**
-		 * If document should get attached to a specific lot the submission is eligible for.
-		 */
-		lotId?: string;
-	};
+export type VendorDigitalSubmissionDocumentUploadMeta = BaseDocumentUploadMeta & {
+    /**
+     * If document should get attached to a specific lot the submission is eligible for.
+     */
+    lotId?: string;
+};
 
 /**
  * Payload of a multipart vendor submission document file upload strictly relying on the order of the parts.
@@ -7257,19 +6351,19 @@ export type VendorDigitalSubmissionDocumentUploadMeta =
  *
  */
 export type VendorDigitalSubmissionDocumentUploadMultipart = {
-	meta: VendorDigitalSubmissionDocumentUploadMeta;
-	file: Blob | File;
+    meta: VendorDigitalSubmissionDocumentUploadMeta;
+    file: Blob | File;
 };
 
 export type VendorDigitalSubmissionDocumentAddVendorDocument = {
-	/**
-	 * Reference to the vendor document to add to the vendor digital submission
-	 */
-	vendorDocumentId: string;
-	/**
-	 * Optional reference to the lotId if the created vendor digital submission document should be attached to a specific lot only
-	 */
-	lotId?: string;
+    /**
+     * Reference to the vendor document to add to the vendor digital submission
+     */
+    vendorDocumentId: string;
+    /**
+     * Optional reference to the lotId if the created vendor digital submission document should be attached to a specific lot only
+     */
+    lotId?: string;
 };
 
 /**
@@ -7279,38 +6373,12 @@ export type VendorDigitalSubmissionDocumentAddVendorDocument = {
  * - `invited-vendors` - only relevant for call_for_bids in the invitation process
  *
  */
-export type PubSteps =
-	| 'project-info'
-	| 'dates'
-	| 'procurement'
-	| 'criteria'
-	| 'terms'
-	| 'lot'
-	| 'decision'
-	| 'statistics'
-	| 'sustainability'
-	| 'abandonment'
-	| 'revocation'
-	| 'correction'
-	| 'participant-selection'
-	| 'notice'
-	| 'ted'
-	| 'invited-vendors';
+export type PubSteps = 'project-info' | 'dates' | 'procurement' | 'criteria' | 'terms' | 'lot' | 'decision' | 'statistics' | 'sustainability' | 'abandonment' | 'revocation' | 'correction' | 'participant-selection' | 'notice' | 'ted' | 'invited-vendors';
 
 /**
- * List of possible page values where a use can get redirected
+ * list of possible page values where a use can get redirected
  */
-export type TargetPage =
-	| 'login'
-	| 'vendor_admin_user_manager'
-	| 'proc_office_user_manager'
-	| 'comp_centre_manage_proc_offices'
-	| 'project'
-	| 'project_qnas'
-	| 'project_documents'
-	| 'subscription'
-	| 'my_organizations'
-	| 'vendor_profile';
+export type TargetPage = 'login' | 'vendor_admin_user_manager' | 'proc_office_user_manager' | 'comp_centre_manage_proc_offices' | 'project' | 'project_qnas' | 'project_documents' | 'subscription' | 'my_organizations' | 'vendor_profile';
 
 /**
  * The possible roles that can be used in the `RedirectContext` to define the role for the redirect link.
@@ -7319,17 +6387,7 @@ export type TargetPage =
  * should be used in the redirect.
  *
  */
-export type RedirectRole =
-	| 'subscription_user'
-	| 'procurement_project_contributor'
-	| 'procurement_user'
-	| 'procurement_admin'
-	| 'vendor_user'
-	| 'vendor_admin'
-	| 'competence_centre_print_user'
-	| 'competence_centre_admin'
-	| 'simap_admin'
-	| 'any';
+export type RedirectRole = 'subscription_user' | 'procurement_project_contributor' | 'procurement_user' | 'procurement_admin' | 'vendor_user' | 'vendor_admin' | 'competence_centre_print_user' | 'competence_centre_admin' | 'simap_admin' | 'any';
 
 /**
  * Context model of a redirect request in the frontend.
@@ -7337,59 +6395,57 @@ export type RedirectRole =
  *
  */
 export type RedirectContext = {
-	page: TargetPage;
-	role?: RedirectRole;
-	/**
-	 * If provided, user should switch to provided organization when redirecting to the requested page.
-	 */
-	orgId?: string;
-	/**
-	 * If provided, redirect to requested page in the context of the selected project.
-	 */
-	projectId?: string;
-	/**
-	 * If provided, redirect to requested page in the context of the selected lot.
-	 */
-	lotId?: string;
-	/**
-	 * If provided, redirect to requested page in the context of the selected subscription.
-	 */
-	subscriptionId?: string;
+    page: TargetPage;
+    role?: RedirectRole;
+    /**
+     * If provided, user should switch to provided organization when redirecting to the requested page.
+     */
+    orgId?: string;
+    /**
+     * if provided, redirect to requested page in the context of the selected project.
+     */
+    projectId?: string;
+    /**
+     * if provided, redirect to requested page in the context of the selected lot.
+     */
+    lotId?: string;
+    /**
+     * if provided, redirect to requested page in the context of the selected subscription.
+     */
+    subscriptionId?: string;
 };
 
-export type PubDraftAwardBaseType =
-	| ({
-			type: 'award';
-	  } & PubDraftAwardBase)
-	| ({
-			type: 'direct_award';
-	  } & PubDraftDirectAwardBase);
+export type PubDraftAwardBaseType = ({
+    type: 'award';
+} & PubDraftAwardBase) | ({
+    type: 'direct_award';
+} & PubDraftDirectAwardBase);
 
 /**
- * Overall definition for all possible procurement information. Certain fields are only filled based on projectType of award.
+ * overall definition for all possible procurement information. Certain fields are only filled based on projectType of award.
  *
  */
 export type PubDraftAwardOverallProcurement = PubDraftBaseCodes & {
-	orderDescription: Translation;
-	cpvCode: CpvCode;
-	procurementTopic?: PubProcurementTopic;
-	cpcCode?: CpcCode;
-	/**
-	 * Provided for awarded tender construction or non-tender publications
-	 */
-	oagCodes?: OagCode[];
-	constructionCategory?: PubConstructionCategoryOptional;
-	constructionType?: PubConstructionType;
-	/**
-	 * Provided for awarded tender supply publications or non-tender publications
-	 */
-	additionalCpvCodes?: CpvCode[];
-	supplyType?: PubSupplyType;
+    orderDescription: Translation;
+    cpvCode: CpvCode;
+    procurementTopic?: PubProcurementTopic;
+    cpcCode?: CpcCode;
+    /**
+     * provided for awarded tender construction or non-tender publications
+     */
+    oagCodes?: Array<OagCode>;
+    constructionCategory?: PubConstructionCategoryOptional;
+    constructionType?: PubConstructionType;
+    /**
+     * provided for awarded tender supply publications or non-tender publications
+     */
+    additionalCpvCodes?: Array<CpvCode>;
+    supplyType?: PubSupplyType;
 };
 
 export type PubDraftAwardStatisticsExport = {
-	totalPrice?: PriceWithVat;
-	justificationDirectAward?: JustificationDirectAward;
+    totalPrice?: PriceWithVat;
+    justificationDirectAward?: JustificationDirectAward;
 };
 
 /**
@@ -7397,34 +6453,31 @@ export type PubDraftAwardStatisticsExport = {
  *
  */
 export type AwardedVendorExport = {
-	award: PubDraftAwardBaseType;
-	lot?: LotReference;
-	procurementRecipient: PubAddress;
-	procurementOffice: {
-		type: ProcOfficeType;
-		mainActivity: MainActivity;
-		address: PubAddress;
-	};
-	procurement: PubDraftAwardOverallProcurement;
-	decision: PubDraftAwardDecisionExport;
-	statistics: PubDraftAwardStatisticsExport;
-	awardedVendor: PubDraftAwardVendorSubmission;
+    award: PubDraftAwardBaseType;
+    lot?: LotReference;
+    procurementRecipient: PubAddress;
+    procurementOffice: {
+        type: ProcOfficeType;
+        mainActivity: MainActivity;
+        address: PubAddress;
+    };
+    procurement: PubDraftAwardOverallProcurement;
+    decision: PubDraftAwardDecisionExport;
+    statistics: PubDraftAwardStatisticsExport;
+    awardedVendor: PubDraftAwardVendorSubmission;
 };
 
-export type PubDraftCallForBidsBaseType =
-	| ({
-			type: 'tender';
-	  } & PubDraftTenderBase)
-	| ({
-			type: 'competition';
-	  } & PubDraftCompetitionBase)
-	| ({
-			type: 'study_contract';
-	  } & PubDraftStudyContractBase);
+export type PubDraftCallForBidsBaseType = ({
+    type: 'tender';
+} & PubDraftTenderBase) | ({
+    type: 'competition';
+} & PubDraftCompetitionBase) | ({
+    type: 'study_contract';
+} & PubDraftStudyContractBase);
 
 export type PubMainCodes = {
-	cpvCode: CpvCode;
-	cpcCode?: CpcCode;
+    cpvCode: CpvCode;
+    cpcCode?: CpcCode;
 };
 
 /**
@@ -7432,18 +6485,18 @@ export type PubMainCodes = {
  *
  */
 export type CallForBidsExport = {
-	base: PubDraftCallForBidsBaseType;
-	/**
-	 * Number of lots. Only provided if project was created with lotsType `with`.
-	 */
-	numberOfLots?: number;
-	procurementRecipient: PubAddress;
-	procurementOffice: {
-		type: ProcOfficeType;
-		address?: PubAddress;
-	};
-	procurement: PubMainCodes;
-	remediesNotice: Translation;
+    base: PubDraftCallForBidsBaseType;
+    /**
+     * Number of lots. Only provided if project was created with lotsType `with`.
+     */
+    numberOfLots?: number;
+    procurementRecipient: PubAddress;
+    procurementOffice: {
+        type: ProcOfficeType;
+        address?: PubAddress;
+    };
+    procurement: PubMainCodes;
+    remediesNotice: Translation;
 };
 
 /**
@@ -7455,17 +6508,17 @@ export type CallForBidsExport = {
  *
  */
 export type SustainabilityFormExport = {
-	/**
-	 * Unique publication number aka "Meldungsnummer".
-	 *
-	 */
-	publicationNumber: string;
-	cpvCode: CpvCode;
-	productCategory: string;
-	procurementOffice: {
-		name?: Translation;
-	};
-	form: PubDraftAwardSustainabilityForm;
+    /**
+     * Unique publication number aka "Meldungsnummer".
+     *
+     */
+    publicationNumber: string;
+    cpvCode: CpvCode;
+    productCategory: string;
+    procurementOffice: {
+        name?: Translation;
+    };
+    form: PubDraftAwardSustainabilityForm;
 };
 
 /**
@@ -7473,22 +6526,368 @@ export type SustainabilityFormExport = {
  *
  */
 export type UserRoleExport = {
-	firstName?: string;
-	lastName?: string;
-	email: string;
-	language: SystemLanguage;
-	role: AssignableRole;
-	organisationName?: Translation;
+    firstName?: string;
+    lastName?: string;
+    email: string;
+    language: SystemLanguage;
+    role: AssignableRole;
+    organisationName?: Translation;
 };
 
-export type Code =
-	| CpvCode
-	| CpcCode
-	| BkpCode
-	| EbkphCode
-	| EbkptCode
-	| NpkCode
-	| OagCode;
+export type Code = CpvCode | CpcCode | BkpCode | EbkphCode | EbkptCode | NpkCode | OagCode;
+
+export type MainActivityWritable = {
+    id: string;
+};
+
+/**
+ * If the procurement office is working as `organization in contract` then the `organizationInContractContact`
+ * is set and on a creation request should be filled out. This can not be changed at a later date
+ *
+ * The `organizationInContractContact` describes the contact of the organization that this office works for,
+ * contact to validate an organization in contract request.
+ *
+ * The char limits follow the TED limits for that field as for publications that are sent to TED require the name and
+ * contact information of the office.
+ *
+ */
+export type ProcOfficeWritable = ProcOfficePublicData & {
+    language: SystemLanguage;
+    mainActivity: MainActivityWritable;
+    organizationInContractContact?: Contact;
+    address: Address;
+    phone: InternationalPhoneNumber;
+    email: string;
+    url?: string;
+    otherInfo?: string;
+    status?: ProcOfficeStatus;
+    statusComment?: string;
+};
+
+export type VendorWritable = {
+    id: string;
+    uidNo?: string | null;
+    dunsNo?: string | null;
+    companySize?: CompanySize;
+    name: string;
+    additionalName?: string | null;
+    /**
+     * c/o
+     */
+    careOf?: string | null;
+    address: Address;
+    phone?: InternationalPhoneNumber;
+    email?: string;
+    url?: string | null;
+    /**
+     * The publicly visible vendor admins.
+     */
+    publicVendorAdmins?: Array<VendorUser>;
+    legalFormCode?: LegalFormCode;
+    legalFormSinceDate?: string | null;
+    businessPurpose?: string | null;
+    businessDomicile?: string | null;
+    isBiddingConsortium?: boolean;
+    leadingVendor?: string | null;
+};
+
+export type PublisherReferenceWritable = {
+    id: string;
+};
+
+export type PubVendorWithAddressDataWritable = {
+    vendorId: string;
+};
+
+export type PublicationAwardedVendorBaseWritable = {
+    vendorId: string;
+};
+
+export type PublicProjectActionsWritable = {
+    [key: string]: unknown;
+};
+
+/**
+ * Interface / parent that is implemented by the PubDraftDirectAwardBase and PubDraftAwardBase
+ *
+ */
+export type PubDraftAwardBaseInterfaceWritable = PubDraftBaseInterface & {
+    type?: 'PubDraftAwardBaseInterfaceWritable';
+} & PubAwardBaseInterface & AllSubKinds;
+
+export type PubDraftTermsRemediesChangedWritable = PubDraftTermsRemedies;
+
+export type PubDraftQnaWritable = PubBaseQna & {
+    /**
+     * True if this qna round is still editable. Only true if qna round is not attached to an already published and closed qna round.
+     *
+     */
+    isEditable?: boolean;
+    /**
+     * True if the qna round can still get removed from the publication. Only true if this qna round doesn't reference an already
+     * published qna round.
+     *
+     */
+    isRemovable?: boolean;
+};
+
+export type PubDraftAwardedVendorWritable = {
+    vendorId: string;
+};
+
+export type A1Writable = {
+    isStandardizedService: boolean;
+};
+
+export type A2Writable = {
+    procurementCharacteristics?: Array<A2ProcurementCharacteristics>;
+};
+
+export type A3Writable = {
+    procurementComplexity: A3ProcurementComplexity;
+};
+
+export type A4Writable = {
+    /**
+     * Award criteria weights are not relevant for 'direct award' and 'competition'
+     *
+     */
+    isAwardCriteriaWeightsRelevant: boolean;
+    priceWeight?: number;
+    sustainabilityWeight?: number;
+    innovationWeight?: number;
+    offerPlausibilityWeight?: number;
+    otherQualityCriteriaWeight?: number;
+    priceReliabilityWeight?: number;
+    otherWeight?: number;
+};
+
+export type A5Writable = {
+    checkCriteria: A5CheckCriteria;
+    criteriaTypes?: Array<A5CriteriaTypes>;
+};
+
+export type B1Writable = {
+    qualityRelatedCriteria?: Array<B1QualityRelatedCriteria>;
+};
+
+export type B2Writable = {
+    qualityRelatedLabelsRequirements: B2QualityRelatedLabelsRequirements;
+    /**
+     * List all labels required like Max Havelaar.
+     * This field is required if the field qualityRelatedLabelRequirement is set to yes.
+     *
+     */
+    qualityRelatedLabels?: string;
+};
+
+export type C1Writable = {
+    isCountryOfOriginForGoodsAsked: boolean;
+    /**
+     * The ISO 3166 two letter country code. The list with the ids / codes can be get from `GET /api/countries/v1`
+     *
+     */
+    countryOfOriginForGoods?: string;
+    comment?: string;
+};
+
+export type D1Writable = {
+    isOverallProjectLead: boolean;
+    isKbobRecommendationPartOfContract?: boolean;
+    evaluationCriteriaDimensionDefined?: YesNoNotRelevant;
+    evaluationCriteriaDimensionsDefined?: Array<D1EvaluationCriteriaDimensionsDefined>;
+};
+
+export type D2Writable = {
+    isKbobRecommendationPartOfContract: boolean;
+};
+
+export type D3Writable = {
+    standardsPartOfContract: YesNoNotRelevant;
+};
+
+export type E1Writable = {
+    lifeCycleCostsConsidered: YesNoNotRelevant;
+    reason?: string;
+    elementCostsConsidered?: Array<E1ElementCostsConsidered>;
+};
+
+export type F1Writable = {
+    safetyRegulationsDemanded?: Array<EcologicalSocialSocietalCriteria>;
+    comment?: string;
+};
+
+export type F2Writable = {
+    iloCoreAgreementsDemanded?: Array<EcologicalSocialSocietalCriteria>;
+    comment?: string;
+};
+
+export type F3Writable = {
+    evidencesSocialCriteriaComplianceProvided?: Array<EcologicalSocialSocietalCriteria>;
+    comment?: string;
+};
+
+export type F4Writable = {
+    isClarificationSocialCriteriaComplianceDone: boolean;
+    clarificationsSocialCriteriaCompliance?: Array<F4ClarificationsSocialCriteriaCompliance>;
+    otherClarifications?: string;
+};
+
+export type F5Writable = {
+    isSubcontractorSocialCriteriaComplianceDemanded: boolean;
+    subcontractorSocialCriteriaComplianceCommitments?: Array<EcologicalSocialSocietalCriteria>;
+    comment?: string;
+};
+
+export type F6Writable = {
+    isKbobContractAgreementDemanded: boolean;
+    isSafetyRegulationComplianceDemanded?: boolean;
+    isIloCoreAgreementDemanded?: boolean;
+    isEvidenceOfSocialCriteriaDemanded?: boolean;
+    isSubcontractorSocialCriteriaComplianceDemanded?: boolean;
+};
+
+export type F7aWritable = {
+    standardsDemanded: YesNoNotRelevant;
+    comment?: string;
+};
+
+export type F7bWritable = {
+    standardsDemanded: YesNoNotRelevant;
+    comment?: string;
+};
+
+export type F8Writable = {
+    standardsDemanded: YesNoNotRelevant;
+    comment?: string;
+};
+
+export type F9Writable = {
+    standardsDemanded: YesNoNotRelevant;
+    comment?: string;
+};
+
+export type G1Writable = {
+    environmentalProtectionsDemanded?: Array<EcologicalSocialSocietalCriteria>;
+    comment?: string;
+};
+
+export type G2Writable = {
+    isEnvironmentalProtectionDemanded: boolean;
+};
+
+export type G3Writable = {
+    hasEcologicalCriteriaExpressed?: boolean;
+    ecologicalCriteriaExpressed?: Array<G3EcologicalCriteriaExpressed>;
+};
+
+export type G4Writable = {
+    ecologicalCriteriaDemanded?: string;
+};
+
+export type G5Writable = {
+    /**
+     * If isNoEvidence set to false, either a text in environmentalEvidence or in otherEvidence or in both is required
+     *
+     */
+    environmentalEvidence?: string;
+    /**
+     * If isNoEvidence set to false, either a text in environmentalEvidence or in otherEvidence or in both is required
+     *
+     */
+    otherEvidence?: string;
+    isNoEvidence?: boolean;
+};
+
+export type G6Writable = {
+    bestFulfilment: G6BestFulfilment;
+};
+
+export type G7aWritable = {
+    standardsDemanded: YesNoNotRelevant;
+};
+
+export type G7bWritable = {
+    standardsDemanded: YesNoNotRelevant;
+};
+
+export type G7cWritable = {
+    standardsDemanded: YesNoNotRelevant;
+};
+
+export type G7dWritable = {
+    standardsDemanded: YesNoNotRelevant;
+};
+
+export type G8Writable = {
+    otherEcologicalCriteriaDemanded: YesNoNotRelevant;
+    otherEcologicalCriteriaSelected?: Array<G8OtherEcologicalCriteriaSelected>;
+};
+
+export type G9Writable = {
+    ecologicalTopicsDepicted?: Array<G9EcologicalTopicsDepicted>;
+};
+
+export type H1Writable = {
+    innovativeSolutionsAvailable: YesNoNotRelevant;
+};
+
+export type H2Writable = {
+    innovationSupportingProcurementProcedures: YesNoNotRelevant;
+    innovationSupportingProcurementProceduresUsed?: Array<H2InnovationSupportingProcurementProcedures>;
+    otherInnovationSupportingProcurementProceduresUsed?: string;
+};
+
+export type H3Writable = {
+    innovationSupportingServicesCriteriaChosen: YesNoNotRelevant;
+    innovationSupportingServicesCriteria?: Array<H3InnovationSupportingServicesCriteria>;
+};
+
+export type H4Writable = {
+    innovationSupportingProcurementKinds?: Array<H4InnovationSupportingProcurementKinds>;
+    otherInnovationSupportingProcurementKinds?: string;
+};
+
+export type I1aWritable = {
+    compatibleMeasuresMet: YesNoNotRelevant;
+    compatibleMeasures?: Array<I1aCompatibleMeasures>;
+    otherCompatibleMeasures?: string;
+};
+
+export type I1bWritable = {
+    compatibleMeasuresMet: YesNoNotRelevant;
+    compatibleMeasures?: Array<I1bCompatibleMeasures>;
+    otherCompatibleMeasures?: string;
+};
+
+export type I2Writable = {
+    compatibleMeasuresMet: YesNoNotRelevant;
+    compatibleMeasures?: Array<I2CompatibleMeasures>;
+};
+
+export type I3Writable = {
+    awardRecipients?: Array<I3AwardRecipients>;
+};
+
+export type I4Writable = {
+    numberRangeOfEmployees: I4NumberRangeOfEmployees;
+};
+
+export type J1Writable = {
+    hasRejectedBidders: boolean;
+    numberOfRejectedBidders?: number;
+    totalNumberOfBidders?: number;
+};
+
+export type J2Writable = {
+    hasRejectedBidders: boolean;
+    numberOfRejectedBidders?: number;
+    totalNumberOfBidders?: number;
+};
+
+export type PageComponentWritable = {
+    name: PageName;
+};
 
 /**
  * The id of the competence centre, get available competence centres at /compcentres/v1
@@ -7550,7 +6949,7 @@ export type ParamVendorSearch = string;
 export type ParamVendorDocumentId = string;
 
 /**
- * Authenticate via token in query parameter
+ * authenticate via token in query parameter
  */
 export type QueryParamToken = string;
 
@@ -7575,11990 +6974,11481 @@ export type ParamLotId = string;
 export type ParamVendorDigitalSubmissionDocumentId = string;
 
 export type ListCantonsData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/cantons/v1';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/cantons/v1';
 };
 
 export type ListCantonsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type ListCantonsError = ListCantonsErrors[keyof ListCantonsErrors];
 
 export type ListCantonsResponses = {
-	/**
-	 * Ok
-	 */
-	200: Cantons;
+    /**
+     * ok
+     */
+    200: Cantons;
 };
 
-export type ListCantonsResponse =
-	ListCantonsResponses[keyof ListCantonsResponses];
+export type ListCantonsResponse = ListCantonsResponses[keyof ListCantonsResponses];
 
 export type ListCountriesData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/countries/v1';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/countries/v1';
 };
 
 export type ListCountriesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type ListCountriesError = ListCountriesErrors[keyof ListCountriesErrors];
 
 export type ListCountriesResponses = {
-	/**
-	 * Ok
-	 */
-	200: Countries;
+    /**
+     * ok
+     */
+    200: Countries;
 };
 
-export type ListCountriesResponse =
-	ListCountriesResponses[keyof ListCountriesResponses];
+export type ListCountriesResponse = ListCountriesResponses[keyof ListCountriesResponses];
 
 export type ListLanguagesData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/languages/v1';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/languages/v1';
 };
 
 export type ListLanguagesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type ListLanguagesError = ListLanguagesErrors[keyof ListLanguagesErrors];
 
 export type ListLanguagesResponses = {
-	/**
-	 * Ok
-	 */
-	200: Languages;
+    /**
+     * ok
+     */
+    200: Languages;
 };
 
-export type ListLanguagesResponse =
-	ListLanguagesResponses[keyof ListLanguagesResponses];
+export type ListLanguagesResponse = ListLanguagesResponses[keyof ListLanguagesResponses];
 
 export type ListActivitiesData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/activities/v1';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/activities/v1';
 };
 
 export type ListActivitiesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ListActivitiesError =
-	ListActivitiesErrors[keyof ListActivitiesErrors];
+export type ListActivitiesError = ListActivitiesErrors[keyof ListActivitiesErrors];
 
 export type ListActivitiesResponses = {
-	/**
-	 * Ok
-	 */
-	200: MainActivities;
+    /**
+     * ok
+     */
+    200: MainActivities;
 };
 
-export type ListActivitiesResponse =
-	ListActivitiesResponses[keyof ListActivitiesResponses];
+export type ListActivitiesResponse = ListActivitiesResponses[keyof ListActivitiesResponses];
 
 export type ListCriteriaData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/criteria/v1';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/criteria/v1';
 };
 
 export type ListCriteriaErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type ListCriteriaError = ListCriteriaErrors[keyof ListCriteriaErrors];
 
 export type ListCriteriaResponses = {
-	/**
-	 * Ok
-	 */
-	200: Criteria;
+    /**
+     * ok
+     */
+    200: Criteria;
 };
 
-export type ListCriteriaResponse =
-	ListCriteriaResponses[keyof ListCriteriaResponses];
+export type ListCriteriaResponse = ListCriteriaResponses[keyof ListCriteriaResponses];
 
 export type GetSustainabilityFormMappingsData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/sustainability-form/v1/mappings';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/sustainability-form/v1/mappings';
 };
 
 export type GetSustainabilityFormMappingsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetSustainabilityFormMappingsError =
-	GetSustainabilityFormMappingsErrors[keyof GetSustainabilityFormMappingsErrors];
+export type GetSustainabilityFormMappingsError = GetSustainabilityFormMappingsErrors[keyof GetSustainabilityFormMappingsErrors];
 
 export type GetSustainabilityFormMappingsResponses = {
-	/**
-	 * Ok
-	 */
-	200: SustainabilityFormMappings;
+    /**
+     * ok
+     */
+    200: SustainabilityFormMappings;
 };
 
-export type GetSustainabilityFormMappingsResponse =
-	GetSustainabilityFormMappingsResponses[keyof GetSustainabilityFormMappingsResponses];
+export type GetSustainabilityFormMappingsResponse = GetSustainabilityFormMappingsResponses[keyof GetSustainabilityFormMappingsResponses];
 
 export type ListCpvCodesData = {
-	body?: never;
-	path?: never;
-	query?: {
-		parentCode?: string;
-	};
-	url: '/codes/v1/cpv';
+    body?: never;
+    path?: never;
+    query?: {
+        parentCode?: string;
+    };
+    url: '/codes/v1/cpv';
 };
 
 export type ListCpvCodesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type ListCpvCodesError = ListCpvCodesErrors[keyof ListCpvCodesErrors];
 
 export type ListCpvCodesResponses = {
-	/**
-	 * Ok
-	 */
-	200: CpvCodes;
+    /**
+     * ok
+     */
+    200: CpvCodes;
 };
 
-export type ListCpvCodesResponse =
-	ListCpvCodesResponses[keyof ListCpvCodesResponses];
+export type ListCpvCodesResponse = ListCpvCodesResponses[keyof ListCpvCodesResponses];
 
 export type FindCpvCodesData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * You can use partial numbers, words or sentences for the query. If the query starts with a number only for the codes is searched
-		 */
-		query: string;
-		/**
-		 * Language to search in, if not provided, defaults to german
-		 */
-		language?: SystemLanguage;
-	};
-	url: '/codes/v1/cpv/search';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * You can use partial numbers, words or sentences for the query. If the query starts with a number only for the codes is searched
+         */
+        query: string;
+        /**
+         * Language to search in, if not provided, defaults to german
+         */
+        language?: SystemLanguage;
+    };
+    url: '/codes/v1/cpv/search';
 };
 
 export type FindCpvCodesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type FindCpvCodesError = FindCpvCodesErrors[keyof FindCpvCodesErrors];
 
 export type FindCpvCodesResponses = {
-	/**
-	 * Ok
-	 */
-	200: CpvCodesSearchResults;
+    /**
+     * ok
+     */
+    200: CpvCodesSearchResults;
 };
 
-export type FindCpvCodesResponse =
-	FindCpvCodesResponses[keyof FindCpvCodesResponses];
+export type FindCpvCodesResponse = FindCpvCodesResponses[keyof FindCpvCodesResponses];
 
 export type ListCpcCodesData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/codes/v2/cpc';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/codes/v2/cpc';
 };
 
 export type ListCpcCodesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type ListCpcCodesError = ListCpcCodesErrors[keyof ListCpcCodesErrors];
 
 export type ListCpcCodesResponses = {
-	/**
-	 * Ok
-	 */
-	200: CpcCodes;
+    /**
+     * ok
+     */
+    200: CpcCodes;
 };
 
-export type ListCpcCodesResponse =
-	ListCpcCodesResponses[keyof ListCpcCodesResponses];
+export type ListCpcCodesResponse = ListCpcCodesResponses[keyof ListCpcCodesResponses];
 
 export type ListBkpCodesData = {
-	body?: never;
-	path?: never;
-	query?: {
-		parentCode?: string;
-	};
-	url: '/codes/v1/bkp';
+    body?: never;
+    path?: never;
+    query?: {
+        parentCode?: string;
+    };
+    url: '/codes/v1/bkp';
 };
 
 export type ListBkpCodesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type ListBkpCodesError = ListBkpCodesErrors[keyof ListBkpCodesErrors];
 
 export type ListBkpCodesResponses = {
-	/**
-	 * Ok
-	 */
-	200: BkpCodes;
+    /**
+     * ok
+     */
+    200: BkpCodes;
 };
 
-export type ListBkpCodesResponse =
-	ListBkpCodesResponses[keyof ListBkpCodesResponses];
+export type ListBkpCodesResponse = ListBkpCodesResponses[keyof ListBkpCodesResponses];
 
 export type FindBkpCodesData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * You can use partial numbers, words or sentences for the query. If the query starts with a number only for the codes is searched
-		 */
-		query: string;
-		/**
-		 * Language to search in, if not provided, defaults to german
-		 */
-		language?: SystemLanguage;
-	};
-	url: '/codes/v1/bkp/search';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * You can use partial numbers, words or sentences for the query. If the query starts with a number only for the codes is searched
+         */
+        query: string;
+        /**
+         * Language to search in, if not provided, defaults to german
+         */
+        language?: SystemLanguage;
+    };
+    url: '/codes/v1/bkp/search';
 };
 
 export type FindBkpCodesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type FindBkpCodesError = FindBkpCodesErrors[keyof FindBkpCodesErrors];
 
 export type FindBkpCodesResponses = {
-	/**
-	 * Ok
-	 */
-	200: BkpCodesSearchResults;
+    /**
+     * ok
+     */
+    200: BkpCodesSearchResults;
 };
 
-export type FindBkpCodesResponse =
-	FindBkpCodesResponses[keyof FindBkpCodesResponses];
+export type FindBkpCodesResponse = FindBkpCodesResponses[keyof FindBkpCodesResponses];
 
 export type ListNpkCodesData = {
-	body?: never;
-	path?: never;
-	query?: {
-		parentCode?: string;
-	};
-	url: '/codes/v1/npk';
+    body?: never;
+    path?: never;
+    query?: {
+        parentCode?: string;
+    };
+    url: '/codes/v1/npk';
 };
 
 export type ListNpkCodesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type ListNpkCodesError = ListNpkCodesErrors[keyof ListNpkCodesErrors];
 
 export type ListNpkCodesResponses = {
-	/**
-	 * Ok
-	 */
-	200: NpkCodes;
+    /**
+     * ok
+     */
+    200: NpkCodes;
 };
 
-export type ListNpkCodesResponse =
-	ListNpkCodesResponses[keyof ListNpkCodesResponses];
+export type ListNpkCodesResponse = ListNpkCodesResponses[keyof ListNpkCodesResponses];
 
 export type FindNpkCodesData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * You can use partial numbers, words or sentences for the query. If the query starts with a number only for the codes is searched
-		 */
-		query: string;
-		/**
-		 * Language to search in, if not provided, defaults to german
-		 */
-		language?: SystemLanguage;
-	};
-	url: '/codes/v1/npk/search';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * You can use partial numbers, words or sentences for the query. If the query starts with a number only for the codes is searched
+         */
+        query: string;
+        /**
+         * Language to search in, if not provided, defaults to german
+         */
+        language?: SystemLanguage;
+    };
+    url: '/codes/v1/npk/search';
 };
 
 export type FindNpkCodesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type FindNpkCodesError = FindNpkCodesErrors[keyof FindNpkCodesErrors];
 
 export type FindNpkCodesResponses = {
-	/**
-	 * Ok
-	 */
-	200: NpkCodesSearchResults;
+    /**
+     * ok
+     */
+    200: NpkCodesSearchResults;
 };
 
-export type FindNpkCodesResponse =
-	FindNpkCodesResponses[keyof FindNpkCodesResponses];
+export type FindNpkCodesResponse = FindNpkCodesResponses[keyof FindNpkCodesResponses];
 
 export type ListEbkptCodesData = {
-	body?: never;
-	path?: never;
-	query?: {
-		parentCode?: string;
-	};
-	url: '/codes/v1/ebkp-t';
+    body?: never;
+    path?: never;
+    query?: {
+        parentCode?: string;
+    };
+    url: '/codes/v1/ebkp-t';
 };
 
 export type ListEbkptCodesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ListEbkptCodesError =
-	ListEbkptCodesErrors[keyof ListEbkptCodesErrors];
+export type ListEbkptCodesError = ListEbkptCodesErrors[keyof ListEbkptCodesErrors];
 
 export type ListEbkptCodesResponses = {
-	/**
-	 * Ok
-	 */
-	200: EbkptCodes;
+    /**
+     * ok
+     */
+    200: EbkptCodes;
 };
 
-export type ListEbkptCodesResponse =
-	ListEbkptCodesResponses[keyof ListEbkptCodesResponses];
+export type ListEbkptCodesResponse = ListEbkptCodesResponses[keyof ListEbkptCodesResponses];
 
 export type FindEbkptCodesData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * You can use partial numbers, words or sentences for the query. If the query starts with a number only for the codes is searched
-		 */
-		query: string;
-		/**
-		 * Language to search in, if not provided, defaults to german
-		 */
-		language?: SystemLanguage;
-	};
-	url: '/codes/v1/ebkp-t/search';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * You can use partial numbers, words or sentences for the query. If the query starts with a number only for the codes is searched
+         */
+        query: string;
+        /**
+         * Language to search in, if not provided, defaults to german
+         */
+        language?: SystemLanguage;
+    };
+    url: '/codes/v1/ebkp-t/search';
 };
 
 export type FindEbkptCodesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type FindEbkptCodesError =
-	FindEbkptCodesErrors[keyof FindEbkptCodesErrors];
+export type FindEbkptCodesError = FindEbkptCodesErrors[keyof FindEbkptCodesErrors];
 
 export type FindEbkptCodesResponses = {
-	/**
-	 * Ok
-	 */
-	200: EbkptCodesSearchResults;
+    /**
+     * ok
+     */
+    200: EbkptCodesSearchResults;
 };
 
-export type FindEbkptCodesResponse =
-	FindEbkptCodesResponses[keyof FindEbkptCodesResponses];
+export type FindEbkptCodesResponse = FindEbkptCodesResponses[keyof FindEbkptCodesResponses];
 
 export type ListEbkphCodesData = {
-	body?: never;
-	path?: never;
-	query?: {
-		parentCode?: string;
-	};
-	url: '/codes/v1/ebkp-h';
+    body?: never;
+    path?: never;
+    query?: {
+        parentCode?: string;
+    };
+    url: '/codes/v1/ebkp-h';
 };
 
 export type ListEbkphCodesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ListEbkphCodesError =
-	ListEbkphCodesErrors[keyof ListEbkphCodesErrors];
+export type ListEbkphCodesError = ListEbkphCodesErrors[keyof ListEbkphCodesErrors];
 
 export type ListEbkphCodesResponses = {
-	/**
-	 * Ok
-	 */
-	200: EbkphCodes;
+    /**
+     * ok
+     */
+    200: EbkphCodes;
 };
 
-export type ListEbkphCodesResponse =
-	ListEbkphCodesResponses[keyof ListEbkphCodesResponses];
+export type ListEbkphCodesResponse = ListEbkphCodesResponses[keyof ListEbkphCodesResponses];
 
 export type FindEbkphCodesData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * You can use partial numbers, words or sentences for the query. If the query starts with a number only for the codes is searched
-		 */
-		query: string;
-		/**
-		 * Language to search in, if not provided, defaults to german
-		 */
-		language?: SystemLanguage;
-	};
-	url: '/codes/v1/ebkp-h/search';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * You can use partial numbers, words or sentences for the query. If the query starts with a number only for the codes is searched
+         */
+        query: string;
+        /**
+         * Language to search in, if not provided, defaults to german
+         */
+        language?: SystemLanguage;
+    };
+    url: '/codes/v1/ebkp-h/search';
 };
 
 export type FindEbkphCodesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type FindEbkphCodesError =
-	FindEbkphCodesErrors[keyof FindEbkphCodesErrors];
+export type FindEbkphCodesError = FindEbkphCodesErrors[keyof FindEbkphCodesErrors];
 
 export type FindEbkphCodesResponses = {
-	/**
-	 * Ok
-	 */
-	200: EbkphCodesSearchResults;
+    /**
+     * ok
+     */
+    200: EbkphCodesSearchResults;
 };
 
-export type FindEbkphCodesResponse =
-	FindEbkphCodesResponses[keyof FindEbkphCodesResponses];
+export type FindEbkphCodesResponse = FindEbkphCodesResponses[keyof FindEbkphCodesResponses];
 
 export type ListOagCodesData = {
-	body?: never;
-	path?: never;
-	query?: {
-		parentCode?: string;
-	};
-	url: '/codes/v1/oag';
+    body?: never;
+    path?: never;
+    query?: {
+        parentCode?: string;
+    };
+    url: '/codes/v1/oag';
 };
 
 export type ListOagCodesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type ListOagCodesError = ListOagCodesErrors[keyof ListOagCodesErrors];
 
 export type ListOagCodesResponses = {
-	/**
-	 * Ok
-	 */
-	200: OagCodes;
+    /**
+     * ok
+     */
+    200: OagCodes;
 };
 
-export type ListOagCodesResponse =
-	ListOagCodesResponses[keyof ListOagCodesResponses];
+export type ListOagCodesResponse = ListOagCodesResponses[keyof ListOagCodesResponses];
 
 export type FindOagCodesData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * You can use partial numbers, words or sentences for the query. If the query starts with a number only for the codes is searched
-		 */
-		query: string;
-		/**
-		 * Language to search in, if not provided, defaults to german
-		 */
-		language?: SystemLanguage;
-	};
-	url: '/codes/v1/oag/search';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * You can use partial numbers, words or sentences for the query. If the query starts with a number only for the codes is searched
+         */
+        query: string;
+        /**
+         * Language to search in, if not provided, defaults to german
+         */
+        language?: SystemLanguage;
+    };
+    url: '/codes/v1/oag/search';
 };
 
 export type FindOagCodesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type FindOagCodesError = FindOagCodesErrors[keyof FindOagCodesErrors];
 
 export type FindOagCodesResponses = {
-	/**
-	 * Ok
-	 */
-	200: OagCodesSearchResults;
+    /**
+     * ok
+     */
+    200: OagCodesSearchResults;
 };
 
-export type FindOagCodesResponse =
-	FindOagCodesResponses[keyof FindOagCodesResponses];
+export type FindOagCodesResponse = FindOagCodesResponses[keyof FindOagCodesResponses];
 
 export type ListInstitutionsData = {
-	body?: never;
-	path?: never;
-	query?: {
-		/**
-		 * If not set the top level institutions will be returned.
-		 */
-		parentInstitutionId?: string;
-	};
-	url: '/institutions/v1';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * If not set the top level institutions will be returned.
+         */
+        parentInstitutionId?: string;
+    };
+    url: '/institutions/v1';
 };
 
 export type ListInstitutionsErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ListInstitutionsError =
-	ListInstitutionsErrors[keyof ListInstitutionsErrors];
+export type ListInstitutionsError = ListInstitutionsErrors[keyof ListInstitutionsErrors];
 
 export type ListInstitutionsResponses = {
-	/**
-	 * Ok
-	 */
-	200: Institutions;
+    /**
+     * ok
+     */
+    200: Institutions;
 };
 
-export type ListInstitutionsResponse =
-	ListInstitutionsResponses[keyof ListInstitutionsResponses];
+export type ListInstitutionsResponse = ListInstitutionsResponses[keyof ListInstitutionsResponses];
 
 export type GetInstitutionByIdData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the institution, can be obtained by GET on /institutions/v1 or has to be provided on creation
-		 */
-		institutionId: string;
-	};
-	query?: never;
-	url: '/institutions/v1/institution/{institutionId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the institution, can be obtained by GET on /institutions/v1 or has to be provided on creation
+         */
+        institutionId: string;
+    };
+    query?: never;
+    url: '/institutions/v1/institution/{institutionId}';
 };
 
 export type GetInstitutionByIdErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetInstitutionByIdError =
-	GetInstitutionByIdErrors[keyof GetInstitutionByIdErrors];
+export type GetInstitutionByIdError = GetInstitutionByIdErrors[keyof GetInstitutionByIdErrors];
 
 export type GetInstitutionByIdResponses = {
-	/**
-	 * Ok
-	 */
-	200: Institution;
+    /**
+     * ok
+     */
+    200: Institution;
 };
 
-export type GetInstitutionByIdResponse =
-	GetInstitutionByIdResponses[keyof GetInstitutionByIdResponses];
+export type GetInstitutionByIdResponse = GetInstitutionByIdResponses[keyof GetInstitutionByIdResponses];
 
 export type FindPoInInstitutionTreeData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * You can use partial words or names for the query. Requires a minimum of 3 chars
-		 */
-		query: string;
-	};
-	url: '/institutions/v1/po/search';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * You can use partial words or names for the query. Requires a minimum of 3 chars
+         */
+        query: string;
+    };
+    url: '/institutions/v1/po/search';
 };
 
 export type FindPoInInstitutionTreeErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type FindPoInInstitutionTreeError =
-	FindPoInInstitutionTreeErrors[keyof FindPoInInstitutionTreeErrors];
+export type FindPoInInstitutionTreeError = FindPoInInstitutionTreeErrors[keyof FindPoInInstitutionTreeErrors];
 
 export type FindPoInInstitutionTreeResponses = {
-	/**
-	 * Ok
-	 */
-	200: InstitutionSearchResults;
+    /**
+     * ok
+     */
+    200: InstitutionSearchResults;
 };
 
-export type FindPoInInstitutionTreeResponse =
-	FindPoInInstitutionTreeResponses[keyof FindPoInInstitutionTreeResponses];
+export type FindPoInInstitutionTreeResponse = FindPoInInstitutionTreeResponses[keyof FindPoInInstitutionTreeResponses];
 
 export type SearchUsersData = {
-	body?: never;
-	path?: never;
-	query: {
-		search: string;
-		lastItem?: string;
-	};
-	url: '/users/v1';
+    body?: never;
+    path?: never;
+    query: {
+        search: string;
+        lastItem?: string;
+    };
+    url: '/users/v1';
 };
 
 export type SearchUsersErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type SearchUsersError = SearchUsersErrors[keyof SearchUsersErrors];
 
 export type SearchUsersResponses = {
-	/**
-	 * Ok
-	 */
-	200: UsersSearchResult;
+    /**
+     * ok
+     */
+    200: UsersSearchResult;
 };
 
-export type SearchUsersResponse =
-	SearchUsersResponses[keyof SearchUsersResponses];
+export type SearchUsersResponse = SearchUsersResponses[keyof SearchUsersResponses];
 
 export type ExportAllUsersData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/users/v1/all';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/users/v1/all';
 };
 
 export type ExportAllUsersErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ExportAllUsersError =
-	ExportAllUsersErrors[keyof ExportAllUsersErrors];
+export type ExportAllUsersError = ExportAllUsersErrors[keyof ExportAllUsersErrors];
 
 export type ExportAllUsersResponses = {
-	/**
-	 * Ok
-	 */
-	200: Blob | File;
+    /**
+     * ok
+     */
+    200: Blob | File;
 };
 
-export type ExportAllUsersResponse =
-	ExportAllUsersResponses[keyof ExportAllUsersResponses];
+export type ExportAllUsersResponse = ExportAllUsersResponses[keyof ExportAllUsersResponses];
 
 export type GetUserByIdData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the user, can be obtained by GET on /users/v1
-		 */
-		userId: string;
-	};
-	query?: never;
-	url: '/users/v1/user/{userId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the user, can be obtained by GET on /users/v1
+         */
+        userId: string;
+    };
+    query?: never;
+    url: '/users/v1/user/{userId}';
 };
 
 export type GetUserByIdErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type GetUserByIdError = GetUserByIdErrors[keyof GetUserByIdErrors];
 
 export type GetUserByIdResponses = {
-	/**
-	 * Ok
-	 */
-	200: User;
+    /**
+     * ok
+     */
+    200: User;
 };
 
-export type GetUserByIdResponse =
-	GetUserByIdResponses[keyof GetUserByIdResponses];
+export type GetUserByIdResponse = GetUserByIdResponses[keyof GetUserByIdResponses];
 
 export type DeleteMyUserData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/users/v1/my';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/users/v1/my';
 };
 
 export type DeleteMyUserErrors = {
-	/**
-	 * Response contains all the reasons why a user can not be deleted
-	 */
-	412: UserDeletionResultResponse;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Response contains all the reasons why a user can not be deleted
+     */
+    412: UserDeletionResultResponse;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type DeleteMyUserError = DeleteMyUserErrors[keyof DeleteMyUserErrors];
 
 export type DeleteMyUserResponses = {
-	/**
-	 * Deleted
-	 */
-	204: void;
+    /**
+     * deleted
+     */
+    204: void;
 };
 
-export type DeleteMyUserResponse =
-	DeleteMyUserResponses[keyof DeleteMyUserResponses];
+export type DeleteMyUserResponse = DeleteMyUserResponses[keyof DeleteMyUserResponses];
 
 export type GetMyUserData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/users/v1/my';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/users/v1/my';
 };
 
 export type GetMyUserErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type GetMyUserError = GetMyUserErrors[keyof GetMyUserErrors];
 
 export type GetMyUserResponses = {
-	/**
-	 * Ok
-	 */
-	200: User;
+    /**
+     * ok
+     */
+    200: User;
 };
 
 export type GetMyUserResponse = GetMyUserResponses[keyof GetMyUserResponses];
 
 export type EditMyUserData = {
-	body: UserEditable;
-	path?: never;
-	query?: never;
-	url: '/users/v1/my';
+    body: UserEditable;
+    path?: never;
+    query?: never;
+    url: '/users/v1/my';
 };
 
 export type EditMyUserErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type EditMyUserError = EditMyUserErrors[keyof EditMyUserErrors];
 
 export type EditMyUserResponses = {
-	/**
-	 * Ok
-	 */
-	200: User;
+    /**
+     * ok
+     */
+    200: User;
 };
 
 export type EditMyUserResponse = EditMyUserResponses[keyof EditMyUserResponses];
 
 export type ImpersonateUserData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the user to be impersonated, can be obtained by GET on /users/v1
-		 */
-		impersonatedUserId: string;
-	};
-	query?: never;
-	url: '/users/v1/user/{impersonatedUserId}/impersonate';
+    body?: never;
+    path: {
+        /**
+         * Id of the user to be impersonated, can be obtained by GET on /users/v1
+         */
+        impersonatedUserId: string;
+    };
+    query?: never;
+    url: '/users/v1/user/{impersonatedUserId}/impersonate';
 };
 
 export type ImpersonateUserErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ImpersonateUserError =
-	ImpersonateUserErrors[keyof ImpersonateUserErrors];
+export type ImpersonateUserError = ImpersonateUserErrors[keyof ImpersonateUserErrors];
 
 export type ImpersonateUserResponses = {
-	/**
-	 * Because of https://github.com/keycloak/keycloak/issues/8756
-	 * we currently can't use the issued refresh-token.
-	 * Please refresh original token and re-impersonate.
-	 *
-	 */
-	200: ImpersonateTokens;
+    /**
+     * Because of https://github.com/keycloak/keycloak/issues/8756
+     * we currently can't use the issued refresh-token.
+     * Please refresh original token and re-impersonate.
+     *
+     */
+    200: ImpersonateTokens;
 };
 
-export type ImpersonateUserResponse =
-	ImpersonateUserResponses[keyof ImpersonateUserResponses];
+export type ImpersonateUserResponse = ImpersonateUserResponses[keyof ImpersonateUserResponses];
 
 export type RefreshTokenImpersonatedUserData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the user to be impersonated, can be obtained by GET on /users/v1
-		 */
-		impersonatedUserId: string;
-	};
-	query?: never;
-	url: '/users/v1/user/{impersonatedUserId}/impersonate/refresh-token';
+    body?: never;
+    path: {
+        /**
+         * Id of the user to be impersonated, can be obtained by GET on /users/v1
+         */
+        impersonatedUserId: string;
+    };
+    query?: never;
+    url: '/users/v1/user/{impersonatedUserId}/impersonate/refresh-token';
 };
 
 export type RefreshTokenImpersonatedUserErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type RefreshTokenImpersonatedUserError =
-	RefreshTokenImpersonatedUserErrors[keyof RefreshTokenImpersonatedUserErrors];
+export type RefreshTokenImpersonatedUserError = RefreshTokenImpersonatedUserErrors[keyof RefreshTokenImpersonatedUserErrors];
 
 export type RefreshTokenImpersonatedUserResponses = {
-	/**
-	 * Because of https://github.com/keycloak/keycloak/issues/8756
-	 * we currently can't use the issued refresh-token.
-	 * Please refresh original token and re-impersonate.
-	 *
-	 */
-	200: ImpersonateTokens;
+    /**
+     * Because of https://github.com/keycloak/keycloak/issues/8756
+     * we currently can't use the issued refresh-token.
+     * Please refresh original token and re-impersonate.
+     *
+     */
+    200: ImpersonateTokens;
 };
 
-export type RefreshTokenImpersonatedUserResponse =
-	RefreshTokenImpersonatedUserResponses[keyof RefreshTokenImpersonatedUserResponses];
+export type RefreshTokenImpersonatedUserResponse = RefreshTokenImpersonatedUserResponses[keyof RefreshTokenImpersonatedUserResponses];
 
 export type SearchUsersWithOrgAndRoleData = {
-	body?: never;
-	path?: never;
-	query: {
-		search: string;
-		/**
-		 * Search language
-		 */
-		lang: SystemLanguage;
-		lastItem?: string;
-	};
-	url: '/users/v1/search-with-org-and-role';
+    body?: never;
+    path?: never;
+    query: {
+        search: string;
+        /**
+         * search language
+         */
+        lang: SystemLanguage;
+        lastItem?: string;
+    };
+    url: '/users/v1/search-with-org-and-role';
 };
 
 export type SearchUsersWithOrgAndRoleErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type SearchUsersWithOrgAndRoleError =
-	SearchUsersWithOrgAndRoleErrors[keyof SearchUsersWithOrgAndRoleErrors];
+export type SearchUsersWithOrgAndRoleError = SearchUsersWithOrgAndRoleErrors[keyof SearchUsersWithOrgAndRoleErrors];
 
 export type SearchUsersWithOrgAndRoleResponses = {
-	/**
-	 * Ok
-	 */
-	200: UsersWithOrgAndRoleSearchResult;
+    /**
+     * ok
+     */
+    200: UsersWithOrgAndRoleSearchResult;
 };
 
-export type SearchUsersWithOrgAndRoleResponse =
-	SearchUsersWithOrgAndRoleResponses[keyof SearchUsersWithOrgAndRoleResponses];
+export type SearchUsersWithOrgAndRoleResponse = SearchUsersWithOrgAndRoleResponses[keyof SearchUsersWithOrgAndRoleResponses];
 
 export type GetMyOrganizationMembershipsData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/users/v1/my/organizations';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/users/v1/my/organizations';
 };
 
 export type GetMyOrganizationMembershipsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetMyOrganizationMembershipsError =
-	GetMyOrganizationMembershipsErrors[keyof GetMyOrganizationMembershipsErrors];
+export type GetMyOrganizationMembershipsError = GetMyOrganizationMembershipsErrors[keyof GetMyOrganizationMembershipsErrors];
 
 export type GetMyOrganizationMembershipsResponses = {
-	/**
-	 * Ok
-	 */
-	200: OrganizationMemberships;
+    /**
+     * ok
+     */
+    200: OrganizationMemberships;
 };
 
-export type GetMyOrganizationMembershipsResponse =
-	GetMyOrganizationMembershipsResponses[keyof GetMyOrganizationMembershipsResponses];
+export type GetMyOrganizationMembershipsResponse = GetMyOrganizationMembershipsResponses[keyof GetMyOrganizationMembershipsResponses];
 
 export type DeleteMyOrganizationMembershipData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the organization
-		 */
-		organizationId: string;
-	};
-	query?: never;
-	url: '/users/v1/my/organizations/{organizationId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the organization
+         */
+        organizationId: string;
+    };
+    query?: never;
+    url: '/users/v1/my/organizations/{organizationId}';
 };
 
 export type DeleteMyOrganizationMembershipErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeleteMyOrganizationMembershipError =
-	DeleteMyOrganizationMembershipErrors[keyof DeleteMyOrganizationMembershipErrors];
+export type DeleteMyOrganizationMembershipError = DeleteMyOrganizationMembershipErrors[keyof DeleteMyOrganizationMembershipErrors];
 
 export type DeleteMyOrganizationMembershipResponses = {
-	/**
-	 * Ok
-	 */
-	204: void;
+    /**
+     * ok
+     */
+    204: void;
 };
 
-export type DeleteMyOrganizationMembershipResponse =
-	DeleteMyOrganizationMembershipResponses[keyof DeleteMyOrganizationMembershipResponses];
+export type DeleteMyOrganizationMembershipResponse = DeleteMyOrganizationMembershipResponses[keyof DeleteMyOrganizationMembershipResponses];
 
 export type GetCompCentresData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/compcentres/v1';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/compcentres/v1';
 };
 
 export type GetCompCentresErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetCompCentresError =
-	GetCompCentresErrors[keyof GetCompCentresErrors];
+export type GetCompCentresError = GetCompCentresErrors[keyof GetCompCentresErrors];
 
 export type GetCompCentresResponses = {
-	/**
-	 * Ok
-	 */
-	200: CompCentres;
+    /**
+     * ok
+     */
+    200: CompCentres;
 };
 
-export type GetCompCentresResponse =
-	GetCompCentresResponses[keyof GetCompCentresResponses];
+export type GetCompCentresResponse = GetCompCentresResponses[keyof GetCompCentresResponses];
 
 export type FindProcOfficesOfMyCompCentreData = {
-	body?: never;
-	path?: never;
-	query?: {
-		/**
-		 * Search by proc office name.
-		 * Requires at least 3 valid characters.
-		 *
-		 */
-		search?: string;
-		lastItem?: string;
-		/**
-		 * Filter by procurement offices in status
-		 */
-		status?: ProcOfficeStatus;
-	};
-	url: '/compcentres/v1/my/procoffices';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Search by proc office name.
+         * Requires at least 3 valid characters.
+         *
+         */
+        search?: string;
+        lastItem?: string;
+        /**
+         * Filter by procurement offices in status
+         */
+        status?: ProcOfficeStatus;
+    };
+    url: '/compcentres/v1/my/procoffices';
 };
 
 export type FindProcOfficesOfMyCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type FindProcOfficesOfMyCompCentreError =
-	FindProcOfficesOfMyCompCentreErrors[keyof FindProcOfficesOfMyCompCentreErrors];
+export type FindProcOfficesOfMyCompCentreError = FindProcOfficesOfMyCompCentreErrors[keyof FindProcOfficesOfMyCompCentreErrors];
 
 export type FindProcOfficesOfMyCompCentreResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeSearchResult;
+    /**
+     * ok
+     */
+    200: ProcOfficeSearchResult;
 };
 
-export type FindProcOfficesOfMyCompCentreResponse =
-	FindProcOfficesOfMyCompCentreResponses[keyof FindProcOfficesOfMyCompCentreResponses];
+export type FindProcOfficesOfMyCompCentreResponse = FindProcOfficesOfMyCompCentreResponses[keyof FindProcOfficesOfMyCompCentreResponses];
 
 export type GetCompCentreData = {
-	body?: never;
-	path: {
-		/**
-		 * The id of the competence centre, get available competence centres at /compcentres/v1
-		 */
-		compCentreId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/cc/{compCentreId}';
+    body?: never;
+    path: {
+        /**
+         * The id of the competence centre, get available competence centres at /compcentres/v1
+         */
+        compCentreId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/cc/{compCentreId}';
 };
 
 export type GetCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type GetCompCentreError = GetCompCentreErrors[keyof GetCompCentreErrors];
 
 export type GetCompCentreResponses = {
-	/**
-	 * Ok
-	 */
-	200: CompCentreDetail;
+    /**
+     * ok
+     */
+    200: CompCentreDetail;
 };
 
-export type GetCompCentreResponse =
-	GetCompCentreResponses[keyof GetCompCentreResponses];
+export type GetCompCentreResponse = GetCompCentreResponses[keyof GetCompCentreResponses];
 
 export type UpdateCompCentreData = {
-	body: CompCentre;
-	path: {
-		/**
-		 * The id of the competence centre, get available competence centres at /compcentres/v1
-		 */
-		compCentreId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/cc/{compCentreId}';
+    body: CompCentre;
+    path: {
+        /**
+         * The id of the competence centre, get available competence centres at /compcentres/v1
+         */
+        compCentreId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/cc/{compCentreId}';
 };
 
 export type UpdateCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UpdateCompCentreError =
-	UpdateCompCentreErrors[keyof UpdateCompCentreErrors];
+export type UpdateCompCentreError = UpdateCompCentreErrors[keyof UpdateCompCentreErrors];
 
 export type UpdateCompCentreResponses = {
-	/**
-	 * Ok
-	 */
-	200: CompCentre;
+    /**
+     * ok
+     */
+    200: CompCentre;
 };
 
-export type UpdateCompCentreResponse =
-	UpdateCompCentreResponses[keyof UpdateCompCentreResponses];
+export type UpdateCompCentreResponse = UpdateCompCentreResponses[keyof UpdateCompCentreResponses];
 
 export type AddCompCentreMemberData = {
-	body: CompCentreJoin;
-	path: {
-		/**
-		 * The id of the competence centre, get available competence centres at /compcentres/v1
-		 */
-		compCentreId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/cc/{compCentreId}/addmember';
+    body: CompCentreJoin;
+    path: {
+        /**
+         * The id of the competence centre, get available competence centres at /compcentres/v1
+         */
+        compCentreId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/cc/{compCentreId}/addmember';
 };
 
 export type AddCompCentreMemberErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type AddCompCentreMemberError =
-	AddCompCentreMemberErrors[keyof AddCompCentreMemberErrors];
+export type AddCompCentreMemberError = AddCompCentreMemberErrors[keyof AddCompCentreMemberErrors];
 
 export type AddCompCentreMemberResponses = {
-	/**
-	 * Ok
-	 */
-	201: CompCentreMember;
+    /**
+     * ok
+     */
+    201: CompCentreMember;
 };
 
-export type AddCompCentreMemberResponse =
-	AddCompCentreMemberResponses[keyof AddCompCentreMemberResponses];
+export type AddCompCentreMemberResponse = AddCompCentreMemberResponses[keyof AddCompCentreMemberResponses];
 
 export type RemoveCompCentreMemberData = {
-	body?: never;
-	path: {
-		/**
-		 * The id of the competence centre, get available competence centres at /compcentres/v1
-		 */
-		compCentreId: string;
-		/**
-		 * Id of the user, can be obtained by GET on /compcentres/v1/my
-		 */
-		userId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/cc/{compCentreId}/members/{userId}';
+    body?: never;
+    path: {
+        /**
+         * The id of the competence centre, get available competence centres at /compcentres/v1
+         */
+        compCentreId: string;
+        /**
+         * Id of the user, can be obtained by GET on /compcentres/v1/my
+         */
+        userId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/cc/{compCentreId}/members/{userId}';
 };
 
 export type RemoveCompCentreMemberErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type RemoveCompCentreMemberError =
-	RemoveCompCentreMemberErrors[keyof RemoveCompCentreMemberErrors];
+export type RemoveCompCentreMemberError = RemoveCompCentreMemberErrors[keyof RemoveCompCentreMemberErrors];
 
 export type RemoveCompCentreMemberResponses = {
-	/**
-	 * Ok
-	 */
-	204: void;
+    /**
+     * ok
+     */
+    204: void;
 };
 
-export type RemoveCompCentreMemberResponse =
-	RemoveCompCentreMemberResponses[keyof RemoveCompCentreMemberResponses];
+export type RemoveCompCentreMemberResponse = RemoveCompCentreMemberResponses[keyof RemoveCompCentreMemberResponses];
 
 export type GetCompCentreMembersData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/compcentres/v1/my/members';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/compcentres/v1/my/members';
 };
 
 export type GetCompCentreMembersErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetCompCentreMembersError =
-	GetCompCentreMembersErrors[keyof GetCompCentreMembersErrors];
+export type GetCompCentreMembersError = GetCompCentreMembersErrors[keyof GetCompCentreMembersErrors];
 
 export type GetCompCentreMembersResponses = {
-	/**
-	 * Ok
-	 */
-	200: CompCentreMembers;
+    /**
+     * ok
+     */
+    200: CompCentreMembers;
 };
 
-export type GetCompCentreMembersResponse =
-	GetCompCentreMembersResponses[keyof GetCompCentreMembersResponses];
+export type GetCompCentreMembersResponse = GetCompCentreMembersResponses[keyof GetCompCentreMembersResponses];
 
 export type SearchAttachedUsersData = {
-	body?: never;
-	path?: never;
-	query: {
-		search: string;
-		lastItem?: string;
-	};
-	url: '/compcentres/v1/my/procoffices/users/search';
+    body?: never;
+    path?: never;
+    query: {
+        search: string;
+        lastItem?: string;
+    };
+    url: '/compcentres/v1/my/procoffices/users/search';
 };
 
 export type SearchAttachedUsersErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type SearchAttachedUsersError =
-	SearchAttachedUsersErrors[keyof SearchAttachedUsersErrors];
+export type SearchAttachedUsersError = SearchAttachedUsersErrors[keyof SearchAttachedUsersErrors];
 
 export type SearchAttachedUsersResponses = {
-	/**
-	 * Ok
-	 */
-	200: AttachedUserSearchResult;
+    /**
+     * ok
+     */
+    200: AttachedUserSearchResult;
 };
 
-export type SearchAttachedUsersResponse =
-	SearchAttachedUsersResponses[keyof SearchAttachedUsersResponses];
+export type SearchAttachedUsersResponse = SearchAttachedUsersResponses[keyof SearchAttachedUsersResponses];
 
 export type SearchRemediesNoticeTemplatesByCompCentreData = {
-	body?: never;
-	path?: never;
-	query?: {
-		/**
-		 * Search by `name`
-		 * Either empty or requires at least 3 valid characters.
-		 *
-		 */
-		search?: string;
-		lastItem?: string;
-	};
-	url: '/compcentres/v1/my/remedies-notices';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Search by `name`
+         * Either empty or requires at least 3 valid characters.
+         *
+         */
+        search?: string;
+        lastItem?: string;
+    };
+    url: '/compcentres/v1/my/remedies-notices';
 };
 
 export type SearchRemediesNoticeTemplatesByCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type SearchRemediesNoticeTemplatesByCompCentreError =
-	SearchRemediesNoticeTemplatesByCompCentreErrors[keyof SearchRemediesNoticeTemplatesByCompCentreErrors];
+export type SearchRemediesNoticeTemplatesByCompCentreError = SearchRemediesNoticeTemplatesByCompCentreErrors[keyof SearchRemediesNoticeTemplatesByCompCentreErrors];
 
 export type SearchRemediesNoticeTemplatesByCompCentreResponses = {
-	/**
-	 * Ok
-	 */
-	200: RemediesNoticeTemplatesSearchResult;
+    /**
+     * ok
+     */
+    200: RemediesNoticeTemplatesSearchResult;
 };
 
-export type SearchRemediesNoticeTemplatesByCompCentreResponse =
-	SearchRemediesNoticeTemplatesByCompCentreResponses[keyof SearchRemediesNoticeTemplatesByCompCentreResponses];
+export type SearchRemediesNoticeTemplatesByCompCentreResponse = SearchRemediesNoticeTemplatesByCompCentreResponses[keyof SearchRemediesNoticeTemplatesByCompCentreResponses];
 
 export type DeleteRemediesNoticeTemplateInCompCentreData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the remedies notice template
-		 */
-		remediesNoticeTemplateId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/remedies-notices/{remediesNoticeTemplateId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the remedies notice template
+         */
+        remediesNoticeTemplateId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/remedies-notices/{remediesNoticeTemplateId}';
 };
 
 export type DeleteRemediesNoticeTemplateInCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeleteRemediesNoticeTemplateInCompCentreError =
-	DeleteRemediesNoticeTemplateInCompCentreErrors[keyof DeleteRemediesNoticeTemplateInCompCentreErrors];
+export type DeleteRemediesNoticeTemplateInCompCentreError = DeleteRemediesNoticeTemplateInCompCentreErrors[keyof DeleteRemediesNoticeTemplateInCompCentreErrors];
 
 export type DeleteRemediesNoticeTemplateInCompCentreResponses = {
-	/**
-	 * No Content - Deleted
-	 */
-	204: void;
+    /**
+     * No Content - Deleted
+     */
+    204: void;
 };
 
-export type DeleteRemediesNoticeTemplateInCompCentreResponse =
-	DeleteRemediesNoticeTemplateInCompCentreResponses[keyof DeleteRemediesNoticeTemplateInCompCentreResponses];
+export type DeleteRemediesNoticeTemplateInCompCentreResponse = DeleteRemediesNoticeTemplateInCompCentreResponses[keyof DeleteRemediesNoticeTemplateInCompCentreResponses];
 
 export type GetRemediesNoticeTemplateByCompCentreData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the remedies notice template
-		 */
-		remediesNoticeTemplateId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/remedies-notices/{remediesNoticeTemplateId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the remedies notice template
+         */
+        remediesNoticeTemplateId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/remedies-notices/{remediesNoticeTemplateId}';
 };
 
 export type GetRemediesNoticeTemplateByCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetRemediesNoticeTemplateByCompCentreError =
-	GetRemediesNoticeTemplateByCompCentreErrors[keyof GetRemediesNoticeTemplateByCompCentreErrors];
+export type GetRemediesNoticeTemplateByCompCentreError = GetRemediesNoticeTemplateByCompCentreErrors[keyof GetRemediesNoticeTemplateByCompCentreErrors];
 
 export type GetRemediesNoticeTemplateByCompCentreResponses = {
-	/**
-	 * Ok
-	 */
-	200: RemediesNoticeTemplate;
+    /**
+     * ok
+     */
+    200: RemediesNoticeTemplate;
 };
 
-export type GetRemediesNoticeTemplateByCompCentreResponse =
-	GetRemediesNoticeTemplateByCompCentreResponses[keyof GetRemediesNoticeTemplateByCompCentreResponses];
+export type GetRemediesNoticeTemplateByCompCentreResponse = GetRemediesNoticeTemplateByCompCentreResponses[keyof GetRemediesNoticeTemplateByCompCentreResponses];
 
 export type UpdateRemediesNoticeTemplateForCompCentreData = {
-	body: RemediesNoticeTemplateRequest;
-	path: {
-		/**
-		 * Id of the remedies notice template
-		 */
-		remediesNoticeTemplateId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/remedies-notices/{remediesNoticeTemplateId}';
+    body: RemediesNoticeTemplateRequest;
+    path: {
+        /**
+         * Id of the remedies notice template
+         */
+        remediesNoticeTemplateId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/remedies-notices/{remediesNoticeTemplateId}';
 };
 
 export type UpdateRemediesNoticeTemplateForCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UpdateRemediesNoticeTemplateForCompCentreError =
-	UpdateRemediesNoticeTemplateForCompCentreErrors[keyof UpdateRemediesNoticeTemplateForCompCentreErrors];
+export type UpdateRemediesNoticeTemplateForCompCentreError = UpdateRemediesNoticeTemplateForCompCentreErrors[keyof UpdateRemediesNoticeTemplateForCompCentreErrors];
 
 export type UpdateRemediesNoticeTemplateForCompCentreResponses = {
-	/**
-	 * Ok
-	 */
-	200: RemediesNoticeTemplate;
+    /**
+     * ok
+     */
+    200: RemediesNoticeTemplate;
 };
 
-export type UpdateRemediesNoticeTemplateForCompCentreResponse =
-	UpdateRemediesNoticeTemplateForCompCentreResponses[keyof UpdateRemediesNoticeTemplateForCompCentreResponses];
+export type UpdateRemediesNoticeTemplateForCompCentreResponse = UpdateRemediesNoticeTemplateForCompCentreResponses[keyof UpdateRemediesNoticeTemplateForCompCentreResponses];
 
 export type CreateRemediesNoticeTemplateForCompCentreData = {
-	body: RemediesNoticeTemplateRequest;
-	path: {
-		/**
-		 * Id of the remedies notice template
-		 */
-		remediesNoticeTemplateId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/remedies-notices/{remediesNoticeTemplateId}';
+    body: RemediesNoticeTemplateRequest;
+    path: {
+        /**
+         * Id of the remedies notice template
+         */
+        remediesNoticeTemplateId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/remedies-notices/{remediesNoticeTemplateId}';
 };
 
 export type CreateRemediesNoticeTemplateForCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateRemediesNoticeTemplateForCompCentreError =
-	CreateRemediesNoticeTemplateForCompCentreErrors[keyof CreateRemediesNoticeTemplateForCompCentreErrors];
+export type CreateRemediesNoticeTemplateForCompCentreError = CreateRemediesNoticeTemplateForCompCentreErrors[keyof CreateRemediesNoticeTemplateForCompCentreErrors];
 
 export type CreateRemediesNoticeTemplateForCompCentreResponses = {
-	/**
-	 * Ok
-	 */
-	201: RemediesNoticeTemplate;
+    /**
+     * ok
+     */
+    201: RemediesNoticeTemplate;
 };
 
-export type CreateRemediesNoticeTemplateForCompCentreResponse =
-	CreateRemediesNoticeTemplateForCompCentreResponses[keyof CreateRemediesNoticeTemplateForCompCentreResponses];
+export type CreateRemediesNoticeTemplateForCompCentreResponse = CreateRemediesNoticeTemplateForCompCentreResponses[keyof CreateRemediesNoticeTemplateForCompCentreResponses];
 
 export type SearchPubDraftTemplatesByCompCentreData = {
-	body?: never;
-	path?: never;
-	query?: {
-		/**
-		 * Search by project title.
-		 * Either empty or requires at least 3 valid characters.
-		 *
-		 */
-		search?: string;
-		/**
-		 * Filter for publication type
-		 */
-		'template-type'?: PubDraftTemplatePubTypeFilter;
-		'created-by-me'?: boolean;
-		lastItem?: string;
-	};
-	url: '/compcentres/v1/my/pub-draft-templates';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Search by project title.
+         * Either empty or requires at least 3 valid characters.
+         *
+         */
+        search?: string;
+        /**
+         * filter for publication type
+         */
+        'template-type'?: PubDraftTemplatePubTypeFilter;
+        'created-by-me'?: boolean;
+        lastItem?: string;
+    };
+    url: '/compcentres/v1/my/pub-draft-templates';
 };
 
 export type SearchPubDraftTemplatesByCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type SearchPubDraftTemplatesByCompCentreError =
-	SearchPubDraftTemplatesByCompCentreErrors[keyof SearchPubDraftTemplatesByCompCentreErrors];
+export type SearchPubDraftTemplatesByCompCentreError = SearchPubDraftTemplatesByCompCentreErrors[keyof SearchPubDraftTemplatesByCompCentreErrors];
 
 export type SearchPubDraftTemplatesByCompCentreResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTemplateSearchResult;
+    /**
+     * ok
+     */
+    200: PubDraftTemplateSearchResult;
 };
 
-export type SearchPubDraftTemplatesByCompCentreResponse =
-	SearchPubDraftTemplatesByCompCentreResponses[keyof SearchPubDraftTemplatesByCompCentreResponses];
+export type SearchPubDraftTemplatesByCompCentreResponse = SearchPubDraftTemplatesByCompCentreResponses[keyof SearchPubDraftTemplatesByCompCentreResponses];
 
 export type DeleteContactInCompCentreData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the contact of the competence centre
-		 */
-		contactId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/contacts/{contactId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the contact of the competence centre
+         */
+        contactId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/contacts/{contactId}';
 };
 
 export type DeleteContactInCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeleteContactInCompCentreError =
-	DeleteContactInCompCentreErrors[keyof DeleteContactInCompCentreErrors];
+export type DeleteContactInCompCentreError = DeleteContactInCompCentreErrors[keyof DeleteContactInCompCentreErrors];
 
 export type DeleteContactInCompCentreResponses = {
-	/**
-	 * No Content - Deleted
-	 */
-	204: void;
+    /**
+     * No Content - Deleted
+     */
+    204: void;
 };
 
-export type DeleteContactInCompCentreResponse =
-	DeleteContactInCompCentreResponses[keyof DeleteContactInCompCentreResponses];
+export type DeleteContactInCompCentreResponse = DeleteContactInCompCentreResponses[keyof DeleteContactInCompCentreResponses];
 
 export type UpdateContactForCompCentreData = {
-	body: CompCentreContact;
-	path: {
-		/**
-		 * Id of the contact of the competence centre
-		 */
-		contactId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/contacts/{contactId}';
+    body: CompCentreContact;
+    path: {
+        /**
+         * Id of the contact of the competence centre
+         */
+        contactId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/contacts/{contactId}';
 };
 
 export type UpdateContactForCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UpdateContactForCompCentreError =
-	UpdateContactForCompCentreErrors[keyof UpdateContactForCompCentreErrors];
+export type UpdateContactForCompCentreError = UpdateContactForCompCentreErrors[keyof UpdateContactForCompCentreErrors];
 
 export type UpdateContactForCompCentreResponses = {
-	/**
-	 * Ok
-	 */
-	200: CompCentreContact;
+    /**
+     * ok
+     */
+    200: CompCentreContact;
 };
 
-export type UpdateContactForCompCentreResponse =
-	UpdateContactForCompCentreResponses[keyof UpdateContactForCompCentreResponses];
+export type UpdateContactForCompCentreResponse = UpdateContactForCompCentreResponses[keyof UpdateContactForCompCentreResponses];
 
 export type CreateContactForCompCentreData = {
-	body: CompCentreContact;
-	path: {
-		/**
-		 * Id of the contact of the competence centre
-		 */
-		contactId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/contacts/{contactId}';
+    body: CompCentreContact;
+    path: {
+        /**
+         * Id of the contact of the competence centre
+         */
+        contactId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/contacts/{contactId}';
 };
 
 export type CreateContactForCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateContactForCompCentreError =
-	CreateContactForCompCentreErrors[keyof CreateContactForCompCentreErrors];
+export type CreateContactForCompCentreError = CreateContactForCompCentreErrors[keyof CreateContactForCompCentreErrors];
 
 export type CreateContactForCompCentreResponses = {
-	/**
-	 * The contact for a competence centre is successfully created
-	 */
-	201: CompCentreContact;
+    /**
+     * The contact for a competence centre is successfully created
+     */
+    201: CompCentreContact;
 };
 
-export type CreateContactForCompCentreResponse =
-	CreateContactForCompCentreResponses[keyof CreateContactForCompCentreResponses];
+export type CreateContactForCompCentreResponse = CreateContactForCompCentreResponses[keyof CreateContactForCompCentreResponses];
 
 export type DeleteUrlInCompCentreData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the url of the competence centre
-		 */
-		urlId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/urls/{urlId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the url of the competence centre
+         */
+        urlId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/urls/{urlId}';
 };
 
 export type DeleteUrlInCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeleteUrlInCompCentreError =
-	DeleteUrlInCompCentreErrors[keyof DeleteUrlInCompCentreErrors];
+export type DeleteUrlInCompCentreError = DeleteUrlInCompCentreErrors[keyof DeleteUrlInCompCentreErrors];
 
 export type DeleteUrlInCompCentreResponses = {
-	/**
-	 * No Content - Deleted
-	 */
-	204: void;
+    /**
+     * No Content - Deleted
+     */
+    204: void;
 };
 
-export type DeleteUrlInCompCentreResponse =
-	DeleteUrlInCompCentreResponses[keyof DeleteUrlInCompCentreResponses];
+export type DeleteUrlInCompCentreResponse = DeleteUrlInCompCentreResponses[keyof DeleteUrlInCompCentreResponses];
 
 export type UpdateUrlForCompCentreData = {
-	body: CompCentreUrl;
-	path: {
-		/**
-		 * Id of the url of the competence centre
-		 */
-		urlId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/urls/{urlId}';
+    body: CompCentreUrl;
+    path: {
+        /**
+         * Id of the url of the competence centre
+         */
+        urlId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/urls/{urlId}';
 };
 
 export type UpdateUrlForCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UpdateUrlForCompCentreError =
-	UpdateUrlForCompCentreErrors[keyof UpdateUrlForCompCentreErrors];
+export type UpdateUrlForCompCentreError = UpdateUrlForCompCentreErrors[keyof UpdateUrlForCompCentreErrors];
 
 export type UpdateUrlForCompCentreResponses = {
-	/**
-	 * Ok
-	 */
-	200: CompCentreUrl;
+    /**
+     * ok
+     */
+    200: CompCentreUrl;
 };
 
-export type UpdateUrlForCompCentreResponse =
-	UpdateUrlForCompCentreResponses[keyof UpdateUrlForCompCentreResponses];
+export type UpdateUrlForCompCentreResponse = UpdateUrlForCompCentreResponses[keyof UpdateUrlForCompCentreResponses];
 
 export type CreateUrlForCompCentreData = {
-	body: CompCentreUrl;
-	path: {
-		/**
-		 * Id of the url of the competence centre
-		 */
-		urlId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/urls/{urlId}';
+    body: CompCentreUrl;
+    path: {
+        /**
+         * Id of the url of the competence centre
+         */
+        urlId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/urls/{urlId}';
 };
 
 export type CreateUrlForCompCentreErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateUrlForCompCentreError =
-	CreateUrlForCompCentreErrors[keyof CreateUrlForCompCentreErrors];
+export type CreateUrlForCompCentreError = CreateUrlForCompCentreErrors[keyof CreateUrlForCompCentreErrors];
 
 export type CreateUrlForCompCentreResponses = {
-	/**
-	 * The url for a competence centre was successfully created
-	 */
-	201: CompCentreUrl;
+    /**
+     * The url for a competence centre was successfully created
+     */
+    201: CompCentreUrl;
 };
 
-export type CreateUrlForCompCentreResponse =
-	CreateUrlForCompCentreResponses[keyof CreateUrlForCompCentreResponses];
+export type CreateUrlForCompCentreResponse = CreateUrlForCompCentreResponses[keyof CreateUrlForCompCentreResponses];
 
 export type ReorderCompCentreUrlsData = {
-	body: CompCentreUrls;
-	path: {
-		/**
-		 * The id of the competence centre, get available competence centres at /compcentres/v1
-		 */
-		compCentreId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/urls/{compCentreId}/order';
+    body: CompCentreUrls;
+    path: {
+        /**
+         * The id of the competence centre, get available competence centres at /compcentres/v1
+         */
+        compCentreId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/urls/{compCentreId}/order';
 };
 
 export type ReorderCompCentreUrlsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ReorderCompCentreUrlsError =
-	ReorderCompCentreUrlsErrors[keyof ReorderCompCentreUrlsErrors];
+export type ReorderCompCentreUrlsError = ReorderCompCentreUrlsErrors[keyof ReorderCompCentreUrlsErrors];
 
 export type ReorderCompCentreUrlsResponses = {
-	/**
-	 * Ok
-	 */
-	200: CompCentreUrls;
+    /**
+     * ok
+     */
+    200: CompCentreUrls;
 };
 
-export type ReorderCompCentreUrlsResponse =
-	ReorderCompCentreUrlsResponses[keyof ReorderCompCentreUrlsResponses];
+export type ReorderCompCentreUrlsResponse = ReorderCompCentreUrlsResponses[keyof ReorderCompCentreUrlsResponses];
 
 export type ListPubDraftsOfCompCentreToPublishData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/compcentres/v1/my/publications/to-publish';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/compcentres/v1/my/publications/to-publish';
 };
 
 export type ListPubDraftsOfCompCentreToPublishErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ListPubDraftsOfCompCentreToPublishError =
-	ListPubDraftsOfCompCentreToPublishErrors[keyof ListPubDraftsOfCompCentreToPublishErrors];
+export type ListPubDraftsOfCompCentreToPublishError = ListPubDraftsOfCompCentreToPublishErrors[keyof ListPubDraftsOfCompCentreToPublishErrors];
 
 export type ListPubDraftsOfCompCentreToPublishResponses = {
-	/**
-	 * Ok
-	 */
-	200: PublicationsToPublish;
+    /**
+     * ok
+     */
+    200: PublicationsToPublish;
 };
 
-export type ListPubDraftsOfCompCentreToPublishResponse =
-	ListPubDraftsOfCompCentreToPublishResponses[keyof ListPubDraftsOfCompCentreToPublishResponses];
+export type ListPubDraftsOfCompCentreToPublishResponse = ListPubDraftsOfCompCentreToPublishResponses[keyof ListPubDraftsOfCompCentreToPublishResponses];
 
 export type DeletePublicationDateRuleData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication date
-		 */
-		publicationDateId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/publisher/publication-dates/{publicationDateId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication date
+         */
+        publicationDateId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/publisher/publication-dates/{publicationDateId}';
 };
 
 export type DeletePublicationDateRuleErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Can't delete publication date because it is used in a publication
-	 *
-	 */
-	409: PubDraftsPlannedForPublication;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Can't delete publication date because it is used in a publication
+     *
+     */
+    409: PubDraftsPlannedForPublication;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeletePublicationDateRuleError =
-	DeletePublicationDateRuleErrors[keyof DeletePublicationDateRuleErrors];
+export type DeletePublicationDateRuleError = DeletePublicationDateRuleErrors[keyof DeletePublicationDateRuleErrors];
 
 export type DeletePublicationDateRuleResponses = {
-	/**
-	 * No Content - Deleted
-	 */
-	204: void;
+    /**
+     * No Content - Deleted
+     */
+    204: void;
 };
 
-export type DeletePublicationDateRuleResponse =
-	DeletePublicationDateRuleResponses[keyof DeletePublicationDateRuleResponses];
+export type DeletePublicationDateRuleResponse = DeletePublicationDateRuleResponses[keyof DeletePublicationDateRuleResponses];
 
 export type CreatePublicationDateRuleData = {
-	body: PublicationDateRule;
-	path: {
-		/**
-		 * Id of the publication date
-		 */
-		publicationDateId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/publisher/publication-dates/{publicationDateId}';
+    body: PublicationDateRule;
+    path: {
+        /**
+         * Id of the publication date
+         */
+        publicationDateId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/publisher/publication-dates/{publicationDateId}';
 };
 
 export type CreatePublicationDateRuleErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreatePublicationDateRuleError =
-	CreatePublicationDateRuleErrors[keyof CreatePublicationDateRuleErrors];
+export type CreatePublicationDateRuleError = CreatePublicationDateRuleErrors[keyof CreatePublicationDateRuleErrors];
 
 export type CreatePublicationDateRuleResponses = {
-	/**
-	 * Created
-	 */
-	201: PublicationDateRule;
+    /**
+     * Created
+     */
+    201: PublicationDateRule;
 };
 
-export type CreatePublicationDateRuleResponse =
-	CreatePublicationDateRuleResponses[keyof CreatePublicationDateRuleResponses];
+export type CreatePublicationDateRuleResponse = CreatePublicationDateRuleResponses[keyof CreatePublicationDateRuleResponses];
 
 export type DeletePublicationDateExceptionData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication date exception
-		 */
-		publicationDateExceptionId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/publisher/publication-dates/exceptions/{publicationDateExceptionId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication date exception
+         */
+        publicationDateExceptionId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/publisher/publication-dates/exceptions/{publicationDateExceptionId}';
 };
 
 export type DeletePublicationDateExceptionErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeletePublicationDateExceptionError =
-	DeletePublicationDateExceptionErrors[keyof DeletePublicationDateExceptionErrors];
+export type DeletePublicationDateExceptionError = DeletePublicationDateExceptionErrors[keyof DeletePublicationDateExceptionErrors];
 
 export type DeletePublicationDateExceptionResponses = {
-	/**
-	 * No Content - Deleted
-	 */
-	204: void;
+    /**
+     * No Content - Deleted
+     */
+    204: void;
 };
 
-export type DeletePublicationDateExceptionResponse =
-	DeletePublicationDateExceptionResponses[keyof DeletePublicationDateExceptionResponses];
+export type DeletePublicationDateExceptionResponse = DeletePublicationDateExceptionResponses[keyof DeletePublicationDateExceptionResponses];
 
 export type CreatePublicationDateExceptionData = {
-	body: PublicationDateException;
-	path: {
-		/**
-		 * Id of the publication date exception
-		 */
-		publicationDateExceptionId: string;
-	};
-	query?: never;
-	url: '/compcentres/v1/my/publisher/publication-dates/exceptions/{publicationDateExceptionId}';
+    body: PublicationDateException;
+    path: {
+        /**
+         * Id of the publication date exception
+         */
+        publicationDateExceptionId: string;
+    };
+    query?: never;
+    url: '/compcentres/v1/my/publisher/publication-dates/exceptions/{publicationDateExceptionId}';
 };
 
 export type CreatePublicationDateExceptionErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreatePublicationDateExceptionError =
-	CreatePublicationDateExceptionErrors[keyof CreatePublicationDateExceptionErrors];
+export type CreatePublicationDateExceptionError = CreatePublicationDateExceptionErrors[keyof CreatePublicationDateExceptionErrors];
 
 export type CreatePublicationDateExceptionResponses = {
-	/**
-	 * Created
-	 */
-	201: PublicationDateException;
+    /**
+     * Created
+     */
+    201: PublicationDateException;
 };
 
-export type CreatePublicationDateExceptionResponse =
-	CreatePublicationDateExceptionResponses[keyof CreatePublicationDateExceptionResponses];
+export type CreatePublicationDateExceptionResponse = CreatePublicationDateExceptionResponses[keyof CreatePublicationDateExceptionResponses];
 
 export type SearchProcOfficesData = {
-	body?: never;
-	path?: never;
-	query?: {
-		/**
-		 * Search by proc office name.
-		 * Requires at least 3 valid characters.
-		 *
-		 */
-		search?: string;
-		lastItem?: string;
-		/**
-		 * Filter by procurement offices in status
-		 */
-		status?: ProcOfficeStatus;
-	};
-	url: '/procoffices/v1/po';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Search by proc office name.
+         * Requires at least 3 valid characters.
+         *
+         */
+        search?: string;
+        lastItem?: string;
+        /**
+         * Filter by procurement offices in status
+         */
+        status?: ProcOfficeStatus;
+    };
+    url: '/procoffices/v1/po';
 };
 
 export type SearchProcOfficesErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type SearchProcOfficesError =
-	SearchProcOfficesErrors[keyof SearchProcOfficesErrors];
+export type SearchProcOfficesError = SearchProcOfficesErrors[keyof SearchProcOfficesErrors];
 
 export type SearchProcOfficesResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeSearchResult;
+    /**
+     * ok
+     */
+    200: ProcOfficeSearchResult;
 };
 
-export type SearchProcOfficesResponse =
-	SearchProcOfficesResponses[keyof SearchProcOfficesResponses];
+export type SearchProcOfficesResponse = SearchProcOfficesResponses[keyof SearchProcOfficesResponses];
 
 export type GetProcOfficeTreeViewData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * The id of the responsible institution in the tree. Get the id for an institution through `GET /institutions/v1/`.
-		 */
-		institutionId: string;
-	};
-	url: '/procoffices/v1/treeview';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * The id of the responsible institution in the tree. Get the id for an institution through `GET /institutions/v1/`.
+         */
+        institutionId: string;
+    };
+    url: '/procoffices/v1/treeview';
 };
 
 export type GetProcOfficeTreeViewErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetProcOfficeTreeViewError =
-	GetProcOfficeTreeViewErrors[keyof GetProcOfficeTreeViewErrors];
+export type GetProcOfficeTreeViewError = GetProcOfficeTreeViewErrors[keyof GetProcOfficeTreeViewErrors];
 
 export type GetProcOfficeTreeViewResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeTree;
+    /**
+     * ok
+     */
+    200: ProcOfficeTree;
 };
 
-export type GetProcOfficeTreeViewResponse =
-	GetProcOfficeTreeViewResponses[keyof GetProcOfficeTreeViewResponses];
+export type GetProcOfficeTreeViewResponse = GetProcOfficeTreeViewResponses[keyof GetProcOfficeTreeViewResponses];
 
 export type GetMyProcOfficeData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/procoffices/v1/my';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/procoffices/v1/my';
 };
 
 export type GetMyProcOfficeErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetMyProcOfficeError =
-	GetMyProcOfficeErrors[keyof GetMyProcOfficeErrors];
+export type GetMyProcOfficeError = GetMyProcOfficeErrors[keyof GetMyProcOfficeErrors];
 
 export type GetMyProcOfficeResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOffice;
+    /**
+     * ok
+     */
+    200: ProcOffice;
 };
 
-export type GetMyProcOfficeResponse =
-	GetMyProcOfficeResponses[keyof GetMyProcOfficeResponses];
+export type GetMyProcOfficeResponse = GetMyProcOfficeResponses[keyof GetMyProcOfficeResponses];
 
 export type GetProcOfficeData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
-		 */
-		procOfficeId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/po/{procOfficeId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
+         */
+        procOfficeId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/po/{procOfficeId}';
 };
 
 export type GetProcOfficeErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type GetProcOfficeError = GetProcOfficeErrors[keyof GetProcOfficeErrors];
 
 export type GetProcOfficeResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOffice;
+    /**
+     * ok
+     */
+    200: ProcOffice;
 };
 
-export type GetProcOfficeResponse =
-	GetProcOfficeResponses[keyof GetProcOfficeResponses];
+export type GetProcOfficeResponse = GetProcOfficeResponses[keyof GetProcOfficeResponses];
 
 export type UpdateProcOfficeData = {
-	body: ProcOffice;
-	path: {
-		/**
-		 * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
-		 */
-		procOfficeId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/po/{procOfficeId}';
+    body: ProcOfficeWritable;
+    path: {
+        /**
+         * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
+         */
+        procOfficeId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/po/{procOfficeId}';
 };
 
 export type UpdateProcOfficeErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UpdateProcOfficeError =
-	UpdateProcOfficeErrors[keyof UpdateProcOfficeErrors];
+export type UpdateProcOfficeError = UpdateProcOfficeErrors[keyof UpdateProcOfficeErrors];
 
 export type UpdateProcOfficeResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOffice;
+    /**
+     * ok
+     */
+    200: ProcOffice;
 };
 
-export type UpdateProcOfficeResponse =
-	UpdateProcOfficeResponses[keyof UpdateProcOfficeResponses];
+export type UpdateProcOfficeResponse = UpdateProcOfficeResponses[keyof UpdateProcOfficeResponses];
 
 export type CreateProcOfficeData = {
-	body: ProcOffice;
-	path: {
-		/**
-		 * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
-		 */
-		procOfficeId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/po/{procOfficeId}';
+    body: ProcOfficeWritable;
+    path: {
+        /**
+         * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
+         */
+        procOfficeId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/po/{procOfficeId}';
 };
 
 export type CreateProcOfficeErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	409: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    409: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateProcOfficeError =
-	CreateProcOfficeErrors[keyof CreateProcOfficeErrors];
+export type CreateProcOfficeError = CreateProcOfficeErrors[keyof CreateProcOfficeErrors];
 
 export type CreateProcOfficeResponses = {
-	/**
-	 * Ok
-	 */
-	201: ProcOffice;
+    /**
+     * ok
+     */
+    201: ProcOffice;
 };
 
-export type CreateProcOfficeResponse =
-	CreateProcOfficeResponses[keyof CreateProcOfficeResponses];
+export type CreateProcOfficeResponse = CreateProcOfficeResponses[keyof CreateProcOfficeResponses];
 
 export type AcceptRequestToJoinOrganizationData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
-		 */
-		procOfficeId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/po/{procOfficeId}/accept';
+    body?: never;
+    path: {
+        /**
+         * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
+         */
+        procOfficeId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/po/{procOfficeId}/accept';
 };
 
 export type AcceptRequestToJoinOrganizationErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	409: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    409: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type AcceptRequestToJoinOrganizationError =
-	AcceptRequestToJoinOrganizationErrors[keyof AcceptRequestToJoinOrganizationErrors];
+export type AcceptRequestToJoinOrganizationError = AcceptRequestToJoinOrganizationErrors[keyof AcceptRequestToJoinOrganizationErrors];
 
 export type AcceptRequestToJoinOrganizationResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOffice;
+    /**
+     * ok
+     */
+    200: ProcOffice;
 };
 
-export type AcceptRequestToJoinOrganizationResponse =
-	AcceptRequestToJoinOrganizationResponses[keyof AcceptRequestToJoinOrganizationResponses];
+export type AcceptRequestToJoinOrganizationResponse = AcceptRequestToJoinOrganizationResponses[keyof AcceptRequestToJoinOrganizationResponses];
 
 export type RejectRequestToJoinOrganizationData = {
-	body: ProcOfficeRejectMessage;
-	path: {
-		/**
-		 * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
-		 */
-		procOfficeId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/po/{procOfficeId}/reject';
+    body: ProcOfficeRejectMessage;
+    path: {
+        /**
+         * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
+         */
+        procOfficeId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/po/{procOfficeId}/reject';
 };
 
 export type RejectRequestToJoinOrganizationErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	409: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    409: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type RejectRequestToJoinOrganizationError =
-	RejectRequestToJoinOrganizationErrors[keyof RejectRequestToJoinOrganizationErrors];
+export type RejectRequestToJoinOrganizationError = RejectRequestToJoinOrganizationErrors[keyof RejectRequestToJoinOrganizationErrors];
 
 export type RejectRequestToJoinOrganizationResponses = {
-	/**
-	 * Ok - Deleted
-	 */
-	204: void;
+    /**
+     * Ok - Deleted
+     */
+    204: void;
 };
 
-export type RejectRequestToJoinOrganizationResponse =
-	RejectRequestToJoinOrganizationResponses[keyof RejectRequestToJoinOrganizationResponses];
+export type RejectRequestToJoinOrganizationResponse = RejectRequestToJoinOrganizationResponses[keyof RejectRequestToJoinOrganizationResponses];
 
 export type RequestToJoinProcOfficeData = {
-	body: ProcOfficeJoinRequest;
-	path: {
-		/**
-		 * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
-		 */
-		procOfficeId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/po/{procOfficeId}/join';
+    body: ProcOfficeJoinRequest;
+    path: {
+        /**
+         * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
+         */
+        procOfficeId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/po/{procOfficeId}/join';
 };
 
 export type RequestToJoinProcOfficeErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type RequestToJoinProcOfficeError =
-	RequestToJoinProcOfficeErrors[keyof RequestToJoinProcOfficeErrors];
+export type RequestToJoinProcOfficeError = RequestToJoinProcOfficeErrors[keyof RequestToJoinProcOfficeErrors];
 
 export type RequestToJoinProcOfficeResponses = {
-	/**
-	 * Created join request
-	 */
-	201: MyProcOfficeMembership;
+    /**
+     * created join request
+     */
+    201: MyProcOfficeMembership;
 };
 
-export type RequestToJoinProcOfficeResponse =
-	RequestToJoinProcOfficeResponses[keyof RequestToJoinProcOfficeResponses];
+export type RequestToJoinProcOfficeResponse = RequestToJoinProcOfficeResponses[keyof RequestToJoinProcOfficeResponses];
 
 export type ListMembersData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
-		 */
-		procOfficeId: string;
-	};
-	query?: {
-		/**
-		 * Pagination key, the `email` of the last user, the `lastItem` value of the `pagination` object.
-		 *
-		 */
-		lastItem?: string;
-		/**
-		 * Filter by provided procOfficeRole
-		 */
-		role?: ProcOfficeRole;
-		/**
-		 * Search members by matching text in firstName, lastName or email address field
-		 */
-		search?: string;
-	};
-	url: '/procoffices/v1/po/{procOfficeId}/members';
+    body?: never;
+    path: {
+        /**
+         * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
+         */
+        procOfficeId: string;
+    };
+    query?: {
+        /**
+         * Pagination key, the `email` of the last user, the `lastItem` value of the `pagination` object.
+         *
+         */
+        lastItem?: string;
+        /**
+         * filter by provided procOfficeRole
+         */
+        role?: ProcOfficeRole;
+        /**
+         * Search members by matching text in firstName, lastName or email address field
+         */
+        search?: string;
+    };
+    url: '/procoffices/v1/po/{procOfficeId}/members';
 };
 
 export type ListMembersErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type ListMembersError = ListMembersErrors[keyof ListMembersErrors];
 
 export type ListMembersResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeMembers;
+    /**
+     * ok
+     */
+    200: ProcOfficeMembers;
 };
 
-export type ListMembersResponse =
-	ListMembersResponses[keyof ListMembersResponses];
+export type ListMembersResponse = ListMembersResponses[keyof ListMembersResponses];
 
 export type RespondToRequestData = {
-	body: ProcOfficeJoinResponse;
-	path: {
-		/**
-		 * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
-		 */
-		procOfficeId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/po/{procOfficeId}/members';
+    body: ProcOfficeJoinResponse;
+    path: {
+        /**
+         * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
+         */
+        procOfficeId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/po/{procOfficeId}/members';
 };
 
 export type RespondToRequestErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type RespondToRequestError =
-	RespondToRequestErrors[keyof RespondToRequestErrors];
+export type RespondToRequestError = RespondToRequestErrors[keyof RespondToRequestErrors];
 
 export type RespondToRequestResponses = {
-	/**
-	 * Resource created
-	 */
-	201: ProcOfficeJoinResponse;
+    /**
+     * resource created
+     */
+    201: ProcOfficeJoinResponse;
 };
 
-export type RespondToRequestResponse =
-	RespondToRequestResponses[keyof RespondToRequestResponses];
+export type RespondToRequestResponse = RespondToRequestResponses[keyof RespondToRequestResponses];
 
 export type RemoveProcOfficeMemberData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
-		 */
-		procOfficeId: string;
-		/**
-		 * Id of the user, can be obtained by GET on /procoffices/v1/po/{procOfficeId}/members
-		 */
-		userId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/po/{procOfficeId}/members/{userId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
+         */
+        procOfficeId: string;
+        /**
+         * Id of the user, can be obtained by GET on /procoffices/v1/po/{procOfficeId}/members
+         */
+        userId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/po/{procOfficeId}/members/{userId}';
 };
 
 export type RemoveProcOfficeMemberErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type RemoveProcOfficeMemberError =
-	RemoveProcOfficeMemberErrors[keyof RemoveProcOfficeMemberErrors];
+export type RemoveProcOfficeMemberError = RemoveProcOfficeMemberErrors[keyof RemoveProcOfficeMemberErrors];
 
 export type RemoveProcOfficeMemberResponses = {
-	/**
-	 * Ok
-	 */
-	204: void;
+    /**
+     * ok
+     */
+    204: void;
 };
 
-export type RemoveProcOfficeMemberResponse =
-	RemoveProcOfficeMemberResponses[keyof RemoveProcOfficeMemberResponses];
+export type RemoveProcOfficeMemberResponse = RemoveProcOfficeMemberResponses[keyof RemoveProcOfficeMemberResponses];
 
 export type GetMemberByIdData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
-		 */
-		procOfficeId: string;
-		/**
-		 * Id of the user, can be obtained by GET on /procoffices/v1/po/{procOfficeId}/members
-		 */
-		userId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/po/{procOfficeId}/members/{userId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
+         */
+        procOfficeId: string;
+        /**
+         * Id of the user, can be obtained by GET on /procoffices/v1/po/{procOfficeId}/members
+         */
+        userId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/po/{procOfficeId}/members/{userId}';
 };
 
 export type GetMemberByIdErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type GetMemberByIdError = GetMemberByIdErrors[keyof GetMemberByIdErrors];
 
 export type GetMemberByIdResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeMember;
+    /**
+     * ok
+     */
+    200: ProcOfficeMember;
 };
 
-export type GetMemberByIdResponse =
-	GetMemberByIdResponses[keyof GetMemberByIdResponses];
+export type GetMemberByIdResponse = GetMemberByIdResponses[keyof GetMemberByIdResponses];
 
 export type UpdateProcurementMembersRolesData = {
-	body: ProcOfficeMembers;
-	path: {
-		/**
-		 * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
-		 */
-		procOfficeId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/po/{procOfficeId}/members/roles';
+    body: ProcOfficeMembers;
+    path: {
+        /**
+         * Id of the procurement office, can be obtained by GET on /procoffices/v1 or has to be provided on creation
+         */
+        procOfficeId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/po/{procOfficeId}/members/roles';
 };
 
 export type UpdateProcurementMembersRolesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	500: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    500: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UpdateProcurementMembersRolesError =
-	UpdateProcurementMembersRolesErrors[keyof UpdateProcurementMembersRolesErrors];
+export type UpdateProcurementMembersRolesError = UpdateProcurementMembersRolesErrors[keyof UpdateProcurementMembersRolesErrors];
 
 export type UpdateProcurementMembersRolesResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeMembers;
+    /**
+     * ok
+     */
+    200: ProcOfficeMembers;
 };
 
-export type UpdateProcurementMembersRolesResponse =
-	UpdateProcurementMembersRolesResponses[keyof UpdateProcurementMembersRolesResponses];
+export type UpdateProcurementMembersRolesResponse = UpdateProcurementMembersRolesResponses[keyof UpdateProcurementMembersRolesResponses];
 
 export type GetProcurementProjectOverviewData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * Filter for my publications
-		 */
-		'created-by-me'?: boolean;
-		/**
-		 * Filter for status, only needed when entryType = drafted
-		 */
-		status?: PubDraftStatus;
-		/**
-		 * Filter for archived or active projects
-		 */
-		archived: boolean;
-		/**
-		 * Filter for publication type
-		 */
-		type?: ProjectSearchPubTypeFilter;
-		/**
-		 * Filter for pre phase publications
-		 */
-		'pre-phase'?: boolean;
-		/**
-		 * Search input
-		 */
-		search?: string;
-		/**
-		 * Defines in which languages shall be searched in case of translated fields. In case this property is not defined or an empty array is given, then we we search in all languages.
-		 */
-		lang?: SystemLanguage[];
-		lastItem?: string;
-	};
-	url: '/procoffices/v2/my/projects/projects-overview';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * filter for my publications
+         */
+        'created-by-me'?: boolean;
+        /**
+         * filter for status, only needed when entryType = drafted
+         */
+        status?: PubDraftStatus;
+        /**
+         * filter for archived or active projects
+         */
+        archived: boolean;
+        /**
+         * filter for publication type
+         */
+        type?: ProjectSearchPubTypeFilter;
+        /**
+         * filter for pre phase publications
+         */
+        'pre-phase'?: boolean;
+        /**
+         * search input
+         */
+        search?: string;
+        /**
+         * defines in which languages shall be searched in case of translated fields. In case this property is not defined or an empty array is given, then we we search in all languages.
+         */
+        lang?: Array<SystemLanguage>;
+        lastItem?: string;
+    };
+    url: '/procoffices/v2/my/projects/projects-overview';
 };
 
 export type GetProcurementProjectOverviewErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	500: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    500: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetProcurementProjectOverviewError =
-	GetProcurementProjectOverviewErrors[keyof GetProcurementProjectOverviewErrors];
+export type GetProcurementProjectOverviewError = GetProcurementProjectOverviewErrors[keyof GetProcurementProjectOverviewErrors];
 
 export type GetProcurementProjectOverviewResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeProjectsOverview;
+    /**
+     * ok
+     */
+    200: ProcOfficeProjectsOverview;
 };
 
-export type GetProcurementProjectOverviewResponse =
-	GetProcurementProjectOverviewResponses[keyof GetProcurementProjectOverviewResponses];
+export type GetProcurementProjectOverviewResponse = GetProcurementProjectOverviewResponses[keyof GetProcurementProjectOverviewResponses];
 
 export type GetProjectHeaderByIdData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/project-header';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/project-header';
 };
 
 export type GetProjectHeaderByIdErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetProjectHeaderByIdError =
-	GetProjectHeaderByIdErrors[keyof GetProjectHeaderByIdErrors];
+export type GetProjectHeaderByIdError = GetProjectHeaderByIdErrors[keyof GetProjectHeaderByIdErrors];
 
 export type GetProjectHeaderByIdResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeProjectHeader;
+    /**
+     * ok
+     */
+    200: ProcOfficeProjectHeader;
 };
 
-export type GetProjectHeaderByIdResponse =
-	GetProjectHeaderByIdResponses[keyof GetProjectHeaderByIdResponses];
+export type GetProjectHeaderByIdResponse = GetProjectHeaderByIdResponses[keyof GetProjectHeaderByIdResponses];
 
 export type GetProcOfficeUserNotificationSettingsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/my-notification-settings';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/my-notification-settings';
 };
 
 export type GetProcOfficeUserNotificationSettingsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetProcOfficeUserNotificationSettingsError =
-	GetProcOfficeUserNotificationSettingsErrors[keyof GetProcOfficeUserNotificationSettingsErrors];
+export type GetProcOfficeUserNotificationSettingsError = GetProcOfficeUserNotificationSettingsErrors[keyof GetProcOfficeUserNotificationSettingsErrors];
 
 export type GetProcOfficeUserNotificationSettingsResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeUserNotificationSettings;
+    /**
+     * ok
+     */
+    200: ProcOfficeUserNotificationSettings;
 };
 
-export type GetProcOfficeUserNotificationSettingsResponse =
-	GetProcOfficeUserNotificationSettingsResponses[keyof GetProcOfficeUserNotificationSettingsResponses];
+export type GetProcOfficeUserNotificationSettingsResponse = GetProcOfficeUserNotificationSettingsResponses[keyof GetProcOfficeUserNotificationSettingsResponses];
 
 export type UpdateProcOfficeUserNotificationSettingsData = {
-	body: ProcOfficeUserNotificationSettings;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/my-notification-settings';
+    body: ProcOfficeUserNotificationSettings;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/my-notification-settings';
 };
 
 export type UpdateProcOfficeUserNotificationSettingsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UpdateProcOfficeUserNotificationSettingsError =
-	UpdateProcOfficeUserNotificationSettingsErrors[keyof UpdateProcOfficeUserNotificationSettingsErrors];
+export type UpdateProcOfficeUserNotificationSettingsError = UpdateProcOfficeUserNotificationSettingsErrors[keyof UpdateProcOfficeUserNotificationSettingsErrors];
 
 export type UpdateProcOfficeUserNotificationSettingsResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeUserNotificationSettings;
+    /**
+     * ok
+     */
+    200: ProcOfficeUserNotificationSettings;
 };
 
-export type UpdateProcOfficeUserNotificationSettingsResponse =
-	UpdateProcOfficeUserNotificationSettingsResponses[keyof UpdateProcOfficeUserNotificationSettingsResponses];
+export type UpdateProcOfficeUserNotificationSettingsResponse = UpdateProcOfficeUserNotificationSettingsResponses[keyof UpdateProcOfficeUserNotificationSettingsResponses];
 
 export type ArchiveProcOfficeProjectData = {
-	body: UpdateArchiveStatus;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/archive';
+    body: UpdateArchiveStatus;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/archive';
 };
 
 export type ArchiveProcOfficeProjectErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ArchiveProcOfficeProjectError =
-	ArchiveProcOfficeProjectErrors[keyof ArchiveProcOfficeProjectErrors];
+export type ArchiveProcOfficeProjectError = ArchiveProcOfficeProjectErrors[keyof ArchiveProcOfficeProjectErrors];
 
 export type ArchiveProcOfficeProjectResponses = {
-	/**
-	 * No Content
-	 */
-	204: void;
+    /**
+     * No Content
+     */
+    204: void;
 };
 
-export type ArchiveProcOfficeProjectResponse =
-	ArchiveProcOfficeProjectResponses[keyof ArchiveProcOfficeProjectResponses];
+export type ArchiveProcOfficeProjectResponse = ArchiveProcOfficeProjectResponses[keyof ArchiveProcOfficeProjectResponses];
 
 export type SearchRemediesNoticeTemplatesByProcOfficeData = {
-	body?: never;
-	path?: never;
-	query?: {
-		/**
-		 * Search by `name`
-		 * Either empty or requires at least 3 valid characters.
-		 *
-		 */
-		search?: string;
-		lastItem?: string;
-	};
-	url: '/procoffices/v1/my/remedies-notices';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Search by `name`
+         * Either empty or requires at least 3 valid characters.
+         *
+         */
+        search?: string;
+        lastItem?: string;
+    };
+    url: '/procoffices/v1/my/remedies-notices';
 };
 
 export type SearchRemediesNoticeTemplatesByProcOfficeErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type SearchRemediesNoticeTemplatesByProcOfficeError =
-	SearchRemediesNoticeTemplatesByProcOfficeErrors[keyof SearchRemediesNoticeTemplatesByProcOfficeErrors];
+export type SearchRemediesNoticeTemplatesByProcOfficeError = SearchRemediesNoticeTemplatesByProcOfficeErrors[keyof SearchRemediesNoticeTemplatesByProcOfficeErrors];
 
 export type SearchRemediesNoticeTemplatesByProcOfficeResponses = {
-	/**
-	 * Ok
-	 */
-	200: RemediesNoticeTemplatesSearchResult;
+    /**
+     * ok
+     */
+    200: RemediesNoticeTemplatesSearchResult;
 };
 
-export type SearchRemediesNoticeTemplatesByProcOfficeResponse =
-	SearchRemediesNoticeTemplatesByProcOfficeResponses[keyof SearchRemediesNoticeTemplatesByProcOfficeResponses];
+export type SearchRemediesNoticeTemplatesByProcOfficeResponse = SearchRemediesNoticeTemplatesByProcOfficeResponses[keyof SearchRemediesNoticeTemplatesByProcOfficeResponses];
 
 export type GetRemediesNoticeTemplateByProcOfficeData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the remedies notice template
-		 */
-		remediesNoticeTemplateId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/remedies-notices/{remediesNoticeTemplateId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the remedies notice template
+         */
+        remediesNoticeTemplateId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/remedies-notices/{remediesNoticeTemplateId}';
 };
 
 export type GetRemediesNoticeTemplateByProcOfficeErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetRemediesNoticeTemplateByProcOfficeError =
-	GetRemediesNoticeTemplateByProcOfficeErrors[keyof GetRemediesNoticeTemplateByProcOfficeErrors];
+export type GetRemediesNoticeTemplateByProcOfficeError = GetRemediesNoticeTemplateByProcOfficeErrors[keyof GetRemediesNoticeTemplateByProcOfficeErrors];
 
 export type GetRemediesNoticeTemplateByProcOfficeResponses = {
-	/**
-	 * Ok
-	 */
-	200: RemediesNoticeTemplate;
+    /**
+     * ok
+     */
+    200: RemediesNoticeTemplate;
 };
 
-export type GetRemediesNoticeTemplateByProcOfficeResponse =
-	GetRemediesNoticeTemplateByProcOfficeResponses[keyof GetRemediesNoticeTemplateByProcOfficeResponses];
+export type GetRemediesNoticeTemplateByProcOfficeResponse = GetRemediesNoticeTemplateByProcOfficeResponses[keyof GetRemediesNoticeTemplateByProcOfficeResponses];
 
 export type SearchPubDraftTemplatesByProcOfficeData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * Search by project title.
-		 * Either empty or requires at least 3 valid characters.
-		 *
-		 */
-		search?: string;
-		/**
-		 * Filter for publication type
-		 */
-		'template-type'?: PubDraftTemplatePubTypeFilter;
-		'created-by-me'?: boolean;
-		/**
-		 * Filter based on organization type. Either templates of my proc-office or my comp-centre
-		 */
-		'org-type': ProcOfficePubDraftTemplateOrgTypeFilter;
-		lastItem?: string;
-	};
-	url: '/procoffices/v1/my/pub-draft-templates';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * Search by project title.
+         * Either empty or requires at least 3 valid characters.
+         *
+         */
+        search?: string;
+        /**
+         * filter for publication type
+         */
+        'template-type'?: PubDraftTemplatePubTypeFilter;
+        'created-by-me'?: boolean;
+        /**
+         * filter based on organization type. Either templates of my proc-office or my comp-centre
+         */
+        'org-type': ProcOfficePubDraftTemplateOrgTypeFilter;
+        lastItem?: string;
+    };
+    url: '/procoffices/v1/my/pub-draft-templates';
 };
 
 export type SearchPubDraftTemplatesByProcOfficeErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type SearchPubDraftTemplatesByProcOfficeError =
-	SearchPubDraftTemplatesByProcOfficeErrors[keyof SearchPubDraftTemplatesByProcOfficeErrors];
+export type SearchPubDraftTemplatesByProcOfficeError = SearchPubDraftTemplatesByProcOfficeErrors[keyof SearchPubDraftTemplatesByProcOfficeErrors];
 
 export type SearchPubDraftTemplatesByProcOfficeResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTemplateSearchResult;
+    /**
+     * ok
+     */
+    200: PubDraftTemplateSearchResult;
 };
 
-export type SearchPubDraftTemplatesByProcOfficeResponse =
-	SearchPubDraftTemplatesByProcOfficeResponses[keyof SearchPubDraftTemplatesByProcOfficeResponses];
+export type SearchPubDraftTemplatesByProcOfficeResponse = SearchPubDraftTemplatesByProcOfficeResponses[keyof SearchPubDraftTemplatesByProcOfficeResponses];
 
 export type GetVendorsInvolvedInProjectData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: {
-		/**
-		 * Optional: Search vendor in list by `vendorName` (requires at least 3 characters)
-		 *
-		 */
-		search?: string;
-		/**
-		 * Filter by `status`
-		 *
-		 */
-		status?: InvolvedVendorStatus;
-		/**
-		 * If defined no page size limit is applied and all elements after the defined lastItem are returned.
-		 *
-		 */
-		noPagination?: boolean;
-		/**
-		 * Rolling pagination:
-		 * To fetch the next page add the lastItem to the query, the last item can be found in the first result.
-		 * For vendors the last item is the vendor name. It is sorted by it and is the primary identification.
-		 * If no more results are available the api returns an empty list or a list with fewer items than the specified itemsPerPage.
-		 *
-		 */
-		lastItem?: string;
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId?: string;
-	};
-	url: '/procoffices/v2/my/projects/{projectId}/involved-vendors';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * Optional: Search vendor in list by `vendorName` (requires at least 3 characters)
+         *
+         */
+        search?: string;
+        /**
+         * filter by `status`
+         *
+         */
+        status?: InvolvedVendorStatus;
+        /**
+         * If defined no page size limit is applied and all elements after the defined lastItem are returned.
+         *
+         */
+        noPagination?: boolean;
+        /**
+         * Rolling pagination:
+         * To fetch the next page add the lastItem to the query, the last item can be found in the first result.
+         * For vendors the last item is the vendor name. It is sorted by it and is the primary identification.
+         * If no more results are available the api returns an empty list or a list with fewer items than the specified itemsPerPage.
+         *
+         */
+        lastItem?: string;
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId?: string;
+    };
+    url: '/procoffices/v2/my/projects/{projectId}/involved-vendors';
 };
 
 export type GetVendorsInvolvedInProjectErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetVendorsInvolvedInProjectError =
-	GetVendorsInvolvedInProjectErrors[keyof GetVendorsInvolvedInProjectErrors];
+export type GetVendorsInvolvedInProjectError = GetVendorsInvolvedInProjectErrors[keyof GetVendorsInvolvedInProjectErrors];
 
 export type GetVendorsInvolvedInProjectResponses = {
-	/**
-	 * Ok
-	 */
-	200: InvolvedVendorSearchResult;
+    /**
+     * ok
+     */
+    200: InvolvedVendorSearchResult;
 };
 
-export type GetVendorsInvolvedInProjectResponse =
-	GetVendorsInvolvedInProjectResponses[keyof GetVendorsInvolvedInProjectResponses];
+export type GetVendorsInvolvedInProjectResponse = GetVendorsInvolvedInProjectResponses[keyof GetVendorsInvolvedInProjectResponses];
 
 export type InvolveVendorInProjectData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/procoffices/v2/my/projects/{projectId}/involved-vendors/{vendorId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/procoffices/v2/my/projects/{projectId}/involved-vendors/{vendorId}';
 };
 
 export type InvolveVendorInProjectErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type InvolveVendorInProjectError =
-	InvolveVendorInProjectErrors[keyof InvolveVendorInProjectErrors];
+export type InvolveVendorInProjectError = InvolveVendorInProjectErrors[keyof InvolveVendorInProjectErrors];
 
 export type InvolveVendorInProjectResponses = {
-	/**
-	 * Ok
-	 */
-	200: InvolvedVendorWithActions;
+    /**
+     * ok
+     */
+    200: InvolvedVendorWithActions;
 };
 
-export type InvolveVendorInProjectResponse =
-	InvolveVendorInProjectResponses[keyof InvolveVendorInProjectResponses];
+export type InvolveVendorInProjectResponse = InvolveVendorInProjectResponses[keyof InvolveVendorInProjectResponses];
 
 export type InviteVendorToProjectData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/procoffices/v2/my/projects/{projectId}/involved-vendors/{vendorId}/invite';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/procoffices/v2/my/projects/{projectId}/involved-vendors/{vendorId}/invite';
 };
 
 export type InviteVendorToProjectErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type InviteVendorToProjectError =
-	InviteVendorToProjectErrors[keyof InviteVendorToProjectErrors];
+export type InviteVendorToProjectError = InviteVendorToProjectErrors[keyof InviteVendorToProjectErrors];
 
 export type InviteVendorToProjectResponses = {
-	/**
-	 * Ok
-	 */
-	200: InvolvedVendorWithActions;
+    /**
+     * ok
+     */
+    200: InvolvedVendorWithActions;
 };
 
-export type InviteVendorToProjectResponse =
-	InviteVendorToProjectResponses[keyof InviteVendorToProjectResponses];
+export type InviteVendorToProjectResponse = InviteVendorToProjectResponses[keyof InviteVendorToProjectResponses];
 
 export type MarkOfferExternalSubmissionForVendorData = {
-	/**
-	 * Ok
-	 */
-	body: ExternalDocumentSubmission;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of the vendor which submitted the documents externally for the given project
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/involved-vendors/{vendorId}/offer-external-submission';
+    /**
+     * ok
+     */
+    body: ExternalDocumentSubmission;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of the vendor which submitted the documents externally for the given project
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/involved-vendors/{vendorId}/offer-external-submission';
 };
 
 export type MarkOfferExternalSubmissionForVendorErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type MarkOfferExternalSubmissionForVendorError =
-	MarkOfferExternalSubmissionForVendorErrors[keyof MarkOfferExternalSubmissionForVendorErrors];
+export type MarkOfferExternalSubmissionForVendorError = MarkOfferExternalSubmissionForVendorErrors[keyof MarkOfferExternalSubmissionForVendorErrors];
 
 export type MarkOfferExternalSubmissionForVendorResponses = {
-	/**
-	 * Ok
-	 */
-	200: InvolvedVendorSubmissionResult;
+    /**
+     * ok
+     */
+    200: InvolvedVendorSubmissionResult;
 };
 
-export type MarkOfferExternalSubmissionForVendorResponse =
-	MarkOfferExternalSubmissionForVendorResponses[keyof MarkOfferExternalSubmissionForVendorResponses];
+export type MarkOfferExternalSubmissionForVendorResponse = MarkOfferExternalSubmissionForVendorResponses[keyof MarkOfferExternalSubmissionForVendorResponses];
 
 export type MarkParticipationExternalSubmissionForVendorData = {
-	/**
-	 * Ok
-	 */
-	body: ExternalDocumentSubmission;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of the vendor which submitted the documents externally for the given project
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/involved-vendors/{vendorId}/participation-external-submission';
+    /**
+     * ok
+     */
+    body: ExternalDocumentSubmission;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of the vendor which submitted the documents externally for the given project
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/involved-vendors/{vendorId}/participation-external-submission';
 };
 
 export type MarkParticipationExternalSubmissionForVendorErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type MarkParticipationExternalSubmissionForVendorError =
-	MarkParticipationExternalSubmissionForVendorErrors[keyof MarkParticipationExternalSubmissionForVendorErrors];
+export type MarkParticipationExternalSubmissionForVendorError = MarkParticipationExternalSubmissionForVendorErrors[keyof MarkParticipationExternalSubmissionForVendorErrors];
 
 export type MarkParticipationExternalSubmissionForVendorResponses = {
-	/**
-	 * Ok
-	 */
-	200: InvolvedVendorSubmissionResult;
+    /**
+     * ok
+     */
+    200: InvolvedVendorSubmissionResult;
 };
 
-export type MarkParticipationExternalSubmissionForVendorResponse =
-	MarkParticipationExternalSubmissionForVendorResponses[keyof MarkParticipationExternalSubmissionForVendorResponses];
+export type MarkParticipationExternalSubmissionForVendorResponse = MarkParticipationExternalSubmissionForVendorResponses[keyof MarkParticipationExternalSubmissionForVendorResponses];
 
 export type MarkRequestForInformationExternalSubmissionForVendorData = {
-	/**
-	 * Ok
-	 */
-	body: ExternalDocumentSubmission;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of the vendor which submitted the documents externally for the given project
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/involved-vendors/{vendorId}/rfi-external-submission';
+    /**
+     * ok
+     */
+    body: ExternalDocumentSubmission;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of the vendor which submitted the documents externally for the given project
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/involved-vendors/{vendorId}/rfi-external-submission';
 };
 
 export type MarkRequestForInformationExternalSubmissionForVendorErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type MarkRequestForInformationExternalSubmissionForVendorError =
-	MarkRequestForInformationExternalSubmissionForVendorErrors[keyof MarkRequestForInformationExternalSubmissionForVendorErrors];
+export type MarkRequestForInformationExternalSubmissionForVendorError = MarkRequestForInformationExternalSubmissionForVendorErrors[keyof MarkRequestForInformationExternalSubmissionForVendorErrors];
 
 export type MarkRequestForInformationExternalSubmissionForVendorResponses = {
-	/**
-	 * Ok
-	 */
-	200: InvolvedVendorSubmissionResult;
+    /**
+     * ok
+     */
+    200: InvolvedVendorSubmissionResult;
 };
 
-export type MarkRequestForInformationExternalSubmissionForVendorResponse =
-	MarkRequestForInformationExternalSubmissionForVendorResponses[keyof MarkRequestForInformationExternalSubmissionForVendorResponses];
+export type MarkRequestForInformationExternalSubmissionForVendorResponse = MarkRequestForInformationExternalSubmissionForVendorResponses[keyof MarkRequestForInformationExternalSubmissionForVendorResponses];
 
 export type SendMessageToInvolvedVendorsData = {
-	body: SendMessageRequest;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of the message
-		 */
-		messageId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/involved-vendors-messages/{messageId}';
+    body: SendMessageRequest;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of the message
+         */
+        messageId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/involved-vendors-messages/{messageId}';
 };
 
 export type SendMessageToInvolvedVendorsErrors = {
-	/**
-	 * In case:
-	 * - payload is not valid (see SendMessageRequest)
-	 * - no matching involved vendor with a contact was found and no additional email addresses were specified.
-	 *
-	 */
-	400: unknown;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * in case:
+     * - payload is not valid (see SendMessageRequest)
+     * - no matching involved vendor with a contact was found and no additional email addresses were specified.
+     *
+     */
+    400: unknown;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type SendMessageToInvolvedVendorsError =
-	SendMessageToInvolvedVendorsErrors[keyof SendMessageToInvolvedVendorsErrors];
+export type SendMessageToInvolvedVendorsError = SendMessageToInvolvedVendorsErrors[keyof SendMessageToInvolvedVendorsErrors];
 
 export type SendMessageToInvolvedVendorsResponses = {
-	/**
-	 * The message was accepted and will be processed
-	 */
-	202: unknown;
+    /**
+     * The message was accepted and will be processed
+     */
+    202: unknown;
 };
 
 export type GetQnaRoundsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: {
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId?: string;
-	};
-	url: '/procoffices/v1/my/projects/{projectId}/qnas';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId?: string;
+    };
+    url: '/procoffices/v1/my/projects/{projectId}/qnas';
 };
 
 export type GetQnaRoundsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type GetQnaRoundsError = GetQnaRoundsErrors[keyof GetQnaRoundsErrors];
 
 export type GetQnaRoundsResponses = {
-	/**
-	 * Ok
-	 */
-	200: QnaRoundsWithQnas;
+    /**
+     * ok
+     */
+    200: QnaRoundsWithQnas;
 };
 
-export type GetQnaRoundsResponse =
-	GetQnaRoundsResponses[keyof GetQnaRoundsResponses];
+export type GetQnaRoundsResponse = GetQnaRoundsResponses[keyof GetQnaRoundsResponses];
 
 export type GetParticipationProtocolData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: {
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId?: string;
-	};
-	url: '/procoffices/v2/my/projects/{projectId}/participation-protocol';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId?: string;
+    };
+    url: '/procoffices/v2/my/projects/{projectId}/participation-protocol';
 };
 
 export type GetParticipationProtocolErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetParticipationProtocolError =
-	GetParticipationProtocolErrors[keyof GetParticipationProtocolErrors];
+export type GetParticipationProtocolError = GetParticipationProtocolErrors[keyof GetParticipationProtocolErrors];
 
 export type GetParticipationProtocolResponses = {
-	/**
-	 * Ok
-	 */
-	200: InvolvedVendorProtocolResult;
+    /**
+     * ok
+     */
+    200: InvolvedVendorProtocolResult;
 };
 
-export type GetParticipationProtocolResponse =
-	GetParticipationProtocolResponses[keyof GetParticipationProtocolResponses];
+export type GetParticipationProtocolResponse = GetParticipationProtocolResponses[keyof GetParticipationProtocolResponses];
 
 export type GetOfferProtocolData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: {
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId?: string;
-	};
-	url: '/procoffices/v2/my/projects/{projectId}/offer-protocol';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId?: string;
+    };
+    url: '/procoffices/v2/my/projects/{projectId}/offer-protocol';
 };
 
 export type GetOfferProtocolErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetOfferProtocolError =
-	GetOfferProtocolErrors[keyof GetOfferProtocolErrors];
+export type GetOfferProtocolError = GetOfferProtocolErrors[keyof GetOfferProtocolErrors];
 
 export type GetOfferProtocolResponses = {
-	/**
-	 * Ok
-	 */
-	200: InvolvedVendorProtocolResult;
+    /**
+     * ok
+     */
+    200: InvolvedVendorProtocolResult;
 };
 
-export type GetOfferProtocolResponse =
-	GetOfferProtocolResponses[keyof GetOfferProtocolResponses];
+export type GetOfferProtocolResponse = GetOfferProtocolResponses[keyof GetOfferProtocolResponses];
 
 export type SearchProjectDocumentsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: {
-		/**
-		 * Filter list of project documents by pubDraftId
-		 */
-		pubDraftId?: string;
-		/**
-		 * Filter list of project documents assigned to provided lotId or not assigned to a lot
-		 */
-		lotId?: string;
-		/**
-		 * Filter list of project documents by qnaRoundId
-		 */
-		qnaRoundId?: string;
-		/**
-		 * Filter list of project documents by provided document source type
-		 */
-		type?: ProjectDocumentSourceType;
-	};
-	url: '/procoffices/v1/my/projects/{projectId}/documents';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * filter list of project documents by pubDraftId
+         */
+        pubDraftId?: string;
+        /**
+         * filter list of project documents assigned to provided lotId or not assigned to a lot
+         */
+        lotId?: string;
+        /**
+         * filter list of project documents by qnaRoundId
+         */
+        qnaRoundId?: string;
+        /**
+         * filter list of project documents by provided document source type
+         */
+        type?: ProjectDocumentSourceType;
+    };
+    url: '/procoffices/v1/my/projects/{projectId}/documents';
 };
 
 export type SearchProjectDocumentsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type SearchProjectDocumentsError =
-	SearchProjectDocumentsErrors[keyof SearchProjectDocumentsErrors];
+export type SearchProjectDocumentsError = SearchProjectDocumentsErrors[keyof SearchProjectDocumentsErrors];
 
 export type SearchProjectDocumentsResponses = {
-	/**
-	 * Uploaded project documents for this project
-	 */
-	200: ProjectDocuments;
+    /**
+     * Uploaded project documents for this project
+     */
+    200: ProjectDocuments;
 };
 
-export type SearchProjectDocumentsResponse =
-	SearchProjectDocumentsResponses[keyof SearchProjectDocumentsResponses];
+export type SearchProjectDocumentsResponse = SearchProjectDocumentsResponses[keyof SearchProjectDocumentsResponses];
 
 export type GetProjectDocumentsZipTokenData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: {
-		/**
-		 * Filter list of project documents by pubDraftId
-		 */
-		pubDraftId?: string;
-		/**
-		 * Filter list of project documents assigned to provided lotId or not assigned to a lot
-		 */
-		lotId?: string;
-		/**
-		 * Filter list of project documents by qnaRoundId
-		 */
-		qnaRoundId?: string;
-		/**
-		 * Filter list of project documents by provided document source type
-		 */
-		type?: ProjectDocumentSourceType;
-	};
-	url: '/procoffices/v1/my/projects/{projectId}/documents/zip-token';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * filter list of project documents by pubDraftId
+         */
+        pubDraftId?: string;
+        /**
+         * filter list of project documents assigned to provided lotId or not assigned to a lot
+         */
+        lotId?: string;
+        /**
+         * filter list of project documents by qnaRoundId
+         */
+        qnaRoundId?: string;
+        /**
+         * filter list of project documents by provided document source type
+         */
+        type?: ProjectDocumentSourceType;
+    };
+    url: '/procoffices/v1/my/projects/{projectId}/documents/zip-token';
 };
 
 export type GetProjectDocumentsZipTokenErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetProjectDocumentsZipTokenError =
-	GetProjectDocumentsZipTokenErrors[keyof GetProjectDocumentsZipTokenErrors];
+export type GetProjectDocumentsZipTokenError = GetProjectDocumentsZipTokenErrors[keyof GetProjectDocumentsZipTokenErrors];
 
 export type GetProjectDocumentsZipTokenResponses = {
-	/**
-	 * Ok
-	 */
-	200: DownloadToken;
+    /**
+     * ok
+     */
+    200: DownloadToken;
 };
 
-export type GetProjectDocumentsZipTokenResponse =
-	GetProjectDocumentsZipTokenResponses[keyof GetProjectDocumentsZipTokenResponses];
+export type GetProjectDocumentsZipTokenResponse = GetProjectDocumentsZipTokenResponses[keyof GetProjectDocumentsZipTokenResponses];
 
 export type DeleteProjectDocumentData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of a project document
-		 */
-		projectDocumentId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/documents/{projectDocumentId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of a project document
+         */
+        projectDocumentId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/documents/{projectDocumentId}';
 };
 
 export type DeleteProjectDocumentErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeleteProjectDocumentError =
-	DeleteProjectDocumentErrors[keyof DeleteProjectDocumentErrors];
+export type DeleteProjectDocumentError = DeleteProjectDocumentErrors[keyof DeleteProjectDocumentErrors];
 
 export type DeleteProjectDocumentResponses = {
-	/**
-	 * No Content - Deleted
-	 */
-	204: void;
+    /**
+     * No Content - Deleted
+     */
+    204: void;
 };
 
-export type DeleteProjectDocumentResponse =
-	DeleteProjectDocumentResponses[keyof DeleteProjectDocumentResponses];
+export type DeleteProjectDocumentResponse = DeleteProjectDocumentResponses[keyof DeleteProjectDocumentResponses];
 
 export type UpdateProjectDocumentMetadataData = {
-	body: ProjectDocumentUpdate;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of a project document
-		 */
-		projectDocumentId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/documents/{projectDocumentId}';
+    body: ProjectDocumentUpdate;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of a project document
+         */
+        projectDocumentId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/documents/{projectDocumentId}';
 };
 
 export type UpdateProjectDocumentMetadataErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UpdateProjectDocumentMetadataError =
-	UpdateProjectDocumentMetadataErrors[keyof UpdateProjectDocumentMetadataErrors];
+export type UpdateProjectDocumentMetadataError = UpdateProjectDocumentMetadataErrors[keyof UpdateProjectDocumentMetadataErrors];
 
 export type UpdateProjectDocumentMetadataResponses = {
-	/**
-	 * The created project document
-	 */
-	200: ProjectDocument;
+    /**
+     * The created project document
+     */
+    200: ProjectDocument;
 };
 
-export type UpdateProjectDocumentMetadataResponse =
-	UpdateProjectDocumentMetadataResponses[keyof UpdateProjectDocumentMetadataResponses];
+export type UpdateProjectDocumentMetadataResponse = UpdateProjectDocumentMetadataResponses[keyof UpdateProjectDocumentMetadataResponses];
 
 export type UploadProjectDocumentData = {
-	body: ProjectDocumentUploadMultipart;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of a project document
-		 */
-		projectDocumentId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/documents/{projectDocumentId}/upload';
+    body: ProjectDocumentUploadMultipart;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of a project document
+         */
+        projectDocumentId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/documents/{projectDocumentId}/upload';
 };
 
 export type UploadProjectDocumentErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * The user doesn't have permissions to upload a project document
-	 */
-	403: unknown;
-	/**
-	 * The total file size exceeds the allowed size of 2GB
-	 */
-	413: unknown;
-	/**
-	 * Unsupported Filetype
-	 */
-	415: unknown;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * The user doesn't have permissions to upload a project document
+     */
+    403: unknown;
+    /**
+     * The total file size exceeds the allowed size of 2GB
+     */
+    413: unknown;
+    /**
+     * Unsupported Filetype
+     */
+    415: unknown;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UploadProjectDocumentError =
-	UploadProjectDocumentErrors[keyof UploadProjectDocumentErrors];
+export type UploadProjectDocumentError = UploadProjectDocumentErrors[keyof UploadProjectDocumentErrors];
 
 export type UploadProjectDocumentResponses = {
-	/**
-	 * The created project document
-	 */
-	201: ProjectDocument;
+    /**
+     * The created project document
+     */
+    201: ProjectDocument;
 };
 
-export type UploadProjectDocumentResponse =
-	UploadProjectDocumentResponses[keyof UploadProjectDocumentResponses];
+export type UploadProjectDocumentResponse = UploadProjectDocumentResponses[keyof UploadProjectDocumentResponses];
 
 export type ListProjectContributorsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: {
-		/**
-		 * Provide as pagination key, the `lastItem` value of the `pagination` object.to fetch next results.
-		 *
-		 */
-		lastItem?: string;
-	};
-	url: '/procoffices/v1/my/projects/{projectId}/contributors';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * Provide as pagination key, the `lastItem` value of the `pagination` object.to fetch next results.
+         *
+         */
+        lastItem?: string;
+    };
+    url: '/procoffices/v1/my/projects/{projectId}/contributors';
 };
 
 export type ListProjectContributorsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ListProjectContributorsError =
-	ListProjectContributorsErrors[keyof ListProjectContributorsErrors];
+export type ListProjectContributorsError = ListProjectContributorsErrors[keyof ListProjectContributorsErrors];
 
 export type ListProjectContributorsResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeProjectContributors;
+    /**
+     * ok
+     */
+    200: ProcOfficeProjectContributors;
 };
 
-export type ListProjectContributorsResponse =
-	ListProjectContributorsResponses[keyof ListProjectContributorsResponses];
+export type ListProjectContributorsResponse = ListProjectContributorsResponses[keyof ListProjectContributorsResponses];
 
 export type RemoveProjectContributorData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of a user
-		 */
-		userId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/contributors/{userId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of a user
+         */
+        userId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/contributors/{userId}';
 };
 
 export type RemoveProjectContributorErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type RemoveProjectContributorError =
-	RemoveProjectContributorErrors[keyof RemoveProjectContributorErrors];
+export type RemoveProjectContributorError = RemoveProjectContributorErrors[keyof RemoveProjectContributorErrors];
 
 export type RemoveProjectContributorResponses = {
-	/**
-	 * Ok
-	 */
-	204: void;
+    /**
+     * ok
+     */
+    204: void;
 };
 
-export type RemoveProjectContributorResponse =
-	RemoveProjectContributorResponses[keyof RemoveProjectContributorResponses];
+export type RemoveProjectContributorResponse = RemoveProjectContributorResponses[keyof RemoveProjectContributorResponses];
 
 export type AddProjectContributorData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of a user
-		 */
-		userId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/contributors/{userId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of a user
+         */
+        userId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/contributors/{userId}';
 };
 
 export type AddProjectContributorErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type AddProjectContributorError =
-	AddProjectContributorErrors[keyof AddProjectContributorErrors];
+export type AddProjectContributorError = AddProjectContributorErrors[keyof AddProjectContributorErrors];
 
 export type AddProjectContributorResponses = {
-	/**
-	 * Resource created
-	 */
-	201: ProcOfficeProjectContributor;
+    /**
+     * resource created
+     */
+    201: ProcOfficeProjectContributor;
 };
 
-export type AddProjectContributorResponse =
-	AddProjectContributorResponses[keyof AddProjectContributorResponses];
+export type AddProjectContributorResponse = AddProjectContributorResponses[keyof AddProjectContributorResponses];
 
 export type PatchInternalReferenceData = {
-	body: ProcOfficeProjectInternalReference;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/internal-reference';
+    body: ProcOfficeProjectInternalReference;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/internal-reference';
 };
 
 export type PatchInternalReferenceErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchInternalReferenceError =
-	PatchInternalReferenceErrors[keyof PatchInternalReferenceErrors];
+export type PatchInternalReferenceError = PatchInternalReferenceErrors[keyof PatchInternalReferenceErrors];
 
 export type PatchInternalReferenceResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeProjectInternalReference;
+    /**
+     * ok
+     */
+    200: ProcOfficeProjectInternalReference;
 };
 
-export type PatchInternalReferenceResponse =
-	PatchInternalReferenceResponses[keyof PatchInternalReferenceResponses];
+export type PatchInternalReferenceResponse = PatchInternalReferenceResponses[keyof PatchInternalReferenceResponses];
 
 export type GetProcOfficeVendorDigitalSubmissionsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-	};
-	query?: {
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId?: string;
-	};
-	url: '/procoffices/v1/my/projects/{projectId}/involved-vendors/{vendorId}/digital-submissions';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+    };
+    query?: {
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId?: string;
+    };
+    url: '/procoffices/v1/my/projects/{projectId}/involved-vendors/{vendorId}/digital-submissions';
 };
 
 export type GetProcOfficeVendorDigitalSubmissionsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetProcOfficeVendorDigitalSubmissionsError =
-	GetProcOfficeVendorDigitalSubmissionsErrors[keyof GetProcOfficeVendorDigitalSubmissionsErrors];
+export type GetProcOfficeVendorDigitalSubmissionsError = GetProcOfficeVendorDigitalSubmissionsErrors[keyof GetProcOfficeVendorDigitalSubmissionsErrors];
 
 export type GetProcOfficeVendorDigitalSubmissionsResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeVendorDigitalSubmissions;
+    /**
+     * ok
+     */
+    200: ProcOfficeVendorDigitalSubmissions;
 };
 
-export type GetProcOfficeVendorDigitalSubmissionsResponse =
-	GetProcOfficeVendorDigitalSubmissionsResponses[keyof GetProcOfficeVendorDigitalSubmissionsResponses];
+export type GetProcOfficeVendorDigitalSubmissionsResponse = GetProcOfficeVendorDigitalSubmissionsResponses[keyof GetProcOfficeVendorDigitalSubmissionsResponses];
 
 export type OpenVendorDigitalSubmissionsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-		/**
-		 * Id of the vendor digital submission
-		 */
-		vendorDigitalSubmissionId: string;
-	};
-	query?: never;
-	url: '/procoffices/v1/my/projects/{projectId}/involved-vendors/{vendorId}/digital-submissions/{vendorDigitalSubmissionId}/open';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+        /**
+         * Id of the vendor digital submission
+         */
+        vendorDigitalSubmissionId: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/involved-vendors/{vendorId}/digital-submissions/{vendorDigitalSubmissionId}/open';
 };
 
 export type OpenVendorDigitalSubmissionsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type OpenVendorDigitalSubmissionsError =
-	OpenVendorDigitalSubmissionsErrors[keyof OpenVendorDigitalSubmissionsErrors];
+export type OpenVendorDigitalSubmissionsError = OpenVendorDigitalSubmissionsErrors[keyof OpenVendorDigitalSubmissionsErrors];
 
 export type OpenVendorDigitalSubmissionsResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficeVendorDigitalSubmissionOpenResult;
+    /**
+     * ok
+     */
+    200: ProcOfficeVendorDigitalSubmissionOpenResult;
 };
 
-export type OpenVendorDigitalSubmissionsResponse =
-	OpenVendorDigitalSubmissionsResponses[keyof OpenVendorDigitalSubmissionsResponses];
+export type OpenVendorDigitalSubmissionsResponse = OpenVendorDigitalSubmissionsResponses[keyof OpenVendorDigitalSubmissionsResponses];
 
 export type FindVendorsData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * The name of the last vendor in the list - see the `lastItem` field in the `pagination` object.
-		 *
-		 */
-		lastItem?: string;
-		/**
-		 * Search by `name`, `additionalName`, UID or DUNS
-		 *
-		 * Requires at least 3 valid characters.
-		 *
-		 */
-		search: string;
-	};
-	url: '/vendors/v1';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * The name of the last vendor in the list - see the `lastItem` field in the `pagination` object.
+         *
+         */
+        lastItem?: string;
+        /**
+         * Search by `name`, `additionalName`, UID or DUNS
+         *
+         * Requires at least 3 valid characters.
+         *
+         */
+        search: string;
+    };
+    url: '/vendors/v1';
 };
 
 export type FindVendorsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type FindVendorsError = FindVendorsErrors[keyof FindVendorsErrors];
 
 export type FindVendorsResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorSearchResults;
+    /**
+     * ok
+     */
+    200: VendorSearchResults;
 };
 
-export type FindVendorsResponse =
-	FindVendorsResponses[keyof FindVendorsResponses];
+export type FindVendorsResponse = FindVendorsResponses[keyof FindVendorsResponses];
 
 export type DeleteVendorData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/vendor/{vendorId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/vendor/{vendorId}';
 };
 
 export type DeleteVendorErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type DeleteVendorError = DeleteVendorErrors[keyof DeleteVendorErrors];
 
 export type DeleteVendorResponses = {
-	/**
-	 * Deleted
-	 */
-	204: void;
+    /**
+     * deleted
+     */
+    204: void;
 };
 
-export type DeleteVendorResponse =
-	DeleteVendorResponses[keyof DeleteVendorResponses];
+export type DeleteVendorResponse = DeleteVendorResponses[keyof DeleteVendorResponses];
 
 export type GetVendorData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/vendor/{vendorId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/vendor/{vendorId}';
 };
 
 export type GetVendorErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type GetVendorError = GetVendorErrors[keyof GetVendorErrors];
 
 export type GetVendorResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorDetail;
+    /**
+     * ok
+     */
+    200: VendorDetail;
 };
 
 export type GetVendorResponse = GetVendorResponses[keyof GetVendorResponses];
 
 export type UpdateVendorData = {
-	body: VendorDetail;
-	path: {
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/vendor/{vendorId}';
+    body: VendorDetail;
+    path: {
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/vendor/{vendorId}';
 };
 
 export type UpdateVendorErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type UpdateVendorError = UpdateVendorErrors[keyof UpdateVendorErrors];
 
 export type UpdateVendorResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorDetail;
+    /**
+     * ok
+     */
+    200: VendorDetail;
 };
 
-export type UpdateVendorResponse =
-	UpdateVendorResponses[keyof UpdateVendorResponses];
+export type UpdateVendorResponse = UpdateVendorResponses[keyof UpdateVendorResponses];
 
 export type CreateVendorData = {
-	body: VendorCreate;
-	path: {
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/vendor/{vendorId}';
+    body: VendorCreate;
+    path: {
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/vendor/{vendorId}';
 };
 
 export type CreateVendorErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type CreateVendorError = CreateVendorErrors[keyof CreateVendorErrors];
 
 export type CreateVendorResponses = {
-	/**
-	 * Ok
-	 */
-	201: Vendor;
+    /**
+     * ok
+     */
+    201: Vendor;
 };
 
-export type CreateVendorResponse =
-	CreateVendorResponses[keyof CreateVendorResponses];
+export type CreateVendorResponse = CreateVendorResponses[keyof CreateVendorResponses];
 
 export type GetVendorPublicData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/vendor/{vendorId}/public';
+    body?: never;
+    path: {
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/vendor/{vendorId}/public';
 };
 
 export type GetVendorPublicErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetVendorPublicError =
-	GetVendorPublicErrors[keyof GetVendorPublicErrors];
+export type GetVendorPublicError = GetVendorPublicErrors[keyof GetVendorPublicErrors];
 
 export type GetVendorPublicResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorPublic;
+    /**
+     * ok
+     */
+    200: VendorPublic;
 };
 
-export type GetVendorPublicResponse =
-	GetVendorPublicResponses[keyof GetVendorPublicResponses];
+export type GetVendorPublicResponse = GetVendorPublicResponses[keyof GetVendorPublicResponses];
 
 export type VerifyVendorUidData = {
-	body: VerifyVendorUid;
-	path?: never;
-	query?: never;
-	url: '/vendors/v1/verify-uid';
+    body: VerifyVendorUid;
+    path?: never;
+    query?: never;
+    url: '/vendors/v1/verify-uid';
 };
 
 export type VerifyVendorUidErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type VerifyVendorUidError =
-	VerifyVendorUidErrors[keyof VerifyVendorUidErrors];
+export type VerifyVendorUidError = VerifyVendorUidErrors[keyof VerifyVendorUidErrors];
 
 export type VerifyVendorUidResponses = {
-	/**
-	 * Ok
-	 */
-	200: Vendor;
+    /**
+     * ok
+     */
+    200: Vendor;
 };
 
-export type VerifyVendorUidResponse =
-	VerifyVendorUidResponses[keyof VerifyVendorUidResponses];
+export type VerifyVendorUidResponse = VerifyVendorUidResponses[keyof VerifyVendorUidResponses];
 
 export type VerifyVendorDunsData = {
-	body: VerifyVendorDuns;
-	path?: never;
-	query?: never;
-	url: '/vendors/v1/verify-duns';
+    body: VerifyVendorDuns;
+    path?: never;
+    query?: never;
+    url: '/vendors/v1/verify-duns';
 };
 
 export type VerifyVendorDunsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type VerifyVendorDunsError =
-	VerifyVendorDunsErrors[keyof VerifyVendorDunsErrors];
+export type VerifyVendorDunsError = VerifyVendorDunsErrors[keyof VerifyVendorDunsErrors];
 
 export type VerifyVendorDunsResponses = {
-	/**
-	 * Ok
-	 */
-	200: Vendor;
+    /**
+     * ok
+     */
+    200: Vendor;
 };
 
-export type VerifyVendorDunsResponse =
-	VerifyVendorDunsResponses[keyof VerifyVendorDunsResponses];
+export type VerifyVendorDunsResponse = VerifyVendorDunsResponses[keyof VerifyVendorDunsResponses];
 
 export type GetMyVendorData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/vendors/v1/my';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/vendors/v1/my';
 };
 
 export type GetMyVendorErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type GetMyVendorError = GetMyVendorErrors[keyof GetMyVendorErrors];
 
 export type GetMyVendorResponses = {
-	/**
-	 * Ok
-	 */
-	200: MyVendor;
+    /**
+     * ok
+     */
+    200: MyVendor;
 };
 
-export type GetMyVendorResponse =
-	GetMyVendorResponses[keyof GetMyVendorResponses];
+export type GetMyVendorResponse = GetMyVendorResponses[keyof GetMyVendorResponses];
 
 export type RequestToJoinVendorData = {
-	body: VendorJoinRequest;
-	path: {
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/vendor/{vendorId}/join';
+    body: VendorJoinRequest;
+    path: {
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/vendor/{vendorId}/join';
 };
 
 export type RequestToJoinVendorErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type RequestToJoinVendorError =
-	RequestToJoinVendorErrors[keyof RequestToJoinVendorErrors];
+export type RequestToJoinVendorError = RequestToJoinVendorErrors[keyof RequestToJoinVendorErrors];
 
 export type RequestToJoinVendorResponses = {
-	/**
-	 * Ok
-	 */
-	201: MyVendorMembership;
+    /**
+     * ok
+     */
+    201: MyVendorMembership;
 };
 
-export type RequestToJoinVendorResponse =
-	RequestToJoinVendorResponses[keyof RequestToJoinVendorResponses];
+export type RequestToJoinVendorResponse = RequestToJoinVendorResponses[keyof RequestToJoinVendorResponses];
 
 export type ListVendorMembersData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/vendor/{vendorId}/members';
+    body?: never;
+    path: {
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/vendor/{vendorId}/members';
 };
 
 export type ListVendorMembersErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ListVendorMembersError =
-	ListVendorMembersErrors[keyof ListVendorMembersErrors];
+export type ListVendorMembersError = ListVendorMembersErrors[keyof ListVendorMembersErrors];
 
 export type ListVendorMembersResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorMembers;
+    /**
+     * ok
+     */
+    200: VendorMembers;
 };
 
-export type ListVendorMembersResponse =
-	ListVendorMembersResponses[keyof ListVendorMembersResponses];
+export type ListVendorMembersResponse = ListVendorMembersResponses[keyof ListVendorMembersResponses];
 
 export type RespondToVendorJoinRequestData = {
-	body: VendorJoinResponse;
-	path: {
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/vendor/{vendorId}/members';
+    body: VendorJoinResponse;
+    path: {
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/vendor/{vendorId}/members';
 };
 
 export type RespondToVendorJoinRequestErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type RespondToVendorJoinRequestError =
-	RespondToVendorJoinRequestErrors[keyof RespondToVendorJoinRequestErrors];
+export type RespondToVendorJoinRequestError = RespondToVendorJoinRequestErrors[keyof RespondToVendorJoinRequestErrors];
 
 export type RespondToVendorJoinRequestResponses = {
-	/**
-	 * Resource created
-	 */
-	201: VendorJoinResponse;
+    /**
+     * resource created
+     */
+    201: VendorJoinResponse;
 };
 
-export type RespondToVendorJoinRequestResponse =
-	RespondToVendorJoinRequestResponses[keyof RespondToVendorJoinRequestResponses];
+export type RespondToVendorJoinRequestResponse = RespondToVendorJoinRequestResponses[keyof RespondToVendorJoinRequestResponses];
 
 export type RemoveVendorMemberData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-		/**
-		 * Id of the user, can be obtained by `GET /vendors/v1/vendor/{vendorId}/members`
-		 */
-		userId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/vendor/{vendorId}/members/{userId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+        /**
+         * Id of the user, can be obtained by `GET /vendors/v1/vendor/{vendorId}/members`
+         */
+        userId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/vendor/{vendorId}/members/{userId}';
 };
 
 export type RemoveVendorMemberErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type RemoveVendorMemberError =
-	RemoveVendorMemberErrors[keyof RemoveVendorMemberErrors];
+export type RemoveVendorMemberError = RemoveVendorMemberErrors[keyof RemoveVendorMemberErrors];
 
 export type RemoveVendorMemberResponses = {
-	/**
-	 * Ok
-	 */
-	204: void;
+    /**
+     * ok
+     */
+    204: void;
 };
 
-export type RemoveVendorMemberResponse =
-	RemoveVendorMemberResponses[keyof RemoveVendorMemberResponses];
+export type RemoveVendorMemberResponse = RemoveVendorMemberResponses[keyof RemoveVendorMemberResponses];
 
 export type UpdatePublicVendorMembersData = {
-	body: VendorUsers;
-	path: {
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/vendor/{vendorId}/members/public';
+    body: VendorUsers;
+    path: {
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/vendor/{vendorId}/members/public';
 };
 
 export type UpdatePublicVendorMembersErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UpdatePublicVendorMembersError =
-	UpdatePublicVendorMembersErrors[keyof UpdatePublicVendorMembersErrors];
+export type UpdatePublicVendorMembersError = UpdatePublicVendorMembersErrors[keyof UpdatePublicVendorMembersErrors];
 
 export type UpdatePublicVendorMembersResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorUsers;
+    /**
+     * ok
+     */
+    200: VendorUsers;
 };
 
-export type UpdatePublicVendorMembersResponse =
-	UpdatePublicVendorMembersResponses[keyof UpdatePublicVendorMembersResponses];
+export type UpdatePublicVendorMembersResponse = UpdatePublicVendorMembersResponses[keyof UpdatePublicVendorMembersResponses];
 
 export type UpdateVendorMembersRolesData = {
-	body: VendorMembers;
-	path: {
-		/**
-		 * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
-		 */
-		vendorId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/vendor/{vendorId}/members/roles';
+    body: VendorMembers;
+    path: {
+        /**
+         * Id of the vendor, can be obtained by `GET /vendor/v1` or has to be provided on creation
+         */
+        vendorId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/vendor/{vendorId}/members/roles';
 };
 
 export type UpdateVendorMembersRolesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UpdateVendorMembersRolesError =
-	UpdateVendorMembersRolesErrors[keyof UpdateVendorMembersRolesErrors];
+export type UpdateVendorMembersRolesError = UpdateVendorMembersRolesErrors[keyof UpdateVendorMembersRolesErrors];
 
 export type UpdateVendorMembersRolesResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorMembers;
+    /**
+     * ok
+     */
+    200: VendorMembers;
 };
 
-export type UpdateVendorMembersRolesResponse =
-	UpdateVendorMembersRolesResponses[keyof UpdateVendorMembersRolesResponses];
+export type UpdateVendorMembersRolesResponse = UpdateVendorMembersRolesResponses[keyof UpdateVendorMembersRolesResponses];
 
 export type SimapAdminFindVendorsData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * The name of the last vendor in the list - see the `lastItem` field in the `pagination` object.
-		 *
-		 */
-		lastItem?: string;
-		/**
-		 * Search by `name`, `additionalName`, UID or DUNS
-		 *
-		 * Requires at least 3 valid characters.
-		 *
-		 */
-		search: string;
-	};
-	url: '/vendors/v1/simap-admin/vendors';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * The name of the last vendor in the list - see the `lastItem` field in the `pagination` object.
+         *
+         */
+        lastItem?: string;
+        /**
+         * Search by `name`, `additionalName`, UID or DUNS
+         *
+         * Requires at least 3 valid characters.
+         *
+         */
+        search: string;
+    };
+    url: '/vendors/v1/simap-admin/vendors';
 };
 
 export type SimapAdminFindVendorsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type SimapAdminFindVendorsError =
-	SimapAdminFindVendorsErrors[keyof SimapAdminFindVendorsErrors];
+export type SimapAdminFindVendorsError = SimapAdminFindVendorsErrors[keyof SimapAdminFindVendorsErrors];
 
 export type SimapAdminFindVendorsResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorSearchResults;
+    /**
+     * ok
+     */
+    200: VendorSearchResults;
 };
 
-export type SimapAdminFindVendorsResponse =
-	SimapAdminFindVendorsResponses[keyof SimapAdminFindVendorsResponses];
+export type SimapAdminFindVendorsResponse = SimapAdminFindVendorsResponses[keyof SimapAdminFindVendorsResponses];
 
 export type GetVendorProjectOverviewData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * Search input
-		 */
-		search?: string;
-		/**
-		 * Defines in which languages shall be searched in case of translated fields. In case this property is not defined or an empty array is given, then we we search in all languages
-		 */
-		lang?: SystemLanguage[];
-		/**
-		 * Filter for archived or active projects
-		 */
-		archived: boolean;
-		lastItem?: string;
-	};
-	url: '/vendors/v2/my/projects/projects-overview';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * search input
+         */
+        search?: string;
+        /**
+         * defines in which languages shall be searched in case of translated fields. In case this property is not defined or an empty array is given, then we we search in all languages
+         */
+        lang?: Array<SystemLanguage>;
+        /**
+         * filter for archived or active projects
+         */
+        archived: boolean;
+        lastItem?: string;
+    };
+    url: '/vendors/v2/my/projects/projects-overview';
 };
 
 export type GetVendorProjectOverviewErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetVendorProjectOverviewError =
-	GetVendorProjectOverviewErrors[keyof GetVendorProjectOverviewErrors];
+export type GetVendorProjectOverviewError = GetVendorProjectOverviewErrors[keyof GetVendorProjectOverviewErrors];
 
 export type GetVendorProjectOverviewResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProjectsSearch;
+    /**
+     * ok
+     */
+    200: ProjectsSearch;
 };
 
-export type GetVendorProjectOverviewResponse =
-	GetVendorProjectOverviewResponses[keyof GetVendorProjectOverviewResponses];
+export type GetVendorProjectOverviewResponse = GetVendorProjectOverviewResponses[keyof GetVendorProjectOverviewResponses];
 
 export type GetQnaRoundsForProjectData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: {
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId?: string;
-	};
-	url: '/vendors/v1/my/projects/{projectId}/qnas';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId?: string;
+    };
+    url: '/vendors/v1/my/projects/{projectId}/qnas';
 };
 
 export type GetQnaRoundsForProjectErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetQnaRoundsForProjectError =
-	GetQnaRoundsForProjectErrors[keyof GetQnaRoundsForProjectErrors];
+export type GetQnaRoundsForProjectError = GetQnaRoundsForProjectErrors[keyof GetQnaRoundsForProjectErrors];
 
 export type GetQnaRoundsForProjectResponses = {
-	/**
-	 * Ok
-	 */
-	200: QnaRoundsWithQnas;
+    /**
+     * ok
+     */
+    200: QnaRoundsWithQnas;
 };
 
-export type GetQnaRoundsForProjectResponse =
-	GetQnaRoundsForProjectResponses[keyof GetQnaRoundsForProjectResponses];
+export type GetQnaRoundsForProjectResponse = GetQnaRoundsForProjectResponses[keyof GetQnaRoundsForProjectResponses];
 
 export type SearchDocumentsForProjectData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: {
-		/**
-		 * Filter list of project documents by publicationId
-		 */
-		publicationId?: string;
-		/**
-		 * Filter list of project documents assigned to provided lotId or not assigned to a lot
-		 */
-		lotId?: string;
-		/**
-		 * Filter list of project documents by qnaRoundId
-		 */
-		qnaRoundId?: string;
-		/**
-		 * Filter list of project documents by provided document source type
-		 */
-		type?: ProjectDocumentSourceType;
-	};
-	url: '/vendors/v1/my/projects/{projectId}/documents';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * filter list of project documents by publicationId
+         */
+        publicationId?: string;
+        /**
+         * filter list of project documents assigned to provided lotId or not assigned to a lot
+         */
+        lotId?: string;
+        /**
+         * filter list of project documents by qnaRoundId
+         */
+        qnaRoundId?: string;
+        /**
+         * filter list of project documents by provided document source type
+         */
+        type?: ProjectDocumentSourceType;
+    };
+    url: '/vendors/v1/my/projects/{projectId}/documents';
 };
 
 export type SearchDocumentsForProjectErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type SearchDocumentsForProjectError =
-	SearchDocumentsForProjectErrors[keyof SearchDocumentsForProjectErrors];
+export type SearchDocumentsForProjectError = SearchDocumentsForProjectErrors[keyof SearchDocumentsForProjectErrors];
 
 export type SearchDocumentsForProjectResponses = {
-	/**
-	 * List published project documents
-	 */
-	200: PublicationProjectDocuments;
+    /**
+     * List published project documents
+     */
+    200: PublicationProjectDocuments;
 };
 
-export type SearchDocumentsForProjectResponse =
-	SearchDocumentsForProjectResponses[keyof SearchDocumentsForProjectResponses];
+export type SearchDocumentsForProjectResponse = SearchDocumentsForProjectResponses[keyof SearchDocumentsForProjectResponses];
 
 export type GetVendorProjectsDocumentsZipTokenData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: {
-		/**
-		 * Filter list of project documents by publicationId
-		 */
-		publicationId?: string;
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId?: string;
-		/**
-		 * Filter list of project documents by qnaRoundId
-		 */
-		qnaRoundId?: string;
-		/**
-		 * Filter list of project documents by provided document source type
-		 */
-		type?: ProjectDocumentSourceType;
-	};
-	url: '/vendors/v1/my/projects/{projectId}/documents/zip-token';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * filter list of project documents by publicationId
+         */
+        publicationId?: string;
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId?: string;
+        /**
+         * filter list of project documents by qnaRoundId
+         */
+        qnaRoundId?: string;
+        /**
+         * filter list of project documents by provided document source type
+         */
+        type?: ProjectDocumentSourceType;
+    };
+    url: '/vendors/v1/my/projects/{projectId}/documents/zip-token';
 };
 
 export type GetVendorProjectsDocumentsZipTokenErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetVendorProjectsDocumentsZipTokenError =
-	GetVendorProjectsDocumentsZipTokenErrors[keyof GetVendorProjectsDocumentsZipTokenErrors];
+export type GetVendorProjectsDocumentsZipTokenError = GetVendorProjectsDocumentsZipTokenErrors[keyof GetVendorProjectsDocumentsZipTokenErrors];
 
 export type GetVendorProjectsDocumentsZipTokenResponses = {
-	/**
-	 * Ok
-	 */
-	200: DownloadToken;
+    /**
+     * ok
+     */
+    200: DownloadToken;
 };
 
-export type GetVendorProjectsDocumentsZipTokenResponse =
-	GetVendorProjectsDocumentsZipTokenResponses[keyof GetVendorProjectsDocumentsZipTokenResponses];
+export type GetVendorProjectsDocumentsZipTokenResponse = GetVendorProjectsDocumentsZipTokenResponses[keyof GetVendorProjectsDocumentsZipTokenResponses];
 
 export type GetVendorUserNotificationSettingsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/projects/{projectId}/my-notification-settings';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/projects/{projectId}/my-notification-settings';
 };
 
 export type GetVendorUserNotificationSettingsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetVendorUserNotificationSettingsError =
-	GetVendorUserNotificationSettingsErrors[keyof GetVendorUserNotificationSettingsErrors];
+export type GetVendorUserNotificationSettingsError = GetVendorUserNotificationSettingsErrors[keyof GetVendorUserNotificationSettingsErrors];
 
 export type GetVendorUserNotificationSettingsResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorUserNotificationSettings;
+    /**
+     * ok
+     */
+    200: VendorUserNotificationSettings;
 };
 
-export type GetVendorUserNotificationSettingsResponse =
-	GetVendorUserNotificationSettingsResponses[keyof GetVendorUserNotificationSettingsResponses];
+export type GetVendorUserNotificationSettingsResponse = GetVendorUserNotificationSettingsResponses[keyof GetVendorUserNotificationSettingsResponses];
 
 export type UpdateVendorUserNotificationSettingsData = {
-	body: VendorUserNotificationSettings;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/projects/{projectId}/my-notification-settings';
+    body: VendorUserNotificationSettings;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/projects/{projectId}/my-notification-settings';
 };
 
 export type UpdateVendorUserNotificationSettingsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UpdateVendorUserNotificationSettingsError =
-	UpdateVendorUserNotificationSettingsErrors[keyof UpdateVendorUserNotificationSettingsErrors];
+export type UpdateVendorUserNotificationSettingsError = UpdateVendorUserNotificationSettingsErrors[keyof UpdateVendorUserNotificationSettingsErrors];
 
 export type UpdateVendorUserNotificationSettingsResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorUserNotificationSettings;
+    /**
+     * ok
+     */
+    200: VendorUserNotificationSettings;
 };
 
-export type UpdateVendorUserNotificationSettingsResponse =
-	UpdateVendorUserNotificationSettingsResponses[keyof UpdateVendorUserNotificationSettingsResponses];
+export type UpdateVendorUserNotificationSettingsResponse = UpdateVendorUserNotificationSettingsResponses[keyof UpdateVendorUserNotificationSettingsResponses];
 
 export type ArchiveVendorProjectData = {
-	body: UpdateArchiveStatus;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/projects/{projectId}/archive';
+    body: UpdateArchiveStatus;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/projects/{projectId}/archive';
 };
 
 export type ArchiveVendorProjectErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ArchiveVendorProjectError =
-	ArchiveVendorProjectErrors[keyof ArchiveVendorProjectErrors];
+export type ArchiveVendorProjectError = ArchiveVendorProjectErrors[keyof ArchiveVendorProjectErrors];
 
 export type ArchiveVendorProjectResponses = {
-	/**
-	 * No Content
-	 */
-	204: void;
+    /**
+     * No Content
+     */
+    204: void;
 };
 
-export type ArchiveVendorProjectResponse =
-	ArchiveVendorProjectResponses[keyof ArchiveVendorProjectResponses];
+export type ArchiveVendorProjectResponse = ArchiveVendorProjectResponses[keyof ArchiveVendorProjectResponses];
 
 export type ListVendorDocumentsData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/vendors/v1/my/documents';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/vendors/v1/my/documents';
 };
 
 export type ListVendorDocumentsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ListVendorDocumentsError =
-	ListVendorDocumentsErrors[keyof ListVendorDocumentsErrors];
+export type ListVendorDocumentsError = ListVendorDocumentsErrors[keyof ListVendorDocumentsErrors];
 
 export type ListVendorDocumentsResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorDocuments;
+    /**
+     * ok
+     */
+    200: VendorDocuments;
 };
 
-export type ListVendorDocumentsResponse =
-	ListVendorDocumentsResponses[keyof ListVendorDocumentsResponses];
+export type ListVendorDocumentsResponse = ListVendorDocumentsResponses[keyof ListVendorDocumentsResponses];
 
 export type DeleteVendorDocumentData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of a vendor document
-		 */
-		vendorDocumentId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/documents/{vendorDocumentId}';
+    body?: never;
+    path: {
+        /**
+         * Id of a vendor document
+         */
+        vendorDocumentId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/documents/{vendorDocumentId}';
 };
 
 export type DeleteVendorDocumentErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeleteVendorDocumentError =
-	DeleteVendorDocumentErrors[keyof DeleteVendorDocumentErrors];
+export type DeleteVendorDocumentError = DeleteVendorDocumentErrors[keyof DeleteVendorDocumentErrors];
 
 export type DeleteVendorDocumentResponses = {
-	/**
-	 * No Content - Deleted
-	 */
-	204: void;
+    /**
+     * No Content - Deleted
+     */
+    204: void;
 };
 
-export type DeleteVendorDocumentResponse =
-	DeleteVendorDocumentResponses[keyof DeleteVendorDocumentResponses];
+export type DeleteVendorDocumentResponse = DeleteVendorDocumentResponses[keyof DeleteVendorDocumentResponses];
 
 export type DownloadVendorDocumentData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of a vendor document
-		 */
-		vendorDocumentId: string;
-	};
-	query: {
-		/**
-		 * Authenticate via token in query parameter
-		 */
-		token: string;
-	};
-	url: '/vendors/v1/my/documents/{vendorDocumentId}';
+    body?: never;
+    path: {
+        /**
+         * Id of a vendor document
+         */
+        vendorDocumentId: string;
+    };
+    query: {
+        /**
+         * authenticate via token in query parameter
+         */
+        token: string;
+    };
+    url: '/vendors/v1/my/documents/{vendorDocumentId}';
 };
 
 export type DownloadVendorDocumentErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DownloadVendorDocumentError =
-	DownloadVendorDocumentErrors[keyof DownloadVendorDocumentErrors];
+export type DownloadVendorDocumentError = DownloadVendorDocumentErrors[keyof DownloadVendorDocumentErrors];
 
 export type DownloadVendorDocumentResponses = {
-	/**
-	 * Vendor document as download
-	 */
-	200: Blob | File;
+    /**
+     * Vendor document as download
+     */
+    200: Blob | File;
 };
 
-export type DownloadVendorDocumentResponse =
-	DownloadVendorDocumentResponses[keyof DownloadVendorDocumentResponses];
+export type DownloadVendorDocumentResponse = DownloadVendorDocumentResponses[keyof DownloadVendorDocumentResponses];
 
 export type GetVendorDocumentDownloadTokenData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of a vendor document
-		 */
-		vendorDocumentId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/documents/{vendorDocumentId}/token';
+    body?: never;
+    path: {
+        /**
+         * Id of a vendor document
+         */
+        vendorDocumentId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/documents/{vendorDocumentId}/token';
 };
 
 export type GetVendorDocumentDownloadTokenErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetVendorDocumentDownloadTokenError =
-	GetVendorDocumentDownloadTokenErrors[keyof GetVendorDocumentDownloadTokenErrors];
+export type GetVendorDocumentDownloadTokenError = GetVendorDocumentDownloadTokenErrors[keyof GetVendorDocumentDownloadTokenErrors];
 
 export type GetVendorDocumentDownloadTokenResponses = {
-	/**
-	 * Ok
-	 */
-	200: DownloadToken;
+    /**
+     * ok
+     */
+    200: DownloadToken;
 };
 
-export type GetVendorDocumentDownloadTokenResponse =
-	GetVendorDocumentDownloadTokenResponses[keyof GetVendorDocumentDownloadTokenResponses];
+export type GetVendorDocumentDownloadTokenResponse = GetVendorDocumentDownloadTokenResponses[keyof GetVendorDocumentDownloadTokenResponses];
 
 export type UploadVendorDocumentData = {
-	body: VendorDocumentUploadMultipart;
-	path: {
-		/**
-		 * Id of a vendor document
-		 */
-		vendorDocumentId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/documents/{vendorDocumentId}/upload';
+    body: VendorDocumentUploadMultipart;
+    path: {
+        /**
+         * Id of a vendor document
+         */
+        vendorDocumentId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/documents/{vendorDocumentId}/upload';
 };
 
 export type UploadVendorDocumentErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * The user doesn't have permissions to upload a project document
-	 */
-	403: unknown;
-	/**
-	 * The total file size exceeds the allowed size of 2GB
-	 */
-	413: unknown;
-	/**
-	 * Unsupported Filetype
-	 */
-	415: unknown;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * The user doesn't have permissions to upload a project document
+     */
+    403: unknown;
+    /**
+     * The total file size exceeds the allowed size of 2GB
+     */
+    413: unknown;
+    /**
+     * Unsupported Filetype
+     */
+    415: unknown;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UploadVendorDocumentError =
-	UploadVendorDocumentErrors[keyof UploadVendorDocumentErrors];
+export type UploadVendorDocumentError = UploadVendorDocumentErrors[keyof UploadVendorDocumentErrors];
 
 export type UploadVendorDocumentResponses = {
-	/**
-	 * The created vendor document
-	 */
-	201: VendorDocument;
+    /**
+     * The created vendor document
+     */
+    201: VendorDocument;
 };
 
-export type UploadVendorDocumentResponse =
-	UploadVendorDocumentResponses[keyof UploadVendorDocumentResponses];
+export type UploadVendorDocumentResponse = UploadVendorDocumentResponses[keyof UploadVendorDocumentResponses];
 
 export type UpdateInterestInProjectData = {
-	/**
-	 * Ok
-	 */
-	body: ProjectInterestRequest;
-	path: {
-		/**
-		 * Id of the project the vendor wants to set or change his interest in a project.
-		 */
-		projectId: string;
-	};
-	query?: never;
-	url: '/publications/v1/project/{projectId}/interest';
+    /**
+     * ok
+     */
+    body: ProjectInterestRequest;
+    path: {
+        /**
+         * Id of the project the vendor wants to set or change his interest in a project.
+         */
+        projectId: string;
+    };
+    query?: never;
+    url: '/publications/v1/project/{projectId}/interest';
 };
 
 export type UpdateInterestInProjectErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UpdateInterestInProjectError =
-	UpdateInterestInProjectErrors[keyof UpdateInterestInProjectErrors];
+export type UpdateInterestInProjectError = UpdateInterestInProjectErrors[keyof UpdateInterestInProjectErrors];
 
 export type UpdateInterestInProjectResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProjectInterestRequest;
+    /**
+     * ok
+     */
+    200: ProjectInterestRequest;
 };
 
-export type UpdateInterestInProjectResponse =
-	UpdateInterestInProjectResponses[keyof UpdateInterestInProjectResponses];
+export type UpdateInterestInProjectResponse = UpdateInterestInProjectResponses[keyof UpdateInterestInProjectResponses];
 
 export type DeclineInvitationToProjectData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project the vendor wants to set or change his interest in a project.
-		 */
-		projectId: string;
-	};
-	query?: never;
-	url: '/publications/v1/project/{projectId}/decline-invitation';
+    body?: never;
+    path: {
+        /**
+         * Id of the project the vendor wants to set or change his interest in a project.
+         */
+        projectId: string;
+    };
+    query?: never;
+    url: '/publications/v1/project/{projectId}/decline-invitation';
 };
 
 export type DeclineInvitationToProjectErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeclineInvitationToProjectError =
-	DeclineInvitationToProjectErrors[keyof DeclineInvitationToProjectErrors];
+export type DeclineInvitationToProjectError = DeclineInvitationToProjectErrors[keyof DeclineInvitationToProjectErrors];
 
 export type DeclineInvitationToProjectResponses = {
-	/**
-	 * Ok
-	 */
-	204: void;
+    /**
+     * ok
+     */
+    204: void;
 };
 
-export type DeclineInvitationToProjectResponse =
-	DeclineInvitationToProjectResponses[keyof DeclineInvitationToProjectResponses];
+export type DeclineInvitationToProjectResponse = DeclineInvitationToProjectResponses[keyof DeclineInvitationToProjectResponses];
 
 export type GetPublicProjectSearchData = {
-	body?: never;
-	path?: never;
-	query?: {
-		/**
-		 * Search input, either empty or requires at least 3 valid characters.
-		 *
-		 */
-		search?: string;
-		/**
-		 * Defines in which languages shall be searched in case of translated fields. In case this property is not defined or an empty array is given, then we we search in all languages
-		 */
-		lang?: SystemLanguage[];
-		/**
-		 * Quick-filter: if defined then publications need to be one of the given types
-		 *
-		 */
-		projectSubTypes?: ProjectSubType[];
-		/**
-		 * Quick-filter: if defined then publications need to be issued by one of the selected organizations or as a
-		 * child of the selected organizations (procurement-offices, institution or competence centre).
-		 *
-		 */
-		issuedByOrganizations?: string[];
-		/**
-		 * Extended-filter: if defined, projects are filtered by one of the provided projects processTypes
-		 *
-		 */
-		processTypes?: PubProcessType[];
-		/**
-		 * Extended-filter: if defined, projects are filtered by one of the provided pubTypeFilter values matching newest publication.
-		 *
-		 */
-		newestPubTypes?: ProjectSearchPubTypeFilter[];
-		/**
-		 * Extended-filter: if defined, projects are filtered by one of the provided CPV codes defined in any publications
-		 *
-		 */
-		cpvCodes?: string[];
-		/**
-		 * Extended-filter: if defined, projects are filtered by one of the provided CPC codes defined in any publications
-		 *
-		 */
-		cpcCodes?: string[];
-		/**
-		 * Extended-filter: if defined, projects are filtered by one of the provided BKP codes defined in any publications
-		 *
-		 */
-		bkpCodes?: string[];
-		/**
-		 * Extended-filter: if defined, projects are filtered by one of the provided eBKP-h codes defined in any publications
-		 *
-		 */
-		ebkphCodes?: string[];
-		/**
-		 * Extended-filter: if defined, projects are filtered by one of the provided eBKP-t codes defined in any publications
-		 *
-		 */
-		ebkptCodes?: string[];
-		/**
-		 * Extended-filter: if defined, projects are filtered by one of the provided NPK codes defined in any publications
-		 *
-		 */
-		npkCodes?: string[];
-		/**
-		 * Extended-filter: if defined, projecs are filtered by one of the provided OAG codes defined in any publications
-		 *
-		 */
-		oagCodes?: string[];
-		/**
-		 * Filter for projects that take place in Switzerland.
-		 *
-		 * If `true` will only return projects where the country of the `orderAddress` is `CH` - Switzerland.
-		 * If `false` or omitted will apply no filter return all projects (swiss projects included).
-		 *
-		 * Specifically if the country in one of the defined `orderAddress`es is Switzerland.
-		 * If a project is `with` lots, a project is found if at least one of the lot order addresses contains Switzerland.
-		 *
-		 * Not every publication defines a `orderAddress`. Projects with only such publications will be ignored with this filter.
-		 *
-		 */
-		orderAddressCountryOnlySwitzerland?: boolean;
-		/**
-		 * List of two letter abbreviation of a swiss canton e.g. `BE,FR,VD`.
-		 *
-		 * Filter for projects that take place in one of the specified cantons in Switzerland.
-		 *
-		 * Returns the projects where the canton of one of the defined `orderAddress`es is in the given list.
-		 * If a project is `with` lots, a project is found if at least one of the lot order addresses contain one of the defined cantons.
-		 *
-		 * Not every publication defines a `orderAddress` and a proc office can describe a `orderAddress` in a unstructured way, only as a description.
-		 * Projects with only such publications will be ignored with this filter.
-		 *
-		 */
-		orderAddressCantons?: string[];
-		/**
-		 * Extended-filter: if defined, projects are filtered by newest publication date after or equals the provided date
-		 *
-		 */
-		newestPublicationFrom?: string;
-		/**
-		 * Extended-filter: if defined, projects are filtered by newest publication date before or equals the provided date
-		 *
-		 */
-		newestPublicationUntil?: string;
-		lastItem?: string;
-	};
-	url: '/publications/v2/project/project-search';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Search input, either empty or requires at least 3 valid characters.
+         *
+         */
+        search?: string;
+        /**
+         * defines in which languages shall be searched in case of translated fields. In case this property is not defined or an empty array is given, then we we search in all languages
+         */
+        lang?: Array<SystemLanguage>;
+        /**
+         * quick-filter: if defined then publications need to be one of the given types
+         *
+         */
+        projectSubTypes?: Array<ProjectSubType>;
+        /**
+         * quick-filter: if defined then publications need to be issued by one of the selected organizations or as a
+         * child of the selected organizations (procurement-offices, institution or competence centre).
+         *
+         */
+        issuedByOrganizations?: Array<string>;
+        /**
+         * extended-filter: if defined, projects are filtered by one of the provided projects processTypes
+         *
+         */
+        processTypes?: Array<PubProcessType>;
+        /**
+         * extended-filter: if defined, projects are filtered by one of the provided pubTypeFilter values matching newest publication.
+         *
+         */
+        newestPubTypes?: Array<ProjectSearchPubTypeFilter>;
+        /**
+         * extended-filter: if defined, projects are filtered by one of the provided CPV codes defined in any publications
+         *
+         */
+        cpvCodes?: Array<string>;
+        /**
+         * extended-filter: if defined, projects are filtered by one of the provided CPC codes defined in any publications
+         *
+         */
+        cpcCodes?: Array<string>;
+        /**
+         * extended-filter: if defined, projects are filtered by one of the provided BKP codes defined in any publications
+         *
+         */
+        bkpCodes?: Array<string>;
+        /**
+         * extended-filter: if defined, projects are filtered by one of the provided eBKP-h codes defined in any publications
+         *
+         */
+        ebkphCodes?: Array<string>;
+        /**
+         * extended-filter: if defined, projects are filtered by one of the provided eBKP-t codes defined in any publications
+         *
+         */
+        ebkptCodes?: Array<string>;
+        /**
+         * extended-filter: if defined, projects are filtered by one of the provided NPK codes defined in any publications
+         *
+         */
+        npkCodes?: Array<string>;
+        /**
+         * extended-filter: if defined, projecs are filtered by one of the provided OAG codes defined in any publications
+         *
+         */
+        oagCodes?: Array<string>;
+        /**
+         * Filter for projects that take place in Switzerland.
+         *
+         * If `true` will only return projects where the country of the `orderAddress` is `CH` - Switzerland.
+         * If `false` or omitted will apply no filter return all projects (swiss projects included).
+         *
+         * Specifically if the country in one of the defined `orderAddress`es is Switzerland.
+         * If a project is `with` lots, a project is found if at least one of the lot order addresses contains Switzerland.
+         *
+         * Not every publication defines a `orderAddress`. Projects with only such publications will be ignored with this filter.
+         *
+         */
+        orderAddressCountryOnlySwitzerland?: boolean;
+        /**
+         * List of two letter abbreviation of a swiss canton e.g. `BE,FR,VD`.
+         *
+         * Filter for projects that take place in one of the specified cantons in Switzerland.
+         *
+         * Returns the projects where the canton of one of the defined `orderAddress`es is in the given list.
+         * If a project is `with` lots, a project is found if at least one of the lot order addresses contain one of the defined cantons.
+         *
+         * Not every publication defines a `orderAddress` and a proc office can describe a `orderAddress` in a unstructured way, only as a description.
+         * Projects with only such publications will be ignored with this filter.
+         *
+         */
+        orderAddressCantons?: Array<string>;
+        /**
+         * extended-filter: if defined, projects are filtered by newest publication date after or equals the provided date
+         *
+         */
+        newestPublicationFrom?: string;
+        /**
+         * extended-filter: if defined, projects are filtered by newest publication date before or equals the provided date
+         *
+         */
+        newestPublicationUntil?: string;
+        lastItem?: string;
+    };
+    url: '/publications/v2/project/project-search';
 };
 
 export type GetPublicProjectSearchErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPublicProjectSearchError =
-	GetPublicProjectSearchErrors[keyof GetPublicProjectSearchErrors];
+export type GetPublicProjectSearchError = GetPublicProjectSearchErrors[keyof GetPublicProjectSearchErrors];
 
 export type GetPublicProjectSearchResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProjectsSearch;
+    /**
+     * ok
+     */
+    200: ProjectsSearch;
 };
 
-export type GetPublicProjectSearchResponse =
-	GetPublicProjectSearchResponses[keyof GetPublicProjectSearchResponses];
+export type GetPublicProjectSearchResponse = GetPublicProjectSearchResponses[keyof GetPublicProjectSearchResponses];
 
 export type GetPublicationDetailData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of the publication
-		 */
-		publicationId: string;
-	};
-	query?: never;
-	url: '/publications/v1/project/{projectId}/publication-details/{publicationId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of the publication
+         */
+        publicationId: string;
+    };
+    query?: never;
+    url: '/publications/v1/project/{projectId}/publication-details/{publicationId}';
 };
 
 export type GetPublicationDetailErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPublicationDetailError =
-	GetPublicationDetailErrors[keyof GetPublicationDetailErrors];
+export type GetPublicationDetailError = GetPublicationDetailErrors[keyof GetPublicationDetailErrors];
 
 export type GetPublicationDetailResponses = {
-	/**
-	 * Ok
-	 */
-	200: PublicationDetail;
+    /**
+     * ok
+     */
+    200: PublicationDetail;
 };
 
-export type GetPublicationDetailResponse =
-	GetPublicationDetailResponses[keyof GetPublicationDetailResponses];
+export type GetPublicationDetailResponse = GetPublicationDetailResponses[keyof GetPublicationDetailResponses];
 
 export type GetPublicProjectHeaderByIdData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: never;
-	url: '/publications/v2/project/{projectId}/project-header';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: never;
+    url: '/publications/v2/project/{projectId}/project-header';
 };
 
 export type GetPublicProjectHeaderByIdErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPublicProjectHeaderByIdError =
-	GetPublicProjectHeaderByIdErrors[keyof GetPublicProjectHeaderByIdErrors];
+export type GetPublicProjectHeaderByIdError = GetPublicProjectHeaderByIdErrors[keyof GetPublicProjectHeaderByIdErrors];
 
 export type GetPublicProjectHeaderByIdResponses = {
-	/**
-	 * Ok
-	 */
-	200: PublicProjectHeader;
+    /**
+     * ok
+     */
+    200: PublicProjectHeader;
 };
 
-export type GetPublicProjectHeaderByIdResponse =
-	GetPublicProjectHeaderByIdResponses[keyof GetPublicProjectHeaderByIdResponses];
+export type GetPublicProjectHeaderByIdResponse = GetPublicProjectHeaderByIdResponses[keyof GetPublicProjectHeaderByIdResponses];
 
 export type GetPastPublicationsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication for which the past publications should be retrieved.
-		 */
-		currentPublicationId: string;
-	};
-	query?: {
-		/**
-		 * Lot number of the publication for which the past publications should be retrieved.
-		 */
-		lotId?: string;
-	};
-	url: '/publications/v1/publication/{currentPublicationId}/past-publications';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication for which the past publications should be retrieved.
+         */
+        currentPublicationId: string;
+    };
+    query?: {
+        /**
+         * Lot number of the publication for which the past publications should be retrieved.
+         */
+        lotId?: string;
+    };
+    url: '/publications/v1/publication/{currentPublicationId}/past-publications';
 };
 
 export type GetPastPublicationsErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPastPublicationsError =
-	GetPastPublicationsErrors[keyof GetPastPublicationsErrors];
+export type GetPastPublicationsError = GetPastPublicationsErrors[keyof GetPastPublicationsErrors];
 
 export type GetPastPublicationsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PastPublications;
+    /**
+     * ok
+     */
+    200: PastPublications;
 };
 
-export type GetPastPublicationsResponse =
-	GetPastPublicationsResponses[keyof GetPastPublicationsResponses];
+export type GetPastPublicationsResponse = GetPastPublicationsResponses[keyof GetPastPublicationsResponses];
 
 export type GetMySubscriptionData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/subscriptions/v1/my';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/subscriptions/v1/my';
 };
 
 export type GetMySubscriptionErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetMySubscriptionError =
-	GetMySubscriptionErrors[keyof GetMySubscriptionErrors];
+export type GetMySubscriptionError = GetMySubscriptionErrors[keyof GetMySubscriptionErrors];
 
 export type GetMySubscriptionResponses = {
-	/**
-	 * Ok
-	 */
-	200: Subscriptions;
+    /**
+     * ok
+     */
+    200: Subscriptions;
 };
 
-export type GetMySubscriptionResponse =
-	GetMySubscriptionResponses[keyof GetMySubscriptionResponses];
+export type GetMySubscriptionResponse = GetMySubscriptionResponses[keyof GetMySubscriptionResponses];
 
 export type DeleteSubscriptionData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the subscription
-		 */
-		subscriptionId: string;
-	};
-	query?: never;
-	url: '/subscriptions/v1/my/{subscriptionId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the subscription
+         */
+        subscriptionId: string;
+    };
+    query?: never;
+    url: '/subscriptions/v1/my/{subscriptionId}';
 };
 
 export type DeleteSubscriptionErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeleteSubscriptionError =
-	DeleteSubscriptionErrors[keyof DeleteSubscriptionErrors];
+export type DeleteSubscriptionError = DeleteSubscriptionErrors[keyof DeleteSubscriptionErrors];
 
 export type DeleteSubscriptionResponses = {
-	/**
-	 * No Content - Deleted
-	 */
-	204: void;
+    /**
+     * No Content - Deleted
+     */
+    204: void;
 };
 
-export type DeleteSubscriptionResponse =
-	DeleteSubscriptionResponses[keyof DeleteSubscriptionResponses];
+export type DeleteSubscriptionResponse = DeleteSubscriptionResponses[keyof DeleteSubscriptionResponses];
 
 export type GetSubscriptionData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the subscription
-		 */
-		subscriptionId: string;
-	};
-	query?: never;
-	url: '/subscriptions/v1/my/{subscriptionId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the subscription
+         */
+        subscriptionId: string;
+    };
+    query?: never;
+    url: '/subscriptions/v1/my/{subscriptionId}';
 };
 
 export type GetSubscriptionErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetSubscriptionError =
-	GetSubscriptionErrors[keyof GetSubscriptionErrors];
+export type GetSubscriptionError = GetSubscriptionErrors[keyof GetSubscriptionErrors];
 
 export type GetSubscriptionResponses = {
-	/**
-	 * Ok
-	 */
-	200: Subscription;
+    /**
+     * ok
+     */
+    200: Subscription;
 };
 
-export type GetSubscriptionResponse =
-	GetSubscriptionResponses[keyof GetSubscriptionResponses];
+export type GetSubscriptionResponse = GetSubscriptionResponses[keyof GetSubscriptionResponses];
 
 export type CreateOrUpdateSubscriptionData = {
-	body: SubscriptionUpdate;
-	path: {
-		/**
-		 * Id of the subscription
-		 */
-		subscriptionId: string;
-	};
-	query?: never;
-	url: '/subscriptions/v1/my/{subscriptionId}';
+    body: SubscriptionUpdate;
+    path: {
+        /**
+         * Id of the subscription
+         */
+        subscriptionId: string;
+    };
+    query?: never;
+    url: '/subscriptions/v1/my/{subscriptionId}';
 };
 
 export type CreateOrUpdateSubscriptionErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateOrUpdateSubscriptionError =
-	CreateOrUpdateSubscriptionErrors[keyof CreateOrUpdateSubscriptionErrors];
+export type CreateOrUpdateSubscriptionError = CreateOrUpdateSubscriptionErrors[keyof CreateOrUpdateSubscriptionErrors];
 
 export type CreateOrUpdateSubscriptionResponses = {
-	/**
-	 * Ok
-	 */
-	201: Subscription;
+    /**
+     * ok
+     */
+    201: Subscription;
 };
 
-export type CreateOrUpdateSubscriptionResponse =
-	CreateOrUpdateSubscriptionResponses[keyof CreateOrUpdateSubscriptionResponses];
+export type CreateOrUpdateSubscriptionResponse = CreateOrUpdateSubscriptionResponses[keyof CreateOrUpdateSubscriptionResponses];
 
 export type DeletePubDraftData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/pd/{pubDraftId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/pd/{pubDraftId}';
 };
 
 export type DeletePubDraftErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeletePubDraftError =
-	DeletePubDraftErrors[keyof DeletePubDraftErrors];
+export type DeletePubDraftError = DeletePubDraftErrors[keyof DeletePubDraftErrors];
 
 export type DeletePubDraftResponses = {
-	/**
-	 * No Content - Deleted
-	 */
-	204: void;
+    /**
+     * No Content - Deleted
+     */
+    204: void;
 };
 
-export type DeletePubDraftResponse =
-	DeletePubDraftResponses[keyof DeletePubDraftResponses];
+export type DeletePubDraftResponse = DeletePubDraftResponses[keyof DeletePubDraftResponses];
 
 export type GetPubDraftBaseData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/pd/{pubDraftId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/pd/{pubDraftId}';
 };
 
 export type GetPubDraftBaseErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftBaseError =
-	GetPubDraftBaseErrors[keyof GetPubDraftBaseErrors];
+export type GetPubDraftBaseError = GetPubDraftBaseErrors[keyof GetPubDraftBaseErrors];
 
 export type GetPubDraftBaseResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftBase;
+    /**
+     * ok
+     */
+    200: PubDraftBase;
 };
 
-export type GetPubDraftBaseResponse =
-	GetPubDraftBaseResponses[keyof GetPubDraftBaseResponses];
+export type GetPubDraftBaseResponse = GetPubDraftBaseResponses[keyof GetPubDraftBaseResponses];
 
 export type CreatePubDraftBaseData = {
-	body: PubDraftCreationRequest;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/pd/{pubDraftId}';
+    body: PubDraftCreationRequest;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/pd/{pubDraftId}';
 };
 
 export type CreatePubDraftBaseErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	409: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    409: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreatePubDraftBaseError =
-	CreatePubDraftBaseErrors[keyof CreatePubDraftBaseErrors];
+export type CreatePubDraftBaseError = CreatePubDraftBaseErrors[keyof CreatePubDraftBaseErrors];
 
 export type CreatePubDraftBaseResponses = {
-	/**
-	 * Ok
-	 */
-	201: PubDraftBase;
+    /**
+     * ok
+     */
+    201: PubDraftBase;
 };
 
-export type CreatePubDraftBaseResponse =
-	CreatePubDraftBaseResponses[keyof CreatePubDraftBaseResponses];
+export type CreatePubDraftBaseResponse = CreatePubDraftBaseResponses[keyof CreatePubDraftBaseResponses];
 
 export type CopyPubDraftData = {
-	body: PubDraftCopyRequest;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/pd/{pubDraftId}/copy';
+    body: PubDraftCopyRequest;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/pd/{pubDraftId}/copy';
 };
 
 export type CopyPubDraftErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type CopyPubDraftError = CopyPubDraftErrors[keyof CopyPubDraftErrors];
 
 export type CopyPubDraftResponses = {
-	/**
-	 * Ok
-	 */
-	201: PubDraftBase;
+    /**
+     * ok
+     */
+    201: PubDraftBase;
 };
 
-export type CopyPubDraftResponse =
-	CopyPubDraftResponses[keyof CopyPubDraftResponses];
+export type CopyPubDraftResponse = CopyPubDraftResponses[keyof CopyPubDraftResponses];
 
 export type GetPubDraftDetailData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/pd/{pubDraftId}/detail';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/pd/{pubDraftId}/detail';
 };
 
 export type GetPubDraftDetailErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftDetailError =
-	GetPubDraftDetailErrors[keyof GetPubDraftDetailErrors];
+export type GetPubDraftDetailError = GetPubDraftDetailErrors[keyof GetPubDraftDetailErrors];
 
 export type GetPubDraftDetailResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftDetail;
+    /**
+     * ok
+     */
+    200: PubDraftDetail;
 };
 
-export type GetPubDraftDetailResponse =
-	GetPubDraftDetailResponses[keyof GetPubDraftDetailResponses];
+export type GetPubDraftDetailResponse = GetPubDraftDetailResponses[keyof GetPubDraftDetailResponses];
 
 export type GetWizardStateData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/pd/{pubDraftId}/wizard-state';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/pd/{pubDraftId}/wizard-state';
 };
 
 export type GetWizardStateErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetWizardStateError =
-	GetWizardStateErrors[keyof GetWizardStateErrors];
+export type GetWizardStateError = GetWizardStateErrors[keyof GetWizardStateErrors];
 
 export type GetWizardStateResponses = {
-	/**
-	 * Ok
-	 */
-	200: WizardState;
+    /**
+     * ok
+     */
+    200: WizardState;
 };
 
-export type GetWizardStateResponse =
-	GetWizardStateResponses[keyof GetWizardStateResponses];
+export type GetWizardStateResponse = GetWizardStateResponses[keyof GetWizardStateResponses];
 
 export type UpdateWizardStateData = {
-	body: WizardState;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/pd/{pubDraftId}/wizard-state';
+    body: WizardState;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/pd/{pubDraftId}/wizard-state';
 };
 
 export type UpdateWizardStateErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UpdateWizardStateError =
-	UpdateWizardStateErrors[keyof UpdateWizardStateErrors];
+export type UpdateWizardStateError = UpdateWizardStateErrors[keyof UpdateWizardStateErrors];
 
 export type UpdateWizardStateResponses = {
-	/**
-	 * Ok
-	 */
-	200: WizardState;
+    /**
+     * ok
+     */
+    200: WizardState;
 };
 
-export type UpdateWizardStateResponse =
-	UpdateWizardStateResponses[keyof UpdateWizardStateResponses];
+export type UpdateWizardStateResponse = UpdateWizardStateResponses[keyof UpdateWizardStateResponses];
 
 export type SubmitPubDraftData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/pd/{pubDraftId}/submit';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/pd/{pubDraftId}/submit';
 };
 
 export type SubmitPubDraftErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	412: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    412: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type SubmitPubDraftError =
-	SubmitPubDraftErrors[keyof SubmitPubDraftErrors];
+export type SubmitPubDraftError = SubmitPubDraftErrors[keyof SubmitPubDraftErrors];
 
 export type SubmitPubDraftResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftBase;
+    /**
+     * ok
+     */
+    200: PubDraftBase;
 };
 
-export type SubmitPubDraftResponse =
-	SubmitPubDraftResponses[keyof SubmitPubDraftResponses];
+export type SubmitPubDraftResponse = SubmitPubDraftResponses[keyof SubmitPubDraftResponses];
 
 export type WithdrawSubmittedPubDraftData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/pd/{pubDraftId}/withdraw';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/pd/{pubDraftId}/withdraw';
 };
 
 export type WithdrawSubmittedPubDraftErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type WithdrawSubmittedPubDraftError =
-	WithdrawSubmittedPubDraftErrors[keyof WithdrawSubmittedPubDraftErrors];
+export type WithdrawSubmittedPubDraftError = WithdrawSubmittedPubDraftErrors[keyof WithdrawSubmittedPubDraftErrors];
 
 export type WithdrawSubmittedPubDraftResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftBase;
+    /**
+     * ok
+     */
+    200: PubDraftBase;
 };
 
-export type WithdrawSubmittedPubDraftResponse =
-	WithdrawSubmittedPubDraftResponses[keyof WithdrawSubmittedPubDraftResponses];
+export type WithdrawSubmittedPubDraftResponse = WithdrawSubmittedPubDraftResponses[keyof WithdrawSubmittedPubDraftResponses];
 
 export type PatchPubDraftTranslationLanguagesData = {
-	body: PubDraftTranslationLanguages;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/pd/{pubDraftId}/translation-languages';
+    body: PubDraftTranslationLanguages;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/pd/{pubDraftId}/translation-languages';
 };
 
 export type PatchPubDraftTranslationLanguagesErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftTranslationLanguagesError =
-	PatchPubDraftTranslationLanguagesErrors[keyof PatchPubDraftTranslationLanguagesErrors];
+export type PatchPubDraftTranslationLanguagesError = PatchPubDraftTranslationLanguagesErrors[keyof PatchPubDraftTranslationLanguagesErrors];
 
 export type PatchPubDraftTranslationLanguagesResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftBase;
+    /**
+     * ok
+     */
+    200: PubDraftBase;
 };
 
-export type PatchPubDraftTranslationLanguagesResponse =
-	PatchPubDraftTranslationLanguagesResponses[keyof PatchPubDraftTranslationLanguagesResponses];
+export type PatchPubDraftTranslationLanguagesResponse = PatchPubDraftTranslationLanguagesResponses[keyof PatchPubDraftTranslationLanguagesResponses];
 
 export type ReorderPubDraftLotsData = {
-	body: PubDraftLotsReorder;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/pd/{pubDraftId}/lots/order';
+    body: PubDraftLotsReorder;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/pd/{pubDraftId}/lots/order';
 };
 
 export type ReorderPubDraftLotsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ReorderPubDraftLotsError =
-	ReorderPubDraftLotsErrors[keyof ReorderPubDraftLotsErrors];
+export type ReorderPubDraftLotsError = ReorderPubDraftLotsErrors[keyof ReorderPubDraftLotsErrors];
 
 export type ReorderPubDraftLotsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftLots;
+    /**
+     * ok
+     */
+    200: PubDraftLots;
 };
 
-export type ReorderPubDraftLotsResponse =
-	ReorderPubDraftLotsResponses[keyof ReorderPubDraftLotsResponses];
+export type ReorderPubDraftLotsResponse = ReorderPubDraftLotsResponses[keyof ReorderPubDraftLotsResponses];
 
 export type DeletePubDraftLotData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/pd/{pubDraftId}/lots/{lotId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/pd/{pubDraftId}/lots/{lotId}';
 };
 
 export type DeletePubDraftLotErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeletePubDraftLotError =
-	DeletePubDraftLotErrors[keyof DeletePubDraftLotErrors];
+export type DeletePubDraftLotError = DeletePubDraftLotErrors[keyof DeletePubDraftLotErrors];
 
 export type DeletePubDraftLotResponses = {
-	/**
-	 * No Content - Deleted
-	 */
-	204: void;
+    /**
+     * No Content - Deleted
+     */
+    204: void;
 };
 
-export type DeletePubDraftLotResponse =
-	DeletePubDraftLotResponses[keyof DeletePubDraftLotResponses];
+export type DeletePubDraftLotResponse = DeletePubDraftLotResponses[keyof DeletePubDraftLotResponses];
 
 export type GetPubDraftTenderProjectInfoData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/project-info';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/project-info';
 };
 
 export type GetPubDraftTenderProjectInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftTenderProjectInfoError =
-	GetPubDraftTenderProjectInfoErrors[keyof GetPubDraftTenderProjectInfoErrors];
+export type GetPubDraftTenderProjectInfoError = GetPubDraftTenderProjectInfoErrors[keyof GetPubDraftTenderProjectInfoErrors];
 
 export type GetPubDraftTenderProjectInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTenderProjectInfo;
+    /**
+     * ok
+     */
+    200: PubDraftTenderProjectInfo;
 };
 
-export type GetPubDraftTenderProjectInfoResponse =
-	GetPubDraftTenderProjectInfoResponses[keyof GetPubDraftTenderProjectInfoResponses];
+export type GetPubDraftTenderProjectInfoResponse = GetPubDraftTenderProjectInfoResponses[keyof GetPubDraftTenderProjectInfoResponses];
 
 export type PatchPubDraftTenderProjectInfoData = {
-	body: PubDraftTenderProjectInfo;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/project-info';
+    body: PubDraftTenderProjectInfo;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/project-info';
 };
 
 export type PatchPubDraftTenderProjectInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftTenderProjectInfoError =
-	PatchPubDraftTenderProjectInfoErrors[keyof PatchPubDraftTenderProjectInfoErrors];
+export type PatchPubDraftTenderProjectInfoError = PatchPubDraftTenderProjectInfoErrors[keyof PatchPubDraftTenderProjectInfoErrors];
 
 export type PatchPubDraftTenderProjectInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTenderProjectInfo;
+    /**
+     * ok
+     */
+    200: PubDraftTenderProjectInfo;
 };
 
-export type PatchPubDraftTenderProjectInfoResponse =
-	PatchPubDraftTenderProjectInfoResponses[keyof PatchPubDraftTenderProjectInfoResponses];
+export type PatchPubDraftTenderProjectInfoResponse = PatchPubDraftTenderProjectInfoResponses[keyof PatchPubDraftTenderProjectInfoResponses];
 
 export type GetPubDraftTenderDatesData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/dates';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/dates';
 };
 
 export type GetPubDraftTenderDatesErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftTenderDatesError =
-	GetPubDraftTenderDatesErrors[keyof GetPubDraftTenderDatesErrors];
+export type GetPubDraftTenderDatesError = GetPubDraftTenderDatesErrors[keyof GetPubDraftTenderDatesErrors];
 
 export type GetPubDraftTenderDatesResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTenderDates;
+    /**
+     * ok
+     */
+    200: PubDraftTenderDates;
 };
 
-export type GetPubDraftTenderDatesResponse =
-	GetPubDraftTenderDatesResponses[keyof GetPubDraftTenderDatesResponses];
+export type GetPubDraftTenderDatesResponse = GetPubDraftTenderDatesResponses[keyof GetPubDraftTenderDatesResponses];
 
 export type PatchPubDraftTenderDatesData = {
-	body: PubDraftTenderDates;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/dates';
+    body: PubDraftTenderDates;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/dates';
 };
 
 export type PatchPubDraftTenderDatesErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftTenderDatesError =
-	PatchPubDraftTenderDatesErrors[keyof PatchPubDraftTenderDatesErrors];
+export type PatchPubDraftTenderDatesError = PatchPubDraftTenderDatesErrors[keyof PatchPubDraftTenderDatesErrors];
 
 export type PatchPubDraftTenderDatesResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTenderDates;
+    /**
+     * ok
+     */
+    200: PubDraftTenderDates;
 };
 
-export type PatchPubDraftTenderDatesResponse =
-	PatchPubDraftTenderDatesResponses[keyof PatchPubDraftTenderDatesResponses];
+export type PatchPubDraftTenderDatesResponse = PatchPubDraftTenderDatesResponses[keyof PatchPubDraftTenderDatesResponses];
 
 export type GetPubDraftTenderProcurementData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/procurement';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/procurement';
 };
 
 export type GetPubDraftTenderProcurementErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftTenderProcurementError =
-	GetPubDraftTenderProcurementErrors[keyof GetPubDraftTenderProcurementErrors];
+export type GetPubDraftTenderProcurementError = GetPubDraftTenderProcurementErrors[keyof GetPubDraftTenderProcurementErrors];
 
 export type GetPubDraftTenderProcurementResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTenderProcurement;
+    /**
+     * ok
+     */
+    200: PubDraftTenderProcurement;
 };
 
-export type GetPubDraftTenderProcurementResponse =
-	GetPubDraftTenderProcurementResponses[keyof GetPubDraftTenderProcurementResponses];
+export type GetPubDraftTenderProcurementResponse = GetPubDraftTenderProcurementResponses[keyof GetPubDraftTenderProcurementResponses];
 
 export type PatchPubDraftTenderProcurementData = {
-	body: PubDraftTenderProcurement;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/procurement';
+    body: PubDraftTenderProcurement;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/procurement';
 };
 
 export type PatchPubDraftTenderProcurementErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftTenderProcurementError =
-	PatchPubDraftTenderProcurementErrors[keyof PatchPubDraftTenderProcurementErrors];
+export type PatchPubDraftTenderProcurementError = PatchPubDraftTenderProcurementErrors[keyof PatchPubDraftTenderProcurementErrors];
 
 export type PatchPubDraftTenderProcurementResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTenderProcurement;
+    /**
+     * ok
+     */
+    200: PubDraftTenderProcurement;
 };
 
-export type PatchPubDraftTenderProcurementResponse =
-	PatchPubDraftTenderProcurementResponses[keyof PatchPubDraftTenderProcurementResponses];
+export type PatchPubDraftTenderProcurementResponse = PatchPubDraftTenderProcurementResponses[keyof PatchPubDraftTenderProcurementResponses];
 
 export type GetPubDraftTenderCriteriaData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/criteria';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/criteria';
 };
 
 export type GetPubDraftTenderCriteriaErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftTenderCriteriaError =
-	GetPubDraftTenderCriteriaErrors[keyof GetPubDraftTenderCriteriaErrors];
+export type GetPubDraftTenderCriteriaError = GetPubDraftTenderCriteriaErrors[keyof GetPubDraftTenderCriteriaErrors];
 
 export type GetPubDraftTenderCriteriaResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTenderCriteria;
+    /**
+     * ok
+     */
+    200: PubDraftTenderCriteria;
 };
 
-export type GetPubDraftTenderCriteriaResponse =
-	GetPubDraftTenderCriteriaResponses[keyof GetPubDraftTenderCriteriaResponses];
+export type GetPubDraftTenderCriteriaResponse = GetPubDraftTenderCriteriaResponses[keyof GetPubDraftTenderCriteriaResponses];
 
 export type PatchPubDraftTenderCriteriaData = {
-	body: PubDraftTenderCriteria;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/criteria';
+    body: PubDraftTenderCriteria;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/criteria';
 };
 
 export type PatchPubDraftTenderCriteriaErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftTenderCriteriaError =
-	PatchPubDraftTenderCriteriaErrors[keyof PatchPubDraftTenderCriteriaErrors];
+export type PatchPubDraftTenderCriteriaError = PatchPubDraftTenderCriteriaErrors[keyof PatchPubDraftTenderCriteriaErrors];
 
 export type PatchPubDraftTenderCriteriaResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTenderCriteria;
+    /**
+     * ok
+     */
+    200: PubDraftTenderCriteria;
 };
 
-export type PatchPubDraftTenderCriteriaResponse =
-	PatchPubDraftTenderCriteriaResponses[keyof PatchPubDraftTenderCriteriaResponses];
+export type PatchPubDraftTenderCriteriaResponse = PatchPubDraftTenderCriteriaResponses[keyof PatchPubDraftTenderCriteriaResponses];
 
 export type GetPubDraftTenderTermsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/terms';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/terms';
 };
 
 export type GetPubDraftTenderTermsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftTenderTermsError =
-	GetPubDraftTenderTermsErrors[keyof GetPubDraftTenderTermsErrors];
+export type GetPubDraftTenderTermsError = GetPubDraftTenderTermsErrors[keyof GetPubDraftTenderTermsErrors];
 
 export type GetPubDraftTenderTermsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTenderTerms;
+    /**
+     * ok
+     */
+    200: PubDraftTenderTerms;
 };
 
-export type GetPubDraftTenderTermsResponse =
-	GetPubDraftTenderTermsResponses[keyof GetPubDraftTenderTermsResponses];
+export type GetPubDraftTenderTermsResponse = GetPubDraftTenderTermsResponses[keyof GetPubDraftTenderTermsResponses];
 
 export type PatchPubDraftTenderTermsData = {
-	body: PubDraftTenderTerms;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/terms';
+    body: PubDraftTenderTerms;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/terms';
 };
 
 export type PatchPubDraftTenderTermsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftTenderTermsError =
-	PatchPubDraftTenderTermsErrors[keyof PatchPubDraftTenderTermsErrors];
+export type PatchPubDraftTenderTermsError = PatchPubDraftTenderTermsErrors[keyof PatchPubDraftTenderTermsErrors];
 
 export type PatchPubDraftTenderTermsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTenderTerms;
+    /**
+     * ok
+     */
+    200: PubDraftTenderTerms;
 };
 
-export type PatchPubDraftTenderTermsResponse =
-	PatchPubDraftTenderTermsResponses[keyof PatchPubDraftTenderTermsResponses];
+export type PatchPubDraftTenderTermsResponse = PatchPubDraftTenderTermsResponses[keyof PatchPubDraftTenderTermsResponses];
 
 export type GetPubDraftTenderLotData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-		lotId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/lots/{lotId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+        lotId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/lots/{lotId}';
 };
 
 export type GetPubDraftTenderLotErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftTenderLotError =
-	GetPubDraftTenderLotErrors[keyof GetPubDraftTenderLotErrors];
+export type GetPubDraftTenderLotError = GetPubDraftTenderLotErrors[keyof GetPubDraftTenderLotErrors];
 
 export type GetPubDraftTenderLotResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTenderLot;
+    /**
+     * ok
+     */
+    200: PubDraftTenderLot;
 };
 
-export type GetPubDraftTenderLotResponse =
-	GetPubDraftTenderLotResponses[keyof GetPubDraftTenderLotResponses];
+export type GetPubDraftTenderLotResponse = GetPubDraftTenderLotResponses[keyof GetPubDraftTenderLotResponses];
 
 export type PatchPubDraftTenderLotData = {
-	body: PubDraftTenderLot;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-		lotId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/lots/{lotId}';
+    body: PubDraftTenderLot;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+        lotId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/lots/{lotId}';
 };
 
 export type PatchPubDraftTenderLotErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftTenderLotError =
-	PatchPubDraftTenderLotErrors[keyof PatchPubDraftTenderLotErrors];
+export type PatchPubDraftTenderLotError = PatchPubDraftTenderLotErrors[keyof PatchPubDraftTenderLotErrors];
 
 export type PatchPubDraftTenderLotResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTenderLot;
+    /**
+     * ok
+     */
+    200: PubDraftTenderLot;
 };
 
-export type PatchPubDraftTenderLotResponse =
-	PatchPubDraftTenderLotResponses[keyof PatchPubDraftTenderLotResponses];
+export type PatchPubDraftTenderLotResponse = PatchPubDraftTenderLotResponses[keyof PatchPubDraftTenderLotResponses];
 
 export type CreatePubDraftTenderLotData = {
-	body: PubDraftLotDescriptionCreate;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-		lotId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/lots/{lotId}';
+    body: PubDraftLotDescriptionCreate;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+        lotId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/lots/{lotId}';
 };
 
 export type CreatePubDraftTenderLotErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreatePubDraftTenderLotError =
-	CreatePubDraftTenderLotErrors[keyof CreatePubDraftTenderLotErrors];
+export type CreatePubDraftTenderLotError = CreatePubDraftTenderLotErrors[keyof CreatePubDraftTenderLotErrors];
 
 export type CreatePubDraftTenderLotResponses = {
-	/**
-	 * Created
-	 */
-	201: PubDraftTenderLot;
+    /**
+     * created
+     */
+    201: PubDraftTenderLot;
 };
 
-export type CreatePubDraftTenderLotResponse =
-	CreatePubDraftTenderLotResponses[keyof CreatePubDraftTenderLotResponses];
+export type CreatePubDraftTenderLotResponse = CreatePubDraftTenderLotResponses[keyof CreatePubDraftTenderLotResponses];
 
 export type GetPubDraftTenderInvitedVendorsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/invited-vendors';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/invited-vendors';
 };
 
 export type GetPubDraftTenderInvitedVendorsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftTenderInvitedVendorsError =
-	GetPubDraftTenderInvitedVendorsErrors[keyof GetPubDraftTenderInvitedVendorsErrors];
+export type GetPubDraftTenderInvitedVendorsError = GetPubDraftTenderInvitedVendorsErrors[keyof GetPubDraftTenderInvitedVendorsErrors];
 
 export type GetPubDraftTenderInvitedVendorsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubInvitedVendors;
+    /**
+     * ok
+     */
+    200: PubInvitedVendors;
 };
 
-export type GetPubDraftTenderInvitedVendorsResponse =
-	GetPubDraftTenderInvitedVendorsResponses[keyof GetPubDraftTenderInvitedVendorsResponses];
+export type GetPubDraftTenderInvitedVendorsResponse = GetPubDraftTenderInvitedVendorsResponses[keyof GetPubDraftTenderInvitedVendorsResponses];
 
 export type PatchPubDraftTenderInvitedVendorsData = {
-	body: PubInvitedVendorsPatch;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/tender/{pubDraftId}/invited-vendors';
+    body: PubInvitedVendorsPatch;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/invited-vendors';
 };
 
 export type PatchPubDraftTenderInvitedVendorsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftTenderInvitedVendorsError =
-	PatchPubDraftTenderInvitedVendorsErrors[keyof PatchPubDraftTenderInvitedVendorsErrors];
+export type PatchPubDraftTenderInvitedVendorsError = PatchPubDraftTenderInvitedVendorsErrors[keyof PatchPubDraftTenderInvitedVendorsErrors];
 
 export type PatchPubDraftTenderInvitedVendorsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubInvitedVendors;
+    /**
+     * ok
+     */
+    200: PubInvitedVendors;
 };
 
-export type PatchPubDraftTenderInvitedVendorsResponse =
-	PatchPubDraftTenderInvitedVendorsResponses[keyof PatchPubDraftTenderInvitedVendorsResponses];
+export type PatchPubDraftTenderInvitedVendorsResponse = PatchPubDraftTenderInvitedVendorsResponses[keyof PatchPubDraftTenderInvitedVendorsResponses];
 
 export type GetPubDraftCompetitionProjectInfoData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/project-info';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/project-info';
 };
 
 export type GetPubDraftCompetitionProjectInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftCompetitionProjectInfoError =
-	GetPubDraftCompetitionProjectInfoErrors[keyof GetPubDraftCompetitionProjectInfoErrors];
+export type GetPubDraftCompetitionProjectInfoError = GetPubDraftCompetitionProjectInfoErrors[keyof GetPubDraftCompetitionProjectInfoErrors];
 
 export type GetPubDraftCompetitionProjectInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftProjectInfo;
+    /**
+     * ok
+     */
+    200: PubDraftProjectInfo;
 };
 
-export type GetPubDraftCompetitionProjectInfoResponse =
-	GetPubDraftCompetitionProjectInfoResponses[keyof GetPubDraftCompetitionProjectInfoResponses];
+export type GetPubDraftCompetitionProjectInfoResponse = GetPubDraftCompetitionProjectInfoResponses[keyof GetPubDraftCompetitionProjectInfoResponses];
 
 export type PatchPubDraftCompetitionProjectInfoData = {
-	body: PubDraftProjectInfo;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/project-info';
+    body: PubDraftProjectInfo;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/project-info';
 };
 
 export type PatchPubDraftCompetitionProjectInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftCompetitionProjectInfoError =
-	PatchPubDraftCompetitionProjectInfoErrors[keyof PatchPubDraftCompetitionProjectInfoErrors];
+export type PatchPubDraftCompetitionProjectInfoError = PatchPubDraftCompetitionProjectInfoErrors[keyof PatchPubDraftCompetitionProjectInfoErrors];
 
 export type PatchPubDraftCompetitionProjectInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftProjectInfo;
+    /**
+     * ok
+     */
+    200: PubDraftProjectInfo;
 };
 
-export type PatchPubDraftCompetitionProjectInfoResponse =
-	PatchPubDraftCompetitionProjectInfoResponses[keyof PatchPubDraftCompetitionProjectInfoResponses];
+export type PatchPubDraftCompetitionProjectInfoResponse = PatchPubDraftCompetitionProjectInfoResponses[keyof PatchPubDraftCompetitionProjectInfoResponses];
 
 export type GetPubDraftCompetitionDatesData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/dates';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/dates';
 };
 
 export type GetPubDraftCompetitionDatesErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftCompetitionDatesError =
-	GetPubDraftCompetitionDatesErrors[keyof GetPubDraftCompetitionDatesErrors];
+export type GetPubDraftCompetitionDatesError = GetPubDraftCompetitionDatesErrors[keyof GetPubDraftCompetitionDatesErrors];
 
 export type GetPubDraftCompetitionDatesResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftDates;
+    /**
+     * ok
+     */
+    200: PubDraftDates;
 };
 
-export type GetPubDraftCompetitionDatesResponse =
-	GetPubDraftCompetitionDatesResponses[keyof GetPubDraftCompetitionDatesResponses];
+export type GetPubDraftCompetitionDatesResponse = GetPubDraftCompetitionDatesResponses[keyof GetPubDraftCompetitionDatesResponses];
 
 export type PatchPubDraftCompetitionDatesData = {
-	body: PubDraftDates;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/dates';
+    body: PubDraftDates;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/dates';
 };
 
 export type PatchPubDraftCompetitionDatesErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftCompetitionDatesError =
-	PatchPubDraftCompetitionDatesErrors[keyof PatchPubDraftCompetitionDatesErrors];
+export type PatchPubDraftCompetitionDatesError = PatchPubDraftCompetitionDatesErrors[keyof PatchPubDraftCompetitionDatesErrors];
 
 export type PatchPubDraftCompetitionDatesResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftDates;
+    /**
+     * ok
+     */
+    200: PubDraftDates;
 };
 
-export type PatchPubDraftCompetitionDatesResponse =
-	PatchPubDraftCompetitionDatesResponses[keyof PatchPubDraftCompetitionDatesResponses];
+export type PatchPubDraftCompetitionDatesResponse = PatchPubDraftCompetitionDatesResponses[keyof PatchPubDraftCompetitionDatesResponses];
 
 export type GetPubDraftCompetitionProcurementData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/procurement';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/procurement';
 };
 
 export type GetPubDraftCompetitionProcurementErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftCompetitionProcurementError =
-	GetPubDraftCompetitionProcurementErrors[keyof GetPubDraftCompetitionProcurementErrors];
+export type GetPubDraftCompetitionProcurementError = GetPubDraftCompetitionProcurementErrors[keyof GetPubDraftCompetitionProcurementErrors];
 
 export type GetPubDraftCompetitionProcurementResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftProcurement;
+    /**
+     * ok
+     */
+    200: PubDraftProcurement;
 };
 
-export type GetPubDraftCompetitionProcurementResponse =
-	GetPubDraftCompetitionProcurementResponses[keyof GetPubDraftCompetitionProcurementResponses];
+export type GetPubDraftCompetitionProcurementResponse = GetPubDraftCompetitionProcurementResponses[keyof GetPubDraftCompetitionProcurementResponses];
 
 export type PatchPubDraftCompetitionProcurementData = {
-	body: PubDraftProcurement;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/procurement';
+    body: PubDraftProcurement;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/procurement';
 };
 
 export type PatchPubDraftCompetitionProcurementErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftCompetitionProcurementError =
-	PatchPubDraftCompetitionProcurementErrors[keyof PatchPubDraftCompetitionProcurementErrors];
+export type PatchPubDraftCompetitionProcurementError = PatchPubDraftCompetitionProcurementErrors[keyof PatchPubDraftCompetitionProcurementErrors];
 
 export type PatchPubDraftCompetitionProcurementResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftProcurement;
+    /**
+     * ok
+     */
+    200: PubDraftProcurement;
 };
 
-export type PatchPubDraftCompetitionProcurementResponse =
-	PatchPubDraftCompetitionProcurementResponses[keyof PatchPubDraftCompetitionProcurementResponses];
+export type PatchPubDraftCompetitionProcurementResponse = PatchPubDraftCompetitionProcurementResponses[keyof PatchPubDraftCompetitionProcurementResponses];
 
 export type GetPubDraftCompetitionCriteriaData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/criteria';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/criteria';
 };
 
 export type GetPubDraftCompetitionCriteriaErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftCompetitionCriteriaError =
-	GetPubDraftCompetitionCriteriaErrors[keyof GetPubDraftCompetitionCriteriaErrors];
+export type GetPubDraftCompetitionCriteriaError = GetPubDraftCompetitionCriteriaErrors[keyof GetPubDraftCompetitionCriteriaErrors];
 
 export type GetPubDraftCompetitionCriteriaResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftCriteria;
+    /**
+     * ok
+     */
+    200: PubDraftCriteria;
 };
 
-export type GetPubDraftCompetitionCriteriaResponse =
-	GetPubDraftCompetitionCriteriaResponses[keyof GetPubDraftCompetitionCriteriaResponses];
+export type GetPubDraftCompetitionCriteriaResponse = GetPubDraftCompetitionCriteriaResponses[keyof GetPubDraftCompetitionCriteriaResponses];
 
 export type PatchPubDraftCompetitionCriteriaData = {
-	body: PubDraftCriteria;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/criteria';
+    body: PubDraftCriteria;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/criteria';
 };
 
 export type PatchPubDraftCompetitionCriteriaErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftCompetitionCriteriaError =
-	PatchPubDraftCompetitionCriteriaErrors[keyof PatchPubDraftCompetitionCriteriaErrors];
+export type PatchPubDraftCompetitionCriteriaError = PatchPubDraftCompetitionCriteriaErrors[keyof PatchPubDraftCompetitionCriteriaErrors];
 
 export type PatchPubDraftCompetitionCriteriaResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftCriteria;
+    /**
+     * ok
+     */
+    200: PubDraftCriteria;
 };
 
-export type PatchPubDraftCompetitionCriteriaResponse =
-	PatchPubDraftCompetitionCriteriaResponses[keyof PatchPubDraftCompetitionCriteriaResponses];
+export type PatchPubDraftCompetitionCriteriaResponse = PatchPubDraftCompetitionCriteriaResponses[keyof PatchPubDraftCompetitionCriteriaResponses];
 
 export type GetPubDraftCompetitionTermsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/terms';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/terms';
 };
 
 export type GetPubDraftCompetitionTermsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftCompetitionTermsError =
-	GetPubDraftCompetitionTermsErrors[keyof GetPubDraftCompetitionTermsErrors];
+export type GetPubDraftCompetitionTermsError = GetPubDraftCompetitionTermsErrors[keyof GetPubDraftCompetitionTermsErrors];
 
 export type GetPubDraftCompetitionTermsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTermsExtended;
+    /**
+     * ok
+     */
+    200: PubDraftTermsExtended;
 };
 
-export type GetPubDraftCompetitionTermsResponse =
-	GetPubDraftCompetitionTermsResponses[keyof GetPubDraftCompetitionTermsResponses];
+export type GetPubDraftCompetitionTermsResponse = GetPubDraftCompetitionTermsResponses[keyof GetPubDraftCompetitionTermsResponses];
 
 export type PatchPubDraftCompetitionTermsData = {
-	body: PubDraftTermsExtended;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/terms';
+    body: PubDraftTermsExtended;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/terms';
 };
 
 export type PatchPubDraftCompetitionTermsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftCompetitionTermsError =
-	PatchPubDraftCompetitionTermsErrors[keyof PatchPubDraftCompetitionTermsErrors];
+export type PatchPubDraftCompetitionTermsError = PatchPubDraftCompetitionTermsErrors[keyof PatchPubDraftCompetitionTermsErrors];
 
 export type PatchPubDraftCompetitionTermsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTermsExtended;
+    /**
+     * ok
+     */
+    200: PubDraftTermsExtended;
 };
 
-export type PatchPubDraftCompetitionTermsResponse =
-	PatchPubDraftCompetitionTermsResponses[keyof PatchPubDraftCompetitionTermsResponses];
+export type PatchPubDraftCompetitionTermsResponse = PatchPubDraftCompetitionTermsResponses[keyof PatchPubDraftCompetitionTermsResponses];
 
 export type GetPubDraftCompetitionLotData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-		lotId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/lots/{lotId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+        lotId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/lots/{lotId}';
 };
 
 export type GetPubDraftCompetitionLotErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftCompetitionLotError =
-	GetPubDraftCompetitionLotErrors[keyof GetPubDraftCompetitionLotErrors];
+export type GetPubDraftCompetitionLotError = GetPubDraftCompetitionLotErrors[keyof GetPubDraftCompetitionLotErrors];
 
 export type GetPubDraftCompetitionLotResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftCompetitionLot;
+    /**
+     * ok
+     */
+    200: PubDraftCompetitionLot;
 };
 
-export type GetPubDraftCompetitionLotResponse =
-	GetPubDraftCompetitionLotResponses[keyof GetPubDraftCompetitionLotResponses];
+export type GetPubDraftCompetitionLotResponse = GetPubDraftCompetitionLotResponses[keyof GetPubDraftCompetitionLotResponses];
 
 export type PatchPubDraftCompetitionLotData = {
-	body: PubDraftCompetitionLot;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-		lotId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/lots/{lotId}';
+    body: PubDraftCompetitionLot;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+        lotId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/lots/{lotId}';
 };
 
 export type PatchPubDraftCompetitionLotErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftCompetitionLotError =
-	PatchPubDraftCompetitionLotErrors[keyof PatchPubDraftCompetitionLotErrors];
+export type PatchPubDraftCompetitionLotError = PatchPubDraftCompetitionLotErrors[keyof PatchPubDraftCompetitionLotErrors];
 
 export type PatchPubDraftCompetitionLotResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftCompetitionLot;
+    /**
+     * ok
+     */
+    200: PubDraftCompetitionLot;
 };
 
-export type PatchPubDraftCompetitionLotResponse =
-	PatchPubDraftCompetitionLotResponses[keyof PatchPubDraftCompetitionLotResponses];
+export type PatchPubDraftCompetitionLotResponse = PatchPubDraftCompetitionLotResponses[keyof PatchPubDraftCompetitionLotResponses];
 
 export type CreatePubDraftCompetitionLotData = {
-	body: PubDraftLotDescriptionCreate;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-		lotId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/lots/{lotId}';
+    body: PubDraftLotDescriptionCreate;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+        lotId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/lots/{lotId}';
 };
 
 export type CreatePubDraftCompetitionLotErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreatePubDraftCompetitionLotError =
-	CreatePubDraftCompetitionLotErrors[keyof CreatePubDraftCompetitionLotErrors];
+export type CreatePubDraftCompetitionLotError = CreatePubDraftCompetitionLotErrors[keyof CreatePubDraftCompetitionLotErrors];
 
 export type CreatePubDraftCompetitionLotResponses = {
-	/**
-	 * Created
-	 */
-	201: PubDraftCompetitionLot;
+    /**
+     * created
+     */
+    201: PubDraftCompetitionLot;
 };
 
-export type CreatePubDraftCompetitionLotResponse =
-	CreatePubDraftCompetitionLotResponses[keyof CreatePubDraftCompetitionLotResponses];
+export type CreatePubDraftCompetitionLotResponse = CreatePubDraftCompetitionLotResponses[keyof CreatePubDraftCompetitionLotResponses];
 
 export type GetPubDraftCompetitionInvitedVendorsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/invited-vendors';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/invited-vendors';
 };
 
 export type GetPubDraftCompetitionInvitedVendorsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftCompetitionInvitedVendorsError =
-	GetPubDraftCompetitionInvitedVendorsErrors[keyof GetPubDraftCompetitionInvitedVendorsErrors];
+export type GetPubDraftCompetitionInvitedVendorsError = GetPubDraftCompetitionInvitedVendorsErrors[keyof GetPubDraftCompetitionInvitedVendorsErrors];
 
 export type GetPubDraftCompetitionInvitedVendorsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubInvitedVendors;
+    /**
+     * ok
+     */
+    200: PubInvitedVendors;
 };
 
-export type GetPubDraftCompetitionInvitedVendorsResponse =
-	GetPubDraftCompetitionInvitedVendorsResponses[keyof GetPubDraftCompetitionInvitedVendorsResponses];
+export type GetPubDraftCompetitionInvitedVendorsResponse = GetPubDraftCompetitionInvitedVendorsResponses[keyof GetPubDraftCompetitionInvitedVendorsResponses];
 
 export type PatchPubDraftCompetitionInvitedVendorsData = {
-	body: PubInvitedVendorsPatch;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/competition/{pubDraftId}/invited-vendors';
+    body: PubInvitedVendorsPatch;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/competition/{pubDraftId}/invited-vendors';
 };
 
 export type PatchPubDraftCompetitionInvitedVendorsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftCompetitionInvitedVendorsError =
-	PatchPubDraftCompetitionInvitedVendorsErrors[keyof PatchPubDraftCompetitionInvitedVendorsErrors];
+export type PatchPubDraftCompetitionInvitedVendorsError = PatchPubDraftCompetitionInvitedVendorsErrors[keyof PatchPubDraftCompetitionInvitedVendorsErrors];
 
 export type PatchPubDraftCompetitionInvitedVendorsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubInvitedVendors;
+    /**
+     * ok
+     */
+    200: PubInvitedVendors;
 };
 
-export type PatchPubDraftCompetitionInvitedVendorsResponse =
-	PatchPubDraftCompetitionInvitedVendorsResponses[keyof PatchPubDraftCompetitionInvitedVendorsResponses];
+export type PatchPubDraftCompetitionInvitedVendorsResponse = PatchPubDraftCompetitionInvitedVendorsResponses[keyof PatchPubDraftCompetitionInvitedVendorsResponses];
 
 export type GetPubDraftStudyContractProjectInfoData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/project-info';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/project-info';
 };
 
 export type GetPubDraftStudyContractProjectInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftStudyContractProjectInfoError =
-	GetPubDraftStudyContractProjectInfoErrors[keyof GetPubDraftStudyContractProjectInfoErrors];
+export type GetPubDraftStudyContractProjectInfoError = GetPubDraftStudyContractProjectInfoErrors[keyof GetPubDraftStudyContractProjectInfoErrors];
 
 export type GetPubDraftStudyContractProjectInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftProjectInfo;
+    /**
+     * ok
+     */
+    200: PubDraftProjectInfo;
 };
 
-export type GetPubDraftStudyContractProjectInfoResponse =
-	GetPubDraftStudyContractProjectInfoResponses[keyof GetPubDraftStudyContractProjectInfoResponses];
+export type GetPubDraftStudyContractProjectInfoResponse = GetPubDraftStudyContractProjectInfoResponses[keyof GetPubDraftStudyContractProjectInfoResponses];
 
 export type PatchPubDraftStudyContractProjectInfoData = {
-	body: PubDraftProjectInfo;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/project-info';
+    body: PubDraftProjectInfo;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/project-info';
 };
 
 export type PatchPubDraftStudyContractProjectInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftStudyContractProjectInfoError =
-	PatchPubDraftStudyContractProjectInfoErrors[keyof PatchPubDraftStudyContractProjectInfoErrors];
+export type PatchPubDraftStudyContractProjectInfoError = PatchPubDraftStudyContractProjectInfoErrors[keyof PatchPubDraftStudyContractProjectInfoErrors];
 
 export type PatchPubDraftStudyContractProjectInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftProjectInfo;
+    /**
+     * ok
+     */
+    200: PubDraftProjectInfo;
 };
 
-export type PatchPubDraftStudyContractProjectInfoResponse =
-	PatchPubDraftStudyContractProjectInfoResponses[keyof PatchPubDraftStudyContractProjectInfoResponses];
+export type PatchPubDraftStudyContractProjectInfoResponse = PatchPubDraftStudyContractProjectInfoResponses[keyof PatchPubDraftStudyContractProjectInfoResponses];
 
 export type GetPubDraftStudyContractDatesData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/dates';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/dates';
 };
 
 export type GetPubDraftStudyContractDatesErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftStudyContractDatesError =
-	GetPubDraftStudyContractDatesErrors[keyof GetPubDraftStudyContractDatesErrors];
+export type GetPubDraftStudyContractDatesError = GetPubDraftStudyContractDatesErrors[keyof GetPubDraftStudyContractDatesErrors];
 
 export type GetPubDraftStudyContractDatesResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftDates;
+    /**
+     * ok
+     */
+    200: PubDraftDates;
 };
 
-export type GetPubDraftStudyContractDatesResponse =
-	GetPubDraftStudyContractDatesResponses[keyof GetPubDraftStudyContractDatesResponses];
+export type GetPubDraftStudyContractDatesResponse = GetPubDraftStudyContractDatesResponses[keyof GetPubDraftStudyContractDatesResponses];
 
 export type PatchPubDraftStudyContractDatesData = {
-	body: PubDraftDates;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/dates';
+    body: PubDraftDates;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/dates';
 };
 
 export type PatchPubDraftStudyContractDatesErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftStudyContractDatesError =
-	PatchPubDraftStudyContractDatesErrors[keyof PatchPubDraftStudyContractDatesErrors];
+export type PatchPubDraftStudyContractDatesError = PatchPubDraftStudyContractDatesErrors[keyof PatchPubDraftStudyContractDatesErrors];
 
 export type PatchPubDraftStudyContractDatesResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftDates;
+    /**
+     * ok
+     */
+    200: PubDraftDates;
 };
 
-export type PatchPubDraftStudyContractDatesResponse =
-	PatchPubDraftStudyContractDatesResponses[keyof PatchPubDraftStudyContractDatesResponses];
+export type PatchPubDraftStudyContractDatesResponse = PatchPubDraftStudyContractDatesResponses[keyof PatchPubDraftStudyContractDatesResponses];
 
 export type GetPubDraftStudyContractProcurementData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/procurement';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/procurement';
 };
 
 export type GetPubDraftStudyContractProcurementErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftStudyContractProcurementError =
-	GetPubDraftStudyContractProcurementErrors[keyof GetPubDraftStudyContractProcurementErrors];
+export type GetPubDraftStudyContractProcurementError = GetPubDraftStudyContractProcurementErrors[keyof GetPubDraftStudyContractProcurementErrors];
 
 export type GetPubDraftStudyContractProcurementResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftProcurement;
+    /**
+     * ok
+     */
+    200: PubDraftProcurement;
 };
 
-export type GetPubDraftStudyContractProcurementResponse =
-	GetPubDraftStudyContractProcurementResponses[keyof GetPubDraftStudyContractProcurementResponses];
+export type GetPubDraftStudyContractProcurementResponse = GetPubDraftStudyContractProcurementResponses[keyof GetPubDraftStudyContractProcurementResponses];
 
 export type PatchPubDraftStudyContractProcurementData = {
-	body: PubDraftProcurement;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/procurement';
+    body: PubDraftProcurement;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/procurement';
 };
 
 export type PatchPubDraftStudyContractProcurementErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftStudyContractProcurementError =
-	PatchPubDraftStudyContractProcurementErrors[keyof PatchPubDraftStudyContractProcurementErrors];
+export type PatchPubDraftStudyContractProcurementError = PatchPubDraftStudyContractProcurementErrors[keyof PatchPubDraftStudyContractProcurementErrors];
 
 export type PatchPubDraftStudyContractProcurementResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftProcurement;
+    /**
+     * ok
+     */
+    200: PubDraftProcurement;
 };
 
-export type PatchPubDraftStudyContractProcurementResponse =
-	PatchPubDraftStudyContractProcurementResponses[keyof PatchPubDraftStudyContractProcurementResponses];
+export type PatchPubDraftStudyContractProcurementResponse = PatchPubDraftStudyContractProcurementResponses[keyof PatchPubDraftStudyContractProcurementResponses];
 
 export type GetPubDraftStudyContractCriteriaData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/criteria';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/criteria';
 };
 
 export type GetPubDraftStudyContractCriteriaErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftStudyContractCriteriaError =
-	GetPubDraftStudyContractCriteriaErrors[keyof GetPubDraftStudyContractCriteriaErrors];
+export type GetPubDraftStudyContractCriteriaError = GetPubDraftStudyContractCriteriaErrors[keyof GetPubDraftStudyContractCriteriaErrors];
 
 export type GetPubDraftStudyContractCriteriaResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftCriteria;
+    /**
+     * ok
+     */
+    200: PubDraftCriteria;
 };
 
-export type GetPubDraftStudyContractCriteriaResponse =
-	GetPubDraftStudyContractCriteriaResponses[keyof GetPubDraftStudyContractCriteriaResponses];
+export type GetPubDraftStudyContractCriteriaResponse = GetPubDraftStudyContractCriteriaResponses[keyof GetPubDraftStudyContractCriteriaResponses];
 
 export type PatchPubDraftStudyContractCriteriaData = {
-	body: PubDraftCriteria;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/criteria';
+    body: PubDraftCriteria;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/criteria';
 };
 
 export type PatchPubDraftStudyContractCriteriaErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftStudyContractCriteriaError =
-	PatchPubDraftStudyContractCriteriaErrors[keyof PatchPubDraftStudyContractCriteriaErrors];
+export type PatchPubDraftStudyContractCriteriaError = PatchPubDraftStudyContractCriteriaErrors[keyof PatchPubDraftStudyContractCriteriaErrors];
 
 export type PatchPubDraftStudyContractCriteriaResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftCriteria;
+    /**
+     * ok
+     */
+    200: PubDraftCriteria;
 };
 
-export type PatchPubDraftStudyContractCriteriaResponse =
-	PatchPubDraftStudyContractCriteriaResponses[keyof PatchPubDraftStudyContractCriteriaResponses];
+export type PatchPubDraftStudyContractCriteriaResponse = PatchPubDraftStudyContractCriteriaResponses[keyof PatchPubDraftStudyContractCriteriaResponses];
 
 export type GetPubDraftStudyContractTermsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/terms';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/terms';
 };
 
 export type GetPubDraftStudyContractTermsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftStudyContractTermsError =
-	GetPubDraftStudyContractTermsErrors[keyof GetPubDraftStudyContractTermsErrors];
+export type GetPubDraftStudyContractTermsError = GetPubDraftStudyContractTermsErrors[keyof GetPubDraftStudyContractTermsErrors];
 
 export type GetPubDraftStudyContractTermsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTermsExtended;
+    /**
+     * ok
+     */
+    200: PubDraftTermsExtended;
 };
 
-export type GetPubDraftStudyContractTermsResponse =
-	GetPubDraftStudyContractTermsResponses[keyof GetPubDraftStudyContractTermsResponses];
+export type GetPubDraftStudyContractTermsResponse = GetPubDraftStudyContractTermsResponses[keyof GetPubDraftStudyContractTermsResponses];
 
 export type PatchPubDraftStudyContractTermsData = {
-	body: PubDraftTermsExtended;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/terms';
+    body: PubDraftTermsExtended;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/terms';
 };
 
 export type PatchPubDraftStudyContractTermsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftStudyContractTermsError =
-	PatchPubDraftStudyContractTermsErrors[keyof PatchPubDraftStudyContractTermsErrors];
+export type PatchPubDraftStudyContractTermsError = PatchPubDraftStudyContractTermsErrors[keyof PatchPubDraftStudyContractTermsErrors];
 
 export type PatchPubDraftStudyContractTermsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftTermsExtended;
+    /**
+     * ok
+     */
+    200: PubDraftTermsExtended;
 };
 
-export type PatchPubDraftStudyContractTermsResponse =
-	PatchPubDraftStudyContractTermsResponses[keyof PatchPubDraftStudyContractTermsResponses];
+export type PatchPubDraftStudyContractTermsResponse = PatchPubDraftStudyContractTermsResponses[keyof PatchPubDraftStudyContractTermsResponses];
 
 export type GetPubDraftStudyContractLotData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/lots/{lotId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/lots/{lotId}';
 };
 
 export type GetPubDraftStudyContractLotErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftStudyContractLotError =
-	GetPubDraftStudyContractLotErrors[keyof GetPubDraftStudyContractLotErrors];
+export type GetPubDraftStudyContractLotError = GetPubDraftStudyContractLotErrors[keyof GetPubDraftStudyContractLotErrors];
 
 export type GetPubDraftStudyContractLotResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftStudyContractLot;
+    /**
+     * ok
+     */
+    200: PubDraftStudyContractLot;
 };
 
-export type GetPubDraftStudyContractLotResponse =
-	GetPubDraftStudyContractLotResponses[keyof GetPubDraftStudyContractLotResponses];
+export type GetPubDraftStudyContractLotResponse = GetPubDraftStudyContractLotResponses[keyof GetPubDraftStudyContractLotResponses];
 
 export type PatchPubDraftStudyContractLotData = {
-	body: PubDraftStudyContractLot;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/lots/{lotId}';
+    body: PubDraftStudyContractLot;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/lots/{lotId}';
 };
 
 export type PatchPubDraftStudyContractLotErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftStudyContractLotError =
-	PatchPubDraftStudyContractLotErrors[keyof PatchPubDraftStudyContractLotErrors];
+export type PatchPubDraftStudyContractLotError = PatchPubDraftStudyContractLotErrors[keyof PatchPubDraftStudyContractLotErrors];
 
 export type PatchPubDraftStudyContractLotResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftStudyContractLot;
+    /**
+     * ok
+     */
+    200: PubDraftStudyContractLot;
 };
 
-export type PatchPubDraftStudyContractLotResponse =
-	PatchPubDraftStudyContractLotResponses[keyof PatchPubDraftStudyContractLotResponses];
+export type PatchPubDraftStudyContractLotResponse = PatchPubDraftStudyContractLotResponses[keyof PatchPubDraftStudyContractLotResponses];
 
 export type CreatePubDraftStudyContractLotData = {
-	body: PubDraftLotDescriptionCreate;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/lots/{lotId}';
+    body: PubDraftLotDescriptionCreate;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/lots/{lotId}';
 };
 
 export type CreatePubDraftStudyContractLotErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreatePubDraftStudyContractLotError =
-	CreatePubDraftStudyContractLotErrors[keyof CreatePubDraftStudyContractLotErrors];
+export type CreatePubDraftStudyContractLotError = CreatePubDraftStudyContractLotErrors[keyof CreatePubDraftStudyContractLotErrors];
 
 export type CreatePubDraftStudyContractLotResponses = {
-	/**
-	 * Created
-	 */
-	201: PubDraftStudyContractLot;
+    /**
+     * created
+     */
+    201: PubDraftStudyContractLot;
 };
 
-export type CreatePubDraftStudyContractLotResponse =
-	CreatePubDraftStudyContractLotResponses[keyof CreatePubDraftStudyContractLotResponses];
+export type CreatePubDraftStudyContractLotResponse = CreatePubDraftStudyContractLotResponses[keyof CreatePubDraftStudyContractLotResponses];
 
 export type GetPubDraftStudyContractInvitedVendorsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/invited-vendors';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/invited-vendors';
 };
 
 export type GetPubDraftStudyContractInvitedVendorsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftStudyContractInvitedVendorsError =
-	GetPubDraftStudyContractInvitedVendorsErrors[keyof GetPubDraftStudyContractInvitedVendorsErrors];
+export type GetPubDraftStudyContractInvitedVendorsError = GetPubDraftStudyContractInvitedVendorsErrors[keyof GetPubDraftStudyContractInvitedVendorsErrors];
 
 export type GetPubDraftStudyContractInvitedVendorsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubInvitedVendors;
+    /**
+     * ok
+     */
+    200: PubInvitedVendors;
 };
 
-export type GetPubDraftStudyContractInvitedVendorsResponse =
-	GetPubDraftStudyContractInvitedVendorsResponses[keyof GetPubDraftStudyContractInvitedVendorsResponses];
+export type GetPubDraftStudyContractInvitedVendorsResponse = GetPubDraftStudyContractInvitedVendorsResponses[keyof GetPubDraftStudyContractInvitedVendorsResponses];
 
 export type PatchPubDraftStudyContractInvitedVendorsData = {
-	body: PubInvitedVendorsPatch;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/study-contract/{pubDraftId}/invited-vendors';
+    body: PubInvitedVendorsPatch;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/study-contract/{pubDraftId}/invited-vendors';
 };
 
 export type PatchPubDraftStudyContractInvitedVendorsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftStudyContractInvitedVendorsError =
-	PatchPubDraftStudyContractInvitedVendorsErrors[keyof PatchPubDraftStudyContractInvitedVendorsErrors];
+export type PatchPubDraftStudyContractInvitedVendorsError = PatchPubDraftStudyContractInvitedVendorsErrors[keyof PatchPubDraftStudyContractInvitedVendorsErrors];
 
 export type PatchPubDraftStudyContractInvitedVendorsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubInvitedVendors;
+    /**
+     * ok
+     */
+    200: PubInvitedVendors;
 };
 
-export type PatchPubDraftStudyContractInvitedVendorsResponse =
-	PatchPubDraftStudyContractInvitedVendorsResponses[keyof PatchPubDraftStudyContractInvitedVendorsResponses];
+export type PatchPubDraftStudyContractInvitedVendorsResponse = PatchPubDraftStudyContractInvitedVendorsResponses[keyof PatchPubDraftStudyContractInvitedVendorsResponses];
 
 export type GetPubDraftAwardProjectInfoData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/award/{pubDraftId}/project-info';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/award/{pubDraftId}/project-info';
 };
 
 export type GetPubDraftAwardProjectInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftAwardProjectInfoError =
-	GetPubDraftAwardProjectInfoErrors[keyof GetPubDraftAwardProjectInfoErrors];
+export type GetPubDraftAwardProjectInfoError = GetPubDraftAwardProjectInfoErrors[keyof GetPubDraftAwardProjectInfoErrors];
 
 export type GetPubDraftAwardProjectInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftAwardProjectInfo;
+    /**
+     * ok
+     */
+    200: PubDraftAwardProjectInfo;
 };
 
-export type GetPubDraftAwardProjectInfoResponse =
-	GetPubDraftAwardProjectInfoResponses[keyof GetPubDraftAwardProjectInfoResponses];
+export type GetPubDraftAwardProjectInfoResponse = GetPubDraftAwardProjectInfoResponses[keyof GetPubDraftAwardProjectInfoResponses];
 
 export type PatchPubDraftAwardProjectInfoData = {
-	body: PubDraftAwardProjectInfo;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/award/{pubDraftId}/project-info';
+    body: PubDraftAwardProjectInfo;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/award/{pubDraftId}/project-info';
 };
 
 export type PatchPubDraftAwardProjectInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftAwardProjectInfoError =
-	PatchPubDraftAwardProjectInfoErrors[keyof PatchPubDraftAwardProjectInfoErrors];
+export type PatchPubDraftAwardProjectInfoError = PatchPubDraftAwardProjectInfoErrors[keyof PatchPubDraftAwardProjectInfoErrors];
 
 export type PatchPubDraftAwardProjectInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftAwardProjectInfo;
+    /**
+     * ok
+     */
+    200: PubDraftAwardProjectInfo;
 };
 
-export type PatchPubDraftAwardProjectInfoResponse =
-	PatchPubDraftAwardProjectInfoResponses[keyof PatchPubDraftAwardProjectInfoResponses];
+export type PatchPubDraftAwardProjectInfoResponse = PatchPubDraftAwardProjectInfoResponses[keyof PatchPubDraftAwardProjectInfoResponses];
 
 export type GetPubDraftAwardProcurementData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v2/award/{pubDraftId}/procurement';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v2/award/{pubDraftId}/procurement';
 };
 
 export type GetPubDraftAwardProcurementErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftAwardProcurementError =
-	GetPubDraftAwardProcurementErrors[keyof GetPubDraftAwardProcurementErrors];
+export type GetPubDraftAwardProcurementError = GetPubDraftAwardProcurementErrors[keyof GetPubDraftAwardProcurementErrors];
 
 export type GetPubDraftAwardProcurementResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftDirectAwardProcurement;
+    /**
+     * ok
+     */
+    200: PubDraftDirectAwardProcurement;
 };
 
-export type GetPubDraftAwardProcurementResponse =
-	GetPubDraftAwardProcurementResponses[keyof GetPubDraftAwardProcurementResponses];
+export type GetPubDraftAwardProcurementResponse = GetPubDraftAwardProcurementResponses[keyof GetPubDraftAwardProcurementResponses];
 
 export type PatchPubDraftAwardProcurementData = {
-	body: PubDraftDirectAwardProcurement;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v2/award/{pubDraftId}/procurement';
+    body: PubDraftDirectAwardProcurement;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v2/award/{pubDraftId}/procurement';
 };
 
 export type PatchPubDraftAwardProcurementErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftAwardProcurementError =
-	PatchPubDraftAwardProcurementErrors[keyof PatchPubDraftAwardProcurementErrors];
+export type PatchPubDraftAwardProcurementError = PatchPubDraftAwardProcurementErrors[keyof PatchPubDraftAwardProcurementErrors];
 
 export type PatchPubDraftAwardProcurementResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftDirectAwardProcurement;
+    /**
+     * ok
+     */
+    200: PubDraftDirectAwardProcurement;
 };
 
-export type PatchPubDraftAwardProcurementResponse =
-	PatchPubDraftAwardProcurementResponses[keyof PatchPubDraftAwardProcurementResponses];
+export type PatchPubDraftAwardProcurementResponse = PatchPubDraftAwardProcurementResponses[keyof PatchPubDraftAwardProcurementResponses];
 
 export type GetPubDraftAwardDecisionData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/award/{pubDraftId}/decision';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/award/{pubDraftId}/decision';
 };
 
 export type GetPubDraftAwardDecisionErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftAwardDecisionError =
-	GetPubDraftAwardDecisionErrors[keyof GetPubDraftAwardDecisionErrors];
+export type GetPubDraftAwardDecisionError = GetPubDraftAwardDecisionErrors[keyof GetPubDraftAwardDecisionErrors];
 
 export type GetPubDraftAwardDecisionResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftAwardDecisionStep;
+    /**
+     * ok
+     */
+    200: PubDraftAwardDecisionStep;
 };
 
-export type GetPubDraftAwardDecisionResponse =
-	GetPubDraftAwardDecisionResponses[keyof GetPubDraftAwardDecisionResponses];
+export type GetPubDraftAwardDecisionResponse = GetPubDraftAwardDecisionResponses[keyof GetPubDraftAwardDecisionResponses];
 
 export type PatchPubDraftAwardDecisionData = {
-	body: PubDraftAwardDecisionStep;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/award/{pubDraftId}/decision';
+    body: PubDraftAwardDecisionStep;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/award/{pubDraftId}/decision';
 };
 
 export type PatchPubDraftAwardDecisionErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftAwardDecisionError =
-	PatchPubDraftAwardDecisionErrors[keyof PatchPubDraftAwardDecisionErrors];
+export type PatchPubDraftAwardDecisionError = PatchPubDraftAwardDecisionErrors[keyof PatchPubDraftAwardDecisionErrors];
 
 export type PatchPubDraftAwardDecisionResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftAwardDecisionStep;
+    /**
+     * ok
+     */
+    200: PubDraftAwardDecisionStep;
 };
 
-export type PatchPubDraftAwardDecisionResponse =
-	PatchPubDraftAwardDecisionResponses[keyof PatchPubDraftAwardDecisionResponses];
+export type PatchPubDraftAwardDecisionResponse = PatchPubDraftAwardDecisionResponses[keyof PatchPubDraftAwardDecisionResponses];
 
 export type GetPubDraftAwardStatisticsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/award/{pubDraftId}/statistics';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/award/{pubDraftId}/statistics';
 };
 
 export type GetPubDraftAwardStatisticsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftAwardStatisticsError =
-	GetPubDraftAwardStatisticsErrors[keyof GetPubDraftAwardStatisticsErrors];
+export type GetPubDraftAwardStatisticsError = GetPubDraftAwardStatisticsErrors[keyof GetPubDraftAwardStatisticsErrors];
 
 export type GetPubDraftAwardStatisticsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftAwardStatistics;
+    /**
+     * ok
+     */
+    200: PubDraftAwardStatistics;
 };
 
-export type GetPubDraftAwardStatisticsResponse =
-	GetPubDraftAwardStatisticsResponses[keyof GetPubDraftAwardStatisticsResponses];
+export type GetPubDraftAwardStatisticsResponse = GetPubDraftAwardStatisticsResponses[keyof GetPubDraftAwardStatisticsResponses];
 
 export type PatchPubDraftAwardStatisticsData = {
-	body: PubDraftAwardStatistics;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/award/{pubDraftId}/statistics';
+    body: PubDraftAwardStatistics;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/award/{pubDraftId}/statistics';
 };
 
 export type PatchPubDraftAwardStatisticsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftAwardStatisticsError =
-	PatchPubDraftAwardStatisticsErrors[keyof PatchPubDraftAwardStatisticsErrors];
+export type PatchPubDraftAwardStatisticsError = PatchPubDraftAwardStatisticsErrors[keyof PatchPubDraftAwardStatisticsErrors];
 
 export type PatchPubDraftAwardStatisticsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftAwardStatistics;
+    /**
+     * ok
+     */
+    200: PubDraftAwardStatistics;
 };
 
-export type PatchPubDraftAwardStatisticsResponse =
-	PatchPubDraftAwardStatisticsResponses[keyof PatchPubDraftAwardStatisticsResponses];
+export type PatchPubDraftAwardStatisticsResponse = PatchPubDraftAwardStatisticsResponses[keyof PatchPubDraftAwardStatisticsResponses];
 
 export type GetPubDraftAwardSustainabilityFormData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/award/{pubDraftId}/sustainability';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/award/{pubDraftId}/sustainability';
 };
 
 export type GetPubDraftAwardSustainabilityFormErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftAwardSustainabilityFormError =
-	GetPubDraftAwardSustainabilityFormErrors[keyof GetPubDraftAwardSustainabilityFormErrors];
+export type GetPubDraftAwardSustainabilityFormError = GetPubDraftAwardSustainabilityFormErrors[keyof GetPubDraftAwardSustainabilityFormErrors];
 
 export type GetPubDraftAwardSustainabilityFormResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftAwardSustainabilityForm;
+    /**
+     * ok
+     */
+    200: PubDraftAwardSustainabilityForm;
 };
 
-export type GetPubDraftAwardSustainabilityFormResponse =
-	GetPubDraftAwardSustainabilityFormResponses[keyof GetPubDraftAwardSustainabilityFormResponses];
+export type GetPubDraftAwardSustainabilityFormResponse = GetPubDraftAwardSustainabilityFormResponses[keyof GetPubDraftAwardSustainabilityFormResponses];
 
 export type PatchPubDraftAwardSustainabilityFormData = {
-	body: PubDraftAwardSustainabilityForm;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/award/{pubDraftId}/sustainability';
+    body: PubDraftAwardSustainabilityForm;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/award/{pubDraftId}/sustainability';
 };
 
 export type PatchPubDraftAwardSustainabilityFormErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftAwardSustainabilityFormError =
-	PatchPubDraftAwardSustainabilityFormErrors[keyof PatchPubDraftAwardSustainabilityFormErrors];
+export type PatchPubDraftAwardSustainabilityFormError = PatchPubDraftAwardSustainabilityFormErrors[keyof PatchPubDraftAwardSustainabilityFormErrors];
 
 export type PatchPubDraftAwardSustainabilityFormResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftAwardSustainabilityForm;
+    /**
+     * ok
+     */
+    200: PubDraftAwardSustainabilityForm;
 };
 
-export type PatchPubDraftAwardSustainabilityFormResponse =
-	PatchPubDraftAwardSustainabilityFormResponses[keyof PatchPubDraftAwardSustainabilityFormResponses];
+export type PatchPubDraftAwardSustainabilityFormResponse = PatchPubDraftAwardSustainabilityFormResponses[keyof PatchPubDraftAwardSustainabilityFormResponses];
 
 export type GetPubDraftRfiProjectInfoData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/rfi/{pubDraftId}/project-info';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/rfi/{pubDraftId}/project-info';
 };
 
 export type GetPubDraftRfiProjectInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftRfiProjectInfoError =
-	GetPubDraftRfiProjectInfoErrors[keyof GetPubDraftRfiProjectInfoErrors];
+export type GetPubDraftRfiProjectInfoError = GetPubDraftRfiProjectInfoErrors[keyof GetPubDraftRfiProjectInfoErrors];
 
 export type GetPubDraftRfiProjectInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftRfiProjectInfo;
+    /**
+     * ok
+     */
+    200: PubDraftRfiProjectInfo;
 };
 
-export type GetPubDraftRfiProjectInfoResponse =
-	GetPubDraftRfiProjectInfoResponses[keyof GetPubDraftRfiProjectInfoResponses];
+export type GetPubDraftRfiProjectInfoResponse = GetPubDraftRfiProjectInfoResponses[keyof GetPubDraftRfiProjectInfoResponses];
 
 export type PatchPubDraftRfiProjectInfoData = {
-	body: PubDraftRfiProjectInfo;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/rfi/{pubDraftId}/project-info';
+    body: PubDraftRfiProjectInfo;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/rfi/{pubDraftId}/project-info';
 };
 
 export type PatchPubDraftRfiProjectInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftRfiProjectInfoError =
-	PatchPubDraftRfiProjectInfoErrors[keyof PatchPubDraftRfiProjectInfoErrors];
+export type PatchPubDraftRfiProjectInfoError = PatchPubDraftRfiProjectInfoErrors[keyof PatchPubDraftRfiProjectInfoErrors];
 
 export type PatchPubDraftRfiProjectInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftRfiProjectInfo;
+    /**
+     * ok
+     */
+    200: PubDraftRfiProjectInfo;
 };
 
-export type PatchPubDraftRfiProjectInfoResponse =
-	PatchPubDraftRfiProjectInfoResponses[keyof PatchPubDraftRfiProjectInfoResponses];
+export type PatchPubDraftRfiProjectInfoResponse = PatchPubDraftRfiProjectInfoResponses[keyof PatchPubDraftRfiProjectInfoResponses];
 
 export type GetPubDraftRfiDatesData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/rfi/{pubDraftId}/dates';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/rfi/{pubDraftId}/dates';
 };
 
 export type GetPubDraftRfiDatesErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftRfiDatesError =
-	GetPubDraftRfiDatesErrors[keyof GetPubDraftRfiDatesErrors];
+export type GetPubDraftRfiDatesError = GetPubDraftRfiDatesErrors[keyof GetPubDraftRfiDatesErrors];
 
 export type GetPubDraftRfiDatesResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftRfiDates;
+    /**
+     * ok
+     */
+    200: PubDraftRfiDates;
 };
 
-export type GetPubDraftRfiDatesResponse =
-	GetPubDraftRfiDatesResponses[keyof GetPubDraftRfiDatesResponses];
+export type GetPubDraftRfiDatesResponse = GetPubDraftRfiDatesResponses[keyof GetPubDraftRfiDatesResponses];
 
 export type PatchPubDraftRfiDatesData = {
-	body: PubDraftRfiDates;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/rfi/{pubDraftId}/dates';
+    body: PubDraftRfiDates;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/rfi/{pubDraftId}/dates';
 };
 
 export type PatchPubDraftRfiDatesErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftRfiDatesError =
-	PatchPubDraftRfiDatesErrors[keyof PatchPubDraftRfiDatesErrors];
+export type PatchPubDraftRfiDatesError = PatchPubDraftRfiDatesErrors[keyof PatchPubDraftRfiDatesErrors];
 
 export type PatchPubDraftRfiDatesResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftRfiDates;
+    /**
+     * ok
+     */
+    200: PubDraftRfiDates;
 };
 
-export type PatchPubDraftRfiDatesResponse =
-	PatchPubDraftRfiDatesResponses[keyof PatchPubDraftRfiDatesResponses];
+export type PatchPubDraftRfiDatesResponse = PatchPubDraftRfiDatesResponses[keyof PatchPubDraftRfiDatesResponses];
 
 export type GetPubDraftRfiProcurementData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/rfi/{pubDraftId}/procurement';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/rfi/{pubDraftId}/procurement';
 };
 
 export type GetPubDraftRfiProcurementErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftRfiProcurementError =
-	GetPubDraftRfiProcurementErrors[keyof GetPubDraftRfiProcurementErrors];
+export type GetPubDraftRfiProcurementError = GetPubDraftRfiProcurementErrors[keyof GetPubDraftRfiProcurementErrors];
 
 export type GetPubDraftRfiProcurementResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftRfiProcurement;
+    /**
+     * ok
+     */
+    200: PubDraftRfiProcurement;
 };
 
-export type GetPubDraftRfiProcurementResponse =
-	GetPubDraftRfiProcurementResponses[keyof GetPubDraftRfiProcurementResponses];
+export type GetPubDraftRfiProcurementResponse = GetPubDraftRfiProcurementResponses[keyof GetPubDraftRfiProcurementResponses];
 
 export type PatchPubDraftRfiProcurementData = {
-	body: PubDraftRfiProcurement;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/rfi/{pubDraftId}/procurement';
+    body: PubDraftRfiProcurement;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/rfi/{pubDraftId}/procurement';
 };
 
 export type PatchPubDraftRfiProcurementErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftRfiProcurementError =
-	PatchPubDraftRfiProcurementErrors[keyof PatchPubDraftRfiProcurementErrors];
+export type PatchPubDraftRfiProcurementError = PatchPubDraftRfiProcurementErrors[keyof PatchPubDraftRfiProcurementErrors];
 
 export type PatchPubDraftRfiProcurementResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftRfiProcurement;
+    /**
+     * ok
+     */
+    200: PubDraftRfiProcurement;
 };
 
-export type PatchPubDraftRfiProcurementResponse =
-	PatchPubDraftRfiProcurementResponses[keyof PatchPubDraftRfiProcurementResponses];
+export type PatchPubDraftRfiProcurementResponse = PatchPubDraftRfiProcurementResponses[keyof PatchPubDraftRfiProcurementResponses];
 
 export type GetPubDraftRfiTermsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/rfi/{pubDraftId}/terms';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/rfi/{pubDraftId}/terms';
 };
 
 export type GetPubDraftRfiTermsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftRfiTermsError =
-	GetPubDraftRfiTermsErrors[keyof GetPubDraftRfiTermsErrors];
+export type GetPubDraftRfiTermsError = GetPubDraftRfiTermsErrors[keyof GetPubDraftRfiTermsErrors];
 
 export type GetPubDraftRfiTermsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftRfiTerms;
+    /**
+     * ok
+     */
+    200: PubDraftRfiTerms;
 };
 
-export type GetPubDraftRfiTermsResponse =
-	GetPubDraftRfiTermsResponses[keyof GetPubDraftRfiTermsResponses];
+export type GetPubDraftRfiTermsResponse = GetPubDraftRfiTermsResponses[keyof GetPubDraftRfiTermsResponses];
 
 export type PatchPubDraftRfiTermsData = {
-	body: PubDraftRfiTerms;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/rfi/{pubDraftId}/terms';
+    body: PubDraftRfiTerms;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/rfi/{pubDraftId}/terms';
 };
 
 export type PatchPubDraftRfiTermsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftRfiTermsError =
-	PatchPubDraftRfiTermsErrors[keyof PatchPubDraftRfiTermsErrors];
+export type PatchPubDraftRfiTermsError = PatchPubDraftRfiTermsErrors[keyof PatchPubDraftRfiTermsErrors];
 
 export type PatchPubDraftRfiTermsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftRfiTerms;
+    /**
+     * ok
+     */
+    200: PubDraftRfiTerms;
 };
 
-export type PatchPubDraftRfiTermsResponse =
-	PatchPubDraftRfiTermsResponses[keyof PatchPubDraftRfiTermsResponses];
+export type PatchPubDraftRfiTermsResponse = PatchPubDraftRfiTermsResponses[keyof PatchPubDraftRfiTermsResponses];
 
 export type GetPubDraftAbandonmentInfoData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/abandonment/{pubDraftId}/abandonment';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/abandonment/{pubDraftId}/abandonment';
 };
 
 export type GetPubDraftAbandonmentInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftAbandonmentInfoError =
-	GetPubDraftAbandonmentInfoErrors[keyof GetPubDraftAbandonmentInfoErrors];
+export type GetPubDraftAbandonmentInfoError = GetPubDraftAbandonmentInfoErrors[keyof GetPubDraftAbandonmentInfoErrors];
 
 export type GetPubDraftAbandonmentInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftAbandonmentInfo;
+    /**
+     * ok
+     */
+    200: PubDraftAbandonmentInfo;
 };
 
-export type GetPubDraftAbandonmentInfoResponse =
-	GetPubDraftAbandonmentInfoResponses[keyof GetPubDraftAbandonmentInfoResponses];
+export type GetPubDraftAbandonmentInfoResponse = GetPubDraftAbandonmentInfoResponses[keyof GetPubDraftAbandonmentInfoResponses];
 
 export type PatchPubDraftAbandonmentInfoData = {
-	body: PubDraftAbandonmentInfo;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/abandonment/{pubDraftId}/abandonment';
+    body: PubDraftAbandonmentInfo;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/abandonment/{pubDraftId}/abandonment';
 };
 
 export type PatchPubDraftAbandonmentInfoErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftAbandonmentInfoError =
-	PatchPubDraftAbandonmentInfoErrors[keyof PatchPubDraftAbandonmentInfoErrors];
+export type PatchPubDraftAbandonmentInfoError = PatchPubDraftAbandonmentInfoErrors[keyof PatchPubDraftAbandonmentInfoErrors];
 
 export type PatchPubDraftAbandonmentInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftAbandonmentInfo;
+    /**
+     * ok
+     */
+    200: PubDraftAbandonmentInfo;
 };
 
-export type PatchPubDraftAbandonmentInfoResponse =
-	PatchPubDraftAbandonmentInfoResponses[keyof PatchPubDraftAbandonmentInfoResponses];
+export type PatchPubDraftAbandonmentInfoResponse = PatchPubDraftAbandonmentInfoResponses[keyof PatchPubDraftAbandonmentInfoResponses];
 
 export type GetPubDraftRevocationData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/revocation/{pubDraftId}/revocation';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/revocation/{pubDraftId}/revocation';
 };
 
 export type GetPubDraftRevocationErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftRevocationError =
-	GetPubDraftRevocationErrors[keyof GetPubDraftRevocationErrors];
+export type GetPubDraftRevocationError = GetPubDraftRevocationErrors[keyof GetPubDraftRevocationErrors];
 
 export type GetPubDraftRevocationResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftRevocationInfo;
+    /**
+     * ok
+     */
+    200: PubDraftRevocationInfo;
 };
 
-export type GetPubDraftRevocationResponse =
-	GetPubDraftRevocationResponses[keyof GetPubDraftRevocationResponses];
+export type GetPubDraftRevocationResponse = GetPubDraftRevocationResponses[keyof GetPubDraftRevocationResponses];
 
 export type PatchPubDraftRevocationData = {
-	body: PubDraftRevocationInfo;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/revocation/{pubDraftId}/revocation';
+    body: PubDraftRevocationInfo;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/revocation/{pubDraftId}/revocation';
 };
 
 export type PatchPubDraftRevocationErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftRevocationError =
-	PatchPubDraftRevocationErrors[keyof PatchPubDraftRevocationErrors];
+export type PatchPubDraftRevocationError = PatchPubDraftRevocationErrors[keyof PatchPubDraftRevocationErrors];
 
 export type PatchPubDraftRevocationResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftRevocationInfo;
+    /**
+     * ok
+     */
+    200: PubDraftRevocationInfo;
 };
 
-export type PatchPubDraftRevocationResponse =
-	PatchPubDraftRevocationResponses[keyof PatchPubDraftRevocationResponses];
+export type PatchPubDraftRevocationResponse = PatchPubDraftRevocationResponses[keyof PatchPubDraftRevocationResponses];
 
 export type GetPubDraftCorrectionInfoData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/correction/{pubDraftId}/correction';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/correction/{pubDraftId}/correction';
 };
 
 export type GetPubDraftCorrectionInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftCorrectionInfoError =
-	GetPubDraftCorrectionInfoErrors[keyof GetPubDraftCorrectionInfoErrors];
+export type GetPubDraftCorrectionInfoError = GetPubDraftCorrectionInfoErrors[keyof GetPubDraftCorrectionInfoErrors];
 
 export type GetPubDraftCorrectionInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftCorrectionInfo;
+    /**
+     * ok
+     */
+    200: PubDraftCorrectionInfo;
 };
 
-export type GetPubDraftCorrectionInfoResponse =
-	GetPubDraftCorrectionInfoResponses[keyof GetPubDraftCorrectionInfoResponses];
+export type GetPubDraftCorrectionInfoResponse = GetPubDraftCorrectionInfoResponses[keyof GetPubDraftCorrectionInfoResponses];
 
 export type PatchPubDraftCorrectionInfoData = {
-	body: PubDraftCorrectionInfo;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/correction/{pubDraftId}/correction';
+    body: PubDraftCorrectionInfo;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/correction/{pubDraftId}/correction';
 };
 
 export type PatchPubDraftCorrectionInfoErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftCorrectionInfoError =
-	PatchPubDraftCorrectionInfoErrors[keyof PatchPubDraftCorrectionInfoErrors];
+export type PatchPubDraftCorrectionInfoError = PatchPubDraftCorrectionInfoErrors[keyof PatchPubDraftCorrectionInfoErrors];
 
 export type PatchPubDraftCorrectionInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftCorrectionInfo;
+    /**
+     * ok
+     */
+    200: PubDraftCorrectionInfo;
 };
 
-export type PatchPubDraftCorrectionInfoResponse =
-	PatchPubDraftCorrectionInfoResponses[keyof PatchPubDraftCorrectionInfoResponses];
+export type PatchPubDraftCorrectionInfoResponse = PatchPubDraftCorrectionInfoResponses[keyof PatchPubDraftCorrectionInfoResponses];
 
 export type GetPubDraftParticipantSelectionProjectInfoData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/participant-selection/{pubDraftId}/project-info';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/participant-selection/{pubDraftId}/project-info';
 };
 
 export type GetPubDraftParticipantSelectionProjectInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftParticipantSelectionProjectInfoError =
-	GetPubDraftParticipantSelectionProjectInfoErrors[keyof GetPubDraftParticipantSelectionProjectInfoErrors];
+export type GetPubDraftParticipantSelectionProjectInfoError = GetPubDraftParticipantSelectionProjectInfoErrors[keyof GetPubDraftParticipantSelectionProjectInfoErrors];
 
 export type GetPubDraftParticipantSelectionProjectInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubBaseProjectInfoAddress;
+    /**
+     * ok
+     */
+    200: PubBaseProjectInfoAddress;
 };
 
-export type GetPubDraftParticipantSelectionProjectInfoResponse =
-	GetPubDraftParticipantSelectionProjectInfoResponses[keyof GetPubDraftParticipantSelectionProjectInfoResponses];
+export type GetPubDraftParticipantSelectionProjectInfoResponse = GetPubDraftParticipantSelectionProjectInfoResponses[keyof GetPubDraftParticipantSelectionProjectInfoResponses];
 
 export type PatchPubDraftParticipantSelectionProjectInfoData = {
-	body: PubBaseProjectInfoAddress;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/participant-selection/{pubDraftId}/project-info';
+    body: PubBaseProjectInfoAddress;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/participant-selection/{pubDraftId}/project-info';
 };
 
 export type PatchPubDraftParticipantSelectionProjectInfoErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftParticipantSelectionProjectInfoError =
-	PatchPubDraftParticipantSelectionProjectInfoErrors[keyof PatchPubDraftParticipantSelectionProjectInfoErrors];
+export type PatchPubDraftParticipantSelectionProjectInfoError = PatchPubDraftParticipantSelectionProjectInfoErrors[keyof PatchPubDraftParticipantSelectionProjectInfoErrors];
 
 export type PatchPubDraftParticipantSelectionProjectInfoResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubBaseProjectInfoAddress;
+    /**
+     * ok
+     */
+    200: PubBaseProjectInfoAddress;
 };
 
-export type PatchPubDraftParticipantSelectionProjectInfoResponse =
-	PatchPubDraftParticipantSelectionProjectInfoResponses[keyof PatchPubDraftParticipantSelectionProjectInfoResponses];
+export type PatchPubDraftParticipantSelectionProjectInfoResponse = PatchPubDraftParticipantSelectionProjectInfoResponses[keyof PatchPubDraftParticipantSelectionProjectInfoResponses];
 
 export type GetPubDraftParticipantSelectionData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/participant-selection/{pubDraftId}/participant-selection';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/participant-selection/{pubDraftId}/participant-selection';
 };
 
 export type GetPubDraftParticipantSelectionErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftParticipantSelectionError =
-	GetPubDraftParticipantSelectionErrors[keyof GetPubDraftParticipantSelectionErrors];
+export type GetPubDraftParticipantSelectionError = GetPubDraftParticipantSelectionErrors[keyof GetPubDraftParticipantSelectionErrors];
 
 export type GetPubDraftParticipantSelectionResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftParticipantSelectionInfo;
+    /**
+     * ok
+     */
+    200: PubDraftParticipantSelectionInfo;
 };
 
-export type GetPubDraftParticipantSelectionResponse =
-	GetPubDraftParticipantSelectionResponses[keyof GetPubDraftParticipantSelectionResponses];
+export type GetPubDraftParticipantSelectionResponse = GetPubDraftParticipantSelectionResponses[keyof GetPubDraftParticipantSelectionResponses];
 
 export type PatchPubDraftParticipantSelectionData = {
-	body: PubDraftParticipantSelectionInfo;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/participant-selection/{pubDraftId}/participant-selection';
+    body: PubDraftParticipantSelectionInfo;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/participant-selection/{pubDraftId}/participant-selection';
 };
 
 export type PatchPubDraftParticipantSelectionErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftParticipantSelectionError =
-	PatchPubDraftParticipantSelectionErrors[keyof PatchPubDraftParticipantSelectionErrors];
+export type PatchPubDraftParticipantSelectionError = PatchPubDraftParticipantSelectionErrors[keyof PatchPubDraftParticipantSelectionErrors];
 
 export type PatchPubDraftParticipantSelectionResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftParticipantSelectionInfo;
+    /**
+     * ok
+     */
+    200: PubDraftParticipantSelectionInfo;
 };
 
-export type PatchPubDraftParticipantSelectionResponse =
-	PatchPubDraftParticipantSelectionResponses[keyof PatchPubDraftParticipantSelectionResponses];
+export type PatchPubDraftParticipantSelectionResponse = PatchPubDraftParticipantSelectionResponses[keyof PatchPubDraftParticipantSelectionResponses];
 
 export type GetPubDraftSelectiveOfferingPhaseNoticeData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/selective-offering-phase/{pubDraftId}/notice';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/selective-offering-phase/{pubDraftId}/notice';
 };
 
 export type GetPubDraftSelectiveOfferingPhaseNoticeErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftSelectiveOfferingPhaseNoticeError =
-	GetPubDraftSelectiveOfferingPhaseNoticeErrors[keyof GetPubDraftSelectiveOfferingPhaseNoticeErrors];
+export type GetPubDraftSelectiveOfferingPhaseNoticeError = GetPubDraftSelectiveOfferingPhaseNoticeErrors[keyof GetPubDraftSelectiveOfferingPhaseNoticeErrors];
 
 export type GetPubDraftSelectiveOfferingPhaseNoticeResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftSelectiveOfferingPhaseNotice;
+    /**
+     * ok
+     */
+    200: PubDraftSelectiveOfferingPhaseNotice;
 };
 
-export type GetPubDraftSelectiveOfferingPhaseNoticeResponse =
-	GetPubDraftSelectiveOfferingPhaseNoticeResponses[keyof GetPubDraftSelectiveOfferingPhaseNoticeResponses];
+export type GetPubDraftSelectiveOfferingPhaseNoticeResponse = GetPubDraftSelectiveOfferingPhaseNoticeResponses[keyof GetPubDraftSelectiveOfferingPhaseNoticeResponses];
 
 export type PatchPubDraftSelectiveOfferingPhaseNoticeData = {
-	body: PubDraftSelectiveOfferingPhaseNotice;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/selective-offering-phase/{pubDraftId}/notice';
+    body: PubDraftSelectiveOfferingPhaseNotice;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/selective-offering-phase/{pubDraftId}/notice';
 };
 
 export type PatchPubDraftSelectiveOfferingPhaseNoticeErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftSelectiveOfferingPhaseNoticeError =
-	PatchPubDraftSelectiveOfferingPhaseNoticeErrors[keyof PatchPubDraftSelectiveOfferingPhaseNoticeErrors];
+export type PatchPubDraftSelectiveOfferingPhaseNoticeError = PatchPubDraftSelectiveOfferingPhaseNoticeErrors[keyof PatchPubDraftSelectiveOfferingPhaseNoticeErrors];
 
 export type PatchPubDraftSelectiveOfferingPhaseNoticeResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftSelectiveOfferingPhaseNotice;
+    /**
+     * ok
+     */
+    200: PubDraftSelectiveOfferingPhaseNotice;
 };
 
-export type PatchPubDraftSelectiveOfferingPhaseNoticeResponse =
-	PatchPubDraftSelectiveOfferingPhaseNoticeResponses[keyof PatchPubDraftSelectiveOfferingPhaseNoticeResponses];
+export type PatchPubDraftSelectiveOfferingPhaseNoticeResponse = PatchPubDraftSelectiveOfferingPhaseNoticeResponses[keyof PatchPubDraftSelectiveOfferingPhaseNoticeResponses];
 
 export type GetPubDraftSelectiveOfferingPhaseDatesData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/selective-offering-phase/{pubDraftId}/dates';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/selective-offering-phase/{pubDraftId}/dates';
 };
 
 export type GetPubDraftSelectiveOfferingPhaseDatesErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftSelectiveOfferingPhaseDatesError =
-	GetPubDraftSelectiveOfferingPhaseDatesErrors[keyof GetPubDraftSelectiveOfferingPhaseDatesErrors];
+export type GetPubDraftSelectiveOfferingPhaseDatesError = GetPubDraftSelectiveOfferingPhaseDatesErrors[keyof GetPubDraftSelectiveOfferingPhaseDatesErrors];
 
 export type GetPubDraftSelectiveOfferingPhaseDatesResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftSelectiveOfferingPhaseDates;
+    /**
+     * ok
+     */
+    200: PubDraftSelectiveOfferingPhaseDates;
 };
 
-export type GetPubDraftSelectiveOfferingPhaseDatesResponse =
-	GetPubDraftSelectiveOfferingPhaseDatesResponses[keyof GetPubDraftSelectiveOfferingPhaseDatesResponses];
+export type GetPubDraftSelectiveOfferingPhaseDatesResponse = GetPubDraftSelectiveOfferingPhaseDatesResponses[keyof GetPubDraftSelectiveOfferingPhaseDatesResponses];
 
 export type PatchPubDraftSelectiveOfferingPhaseDatesData = {
-	body: PubDraftSelectiveOfferingPhaseDates;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/selective-offering-phase/{pubDraftId}/dates';
+    body: PubDraftSelectiveOfferingPhaseDates;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/selective-offering-phase/{pubDraftId}/dates';
 };
 
 export type PatchPubDraftSelectiveOfferingPhaseDatesErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftSelectiveOfferingPhaseDatesError =
-	PatchPubDraftSelectiveOfferingPhaseDatesErrors[keyof PatchPubDraftSelectiveOfferingPhaseDatesErrors];
+export type PatchPubDraftSelectiveOfferingPhaseDatesError = PatchPubDraftSelectiveOfferingPhaseDatesErrors[keyof PatchPubDraftSelectiveOfferingPhaseDatesErrors];
 
 export type PatchPubDraftSelectiveOfferingPhaseDatesResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftSelectiveOfferingPhaseDates;
+    /**
+     * ok
+     */
+    200: PubDraftSelectiveOfferingPhaseDates;
 };
 
-export type PatchPubDraftSelectiveOfferingPhaseDatesResponse =
-	PatchPubDraftSelectiveOfferingPhaseDatesResponses[keyof PatchPubDraftSelectiveOfferingPhaseDatesResponses];
+export type PatchPubDraftSelectiveOfferingPhaseDatesResponse = PatchPubDraftSelectiveOfferingPhaseDatesResponses[keyof PatchPubDraftSelectiveOfferingPhaseDatesResponses];
 
 export type GetPubDraftSelectiveOfferingPhaseCriteriaData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/selective-offering-phase/{pubDraftId}/criteria';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/selective-offering-phase/{pubDraftId}/criteria';
 };
 
 export type GetPubDraftSelectiveOfferingPhaseCriteriaErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPubDraftSelectiveOfferingPhaseCriteriaError =
-	GetPubDraftSelectiveOfferingPhaseCriteriaErrors[keyof GetPubDraftSelectiveOfferingPhaseCriteriaErrors];
+export type GetPubDraftSelectiveOfferingPhaseCriteriaError = GetPubDraftSelectiveOfferingPhaseCriteriaErrors[keyof GetPubDraftSelectiveOfferingPhaseCriteriaErrors];
 
 export type GetPubDraftSelectiveOfferingPhaseCriteriaResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftSelectiveOfferingPhaseCriteria;
+    /**
+     * ok
+     */
+    200: PubDraftSelectiveOfferingPhaseCriteria;
 };
 
-export type GetPubDraftSelectiveOfferingPhaseCriteriaResponse =
-	GetPubDraftSelectiveOfferingPhaseCriteriaResponses[keyof GetPubDraftSelectiveOfferingPhaseCriteriaResponses];
+export type GetPubDraftSelectiveOfferingPhaseCriteriaResponse = GetPubDraftSelectiveOfferingPhaseCriteriaResponses[keyof GetPubDraftSelectiveOfferingPhaseCriteriaResponses];
 
 export type PatchPubDraftSelectiveOfferingPhaseCriteriaData = {
-	body: PubDraftSelectiveOfferingPhaseCriteria;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/pub-drafts/v1/selective-offering-phase/{pubDraftId}/criteria';
+    body: PubDraftSelectiveOfferingPhaseCriteria;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/selective-offering-phase/{pubDraftId}/criteria';
 };
 
 export type PatchPubDraftSelectiveOfferingPhaseCriteriaErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchPubDraftSelectiveOfferingPhaseCriteriaError =
-	PatchPubDraftSelectiveOfferingPhaseCriteriaErrors[keyof PatchPubDraftSelectiveOfferingPhaseCriteriaErrors];
+export type PatchPubDraftSelectiveOfferingPhaseCriteriaError = PatchPubDraftSelectiveOfferingPhaseCriteriaErrors[keyof PatchPubDraftSelectiveOfferingPhaseCriteriaErrors];
 
 export type PatchPubDraftSelectiveOfferingPhaseCriteriaResponses = {
-	/**
-	 * Ok
-	 */
-	200: PubDraftSelectiveOfferingPhaseCriteria;
+    /**
+     * ok
+     */
+    200: PubDraftSelectiveOfferingPhaseCriteria;
 };
 
-export type PatchPubDraftSelectiveOfferingPhaseCriteriaResponse =
-	PatchPubDraftSelectiveOfferingPhaseCriteriaResponses[keyof PatchPubDraftSelectiveOfferingPhaseCriteriaResponses];
+export type PatchPubDraftSelectiveOfferingPhaseCriteriaResponse = PatchPubDraftSelectiveOfferingPhaseCriteriaResponses[keyof PatchPubDraftSelectiveOfferingPhaseCriteriaResponses];
 
 export type ValidatePubDraftData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: {
-		/**
-		 * If set to true, validation will be run in dry-run mode and doesn't modify and calculate any data, nor transition to the 'validated' state.
-		 */
-		'dry-run'?: boolean;
-	};
-	url: '/pub-drafts/v1/pd/{pubDraftId}/validate';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: {
+        /**
+         * If set to true, validation will be run in dry-run mode and doesn't modify and calculate any data, nor transition to the 'validated' state.
+         */
+        'dry-run'?: boolean;
+    };
+    url: '/pub-drafts/v1/pd/{pubDraftId}/validate';
 };
 
 export type ValidatePubDraftErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ValidatePubDraftError =
-	ValidatePubDraftErrors[keyof ValidatePubDraftErrors];
+export type ValidatePubDraftError = ValidatePubDraftErrors[keyof ValidatePubDraftErrors];
 
 export type ValidatePubDraftResponses = {
-	/**
-	 * Ok
-	 */
-	200: ValidationResults;
+    /**
+     * ok
+     */
+    200: ValidationResults;
 };
 
-export type ValidatePubDraftResponse =
-	ValidatePubDraftResponses[keyof ValidatePubDraftResponses];
+export type ValidatePubDraftResponse = ValidatePubDraftResponses[keyof ValidatePubDraftResponses];
 
 export type GetPastPublishedPubDraftsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: {
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId?: string;
-	};
-	url: '/pub-drafts/v1/pd/{pubDraftId}/past-publications';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: {
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId?: string;
+    };
+    url: '/pub-drafts/v1/pd/{pubDraftId}/past-publications';
 };
 
 export type GetPastPublishedPubDraftsErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPastPublishedPubDraftsError =
-	GetPastPublishedPubDraftsErrors[keyof GetPastPublishedPubDraftsErrors];
+export type GetPastPublishedPubDraftsError = GetPastPublishedPubDraftsErrors[keyof GetPastPublishedPubDraftsErrors];
 
 export type GetPastPublishedPubDraftsResponses = {
-	/**
-	 * Ok
-	 */
-	200: PastPublications;
+    /**
+     * ok
+     */
+    200: PastPublications;
 };
 
-export type GetPastPublishedPubDraftsResponse =
-	GetPastPublishedPubDraftsResponses[keyof GetPastPublishedPubDraftsResponses];
+export type GetPastPublishedPubDraftsResponse = GetPastPublishedPubDraftsResponses[keyof GetPastPublishedPubDraftsResponses];
 
 export type GetPastPublishedPubDraftActionsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: {
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId?: string;
-	};
-	url: '/pub-drafts/v1/pd/{pubDraftId}/past-publication-actions';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: {
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId?: string;
+    };
+    url: '/pub-drafts/v1/pd/{pubDraftId}/past-publication-actions';
 };
 
 export type GetPastPublishedPubDraftActionsErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetPastPublishedPubDraftActionsError =
-	GetPastPublishedPubDraftActionsErrors[keyof GetPastPublishedPubDraftActionsErrors];
+export type GetPastPublishedPubDraftActionsError = GetPastPublishedPubDraftActionsErrors[keyof GetPastPublishedPubDraftActionsErrors];
 
 export type GetPastPublishedPubDraftActionsResponses = {
-	/**
-	 * Ok
-	 */
-	200: ProcOfficePubActions;
+    /**
+     * ok
+     */
+    200: ProcOfficePubActions;
 };
 
-export type GetPastPublishedPubDraftActionsResponse =
-	GetPastPublishedPubDraftActionsResponses[keyof GetPastPublishedPubDraftActionsResponses];
+export type GetPastPublishedPubDraftActionsResponse = GetPastPublishedPubDraftActionsResponses[keyof GetPastPublishedPubDraftActionsResponses];
 
 export type GetRolesData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/roles/v1/my';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/roles/v1/my';
 };
 
 export type GetRolesErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type GetRolesError = GetRolesErrors[keyof GetRolesErrors];
 
 export type GetRolesResponses = {
-	/**
-	 * Gives all possible combinations for roles and organizations for a user
-	 */
-	200: RolesAndOrganizations;
+    /**
+     * gives all possible combinations for roles and organizations for a user
+     */
+    200: RolesAndOrganizations;
 };
 
 export type GetRolesResponse = GetRolesResponses[keyof GetRolesResponses];
 
 export type SetRoleData = {
-	body: RoleAndOrganizationChange;
-	path?: never;
-	query?: never;
-	url: '/roles/v1/my';
+    body: RoleAndOrganizationChange;
+    path?: never;
+    query?: never;
+    url: '/roles/v1/my';
 };
 
 export type SetRoleErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type SetRoleError = SetRoleErrors[keyof SetRoleErrors];
 
 export type SetRoleResponses = {
-	/**
-	 * Changes role and organization of current user. Frontend needs to refresh access token to make the change active!
-	 */
-	200: RoleAndOrganizationChange;
+    /**
+     * Changes role and organization of current user. Frontend needs to refresh access token to make the change active!
+     */
+    200: RoleAndOrganizationChange;
 };
 
 export type SetRoleResponse = SetRoleResponses[keyof SetRoleResponses];
 
 export type ListPublishersData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/publishers/v1';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/publishers/v1';
 };
 
 export type ListPublishersErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ListPublishersError =
-	ListPublishersErrors[keyof ListPublishersErrors];
+export type ListPublishersError = ListPublishersErrors[keyof ListPublishersErrors];
 
 export type ListPublishersResponses = {
-	/**
-	 * Ok
-	 */
-	200: Publishers;
+    /**
+     * ok
+     */
+    200: Publishers;
 };
 
-export type ListPublishersResponse =
-	ListPublishersResponses[keyof ListPublishersResponses];
+export type ListPublishersResponse = ListPublishersResponses[keyof ListPublishersResponses];
 
 export type GetMyPublisherData = {
-	body?: never;
-	path?: never;
-	query?: never;
-	url: '/publishers/v1/my';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/publishers/v1/my';
 };
 
 export type GetMyPublisherErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetMyPublisherError =
-	GetMyPublisherErrors[keyof GetMyPublisherErrors];
+export type GetMyPublisherError = GetMyPublisherErrors[keyof GetMyPublisherErrors];
 
 export type GetMyPublisherResponses = {
-	/**
-	 * Ok
-	 */
-	200: Publisher;
+    /**
+     * ok
+     */
+    200: Publisher;
 };
 
-export type GetMyPublisherResponse =
-	GetMyPublisherResponses[keyof GetMyPublisherResponses];
+export type GetMyPublisherResponse = GetMyPublisherResponses[keyof GetMyPublisherResponses];
 
 export type PublishAnswersData = {
-	body?: never;
-	path: {
-		/**
-		 * The id of the qna round to publish questions in 'draft' state.
-		 *
-		 */
-		roundId: string;
-	};
-	query?: never;
-	url: '/qnas/v1/rounds/{roundId}/publish';
+    body?: never;
+    path: {
+        /**
+         * The id of the qna round to publish questions in 'draft' state.
+         *
+         */
+        roundId: string;
+    };
+    query?: never;
+    url: '/qnas/v1/rounds/{roundId}/publish';
 };
 
 export type PublishAnswersErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PublishAnswersError =
-	PublishAnswersErrors[keyof PublishAnswersErrors];
+export type PublishAnswersError = PublishAnswersErrors[keyof PublishAnswersErrors];
 
 export type PublishAnswersResponses = {
-	/**
-	 * All questions published by this request.
-	 */
-	200: QnaPublishResponses;
+    /**
+     * All questions published by this request.
+     */
+    200: QnaPublishResponses;
 };
 
-export type PublishAnswersResponse =
-	PublishAnswersResponses[keyof PublishAnswersResponses];
+export type PublishAnswersResponse = PublishAnswersResponses[keyof PublishAnswersResponses];
 
 export type DeleteQnaData = {
-	body?: never;
-	path: {
-		/**
-		 * The id of the qna round
-		 *
-		 */
-		roundId: string;
-		/**
-		 * The id of the current qna
-		 *
-		 */
-		qnaId: string;
-	};
-	query?: never;
-	url: '/qnas/v1/rounds/{roundId}/qna/{qnaId}';
+    body?: never;
+    path: {
+        /**
+         * The id of the qna round
+         *
+         */
+        roundId: string;
+        /**
+         * The id of the current qna
+         *
+         */
+        qnaId: string;
+    };
+    query?: never;
+    url: '/qnas/v1/rounds/{roundId}/qna/{qnaId}';
 };
 
 export type DeleteQnaErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type DeleteQnaError = DeleteQnaErrors[keyof DeleteQnaErrors];
 
 export type DeleteQnaResponses = {
-	/**
-	 * Ok
-	 */
-	204: void;
+    /**
+     * ok
+     */
+    204: void;
 };
 
 export type DeleteQnaResponse = DeleteQnaResponses[keyof DeleteQnaResponses];
 
 export type UpdateQnaData = {
-	body: QnaUpdate;
-	path: {
-		/**
-		 * The id of the qna round
-		 *
-		 */
-		roundId: string;
-		/**
-		 * The id of the current qna
-		 *
-		 */
-		qnaId: string;
-	};
-	query?: never;
-	url: '/qnas/v1/rounds/{roundId}/qna/{qnaId}';
+    body: QnaUpdate;
+    path: {
+        /**
+         * The id of the qna round
+         *
+         */
+        roundId: string;
+        /**
+         * The id of the current qna
+         *
+         */
+        qnaId: string;
+    };
+    query?: never;
+    url: '/qnas/v1/rounds/{roundId}/qna/{qnaId}';
 };
 
 export type UpdateQnaErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type UpdateQnaError = UpdateQnaErrors[keyof UpdateQnaErrors];
 
 export type UpdateQnaResponses = {
-	/**
-	 * Ok
-	 */
-	200: Qna;
+    /**
+     * ok
+     */
+    200: Qna;
 };
 
 export type UpdateQnaResponse = UpdateQnaResponses[keyof UpdateQnaResponses];
 
 export type AddQuestionData = {
-	body: Question;
-	path: {
-		/**
-		 * The id of the qna round
-		 *
-		 */
-		roundId: string;
-		/**
-		 * The id of the current qna
-		 *
-		 */
-		qnaId: string;
-	};
-	query?: never;
-	url: '/qnas/v1/rounds/{roundId}/qna/{qnaId}';
+    body: Question;
+    path: {
+        /**
+         * The id of the qna round
+         *
+         */
+        roundId: string;
+        /**
+         * The id of the current qna
+         *
+         */
+        qnaId: string;
+    };
+    query?: never;
+    url: '/qnas/v1/rounds/{roundId}/qna/{qnaId}';
 };
 
 export type AddQuestionErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type AddQuestionError = AddQuestionErrors[keyof AddQuestionErrors];
 
 export type AddQuestionResponses = {
-	/**
-	 * Ok
-	 */
-	200: Qna;
+    /**
+     * ok
+     */
+    200: Qna;
 };
 
-export type AddQuestionResponse =
-	AddQuestionResponses[keyof AddQuestionResponses];
+export type AddQuestionResponse = AddQuestionResponses[keyof AddQuestionResponses];
 
 export type PublishQnaData = {
-	body?: never;
-	path: {
-		/**
-		 * The id of the qna round
-		 *
-		 */
-		roundId: string;
-		/**
-		 * The id of the qna pair
-		 *
-		 */
-		qnaId: string;
-	};
-	query?: never;
-	url: '/qnas/v1/rounds/{roundId}/qna/{qnaId}/publish';
+    body?: never;
+    path: {
+        /**
+         * The id of the qna round
+         *
+         */
+        roundId: string;
+        /**
+         * The id of the qna pair
+         *
+         */
+        qnaId: string;
+    };
+    query?: never;
+    url: '/qnas/v1/rounds/{roundId}/qna/{qnaId}/publish';
 };
 
 export type PublishQnaErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
 export type PublishQnaError = PublishQnaErrors[keyof PublishQnaErrors];
 
 export type PublishQnaResponses = {
-	/**
-	 * Ok
-	 */
-	200: QnaPublishResponse;
+    /**
+     * ok
+     */
+    200: QnaPublishResponse;
 };
 
 export type PublishQnaResponse = PublishQnaResponses[keyof PublishQnaResponses];
 
 export type DownloadProjectDocumentData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of a project document
-		 */
-		projectDocumentId: string;
-	};
-	query: {
-		/**
-		 * Authenticate via token in query parameter
-		 */
-		token: string;
-	};
-	url: '/project-documents/v1/docs/{projectDocumentId}';
+    body?: never;
+    path: {
+        /**
+         * Id of a project document
+         */
+        projectDocumentId: string;
+    };
+    query: {
+        /**
+         * authenticate via token in query parameter
+         */
+        token: string;
+    };
+    url: '/project-documents/v1/docs/{projectDocumentId}';
 };
 
 export type DownloadProjectDocumentErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DownloadProjectDocumentError =
-	DownloadProjectDocumentErrors[keyof DownloadProjectDocumentErrors];
+export type DownloadProjectDocumentError = DownloadProjectDocumentErrors[keyof DownloadProjectDocumentErrors];
 
 export type DownloadProjectDocumentResponses = {
-	/**
-	 * Project document as download
-	 */
-	200: Blob | File;
+    /**
+     * Project document as download
+     */
+    200: Blob | File;
 };
 
-export type DownloadProjectDocumentResponse =
-	DownloadProjectDocumentResponses[keyof DownloadProjectDocumentResponses];
+export type DownloadProjectDocumentResponse = DownloadProjectDocumentResponses[keyof DownloadProjectDocumentResponses];
 
 export type GetDownloadTokenData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of a project document
-		 */
-		projectDocumentId: string;
-	};
-	query?: never;
-	url: '/project-documents/v1/docs/{projectDocumentId}/token';
+    body?: never;
+    path: {
+        /**
+         * Id of a project document
+         */
+        projectDocumentId: string;
+    };
+    query?: never;
+    url: '/project-documents/v1/docs/{projectDocumentId}/token';
 };
 
 export type GetDownloadTokenErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetDownloadTokenError =
-	GetDownloadTokenErrors[keyof GetDownloadTokenErrors];
+export type GetDownloadTokenError = GetDownloadTokenErrors[keyof GetDownloadTokenErrors];
 
 export type GetDownloadTokenResponses = {
-	/**
-	 * Ok
-	 */
-	200: DownloadToken;
+    /**
+     * ok
+     */
+    200: DownloadToken;
 };
 
-export type GetDownloadTokenResponse =
-	GetDownloadTokenResponses[keyof GetDownloadTokenResponses];
+export type GetDownloadTokenResponse = GetDownloadTokenResponses[keyof GetDownloadTokenResponses];
 
 export type DownloadProjectDocumentsZipData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * Authenticate via token in query parameter
-		 */
-		token: string;
-	};
-	url: '/project-documents/v1/docs/zip-download';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * authenticate via token in query parameter
+         */
+        token: string;
+    };
+    url: '/project-documents/v1/docs/zip-download';
 };
 
 export type DownloadProjectDocumentsZipErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DownloadProjectDocumentsZipError =
-	DownloadProjectDocumentsZipErrors[keyof DownloadProjectDocumentsZipErrors];
+export type DownloadProjectDocumentsZipError = DownloadProjectDocumentsZipErrors[keyof DownloadProjectDocumentsZipErrors];
 
 export type DownloadProjectDocumentsZipResponses = {
-	/**
-	 * Chunked binary of Zip file containing all project documents
-	 */
-	200: Blob | File;
+    /**
+     * chunked binary of Zip file containing all project documents
+     */
+    200: Blob | File;
 };
 
-export type DownloadProjectDocumentsZipResponse =
-	DownloadProjectDocumentsZipResponses[keyof DownloadProjectDocumentsZipResponses];
+export type DownloadProjectDocumentsZipResponse = DownloadProjectDocumentsZipResponses[keyof DownloadProjectDocumentsZipResponses];
 
 export type PublishPubDraftData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/test/v1/pub-drafts/{pubDraftId}/publish';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/test/v1/pub-drafts/{pubDraftId}/publish';
 };
 
 export type PublishPubDraftErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PublishPubDraftError =
-	PublishPubDraftErrors[keyof PublishPubDraftErrors];
+export type PublishPubDraftError = PublishPubDraftErrors[keyof PublishPubDraftErrors];
 
 export type PublishPubDraftResponses = {
-	/**
-	 * Ok
-	 */
-	204: void;
+    /**
+     * ok
+     */
+    204: void;
 };
 
-export type PublishPubDraftResponse =
-	PublishPubDraftResponses[keyof PublishPubDraftResponses];
+export type PublishPubDraftResponse = PublishPubDraftResponses[keyof PublishPubDraftResponses];
 
 export type MarkAsToPublishData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
-		 */
-		pubDraftId: string;
-	};
-	query?: never;
-	url: '/test/v1/pub-drafts/{pubDraftId}/mark-as-to-publish';
+    body?: never;
+    path: {
+        /**
+         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         */
+        pubDraftId: string;
+    };
+    query?: never;
+    url: '/test/v1/pub-drafts/{pubDraftId}/mark-as-to-publish';
 };
 
 export type MarkAsToPublishErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type MarkAsToPublishError =
-	MarkAsToPublishErrors[keyof MarkAsToPublishErrors];
+export type MarkAsToPublishError = MarkAsToPublishErrors[keyof MarkAsToPublishErrors];
 
 export type MarkAsToPublishResponses = {
-	/**
-	 * Ok
-	 */
-	204: void;
+    /**
+     * ok
+     */
+    204: void;
 };
 
-export type MarkAsToPublishResponse =
-	MarkAsToPublishResponses[keyof MarkAsToPublishResponses];
+export type MarkAsToPublishResponse = MarkAsToPublishResponses[keyof MarkAsToPublishResponses];
 
 export type CreateAbandonmentTestScenarioData = {
-	body?: AbandonmentTestScenario;
-	path?: never;
-	query?: never;
-	url: '/test/v1/create-abandonment-test-scenario';
+    body?: AbandonmentTestScenario;
+    path?: never;
+    query?: never;
+    url: '/test/v1/create-abandonment-test-scenario';
 };
 
 export type CreateAbandonmentTestScenarioErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateAbandonmentTestScenarioError =
-	CreateAbandonmentTestScenarioErrors[keyof CreateAbandonmentTestScenarioErrors];
+export type CreateAbandonmentTestScenarioError = CreateAbandonmentTestScenarioErrors[keyof CreateAbandonmentTestScenarioErrors];
 
 export type CreateAbandonmentTestScenarioResponses = {
-	/**
-	 * Ok
-	 */
-	201: TestScenarioResult;
+    /**
+     * ok
+     */
+    201: TestScenarioResult;
 };
 
-export type CreateAbandonmentTestScenarioResponse =
-	CreateAbandonmentTestScenarioResponses[keyof CreateAbandonmentTestScenarioResponses];
+export type CreateAbandonmentTestScenarioResponse = CreateAbandonmentTestScenarioResponses[keyof CreateAbandonmentTestScenarioResponses];
 
 export type CreateAdvanceNoticeTestScenarioData = {
-	body?: AdvanceNoticeTestScenario;
-	path?: never;
-	query?: never;
-	url: '/test/v1/create-advance-notice-test-scenario';
+    body?: AdvanceNoticeTestScenario;
+    path?: never;
+    query?: never;
+    url: '/test/v1/create-advance-notice-test-scenario';
 };
 
 export type CreateAdvanceNoticeTestScenarioErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateAdvanceNoticeTestScenarioError =
-	CreateAdvanceNoticeTestScenarioErrors[keyof CreateAdvanceNoticeTestScenarioErrors];
+export type CreateAdvanceNoticeTestScenarioError = CreateAdvanceNoticeTestScenarioErrors[keyof CreateAdvanceNoticeTestScenarioErrors];
 
 export type CreateAdvanceNoticeTestScenarioResponses = {
-	/**
-	 * Ok
-	 */
-	201: TestScenarioResult;
+    /**
+     * ok
+     */
+    201: TestScenarioResult;
 };
 
-export type CreateAdvanceNoticeTestScenarioResponse =
-	CreateAdvanceNoticeTestScenarioResponses[keyof CreateAdvanceNoticeTestScenarioResponses];
+export type CreateAdvanceNoticeTestScenarioResponse = CreateAdvanceNoticeTestScenarioResponses[keyof CreateAdvanceNoticeTestScenarioResponses];
 
 export type CreateAwardTestScenarioData = {
-	body?: AwardTestScenario;
-	path?: never;
-	query?: never;
-	url: '/test/v1/create-award-test-scenario';
+    body?: AwardTestScenario;
+    path?: never;
+    query?: never;
+    url: '/test/v1/create-award-test-scenario';
 };
 
 export type CreateAwardTestScenarioErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateAwardTestScenarioError =
-	CreateAwardTestScenarioErrors[keyof CreateAwardTestScenarioErrors];
+export type CreateAwardTestScenarioError = CreateAwardTestScenarioErrors[keyof CreateAwardTestScenarioErrors];
 
 export type CreateAwardTestScenarioResponses = {
-	/**
-	 * Ok
-	 */
-	201: TestScenarioResult;
+    /**
+     * ok
+     */
+    201: TestScenarioResult;
 };
 
-export type CreateAwardTestScenarioResponse =
-	CreateAwardTestScenarioResponses[keyof CreateAwardTestScenarioResponses];
+export type CreateAwardTestScenarioResponse = CreateAwardTestScenarioResponses[keyof CreateAwardTestScenarioResponses];
 
 export type CreateCallForBidsTestScenarioData = {
-	body?: CallForBidsTestScenario;
-	path?: never;
-	query?: never;
-	url: '/test/v1/create-call-for-bids-test-scenario';
+    body?: CallForBidsTestScenario;
+    path?: never;
+    query?: never;
+    url: '/test/v1/create-call-for-bids-test-scenario';
 };
 
 export type CreateCallForBidsTestScenarioErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateCallForBidsTestScenarioError =
-	CreateCallForBidsTestScenarioErrors[keyof CreateCallForBidsTestScenarioErrors];
+export type CreateCallForBidsTestScenarioError = CreateCallForBidsTestScenarioErrors[keyof CreateCallForBidsTestScenarioErrors];
 
 export type CreateCallForBidsTestScenarioResponses = {
-	/**
-	 * Ok
-	 */
-	201: TestScenarioResult;
+    /**
+     * ok
+     */
+    201: TestScenarioResult;
 };
 
-export type CreateCallForBidsTestScenarioResponse =
-	CreateCallForBidsTestScenarioResponses[keyof CreateCallForBidsTestScenarioResponses];
+export type CreateCallForBidsTestScenarioResponse = CreateCallForBidsTestScenarioResponses[keyof CreateCallForBidsTestScenarioResponses];
 
 export type CreateCorrectionTestScenarioData = {
-	body?: CorrectionTestScenario;
-	path?: never;
-	query?: never;
-	url: '/test/v1/create-correction-test-scenario';
+    body?: CorrectionTestScenario;
+    path?: never;
+    query?: never;
+    url: '/test/v1/create-correction-test-scenario';
 };
 
 export type CreateCorrectionTestScenarioErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateCorrectionTestScenarioError =
-	CreateCorrectionTestScenarioErrors[keyof CreateCorrectionTestScenarioErrors];
+export type CreateCorrectionTestScenarioError = CreateCorrectionTestScenarioErrors[keyof CreateCorrectionTestScenarioErrors];
 
 export type CreateCorrectionTestScenarioResponses = {
-	/**
-	 * Ok
-	 */
-	201: TestScenarioResult;
+    /**
+     * ok
+     */
+    201: TestScenarioResult;
 };
 
-export type CreateCorrectionTestScenarioResponse =
-	CreateCorrectionTestScenarioResponses[keyof CreateCorrectionTestScenarioResponses];
+export type CreateCorrectionTestScenarioResponse = CreateCorrectionTestScenarioResponses[keyof CreateCorrectionTestScenarioResponses];
 
 export type CreateDirectAwardTestScenarioData = {
-	body?: DirectAwardTestScenario;
-	path?: never;
-	query?: never;
-	url: '/test/v1/create-direct-award-test-scenario';
+    body?: DirectAwardTestScenario;
+    path?: never;
+    query?: never;
+    url: '/test/v1/create-direct-award-test-scenario';
 };
 
 export type CreateDirectAwardTestScenarioErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateDirectAwardTestScenarioError =
-	CreateDirectAwardTestScenarioErrors[keyof CreateDirectAwardTestScenarioErrors];
+export type CreateDirectAwardTestScenarioError = CreateDirectAwardTestScenarioErrors[keyof CreateDirectAwardTestScenarioErrors];
 
 export type CreateDirectAwardTestScenarioResponses = {
-	/**
-	 * Ok
-	 */
-	201: TestScenarioResult;
+    /**
+     * ok
+     */
+    201: TestScenarioResult;
 };
 
-export type CreateDirectAwardTestScenarioResponse =
-	CreateDirectAwardTestScenarioResponses[keyof CreateDirectAwardTestScenarioResponses];
+export type CreateDirectAwardTestScenarioResponse = CreateDirectAwardTestScenarioResponses[keyof CreateDirectAwardTestScenarioResponses];
 
 export type CreateParticipantSelectionTestScenarioData = {
-	body?: ParticipantSelectionTestScenario;
-	path?: never;
-	query?: never;
-	url: '/test/v1/create-participantselection-test-scenario';
+    body?: ParticipantSelectionTestScenario;
+    path?: never;
+    query?: never;
+    url: '/test/v1/create-participantselection-test-scenario';
 };
 
 export type CreateParticipantSelectionTestScenarioErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateParticipantSelectionTestScenarioError =
-	CreateParticipantSelectionTestScenarioErrors[keyof CreateParticipantSelectionTestScenarioErrors];
+export type CreateParticipantSelectionTestScenarioError = CreateParticipantSelectionTestScenarioErrors[keyof CreateParticipantSelectionTestScenarioErrors];
 
 export type CreateParticipantSelectionTestScenarioResponses = {
-	/**
-	 * Ok
-	 */
-	201: TestScenarioResult;
+    /**
+     * ok
+     */
+    201: TestScenarioResult;
 };
 
-export type CreateParticipantSelectionTestScenarioResponse =
-	CreateParticipantSelectionTestScenarioResponses[keyof CreateParticipantSelectionTestScenarioResponses];
+export type CreateParticipantSelectionTestScenarioResponse = CreateParticipantSelectionTestScenarioResponses[keyof CreateParticipantSelectionTestScenarioResponses];
 
 export type CreateSelectiveOfferingPhaseTestScenarioData = {
-	body?: SelectiveOfferingPhaseTestScenario;
-	path?: never;
-	query?: never;
-	url: '/test/v1/create-selectiveofferingphase-test-scenario';
+    body?: SelectiveOfferingPhaseTestScenario;
+    path?: never;
+    query?: never;
+    url: '/test/v1/create-selectiveofferingphase-test-scenario';
 };
 
 export type CreateSelectiveOfferingPhaseTestScenarioErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateSelectiveOfferingPhaseTestScenarioError =
-	CreateSelectiveOfferingPhaseTestScenarioErrors[keyof CreateSelectiveOfferingPhaseTestScenarioErrors];
+export type CreateSelectiveOfferingPhaseTestScenarioError = CreateSelectiveOfferingPhaseTestScenarioErrors[keyof CreateSelectiveOfferingPhaseTestScenarioErrors];
 
 export type CreateSelectiveOfferingPhaseTestScenarioResponses = {
-	/**
-	 * Ok
-	 */
-	201: TestScenarioResult;
+    /**
+     * ok
+     */
+    201: TestScenarioResult;
 };
 
-export type CreateSelectiveOfferingPhaseTestScenarioResponse =
-	CreateSelectiveOfferingPhaseTestScenarioResponses[keyof CreateSelectiveOfferingPhaseTestScenarioResponses];
+export type CreateSelectiveOfferingPhaseTestScenarioResponse = CreateSelectiveOfferingPhaseTestScenarioResponses[keyof CreateSelectiveOfferingPhaseTestScenarioResponses];
 
 export type CreateRevocationTestScenarioData = {
-	body?: RevocationTestScenario;
-	path?: never;
-	query?: never;
-	url: '/test/v1/create-revocation-test-scenario';
+    body?: RevocationTestScenario;
+    path?: never;
+    query?: never;
+    url: '/test/v1/create-revocation-test-scenario';
 };
 
 export type CreateRevocationTestScenarioErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateRevocationTestScenarioError =
-	CreateRevocationTestScenarioErrors[keyof CreateRevocationTestScenarioErrors];
+export type CreateRevocationTestScenarioError = CreateRevocationTestScenarioErrors[keyof CreateRevocationTestScenarioErrors];
 
 export type CreateRevocationTestScenarioResponses = {
-	/**
-	 * Ok
-	 */
-	201: TestScenarioResult;
+    /**
+     * ok
+     */
+    201: TestScenarioResult;
 };
 
-export type CreateRevocationTestScenarioResponse =
-	CreateRevocationTestScenarioResponses[keyof CreateRevocationTestScenarioResponses];
+export type CreateRevocationTestScenarioResponse = CreateRevocationTestScenarioResponses[keyof CreateRevocationTestScenarioResponses];
 
 export type CreateRequestForInformationTestScenarioData = {
-	body?: RequestForInformationTestScenario;
-	path?: never;
-	query?: never;
-	url: '/test/v1/create-request-for-information-test-scenario';
+    body?: RequestForInformationTestScenario;
+    path?: never;
+    query?: never;
+    url: '/test/v1/create-request-for-information-test-scenario';
 };
 
 export type CreateRequestForInformationTestScenarioErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateRequestForInformationTestScenarioError =
-	CreateRequestForInformationTestScenarioErrors[keyof CreateRequestForInformationTestScenarioErrors];
+export type CreateRequestForInformationTestScenarioError = CreateRequestForInformationTestScenarioErrors[keyof CreateRequestForInformationTestScenarioErrors];
 
 export type CreateRequestForInformationTestScenarioResponses = {
-	/**
-	 * Ok
-	 */
-	201: TestScenarioResult;
+    /**
+     * ok
+     */
+    201: TestScenarioResult;
 };
 
-export type CreateRequestForInformationTestScenarioResponse =
-	CreateRequestForInformationTestScenarioResponses[keyof CreateRequestForInformationTestScenarioResponses];
+export type CreateRequestForInformationTestScenarioResponse = CreateRequestForInformationTestScenarioResponses[keyof CreateRequestForInformationTestScenarioResponses];
 
 export type ExportAwardedVendorsData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * Filter list of awarded publications having a publication date bigger or equals to the provided `from` date.
-		 */
-		from: string;
-		/**
-		 * Filter list of awarded publications having a publication date smaller or equals to the provided `to` date.
-		 */
-		to: string;
-	};
-	url: '/statistics/v1/my/awarded-vendors-export';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * filter list of awarded publications having a publication date bigger or equals to the provided `from` date.
+         */
+        from: string;
+        /**
+         * filter list of awarded publications having a publication date smaller or equals to the provided `to` date.
+         */
+        to: string;
+    };
+    url: '/statistics/v1/my/awarded-vendors-export';
 };
 
 export type ExportAwardedVendorsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ExportAwardedVendorsError =
-	ExportAwardedVendorsErrors[keyof ExportAwardedVendorsErrors];
+export type ExportAwardedVendorsError = ExportAwardedVendorsErrors[keyof ExportAwardedVendorsErrors];
 
 export type ExportAwardedVendorsResponses = {
-	/**
-	 * Chunked json of `AwardedVendorExport`, separated by line. Input parameters are additionally sent back as header values.
-	 */
-	200: Blob | File;
+    /**
+     * chunked json of `AwardedVendorExport`, separated by line. Input parameters are additionally sent back as header values.
+     */
+    200: Blob | File;
 };
 
-export type ExportAwardedVendorsResponse =
-	ExportAwardedVendorsResponses[keyof ExportAwardedVendorsResponses];
+export type ExportAwardedVendorsResponse = ExportAwardedVendorsResponses[keyof ExportAwardedVendorsResponses];
 
 export type ExportSustainabilityFormData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * Filter list of sustainability form data of awards having a publication date bigger or equals to the provided `from` date.
-		 */
-		from: string;
-		/**
-		 * Filter list of sustainability form data of awards having a publication date smaller or equals to the provided `to` date.
-		 */
-		to: string;
-	};
-	url: '/statistics/v1/my/sustainability-export';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * filter list of sustainability form data of awards having a publication date bigger or equals to the provided `from` date.
+         */
+        from: string;
+        /**
+         * filter list of sustainability form data of awards having a publication date smaller or equals to the provided `to` date.
+         */
+        to: string;
+    };
+    url: '/statistics/v1/my/sustainability-export';
 };
 
 export type ExportSustainabilityFormErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ExportSustainabilityFormError =
-	ExportSustainabilityFormErrors[keyof ExportSustainabilityFormErrors];
+export type ExportSustainabilityFormError = ExportSustainabilityFormErrors[keyof ExportSustainabilityFormErrors];
 
 export type ExportSustainabilityFormResponses = {
-	/**
-	 * Chunked json of `SustainabilityFormExport`, separated by line. Input parameters are additionally sent back as header values.
-	 */
-	200: Blob | File;
+    /**
+     * chunked json of `SustainabilityFormExport`, separated by line. Input parameters are additionally sent back as header values.
+     */
+    200: Blob | File;
 };
 
-export type ExportSustainabilityFormResponse =
-	ExportSustainabilityFormResponses[keyof ExportSustainabilityFormResponses];
+export type ExportSustainabilityFormResponse = ExportSustainabilityFormResponses[keyof ExportSustainabilityFormResponses];
 
 export type ExportCallForBidsData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * Filter list of call_for_bids publications having a publication date bigger or equals to the provided `from` date.
-		 */
-		from: string;
-		/**
-		 * Filter list of call_for_bids publications having a publication date smaller or equals to the provided `to` date.
-		 */
-		to: string;
-	};
-	url: '/statistics/v1/my/call-for-bids-export';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * filter list of call_for_bids publications having a publication date bigger or equals to the provided `from` date.
+         */
+        from: string;
+        /**
+         * filter list of call_for_bids publications having a publication date smaller or equals to the provided `to` date.
+         */
+        to: string;
+    };
+    url: '/statistics/v1/my/call-for-bids-export';
 };
 
 export type ExportCallForBidsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ExportCallForBidsError =
-	ExportCallForBidsErrors[keyof ExportCallForBidsErrors];
+export type ExportCallForBidsError = ExportCallForBidsErrors[keyof ExportCallForBidsErrors];
 
 export type ExportCallForBidsResponses = {
-	/**
-	 * Chunked json of `CallForBidsExport`, separated by line. Input parameters are additionally sent back as header values.
-	 */
-	200: Blob | File;
+    /**
+     * chunked json of `CallForBidsExport`, separated by line. Input parameters are additionally sent back as header values.
+     */
+    200: Blob | File;
 };
 
-export type ExportCallForBidsResponse =
-	ExportCallForBidsResponses[keyof ExportCallForBidsResponses];
+export type ExportCallForBidsResponse = ExportCallForBidsResponses[keyof ExportCallForBidsResponses];
 
 export type ExportWtoStatisticsData = {
-	body?: never;
-	path?: never;
-	query: {
-		/**
-		 * Consider awards having a publication date bigger or equals to the `from` date.
-		 */
-		from: string;
-		/**
-		 * Consider awards having a publication date smaller or equals to the `to` date.
-		 */
-		to: string;
-		/**
-		 * Exchange rate of euro to chf used to convert and aggregate the total prices of awards with currency 'eur'.
-		 */
-		euroExchangeRate: number;
-		/**
-		 * Exchange rate of usd to chf used to convert and aggregate the total prices of awards with currency 'usd'.
-		 */
-		usdExchangeRate: number;
-		/**
-		 * Consider awards of proc_offices matching the provided proc_office filter type. Only applies if the export is generated by another role than simap_admin.
-		 */
-		procOfficeTypeFilter?: WtoStatisticsProcOfficeType;
-	};
-	url: '/statistics/v1/my/wto-statistics';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * consider awards having a publication date bigger or equals to the `from` date.
+         */
+        from: string;
+        /**
+         * consider awards having a publication date smaller or equals to the `to` date.
+         */
+        to: string;
+        /**
+         * exchange rate of euro to chf used to convert and aggregate the total prices of awards with currency 'eur'.
+         */
+        euroExchangeRate: number;
+        /**
+         * exchange rate of usd to chf used to convert and aggregate the total prices of awards with currency 'usd'.
+         */
+        usdExchangeRate: number;
+        /**
+         * consider awards of proc_offices matching the provided proc_office filter type. Only applies if the export is generated by another role than simap_admin.
+         */
+        procOfficeTypeFilter?: WtoStatisticsProcOfficeType;
+    };
+    url: '/statistics/v1/my/wto-statistics';
 };
 
 export type ExportWtoStatisticsErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type ExportWtoStatisticsError =
-	ExportWtoStatisticsErrors[keyof ExportWtoStatisticsErrors];
+export type ExportWtoStatisticsError = ExportWtoStatisticsErrors[keyof ExportWtoStatisticsErrors];
 
 export type ExportWtoStatisticsResponses = {
-	/**
-	 * Get export of aggregated values of WTO related awards and direct_awards
-	 */
-	200: WtoStatisticsExport;
+    /**
+     * Get export of aggregated values of WTO related awards and direct_awards
+     */
+    200: WtoStatisticsExport;
 };
 
-export type ExportWtoStatisticsResponse =
-	ExportWtoStatisticsResponses[keyof ExportWtoStatisticsResponses];
+export type ExportWtoStatisticsResponse = ExportWtoStatisticsResponses[keyof ExportWtoStatisticsResponses];
 
 export type GetContentByPageNameData = {
-	body?: never;
-	path: {
-		/**
-		 * Specify from which page the content should be retrieved
-		 */
-		pageName: PageName;
-	};
-	query?: never;
-	url: '/static/v1/pages/{pageName}';
+    body?: never;
+    path: {
+        /**
+         * Specify from which page the content should be retrieved
+         */
+        pageName: PageName;
+    };
+    query?: never;
+    url: '/static/v1/pages/{pageName}';
 };
 
 export type GetContentByPageNameErrors = {
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetContentByPageNameError =
-	GetContentByPageNameErrors[keyof GetContentByPageNameErrors];
+export type GetContentByPageNameError = GetContentByPageNameErrors[keyof GetContentByPageNameErrors];
 
 export type GetContentByPageNameResponses = {
-	/**
-	 * Page content
-	 */
-	200: PageComponent;
+    /**
+     * page content
+     */
+    200: PageComponent;
 };
 
-export type GetContentByPageNameResponse =
-	GetContentByPageNameResponses[keyof GetContentByPageNameResponses];
+export type GetContentByPageNameResponse = GetContentByPageNameResponses[keyof GetContentByPageNameResponses];
 
 export type PatchContentByPageNameData = {
-	body: PageComponent;
-	path: {
-		/**
-		 * Specify from which page the content should be retrieved
-		 */
-		pageName: PageName;
-	};
-	query?: never;
-	url: '/static/v1/pages/{pageName}';
+    body: PageComponentWritable;
+    path: {
+        /**
+         * Specify from which page the content should be retrieved
+         */
+        pageName: PageName;
+    };
+    query?: never;
+    url: '/static/v1/pages/{pageName}';
 };
 
 export type PatchContentByPageNameErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type PatchContentByPageNameError =
-	PatchContentByPageNameErrors[keyof PatchContentByPageNameErrors];
+export type PatchContentByPageNameError = PatchContentByPageNameErrors[keyof PatchContentByPageNameErrors];
 
 export type PatchContentByPageNameResponses = {
-	/**
-	 * Ok
-	 */
-	200: PageComponent;
+    /**
+     * ok
+     */
+    200: PageComponent;
 };
 
-export type PatchContentByPageNameResponse =
-	PatchContentByPageNameResponses[keyof PatchContentByPageNameResponses];
+export type PatchContentByPageNameResponse = PatchContentByPageNameResponses[keyof PatchContentByPageNameResponses];
 
 export type GetVendorDigitalSubmissionsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-	};
-	query?: {
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId?: string;
-	};
-	url: '/vendors/v1/my/projects/{projectId}/digital-submissions';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId?: string;
+    };
+    url: '/vendors/v1/my/projects/{projectId}/digital-submissions';
 };
 
 export type GetVendorDigitalSubmissionsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetVendorDigitalSubmissionsError =
-	GetVendorDigitalSubmissionsErrors[keyof GetVendorDigitalSubmissionsErrors];
+export type GetVendorDigitalSubmissionsError = GetVendorDigitalSubmissionsErrors[keyof GetVendorDigitalSubmissionsErrors];
 
 export type GetVendorDigitalSubmissionsResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorDigitalSubmissionDetails;
+    /**
+     * ok
+     */
+    200: VendorDigitalSubmissionDetails;
 };
 
-export type GetVendorDigitalSubmissionsResponse =
-	GetVendorDigitalSubmissionsResponses[keyof GetVendorDigitalSubmissionsResponses];
+export type GetVendorDigitalSubmissionsResponse = GetVendorDigitalSubmissionsResponses[keyof GetVendorDigitalSubmissionsResponses];
 
 export type DeleteVendorDigitalSubmissionData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of the vendor digital submission
-		 */
-		vendorDigitalSubmissionId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/projects/{projectId}/digital-submissions/{vendorDigitalSubmissionId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of the vendor digital submission
+         */
+        vendorDigitalSubmissionId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/projects/{projectId}/digital-submissions/{vendorDigitalSubmissionId}';
 };
 
 export type DeleteVendorDigitalSubmissionErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeleteVendorDigitalSubmissionError =
-	DeleteVendorDigitalSubmissionErrors[keyof DeleteVendorDigitalSubmissionErrors];
+export type DeleteVendorDigitalSubmissionError = DeleteVendorDigitalSubmissionErrors[keyof DeleteVendorDigitalSubmissionErrors];
 
 export type DeleteVendorDigitalSubmissionResponses = {
-	/**
-	 * No Content - Deleted
-	 */
-	204: void;
+    /**
+     * No Content - Deleted
+     */
+    204: void;
 };
 
-export type DeleteVendorDigitalSubmissionResponse =
-	DeleteVendorDigitalSubmissionResponses[keyof DeleteVendorDigitalSubmissionResponses];
+export type DeleteVendorDigitalSubmissionResponse = DeleteVendorDigitalSubmissionResponses[keyof DeleteVendorDigitalSubmissionResponses];
 
 export type GetVendorDigitalSubmissionData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of the vendor digital submission
-		 */
-		vendorDigitalSubmissionId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/projects/{projectId}/digital-submissions/{vendorDigitalSubmissionId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of the vendor digital submission
+         */
+        vendorDigitalSubmissionId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/projects/{projectId}/digital-submissions/{vendorDigitalSubmissionId}';
 };
 
 export type GetVendorDigitalSubmissionErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetVendorDigitalSubmissionError =
-	GetVendorDigitalSubmissionErrors[keyof GetVendorDigitalSubmissionErrors];
+export type GetVendorDigitalSubmissionError = GetVendorDigitalSubmissionErrors[keyof GetVendorDigitalSubmissionErrors];
 
 export type GetVendorDigitalSubmissionResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorDigitalSubmissionBase;
+    /**
+     * ok
+     */
+    200: VendorDigitalSubmissionBase;
 };
 
-export type GetVendorDigitalSubmissionResponse =
-	GetVendorDigitalSubmissionResponses[keyof GetVendorDigitalSubmissionResponses];
+export type GetVendorDigitalSubmissionResponse = GetVendorDigitalSubmissionResponses[keyof GetVendorDigitalSubmissionResponses];
 
 export type CreateVendorDigitalSubmissionData = {
-	body: VendorDigitalSubmissionCreate;
-	path: {
-		/**
-		 * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
-		 */
-		projectId: string;
-		/**
-		 * Id of the vendor digital submission
-		 */
-		vendorDigitalSubmissionId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/projects/{projectId}/digital-submissions/{vendorDigitalSubmissionId}';
+    body: VendorDigitalSubmissionCreate;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of the vendor digital submission
+         */
+        vendorDigitalSubmissionId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/projects/{projectId}/digital-submissions/{vendorDigitalSubmissionId}';
 };
 
 export type CreateVendorDigitalSubmissionErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type CreateVendorDigitalSubmissionError =
-	CreateVendorDigitalSubmissionErrors[keyof CreateVendorDigitalSubmissionErrors];
+export type CreateVendorDigitalSubmissionError = CreateVendorDigitalSubmissionErrors[keyof CreateVendorDigitalSubmissionErrors];
 
 export type CreateVendorDigitalSubmissionResponses = {
-	/**
-	 * Created
-	 */
-	201: VendorDigitalSubmissionBase;
+    /**
+     * created
+     */
+    201: VendorDigitalSubmissionBase;
 };
 
-export type CreateVendorDigitalSubmissionResponse =
-	CreateVendorDigitalSubmissionResponses[keyof CreateVendorDigitalSubmissionResponses];
+export type CreateVendorDigitalSubmissionResponse = CreateVendorDigitalSubmissionResponses[keyof CreateVendorDigitalSubmissionResponses];
 
 export type SubmitVendorDigitalSubmissionData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the vendor digital submission
-		 */
-		vendorDigitalSubmissionId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/submit';
+    body?: never;
+    path: {
+        /**
+         * Id of the vendor digital submission
+         */
+        vendorDigitalSubmissionId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/submit';
 };
 
 export type SubmitVendorDigitalSubmissionErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	412: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    412: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type SubmitVendorDigitalSubmissionError =
-	SubmitVendorDigitalSubmissionErrors[keyof SubmitVendorDigitalSubmissionErrors];
+export type SubmitVendorDigitalSubmissionError = SubmitVendorDigitalSubmissionErrors[keyof SubmitVendorDigitalSubmissionErrors];
 
 export type SubmitVendorDigitalSubmissionResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorDigitalSubmissionBase;
+    /**
+     * ok
+     */
+    200: VendorDigitalSubmissionBase;
 };
 
-export type SubmitVendorDigitalSubmissionResponse =
-	SubmitVendorDigitalSubmissionResponses[keyof SubmitVendorDigitalSubmissionResponses];
+export type SubmitVendorDigitalSubmissionResponse = SubmitVendorDigitalSubmissionResponses[keyof SubmitVendorDigitalSubmissionResponses];
 
 export type RemoveLotFromVendorDigitalSubmissionData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the vendor digital submission
-		 */
-		vendorDigitalSubmissionId: string;
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/lots/{lotId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the vendor digital submission
+         */
+        vendorDigitalSubmissionId: string;
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/lots/{lotId}';
 };
 
 export type RemoveLotFromVendorDigitalSubmissionErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	412: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    412: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type RemoveLotFromVendorDigitalSubmissionError =
-	RemoveLotFromVendorDigitalSubmissionErrors[keyof RemoveLotFromVendorDigitalSubmissionErrors];
+export type RemoveLotFromVendorDigitalSubmissionError = RemoveLotFromVendorDigitalSubmissionErrors[keyof RemoveLotFromVendorDigitalSubmissionErrors];
 
 export type RemoveLotFromVendorDigitalSubmissionResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorDigitalSubmissionBase;
+    /**
+     * ok
+     */
+    200: VendorDigitalSubmissionBase;
 };
 
-export type RemoveLotFromVendorDigitalSubmissionResponse =
-	RemoveLotFromVendorDigitalSubmissionResponses[keyof RemoveLotFromVendorDigitalSubmissionResponses];
+export type RemoveLotFromVendorDigitalSubmissionResponse = RemoveLotFromVendorDigitalSubmissionResponses[keyof RemoveLotFromVendorDigitalSubmissionResponses];
 
 export type AddLotToVendorDigitalSubmissionData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the vendor digital submission
-		 */
-		vendorDigitalSubmissionId: string;
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/lots/{lotId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the vendor digital submission
+         */
+        vendorDigitalSubmissionId: string;
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/lots/{lotId}';
 };
 
 export type AddLotToVendorDigitalSubmissionErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	412: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    412: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type AddLotToVendorDigitalSubmissionError =
-	AddLotToVendorDigitalSubmissionErrors[keyof AddLotToVendorDigitalSubmissionErrors];
+export type AddLotToVendorDigitalSubmissionError = AddLotToVendorDigitalSubmissionErrors[keyof AddLotToVendorDigitalSubmissionErrors];
 
 export type AddLotToVendorDigitalSubmissionResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorDigitalSubmissionBase;
+    /**
+     * ok
+     */
+    200: VendorDigitalSubmissionBase;
 };
 
-export type AddLotToVendorDigitalSubmissionResponse =
-	AddLotToVendorDigitalSubmissionResponses[keyof AddLotToVendorDigitalSubmissionResponses];
+export type AddLotToVendorDigitalSubmissionResponse = AddLotToVendorDigitalSubmissionResponses[keyof AddLotToVendorDigitalSubmissionResponses];
 
 export type GetVendorDigitalSubmissionDocumentsData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the vendor digital submission
-		 */
-		vendorDigitalSubmissionId: string;
-	};
-	query?: {
-		/**
-		 * Id of the lot, can be found in the publication data
-		 */
-		lotId?: string;
-	};
-	url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/documents';
+    body?: never;
+    path: {
+        /**
+         * Id of the vendor digital submission
+         */
+        vendorDigitalSubmissionId: string;
+    };
+    query?: {
+        /**
+         * Id of the lot, can be found in the publication data
+         */
+        lotId?: string;
+    };
+    url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/documents';
 };
 
 export type GetVendorDigitalSubmissionDocumentsErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetVendorDigitalSubmissionDocumentsError =
-	GetVendorDigitalSubmissionDocumentsErrors[keyof GetVendorDigitalSubmissionDocumentsErrors];
+export type GetVendorDigitalSubmissionDocumentsError = GetVendorDigitalSubmissionDocumentsErrors[keyof GetVendorDigitalSubmissionDocumentsErrors];
 
 export type GetVendorDigitalSubmissionDocumentsResponses = {
-	/**
-	 * Ok
-	 */
-	200: VendorDigitalSubmissionDocuments;
+    /**
+     * ok
+     */
+    200: VendorDigitalSubmissionDocuments;
 };
 
-export type GetVendorDigitalSubmissionDocumentsResponse =
-	GetVendorDigitalSubmissionDocumentsResponses[keyof GetVendorDigitalSubmissionDocumentsResponses];
+export type GetVendorDigitalSubmissionDocumentsResponse = GetVendorDigitalSubmissionDocumentsResponses[keyof GetVendorDigitalSubmissionDocumentsResponses];
 
 export type DeleteVendorDigitalSubmissionDocumentData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of the vendor digital submission
-		 */
-		vendorDigitalSubmissionId: string;
-		/**
-		 * Id of a vendor digital submission document
-		 */
-		vendorDigitalSubmissionDocumentId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/documents/{vendorDigitalSubmissionDocumentId}';
+    body?: never;
+    path: {
+        /**
+         * Id of the vendor digital submission
+         */
+        vendorDigitalSubmissionId: string;
+        /**
+         * Id of a vendor digital submission document
+         */
+        vendorDigitalSubmissionDocumentId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/documents/{vendorDigitalSubmissionDocumentId}';
 };
 
 export type DeleteVendorDigitalSubmissionDocumentErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DeleteVendorDigitalSubmissionDocumentError =
-	DeleteVendorDigitalSubmissionDocumentErrors[keyof DeleteVendorDigitalSubmissionDocumentErrors];
+export type DeleteVendorDigitalSubmissionDocumentError = DeleteVendorDigitalSubmissionDocumentErrors[keyof DeleteVendorDigitalSubmissionDocumentErrors];
 
 export type DeleteVendorDigitalSubmissionDocumentResponses = {
-	/**
-	 * No Content - Deleted
-	 */
-	204: void;
+    /**
+     * No Content - Deleted
+     */
+    204: void;
 };
 
-export type DeleteVendorDigitalSubmissionDocumentResponse =
-	DeleteVendorDigitalSubmissionDocumentResponses[keyof DeleteVendorDigitalSubmissionDocumentResponses];
+export type DeleteVendorDigitalSubmissionDocumentResponse = DeleteVendorDigitalSubmissionDocumentResponses[keyof DeleteVendorDigitalSubmissionDocumentResponses];
 
 export type UploadVendorDigitalSubmissionDocumentData = {
-	body: VendorDigitalSubmissionDocumentUploadMultipart;
-	path: {
-		/**
-		 * Id of the vendor digital submission
-		 */
-		vendorDigitalSubmissionId: string;
-		/**
-		 * Id of a vendor digital submission document
-		 */
-		vendorDigitalSubmissionDocumentId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/documents/{vendorDigitalSubmissionDocumentId}/upload';
+    body: VendorDigitalSubmissionDocumentUploadMultipart;
+    path: {
+        /**
+         * Id of the vendor digital submission
+         */
+        vendorDigitalSubmissionId: string;
+        /**
+         * Id of a vendor digital submission document
+         */
+        vendorDigitalSubmissionDocumentId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/documents/{vendorDigitalSubmissionDocumentId}/upload';
 };
 
 export type UploadVendorDigitalSubmissionDocumentErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * The user doesn't have permissions to upload a vendor submission document
-	 */
-	403: unknown;
-	/**
-	 * The total file size exceeds the allowed size of 2GB
-	 */
-	413: unknown;
-	/**
-	 * Unsupported Filetype
-	 */
-	415: unknown;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * The user doesn't have permissions to upload a vendor submission document
+     */
+    403: unknown;
+    /**
+     * The total file size exceeds the allowed size of 2GB
+     */
+    413: unknown;
+    /**
+     * Unsupported Filetype
+     */
+    415: unknown;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type UploadVendorDigitalSubmissionDocumentError =
-	UploadVendorDigitalSubmissionDocumentErrors[keyof UploadVendorDigitalSubmissionDocumentErrors];
+export type UploadVendorDigitalSubmissionDocumentError = UploadVendorDigitalSubmissionDocumentErrors[keyof UploadVendorDigitalSubmissionDocumentErrors];
 
 export type UploadVendorDigitalSubmissionDocumentResponses = {
-	/**
-	 * The created vendor submission document
-	 */
-	201: VendorDigitalSubmissionDocument;
+    /**
+     * The created vendor submission document
+     */
+    201: VendorDigitalSubmissionDocument;
 };
 
-export type UploadVendorDigitalSubmissionDocumentResponse =
-	UploadVendorDigitalSubmissionDocumentResponses[keyof UploadVendorDigitalSubmissionDocumentResponses];
+export type UploadVendorDigitalSubmissionDocumentResponse = UploadVendorDigitalSubmissionDocumentResponses[keyof UploadVendorDigitalSubmissionDocumentResponses];
 
 export type AddVendorDigitalSubmissionDocumentFromVendorDocumentData = {
-	body: VendorDigitalSubmissionDocumentAddVendorDocument;
-	path: {
-		/**
-		 * Id of the vendor digital submission
-		 */
-		vendorDigitalSubmissionId: string;
-		/**
-		 * Id of a vendor digital submission document
-		 */
-		vendorDigitalSubmissionDocumentId: string;
-	};
-	query?: never;
-	url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/documents/{vendorDigitalSubmissionDocumentId}/add-vendor-document';
+    body: VendorDigitalSubmissionDocumentAddVendorDocument;
+    path: {
+        /**
+         * Id of the vendor digital submission
+         */
+        vendorDigitalSubmissionId: string;
+        /**
+         * Id of a vendor digital submission document
+         */
+        vendorDigitalSubmissionDocumentId: string;
+    };
+    query?: never;
+    url: '/vendors/v1/my/digital-submissions/{vendorDigitalSubmissionId}/documents/{vendorDigitalSubmissionDocumentId}/add-vendor-document';
 };
 
 export type AddVendorDigitalSubmissionDocumentFromVendorDocumentErrors = {
-	/**
-	 * Server error
-	 */
-	400: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * The user doesn't have permissions to add a vendor submission document
-	 */
-	403: unknown;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * The user doesn't have permissions to add a vendor submission document
+     */
+    403: unknown;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type AddVendorDigitalSubmissionDocumentFromVendorDocumentError =
-	AddVendorDigitalSubmissionDocumentFromVendorDocumentErrors[keyof AddVendorDigitalSubmissionDocumentFromVendorDocumentErrors];
+export type AddVendorDigitalSubmissionDocumentFromVendorDocumentError = AddVendorDigitalSubmissionDocumentFromVendorDocumentErrors[keyof AddVendorDigitalSubmissionDocumentFromVendorDocumentErrors];
 
 export type AddVendorDigitalSubmissionDocumentFromVendorDocumentResponses = {
-	/**
-	 * Created
-	 */
-	201: VendorDigitalSubmissionDocument;
+    /**
+     * created
+     */
+    201: VendorDigitalSubmissionDocument;
 };
 
-export type AddVendorDigitalSubmissionDocumentFromVendorDocumentResponse =
-	AddVendorDigitalSubmissionDocumentFromVendorDocumentResponses[keyof AddVendorDigitalSubmissionDocumentFromVendorDocumentResponses];
+export type AddVendorDigitalSubmissionDocumentFromVendorDocumentResponse = AddVendorDigitalSubmissionDocumentFromVendorDocumentResponses[keyof AddVendorDigitalSubmissionDocumentFromVendorDocumentResponses];
 
 export type DownloadVendorDigitalSubmissionDocumentData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of a vendor digital submission document
-		 */
-		vendorDigitalSubmissionDocumentId: string;
-	};
-	query: {
-		/**
-		 * Authenticate via token in query parameter
-		 */
-		token: string;
-	};
-	url: '/vendor-digital-submission-documents/v1/docs/{vendorDigitalSubmissionDocumentId}';
+    body?: never;
+    path: {
+        /**
+         * Id of a vendor digital submission document
+         */
+        vendorDigitalSubmissionDocumentId: string;
+    };
+    query: {
+        /**
+         * authenticate via token in query parameter
+         */
+        token: string;
+    };
+    url: '/vendor-digital-submission-documents/v1/docs/{vendorDigitalSubmissionDocumentId}';
 };
 
 export type DownloadVendorDigitalSubmissionDocumentErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type DownloadVendorDigitalSubmissionDocumentError =
-	DownloadVendorDigitalSubmissionDocumentErrors[keyof DownloadVendorDigitalSubmissionDocumentErrors];
+export type DownloadVendorDigitalSubmissionDocumentError = DownloadVendorDigitalSubmissionDocumentErrors[keyof DownloadVendorDigitalSubmissionDocumentErrors];
 
 export type DownloadVendorDigitalSubmissionDocumentResponses = {
-	/**
-	 * Vendor digital submission document as download
-	 */
-	200: Blob | File;
+    /**
+     * Vendor digital submission document as download
+     */
+    200: Blob | File;
 };
 
-export type DownloadVendorDigitalSubmissionDocumentResponse =
-	DownloadVendorDigitalSubmissionDocumentResponses[keyof DownloadVendorDigitalSubmissionDocumentResponses];
+export type DownloadVendorDigitalSubmissionDocumentResponse = DownloadVendorDigitalSubmissionDocumentResponses[keyof DownloadVendorDigitalSubmissionDocumentResponses];
 
 export type GetVendorDigitalSubmissionDocumentDownloadTokenData = {
-	body?: never;
-	path: {
-		/**
-		 * Id of a vendor digital submission document
-		 */
-		vendorDigitalSubmissionDocumentId: string;
-	};
-	query?: never;
-	url: '/vendor-digital-submission-documents/v1/docs/{vendorDigitalSubmissionDocumentId}/token';
+    body?: never;
+    path: {
+        /**
+         * Id of a vendor digital submission document
+         */
+        vendorDigitalSubmissionDocumentId: string;
+    };
+    query?: never;
+    url: '/vendor-digital-submission-documents/v1/docs/{vendorDigitalSubmissionDocumentId}/token';
 };
 
 export type GetVendorDigitalSubmissionDocumentDownloadTokenErrors = {
-	/**
-	 * Server error
-	 */
-	401: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	403: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	404: ServerErrorAttributes;
-	/**
-	 * Server error
-	 */
-	default: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
 };
 
-export type GetVendorDigitalSubmissionDocumentDownloadTokenError =
-	GetVendorDigitalSubmissionDocumentDownloadTokenErrors[keyof GetVendorDigitalSubmissionDocumentDownloadTokenErrors];
+export type GetVendorDigitalSubmissionDocumentDownloadTokenError = GetVendorDigitalSubmissionDocumentDownloadTokenErrors[keyof GetVendorDigitalSubmissionDocumentDownloadTokenErrors];
 
 export type GetVendorDigitalSubmissionDocumentDownloadTokenResponses = {
-	/**
-	 * Ok
-	 */
-	200: DownloadToken;
+    /**
+     * ok
+     */
+    200: DownloadToken;
 };
 
-export type GetVendorDigitalSubmissionDocumentDownloadTokenResponse =
-	GetVendorDigitalSubmissionDocumentDownloadTokenResponses[keyof GetVendorDigitalSubmissionDocumentDownloadTokenResponses];
+export type GetVendorDigitalSubmissionDocumentDownloadTokenResponse = GetVendorDigitalSubmissionDocumentDownloadTokenResponses[keyof GetVendorDigitalSubmissionDocumentDownloadTokenResponses];
 
 export type ClientOptions = {
-	baseUrl: `${string}://${string}/api` | (string & {});
+    baseUrl: `${string}://${string}/api` | (string & {});
 };

@@ -154,8 +154,9 @@ describe('Error Handling Integration Tests', () => {
 			const result = await getPublicProjectSearch({query: {}});
 
 			expect(result.response.status).toBe(204);
-			// SDK returns empty object for 204 responses
-			expect(result.data).toEqual({});
+			// SDK behavior: returns null for 204 responses with null body
+			// This is correct behavior as the response body is actually null
+			expect(result.data).toBeNull();
 		});
 	});
 
