@@ -98,7 +98,8 @@ export const errorHandlers = {
 		return HttpResponse.json(
 			{
 				error: 'Service Unavailable',
-				message: 'The service is temporarily unavailable for maintenance',
+				message:
+					'The service is temporarily unavailable for maintenance',
 				code: 'SERVICE_MAINTENANCE',
 				estimatedDowntime: '2 hours',
 			},

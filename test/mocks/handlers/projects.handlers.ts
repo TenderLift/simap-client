@@ -60,7 +60,10 @@ export const projectsHandlers = [
 			}
 
 			// Default empty response
-			return HttpResponse.json({projects: [], pagination: {itemsPerPage: 20}});
+			return HttpResponse.json({
+				projects: [],
+				pagination: {itemsPerPage: 20},
+			});
 		},
 	),
 
@@ -73,7 +76,9 @@ export const projectsHandlers = [
 					title: 'One or more validation errors occurred.',
 					status: 400,
 					errors: {
-						projectId: ["The value 'invalid-uuid-format' is not valid."],
+						projectId: [
+							"The value 'invalid-uuid-format' is not valid.",
+						],
 					},
 				},
 				{status: 400},

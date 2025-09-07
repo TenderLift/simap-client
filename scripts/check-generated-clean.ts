@@ -7,7 +7,9 @@ try {
 		.toString()
 		.trim();
 	if (output) {
-		console.error('🔴 Generated sources are not up-to-date. Found changes in:');
+		console.error(
+			'🔴 Generated sources are not up-to-date. Found changes in:',
+		);
 		console.error(output);
 		console.error('Please run `pnpm gen` and commit the changes.');
 		process.exit(1);

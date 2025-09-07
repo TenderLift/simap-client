@@ -177,12 +177,12 @@ describe('withAuth', () => {
 			const init1 = authFunction();
 			const init2 = authFunction({method: 'GET'});
 
-			expect((init1.headers as Record<string, string>).Authorization).toBe(
-				'Bearer curry-token',
-			);
-			expect((init2.headers as Record<string, string>).Authorization).toBe(
-				'Bearer curry-token',
-			);
+			expect(
+				(init1.headers as Record<string, string>).Authorization,
+			).toBe('Bearer curry-token');
+			expect(
+				(init2.headers as Record<string, string>).Authorization,
+			).toBe('Bearer curry-token');
 			expect(init2.method).toBe('GET');
 		});
 
@@ -198,9 +198,9 @@ describe('withAuth', () => {
 
 			expect(getRequest.method).toBe('GET');
 			expect(postRequest.method).toBe('POST');
-			expect((getRequest.headers as Record<string, string>).Authorization).toBe(
-				'Bearer reusable-token',
-			);
+			expect(
+				(getRequest.headers as Record<string, string>).Authorization,
+			).toBe('Bearer reusable-token');
 			expect(
 				(postRequest.headers as Record<string, string>).Authorization,
 			).toBe('Bearer reusable-token');

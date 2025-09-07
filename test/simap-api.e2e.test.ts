@@ -69,7 +69,9 @@ describe('SIMAP API Client E2E Tests - Production', () => {
 				}
 
 				// Date format validation (YYYY-MM-DD)
-				expect(firstProject.publicationDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+				expect(firstProject.publicationDate).toMatch(
+					/^\d{4}-\d{2}-\d{2}$/,
+				);
 			}
 		}, 15_000); // 15 second timeout
 
@@ -128,7 +130,9 @@ describe('SIMAP API Client E2E Tests - Production', () => {
 				query: {
 					orderAddressCantons: ['TI'],
 					orderAddressCountryOnlySwitzerland: true,
-					newestPublicationFrom: thirtyDaysAgo.toISOString().split('T')[0],
+					newestPublicationFrom: thirtyDaysAgo
+						.toISOString()
+						.split('T')[0],
 					newestPublicationUntil: today.toISOString().split('T')[0],
 				},
 			});
@@ -180,10 +184,15 @@ describe('SIMAP API Client E2E Tests - Production', () => {
 				const hasRelevantResults = result.projects.some(
 					(project: ProjectsSearchEntry) => {
 						const title =
-							project.title?.it || project.title?.de || project.title?.fr || '';
-						const description = JSON.stringify(project).toLowerCase();
+							project.title?.it ||
+							project.title?.de ||
+							project.title?.fr ||
+							'';
+						const description =
+							JSON.stringify(project).toLowerCase();
 						return (
-							description.includes('strada') || description.includes('strass')
+							description.includes('strada') ||
+							description.includes('strass')
 						);
 					},
 				);

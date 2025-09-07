@@ -38,6 +38,8 @@ describe('Reference Data API Endpoints', () => {
 		const publicServices = data?.mainActivities.find(
 			(a) => a.id === '831146dd-b9e7-408d-a268-08d788851b09',
 		);
-		expect(publicServices?.label.de).toBe('Allgemeine öffentliche Verwaltung');
+		expect(publicServices?.label.de).toBe(
+			'Allgemeine öffentliche Verwaltung',
+		);
 	});
 });
