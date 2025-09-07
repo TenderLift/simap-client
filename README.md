@@ -11,7 +11,7 @@ TypeScript client for the SIMAP (Swiss Public Procurement) API, auto-generated f
 ## Features
 
 - 🚀 **Full TypeScript support** with comprehensive type definitions
-- 🌐 **Multi-runtime compatible**: Node.js 18+, Cloudflare Workers, Vercel/Netlify Edge
+- 🌐 **Multi-runtime compatible**: Node.js 20+, Cloudflare Workers, Vercel/Netlify Edge
 - 📦 **Lightweight**: <10KB gzipped (5.3KB ESM, 7.28KB CJS)
 - 🔄 **Auto-generated** from official SIMAP OpenAPI specification
 - 🛡️ **Built-in error handling** with typed error responses
@@ -173,7 +173,7 @@ Ensure your `tsconfig.json` includes:
 ```
 
 #### Network Errors in Node.js
-For Node.js versions before 18, you may need a fetch polyfill:
+For Node.js versions before 20, you may need a fetch polyfill:
 ```bash
 npm install node-fetch
 ```
