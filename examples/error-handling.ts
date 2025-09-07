@@ -54,13 +54,12 @@ async function httpErrorHandling() {
 			const error = new HttpError(
 				result.response.status,
 				`Failed to fetch project: ${result.response.statusText}`,
-				result.response,
 			);
 
 			console.log('Error Details:');
 			console.log('  Status Code:', error.status);
 			console.log('  Message:', error.message);
-			console.log('  Response URL:', error.response.url);
+			console.log('  Response URL:', result.response.url);
 
 			// Handle specific error codes
 			switch (error.status) {
@@ -82,7 +81,7 @@ async function httpErrorHandling() {
 				case 429: {
 					console.log('  → Rate limit exceeded');
 					const retryAfter =
-						error.response.headers.get('Retry-After');
+						result.response.headers.get('Retry-After');
 					if (retryAfter) {
 						console.log(`  → Retry after ${retryAfter} seconds`);
 					}
@@ -147,12 +146,13 @@ async function retryWithBackoff() {
 
 	const maxRetries = 3;
 	let retryCount = 0;
-	let lastError: Error | undefined = null;
+	let lastError: Error | undefined;
 
 	while (retryCount < maxRetries) {
 		try {
 			console.log(`Attempt ${retryCount + 1}/${maxRetries}...`);
 
+			// eslint-disable-next-line no-await-in-loop
 			const result = await getPublicProjectSearch({
 				query: {maxResults: 5},
 			});
@@ -175,18 +175,19 @@ async function retryWithBackoff() {
 				console.log(
 					`  Rate limited. Waiting ${delay / 1000} seconds...`,
 				);
-				await new Promise((resolve) => setTimeout(resolve, delay));
+				// eslint-disable-next-line no-await-in-loop
+				await new Promise((resolve) => {
+					setTimeout(resolve, delay);
+				});
 				retryCount++;
 				continue;
 			}
 
 			// Don't retry on client errors (4xx except 429)
 			if (result.response.status >= 400 && result.response.status < 500) {
-				throw new HttpError(
-					result.response.status,
-					'Client error - not retrying',
-					result.response,
-				);
+				const error = new Error('Client error - not retrying');
+				(error as any).status = result.response.status;
+				throw error;
 			}
 
 			// Retry on server errors (5xx)
@@ -195,7 +196,10 @@ async function retryWithBackoff() {
 				console.log(
 					`  Server error. Waiting ${delay / 1000} seconds before retry...`,
 				);
-				await new Promise((resolve) => setTimeout(resolve, delay));
+				// eslint-disable-next-line no-await-in-loop
+				await new Promise((resolve) => {
+					setTimeout(resolve, delay);
+				});
 				retryCount++;
 			}
 		} catch (error) {
@@ -207,7 +211,10 @@ async function retryWithBackoff() {
 				console.log(
 					`  Error occurred. Waiting ${delay / 1000} seconds before retry...`,
 				);
-				await new Promise((resolve) => setTimeout(resolve, delay));
+				// eslint-disable-next-line no-await-in-loop
+				await new Promise((resolve) => {
+					setTimeout(resolve, delay);
+				});
 			}
 		}
 	}
@@ -299,7 +306,7 @@ async function main() {
 	console.log('✅ Error handling examples completed');
 }
 
-main().catch((error) => {
+main().catch((error: unknown) => {
 	console.error('\n❌ Fatal error:', error);
 	process.exit(1);
 });

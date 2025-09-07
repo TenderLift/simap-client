@@ -8,7 +8,7 @@
 import {
 	client,
 	getProjectHeaderById,
-	getPublicProjectSearch
+	getPublicProjectSearch,
 } from '@tenderlift/simap-client';
 
 async function searchProjects() {
@@ -88,6 +88,7 @@ async function searchWithPagination() {
 	let totalFetched = 0;
 
 	while (hasMore && totalFetched < 30) {
+		// eslint-disable-next-line no-await-in-loop
 		const result = await getPublicProjectSearch({
 			query: {
 				maxResults: pageSize,
@@ -102,10 +103,10 @@ async function searchWithPagination() {
 		}
 
 		const {projects} = result.data;
-		totalFetched += projects.length;
+		totalFetched += projects.length as number;
 
 		console.log(
-			`Page ${offset / pageSize + 1}: Fetched ${projects.length} projects`,
+			`Page ${Math.floor(offset / pageSize) + 1}: Fetched ${projects.length} projects`,
 		);
 
 		// Check if there are more results
