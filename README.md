@@ -1,8 +1,8 @@
 # @tenderlift/simap-client
 
 [![npm version](https://img.shields.io/npm/v/@tenderlift/simap-client.svg)](https://www.npmjs.com/package/@tenderlift/simap-client)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/fork/github/TenderLift/simap-client/tree/main/examples?file=basic-usage.ts&title=SIMAP%20Client%20Demo&terminal=start)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![codecov](https://codecov.io/gh/tenderlift/simap-client/graph/badge.svg?token=YOUR_TOKEN)](https://codecov.io/gh/tenderlift/simap-client)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/@tenderlift/simap-client)](https://bundlephobia.com/package/@tenderlift/simap-client)
 
 TypeScript client for the SIMAP (Swiss Public Procurement) API, auto-generated from [the official OpenAPI specification](https://www.simap.ch/api/specifications/simap.yaml).
@@ -11,13 +11,13 @@ TypeScript client for the SIMAP (Swiss Public Procurement) API, auto-generated f
 
 ## Features
 
-- 🚀 **Full TypeScript support** with comprehensive type definitions
-- 🌐 **Multi-runtime compatible**: Node.js 20+, Cloudflare Workers, Vercel/Netlify Edge
-- 📦 **Lightweight**: <10KB gzipped (5.3KB ESM, 7.28KB CJS)
-- 🔄 **Auto-generated** from official SIMAP OpenAPI specification
-- 🛡️ **Built-in error handling** with typed error responses
-- 🔑 **Authentication helpers** for token-based auth
-- ✅ **Well tested**: 67 tests across Node.js and Worker environments
+- **Full TypeScript support** with comprehensive type definitions
+- **Multi-runtime compatible**: Node.js 20+, Cloudflare Workers, Vercel/Netlify Edge
+- **Lightweight**: <10KB gzipped (5.3KB ESM, 7.28KB CJS)
+- **Auto-generated** from official SIMAP OpenAPI specification
+- **Built-in error handling** with typed error responses
+- **Authentication helpers** for token-based auth
+- **Well tested**: 67 tests across Node.js and Worker environments
 
 ## Installation
 
