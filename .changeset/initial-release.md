@@ -1,5 +1,5 @@
 ---
-"@tenderlift/simap-client": patch
+"@tenderlift/simap-client": minor
 ---
 
 Initial release of the SIMAP TypeScript client library

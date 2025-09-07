@@ -1,7 +1,7 @@
 {
   "name": "@tenderlift/simap-client",
   "version": "0.0.1",
-  "description": "Production-grade TypeScript client for the SIMAP (Swiss Public Procurement) API",
+  "description": "SIMAP TypeScript API Client",
   "private": false,
   "type": "module",
   "sideEffects": false,
@@ -22,7 +22,8 @@
     "typescript",
     "openapi",
     "public-procurement",
-    "tender"
+    "tender",
+    "tenderlift"
   ],
   "author": "TenderLift <support@tenderlift.ch>",
   "license": "MIT",
