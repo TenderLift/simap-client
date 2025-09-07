@@ -38,6 +38,9 @@ importers:
       msw:
         specifier: ^2.11.1
         version: 2.11.1(@types/node@24.3.1)(typescript@5.9.2)
+      size-limit:
+        specifier: 11.2.0
+        version: 11.2.0
       tsd:
         specifier: ^0.33.0
         version: 0.33.0

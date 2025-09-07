@@ -1,158 +1,200 @@
-# @tenderlift/simap-api-client
+# @tenderlift/simap-client
+
+[![npm version](https://img.shields.io/npm/v/@tenderlift/simap-client.svg)](https://www.npmjs.com/package/@tenderlift/simap-client)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@tenderlift/simap-client)](https://bundlephobia.com/package/@tenderlift/simap-client)
 
 TypeScript client for the SIMAP (Swiss Public Procurement) API, auto-generated from [the official OpenAPI specification](https://www.simap.ch/api/specifications/simap.yaml).
+
+> ⚠️ **Non-affiliation Notice**: This is an unofficial, open-source library for the SIMAP API. It is developed and maintained independently by TenderLift. While SIMAP has graciously approved the open-sourcing of this library, they do not control, endorse, or bear any responsibility for it. For official information, visit [simap.ch](https://www.simap.ch).
+
+## Features
+
+- 🚀 **Full TypeScript support** with comprehensive type definitions
+- 🌐 **Multi-runtime compatible**: Node.js 18+, Cloudflare Workers, Vercel/Netlify Edge
+- 📦 **Lightweight**: <10KB gzipped (5.3KB ESM, 7.28KB CJS)
+- 🔄 **Auto-generated** from official SIMAP OpenAPI specification
+- 🛡️ **Built-in error handling** with typed error responses
+- 🔑 **Authentication helpers** for token-based auth
+- ✅ **Well tested**: 67 tests across Node.js and Worker environments
 
 ## Installation
 
 ```bash
-npm install @tenderlift/simap-api-client
+npm install @tenderlift/simap-client
 # or
-pnpm add @tenderlift/simap-api-client
+pnpm add @tenderlift/simap-client
+# or
+yarn add @tenderlift/simap-client
 ```
 
-## What works (and what doesn’t)
+## Quick Start
 
-- ✅ **Server runtimes**: Node.js 18+, Cloudflare Workers, Vercel/Netlify Edge (Fetch API compatible).
+### Basic Usage (Node.js/Edge)
 
-- ❌ **Direct browser usage**: **Not supported** against simap.ch because the upstream API does not send CORS headers.
+```typescript
+import { client, listCantons, getPublicProjectSearch } from '@tenderlift/simap-client';
 
-> If you want to call the API from a browser app, you **must** route requests through your own proxy (dev server proxy or a tiny edge/worker proxy) and point the client at that proxy. This package does not ship a proxy.
-
-### Why
-
-SIMAP’s API does not include `Access-Control-Allow-Origin`, so browsers block cross-origin requests. Server/edge environments are unaffected.
-
-## Quick start (server/edge)
-
-```ts
-import { client, listCantons } from '@tenderlift/simap-api-client';
-
-// Default base is the SIMAP upstream. Configure headers if you need them.
+// Configure the client (optional - defaults to SIMAP API)
 client.setConfig({
   baseUrl: 'https://www.simap.ch/api',
   headers: {
     // Add authentication if needed
-    // 'Authorization': `Bearer <token>`
+    // 'Authorization': `Bearer ${token}`
   },
 });
 
-const res = await listCantons();
-console.log(res.data);
+// Fetch reference data
+const cantons = await listCantons();
+console.log(cantons.data); // List of Swiss cantons
+
+// Search for projects
+const projects = await getPublicProjectSearch({
+  query: {
+    orderAddressCantons: ['TI', 'GR'],
+    search: 'construction'
+  }
+});
+console.log(projects.data?.projects);
 ```
 
 ### Error Handling
 
 ```typescript
-import { ensureOk } from '@tenderlift/simap-api-client';
+import { ensureOk, HttpError } from '@tenderlift/simap-client';
 
 try {
   const response = await listCantons();
-  const data = ensureOk(response); // Throws if response is not ok
+  const data = ensureOk(response); // Throws HttpError if response is not ok
   console.log(data);
 } catch (error) {
   if (error instanceof HttpError) {
-    console.error(`HTTP Error ${error.status}:`, error.body);
+    console.error(`HTTP ${error.status}: ${error.message}`);
+    console.error('Error data:', error.data);
   }
 }
 ```
 
-### Authentication Helper
+### Authentication
 
 ```typescript
-import { withAuth } from '@tenderlift/simap-api-client';
+import { withAuth } from '@tenderlift/simap-client';
 
-const authInit = withAuth({ token: 'your-token' })();
-const response = await client.get('/protected-endpoint', { init: authInit });
+// Add authentication to all requests
+const auth = { token: 'your-api-token' };
+client.interceptors.request.use((request) => {
+  return withAuth(auth)(request);
+});
 ```
 
-## Browser usage (via your proxy)
+## Browser Support
 
-This package can be used in browser apps only when you send requests through your proxy (e.g., Vite dev proxy during development, and a reverse-proxy endpoint you host in production). Point the client at the proxy base URL, e.g. `/simap`.
+❌ **Direct browser usage is not supported** because the SIMAP API does not send CORS headers.
 
-- Vite proxy docs: https://vitejs.dev/config/server-options.html#server-proxy
-- Cloudflare Workers CORS/proxy example: https://developers.cloudflare.com/workers/examples/cors-header-proxy/
+If you need to use this client in a browser application, you must:
+1. Set up a proxy server (your backend, edge function, or development server)
+2. Route SIMAP API requests through your proxy
+3. Configure the client to use your proxy URL
 
-> No proxy code is included here; follow the docs above and set your proxy URL as the client baseUrl in your app.
-
-## Friendly runtime guard
-
-To prevent confusion, the client can throw a clear error when it detects browser usage targeting the upstream domain. If you haven’t enabled this yet, add something like the following to your entry:
-
-```ts
-// In your client factory / init (simplified example)
-const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
-const DEFAULT_BASE = 'https://www.simap.ch';
-
-export function assertRuntime(baseUrl: string) {
-  if (isBrowser && baseUrl.startsWith(DEFAULT_BASE)) {
-    throw new Error(
-      '[simap-api-client] Browser usage requires a proxy because simap.ch does not send CORS headers. ' +
-        'Set baseUrl to your proxy (e.g. "/simap"). See README: Browser usage.',
-    );
+Example proxy setup with Vite:
+```javascript
+// vite.config.js
+export default {
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://www.simap.ch',
+        changeOrigin: true,
+      }
+    }
   }
 }
 ```
 
-Call `assertRuntime(baseUrl)` as part of your client setup.
+## API Documentation
 
-## TypeScript
+### Available Endpoints
 
-All request/response models are fully typed, generated from the SIMAP OpenAPI schema.
+#### Reference Data
+- `listCantons()` - Get all Swiss cantons
+- `listCountries()` - Get all countries
+- `listLanguages()` - Get supported languages
+- `listActivities()` - Get TED activity codes
+- `listCriteria()` - Get selection criteria
 
-## Testing
+#### Project Search
+- `getPublicProjectSearch(options)` - Search public procurement projects
+- `getProjectHeaderById(options)` - Get project details by ID
+- `getPublicationDetail(options)` - Get publication details
 
-We ship two test suites:
+#### Classification Codes
+- `listCPVCodes()` - Common Procurement Vocabulary codes
+- `listCPCCodes()` - Central Product Classification codes
+- `listBKPCodes()` - Swiss construction classification codes
+- `listNPKCodes()` - Swiss standard position catalog codes
 
-- **Workers runtime tests** (Vitest + Miniflare): exercise the client **inside workerd** with **mocked outbound requests**. Fast, deterministic, CI-friendly.
-- **Node tests**: small unit checks (e.g., runtime guard).
+### Response Structure
 
-### What these tests cover
+All API methods return a response object with the following structure:
 
-- **Workers compatibility** (no Node-only APIs).
-- **Request construction**: paths, methods, headers, query params.
-- **Response handling**: JSON decoding, typing, basic mapping.
-- **Error paths**: 4xx/5xx, network failures, timeouts/retries (where implemented).
-- **Client behavior**: cursors/pagination and any helpers.
-- **Runtime guard**: throws a clear message if you try to hit `simap.ch` from a browser.
+```typescript
+interface ApiResponse<T> {
+  data?: T;        // Response data (undefined on error)
+  error?: unknown; // Error information
+  response: Response; // Raw fetch Response object
+}
+```
 
-### What they don’t cover
+## Development
 
-- **Live SIMAP availability or performance** (no real network calls by default).
-- **Spec drift** on the SIMAP side (mocks pin the contract we expect).
-- **Auth/infrastructure** details outside this package.
-- **CORS/proxy configuration** for browser apps (you must provide your own proxy).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.
 
-### How to run
+### Scripts
 
-- Workers (Miniflare): `pnpm run test:workers`
-- Node: `pnpm run test:node`
-- E2E against production: `pnpm run test:e2e`
+- `pnpm build` - Build the library
+- `pnpm test` - Run all tests
+- `pnpm typecheck` - Type checking
+- `pnpm lint` - Run linter
+- `pnpm size` - Check bundle size
 
-### E2E Tests
+## Troubleshooting
 
-The package includes end-to-end tests that validate the client against the SIMAP production API:
+### Common Issues
 
-- **Coverage**: Tests search functionality, pagination, filtering by canton/date/type, and error handling
-- **Focus**: Validates Ticino (TI) canton project searches with real API responses
-- **Requirements**: Internet connection to reach `https://www.simap.ch/api`
+#### TypeScript Types Not Found
+Ensure your `tsconfig.json` includes:
+```json
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  }
+}
+```
 
-## Compatibility matrix
+#### Network Errors in Node.js
+For Node.js versions before 18, you may need a fetch polyfill:
+```bash
+npm install node-fetch
+```
 
-- Node 18+: ✅
-- Cloudflare Workers / Workerd: ✅
-- Vercel/Netlify Edge: ✅
-- Browsers (direct to simap.ch): ❌ (requires your proxy; see above)
+#### Authentication Errors
+Ensure your API token is valid and properly formatted in the Authorization header.
 
-## Contributing
+## License
 
-This is an auto-generated client. To report issues or suggest improvements:
+MIT © [TenderLift](https://github.com/tenderlift)
 
-1. Check if the issue is with the SIMAP API itself
-2. For client generation issues, please reach out to `support@tenderlift.ch`
-3. For API issues, contact SIMAP support
+See [LICENSE](LICENSE) file for details.
 
 ## Links
 
-- [SIMAP Portal](https://www.simap.ch)
-- [SIMAP API Documentation](https://www.simap.ch/api/specifications/simap.yaml)
-- [TenderLift](https://tenderlift.ch)
+- [NPM Package](https://www.npmjs.com/package/@tenderlift/simap-client)
+- [GitHub Repository](https://github.com/tenderlift/simap-client)
+- [Issue Tracker](https://github.com/tenderlift/simap-client/issues)
+- [SIMAP Official Site](https://www.simap.ch)
+- [SIMAP API Documentation](https://www.simap.ch/api-doc/)
+
+---
+
+Built with ❤️ for the Swiss open-source community

@@ -1,0 +1,15 @@
+# NOTICE
+
+This project is an unofficial, open-source library for the SIMAP API. It is developed and maintained independently by TenderLift. While SIMAP has graciously approved the open-sourcing of this library, they do not control, endorse, or bear any responsibility for it. We are simply happy to contribute to the Swiss open-source community.
+
+This project is not affiliated with or endorsed by SIMAP. All trademarks and brand names belong to their respective owners.
+
+## About SIMAP
+
+SIMAP (Système d'Information sur les Marchés Publics en Suisse) is the Swiss public procurement platform. For official information and documentation, please visit:
+- Official website: https://www.simap.ch
+- API documentation: https://www.simap.ch/api-doc/
+
+## Purpose
+
+This TypeScript client library aims to make it easier for developers to integrate with the SIMAP API in their applications, supporting modern JavaScript environments including Node.js, Cloudflare Workers, and other edge runtimes.

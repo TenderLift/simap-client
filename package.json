@@ -38,8 +38,11 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
+    "src",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "NOTICE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "tsup",
@@ -72,6 +75,7 @@
     "lefthook": "^1.12.3",
     "miniflare": "^4.20250902.0",
     "msw": "^2.11.1",
+    "size-limit": "11.2.0",
     "tsd": "^0.33.0",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",
