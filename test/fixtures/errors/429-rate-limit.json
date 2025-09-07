@@ -1,0 +1,9 @@
+{
+  "error": "Too Many Requests",
+  "message": "Rate limit exceeded. Please try again later.",
+  "code": "RATE_LIMIT_EXCEEDED",
+  "retryAfter": 60,
+  "limit": 100,
+  "remaining": 0,
+  "reset": "2025-09-07T12:01:00Z"
+}

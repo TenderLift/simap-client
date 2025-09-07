@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write # For npm provenance
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.14.0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Create Release Pull Request or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm changeset publish
+          title: 'chore: release'
+          commit: 'chore: release'
+          createGithubReleases: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+      
+      - name: Send release notification
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          echo "🎉 New version published!"
+          echo "Published packages: ${{ steps.changesets.outputs.publishedPackages }}"
+      
+      # Optional: Send Slack notification on release
+      # - name: Notify Slack on Release
+      #   if: steps.changesets.outputs.published == 'true'
+      #   uses: 8398a7/action-slack@v3
+      #   with:
+      #     status: success
+      #     text: '🚀 @tenderlift/simap-client has been released!'
+      #     webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}

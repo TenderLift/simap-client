@@ -1,0 +1,20 @@
+{
+  "totalCount": 0,
+  "pageSize": 20,
+  "currentPage": 1,
+  "totalPages": 0,
+  "results": [],
+  "facets": {
+    "cantons": [],
+    "categories": [],
+    "status": []
+  },
+  "query": {
+    "search": "non-existent-search-term",
+    "filters": {
+      "canton": "TI",
+      "dateFrom": "2025-01-01",
+      "dateTo": "2025-12-31"
+    }
+  }
+}

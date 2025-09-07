@@ -1,0 +1,32 @@
+{
+  "totalCount": 10000,
+  "pageSize": 100,
+  "currentPage": 50,
+  "totalPages": 100,
+  "hasNext": true,
+  "hasPrevious": true,
+  "results": [
+    {
+      "id": "project-4901",
+      "title": "Large Dataset Item 4901",
+      "description": "This is a sample item in a large paginated response"
+    },
+    {
+      "id": "project-4902",
+      "title": "Large Dataset Item 4902",
+      "description": "This is another sample item in a large paginated response"
+    }
+  ],
+  "links": {
+    "self": "/api/public/projects/search?page=50&size=100",
+    "first": "/api/public/projects/search?page=1&size=100",
+    "previous": "/api/public/projects/search?page=49&size=100",
+    "next": "/api/public/projects/search?page=51&size=100",
+    "last": "/api/public/projects/search?page=100&size=100"
+  },
+  "metadata": {
+    "executionTime": 1234,
+    "cached": false,
+    "dataVersion": "2025.09.07"
+  }
+}

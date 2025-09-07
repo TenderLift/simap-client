@@ -1,0 +1,7 @@
+{
+  "error": "Forbidden",
+  "message": "Insufficient permissions to access this resource",
+  "code": "INSUFFICIENT_PERMISSIONS",
+  "requiredRoles": ["ADMIN", "EDITOR"],
+  "userRoles": ["VIEWER"]
+}

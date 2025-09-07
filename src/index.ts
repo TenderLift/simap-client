@@ -20,6 +20,7 @@ export class HttpError extends Error {
 		public body: unknown,
 	) {
 		super(`HTTP ${status}`);
+		this.name = 'HttpError';
 	}
 }
 export async function ensureOk<T>(res: {response: Response; data: T}) {

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Main Bundle (ESM)",
+    "path": "dist/index.js",
+    "limit": "10 KB"
+  },
+  {
+    "name": "Main Bundle (CJS)",
+    "path": "dist/index.cjs",
+    "limit": "10 KB"
+  },
+  {
+    "name": "Full Package",
+    "path": [
+      "dist/index.js",
+      "dist/index.d.ts"
+    ],
+    "limit": "15 KB"
+  }
+]

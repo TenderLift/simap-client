@@ -1,0 +1,26 @@
+{
+  "error": "Validation Error",
+  "message": "The request contains invalid data",
+  "code": "VALIDATION_ERROR",
+  "details": [
+    {
+      "field": "canton",
+      "message": "Invalid canton code",
+      "value": "XX",
+      "allowedValues": ["AG", "AI", "AR", "BE", "BL", "BS", "FR", "GE", "GL", "GR", "JU", "LU", "NE", "NW", "OW", "SG", "SH", "SO", "SZ", "TG", "TI", "UR", "VD", "VS", "ZG", "ZH"]
+    },
+    {
+      "field": "dateFrom",
+      "message": "Date must be in the future",
+      "value": "2020-01-01",
+      "constraint": "future"
+    },
+    {
+      "field": "pageSize",
+      "message": "Page size must be between 1 and 100",
+      "value": 500,
+      "min": 1,
+      "max": 100
+    }
+  ]
+}

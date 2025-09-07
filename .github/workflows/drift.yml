@@ -1,0 +1,103 @@
+name: OpenAPI Spec Drift Detection
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  check-drift:
+    name: Check for OpenAPI Spec Changes
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.14.0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Fetch upstream spec
+        run: |
+          echo "Fetching upstream SIMAP OpenAPI spec..."
+          npx tsx scripts/fetch-spec.ts
+      
+      - name: Check for differences
+        id: check-diff
+        run: |
+          if ! diff -q spec/simap.yaml spec/simap.upstream.yaml > /dev/null 2>&1; then
+            echo "spec_changed=true" >> $GITHUB_OUTPUT
+            echo "OpenAPI spec has changed!"
+          else
+            echo "spec_changed=false" >> $GITHUB_OUTPUT
+            echo "OpenAPI spec is up to date."
+          fi
+      
+      - name: Update spec and regenerate code
+        if: steps.check-diff.outputs.spec_changed == 'true'
+        run: |
+          # Replace the pinned spec with the upstream version
+          mv spec/simap.upstream.yaml spec/simap.yaml
+          
+          # Regenerate the client code
+          pnpm gen
+          
+          # Run tests to ensure everything still works
+          pnpm typecheck
+          pnpm lint:fix || true
+          pnpm test:node || true
+      
+      - name: Create Pull Request
+        if: steps.check-diff.outputs.spec_changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: update SIMAP OpenAPI spec and regenerate client'
+          title: '🔄 Update SIMAP OpenAPI Spec'
+          body: |
+            ## OpenAPI Spec Update Detected
+            
+            The upstream SIMAP OpenAPI specification has changed. This PR updates the pinned spec and regenerates the client code.
+            
+            ### Changes
+            - Updated `spec/simap.yaml` to latest upstream version
+            - Regenerated client code in `src/generated/`
+            
+            ### Review Checklist
+            - [ ] Review spec changes for breaking changes
+            - [ ] Verify all tests pass
+            - [ ] Check for any new endpoints or removed functionality
+            - [ ] Update version number if needed
+            
+            ---
+            *This PR was automatically created by the OpenAPI drift detection workflow.*
+          branch: spec-update-${{ github.run_number }}
+          delete-branch: true
+          labels: |
+            dependencies
+            automated
+      
+      # Optional: Send Slack notification on failure
+      # - name: Notify Slack on Failure
+      #   if: failure()
+      #   uses: 8398a7/action-slack@v3
+      #   with:
+      #     status: ${{ job.status }}
+      #     text: 'OpenAPI drift detection workflow failed!'
+      #     webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}

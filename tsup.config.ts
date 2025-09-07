@@ -15,7 +15,7 @@ export default defineConfig({
 	clean: true,
 	target: 'es2020',
 	treeshake: true,
-	minify: true,
+	minify: false, // Standard for libraries - consumers handle minification
 	// Don't bundle any dependencies - keep runtime lean
 	external: [],
 	// Ensure we're edge/worker compatible

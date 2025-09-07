@@ -1,0 +1,7 @@
+{
+  "error": "Unauthorized",
+  "message": "Authentication required",
+  "code": "AUTH_REQUIRED",
+  "timestamp": "2025-09-07T12:00:00Z",
+  "path": "/api/public/projects/search"
+}

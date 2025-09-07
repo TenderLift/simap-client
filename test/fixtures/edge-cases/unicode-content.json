@@ -1,0 +1,37 @@
+{
+  "totalCount": 3,
+  "pageSize": 20,
+  "currentPage": 1,
+  "results": [
+    {
+      "id": "unicode-project-1",
+      "title": "Straßenbau Zürich - 道路建設",
+      "description": "Öffentliche Ausschreibung für Straßenbauarbeiten in Zürich. 包括特殊字符的描述。",
+      "canton": "ZH",
+      "value": 1500000,
+      "currency": "CHF",
+      "contactName": "Müller-Schäfer",
+      "location": "Zürich-Örlikon"
+    },
+    {
+      "id": "unicode-project-2",
+      "title": "Rénovation École - École primaire François-Édouard",
+      "description": "Travaux de rénovation complète avec matériaux écologiques. ♻️ Développement durable.",
+      "canton": "GE",
+      "value": 2500000,
+      "currency": "CHF",
+      "contactName": "Jean-François Dubois",
+      "location": "Genève"
+    },
+    {
+      "id": "unicode-project-3",
+      "title": "IT-System für Bürgerdienste / Système IT pour services citoyens",
+      "description": "Implementation of e-government services. Mise en œuvre de services d'administration en ligne. € → CHF conversion required.",
+      "canton": "BE",
+      "value": 750000,
+      "currency": "CHF",
+      "contactName": "Hans-Peter Bärtschi",
+      "location": "Bern/Berne"
+    }
+  ]
+}

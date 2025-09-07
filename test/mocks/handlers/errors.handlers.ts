@@ -7,37 +7,43 @@ const SIMAP_API_BASE = 'https://www.simap.ch/api';
  * These can be selectively enabled in tests to simulate various error conditions
  */
 export const errorHandlers = {
-	// 401 Unauthorized - Missing or invalid authentication
+	// 401 Unauthorized - Missing or invalid authentication (SIMAP format)
 	unauthorized: http.get(`${SIMAP_API_BASE}/*`, () => {
 		return HttpResponse.json(
 			{
-				error: 'Unauthorized',
 				message: 'Authentication required',
-				code: 'AUTH_REQUIRED',
+				path: '/api/publications/v2/project/project-search',
+				status: 401,
+				timestamp: new Date().toISOString(),
+				errorCode: 'UNAUTHORIZED',
 			},
 			{status: 401},
 		);
 	}),
 
-	// 403 Forbidden - Insufficient permissions
+	// 403 Forbidden - Insufficient permissions (SIMAP format)
 	forbidden: http.get(`${SIMAP_API_BASE}/*`, () => {
 		return HttpResponse.json(
 			{
-				error: 'Forbidden',
 				message: 'Insufficient permissions to access this resource',
-				code: 'INSUFFICIENT_PERMISSIONS',
+				path: '/api/publications/v2/project/project-search',
+				status: 403,
+				timestamp: new Date().toISOString(),
+				errorCode: 'FORBIDDEN',
 			},
 			{status: 403},
 		);
 	}),
 
-	// 404 Not Found
+	// 404 Not Found (SIMAP format)
 	notFound: http.get(`${SIMAP_API_BASE}/*`, () => {
 		return HttpResponse.json(
 			{
-				error: 'Not Found',
 				message: 'The requested resource was not found',
-				code: 'RESOURCE_NOT_FOUND',
+				path: '/api/publications/v2/project/non-existent-id/project-header',
+				status: 404,
+				timestamp: new Date().toISOString(),
+				errorCode: 'NOT_FOUND',
 			},
 			{status: 404},
 		);
@@ -61,14 +67,15 @@ export const errorHandlers = {
 		);
 	}),
 
-	// 500 Internal Server Error
+	// 500 Internal Server Error (SIMAP format)
 	serverError: http.get(`${SIMAP_API_BASE}/*`, () => {
 		return HttpResponse.json(
 			{
-				error: 'Internal Server Error',
 				message: 'An unexpected error occurred',
-				code: 'INTERNAL_ERROR',
-				traceId: 'trace-' + Math.random().toString(36).slice(2, 11),
+				path: '/api/publications/v2/project/project-search',
+				status: 500,
+				timestamp: new Date().toISOString(),
+				errorCode: 'INTERNAL_SERVER_ERROR',
 			},
 			{status: 500},
 		);
@@ -125,25 +132,16 @@ export const errorHandlers = {
 		return new HttpResponse(null, {status: 204});
 	}),
 
-	// Validation error - 400 Bad Request
-	validationError: http.post(`${SIMAP_API_BASE}/*`, () => {
+	// Validation error - 400 Bad Request (SIMAP format)
+	validationError: http.get(`${SIMAP_API_BASE}/*`, () => {
 		return HttpResponse.json(
 			{
-				error: 'Validation Error',
 				message: 'The request contains invalid data',
-				code: 'VALIDATION_ERROR',
-				details: [
-					{
-						field: 'canton',
-						message: 'Invalid canton code',
-						value: 'XX',
-					},
-					{
-						field: 'dateFrom',
-						message: 'Date must be in the future',
-						value: '2020-01-01',
-					},
-				],
+				path: '/api/publications/v2/project/project-search',
+				status: 400,
+				timestamp: new Date().toISOString(),
+				errorCode: 'VALIDATION_ERROR',
+				missingFields: ['canton', 'dateFrom'],
 			},
 			{status: 400},
 		);

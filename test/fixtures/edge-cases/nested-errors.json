@@ -1,0 +1,53 @@
+{
+  "message": "Multiple validation errors occurred",
+  "path": "/api/publications/v2/project/project-search",
+  "status": 400,
+  "timestamp": "2025-09-07T12:00:00Z",
+  "errorCode": "VALIDATION_ERROR",
+  "missingFields": ["canton", "dateFrom"],
+  "details": {
+    "fieldErrors": [
+      {
+        "field": "filters.canton",
+        "message": "Invalid canton code",
+        "rejectedValue": "XX",
+        "suggestions": ["ZH", "BE", "LU", "UR", "SZ"]
+      },
+      {
+        "field": "filters.dateRange",
+        "message": "Date range is invalid",
+        "details": {
+          "from": {
+            "value": "2025-13-01",
+            "error": "Invalid month value: 13"
+          },
+          "to": {
+            "value": "2024-12-31",
+            "error": "End date cannot be before start date"
+          }
+        }
+      },
+      {
+        "field": "pagination",
+        "message": "Invalid pagination parameters",
+        "subErrors": [
+          {
+            "field": "page",
+            "message": "Page number must be positive",
+            "value": -1
+          },
+          {
+            "field": "size",
+            "message": "Page size exceeds maximum",
+            "value": 1000,
+            "max": 100
+          }
+        ]
+      }
+    ],
+    "globalErrors": [
+      "Request exceeds maximum complexity",
+      "Too many filter criteria specified"
+    ]
+  }
+}

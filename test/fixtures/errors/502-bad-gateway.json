@@ -1,0 +1,10 @@
+{
+  "error": "Bad Gateway",
+  "message": "The upstream server is unavailable",
+  "code": "GATEWAY_ERROR",
+  "upstream": {
+    "host": "backend-service.internal",
+    "port": 8080,
+    "timeout": 30000
+  }
+}

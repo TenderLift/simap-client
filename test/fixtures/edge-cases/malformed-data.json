@@ -1,0 +1,42 @@
+{
+  "totalCount": 5,
+  "pageSize": 20,
+  "currentPage": 1,
+  "results": [
+    {
+      "id": "valid-project-1",
+      "title": "Valid Project",
+      "canton": "TI",
+      "publishDate": "2025-09-01T10:00:00Z"
+    },
+    {
+      "id": null,
+      "title": "",
+      "canton": "INVALID",
+      "publishDate": "not-a-date"
+    },
+    {
+      "id": "partial-project",
+      "title": "Project with missing fields"
+    },
+    {
+      "id": "project-with-nulls",
+      "title": null,
+      "canton": null,
+      "publishDate": null,
+      "description": null,
+      "value": null
+    },
+    {
+      "id": "project-with-empty-arrays",
+      "title": "Empty Collections",
+      "categories": [],
+      "attachments": [],
+      "bidders": []
+    }
+  ],
+  "warnings": [
+    "Some data could not be fully loaded",
+    "Data integrity issues detected"
+  ]
+}

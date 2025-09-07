@@ -1,0 +1,12 @@
+{
+  "error": "Internal Server Error",
+  "message": "An unexpected error occurred",
+  "code": "INTERNAL_ERROR",
+  "traceId": "trace-abc123def",
+  "timestamp": "2025-09-07T12:00:00Z",
+  "details": {
+    "service": "project-service",
+    "version": "1.2.3",
+    "node": "eu-west-1a"
+  }
+}
