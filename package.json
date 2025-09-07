@@ -5,13 +5,13 @@
   "private": false,
   "type": "module",
   "sideEffects": false,
-  "homepage": "https://github.com/tenderlift/simap-client#readme",
+  "homepage": "https://github.com/TenderLift/simap-client#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tenderlift/simap-client.git"
+    "url": "git+https://github.com/TenderLift/simap-client.git"
   },
   "bugs": {
-    "url": "https://github.com/tenderlift/simap-client/issues"
+    "url": "https://github.com/TenderLift/simap-client/issues"
   },
   "keywords": [
     "simap",
