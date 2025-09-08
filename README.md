@@ -1,7 +1,6 @@
 # @tenderlift/simap-client
 
 [![npm version](https://img.shields.io/npm/v/@tenderlift/simap-client.svg)](https://www.npmjs.com/package/@tenderlift/simap-client)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=TenderLift/simap-client-demo)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/@tenderlift/simap-client)](https://bundlephobia.com/package/@tenderlift/simap-client)
 
@@ -18,6 +17,12 @@ TypeScript client for the SIMAP (Swiss Public Procurement) API, auto-generated f
 - **Built-in error handling** with typed error responses
 - **Authentication helpers** for token-based auth
 - **Well tested**: 67 tests across Node.js and Worker environments
+
+## Try it Online
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=TenderLift/simap-client-demo)
+
+Launch a pre-configured development environment in your browser with GitHub Codespaces to explore the SIMAP client examples instantly.
 
 ## Installation
 
