@@ -2,7 +2,6 @@
 
 [![npm version](https://img.shields.io/npm/v/@tenderlift/simap-client.svg)](https://www.npmjs.com/package/@tenderlift/simap-client)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![codecov](https://codecov.io/gh/tenderlift/simap-client/graph/badge.svg?token=YOUR_TOKEN)](https://codecov.io/gh/tenderlift/simap-client)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/@tenderlift/simap-client)](https://bundlephobia.com/package/@tenderlift/simap-client)
 
 TypeScript client for the SIMAP (Swiss Public Procurement) API, auto-generated from [the official OpenAPI specification](https://www.simap.ch/api/specifications/simap.yaml).
@@ -11,13 +10,19 @@ TypeScript client for the SIMAP (Swiss Public Procurement) API, auto-generated f
 
 ## Features
 
-- 🚀 **Full TypeScript support** with comprehensive type definitions
-- 🌐 **Multi-runtime compatible**: Node.js 20+, Cloudflare Workers, Vercel/Netlify Edge
-- 📦 **Lightweight**: <10KB gzipped (5.3KB ESM, 7.28KB CJS)
-- 🔄 **Auto-generated** from official SIMAP OpenAPI specification
-- 🛡️ **Built-in error handling** with typed error responses
-- 🔑 **Authentication helpers** for token-based auth
-- ✅ **Well tested**: 67 tests across Node.js and Worker environments
+- **Full TypeScript support** with comprehensive type definitions
+- **Multi-runtime compatible**: Node.js 20+, Cloudflare Workers, Vercel/Netlify Edge
+- **Lightweight**: <10KB gzipped (5.3KB ESM, 7.28KB CJS)
+- **Auto-generated** from official SIMAP OpenAPI specification
+- **Built-in error handling** with typed error responses
+- **Authentication helpers** for token-based auth
+- **Well tested**: 67 tests across Node.js and Worker environments
+
+## Try it Online
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=TenderLift/simap-client-demo)
+
+Launch a pre-configured development environment in your browser with GitHub Codespaces to explore the SIMAP client examples instantly.
 
 ## Installation
 

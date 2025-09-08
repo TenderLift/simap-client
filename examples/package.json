@@ -1,0 +1,17 @@
+{
+  "name": "simap-client-examples",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node basic-usage.js",
+    "search": "node search-projects.js",
+    "reference": "node reference-data.js",
+    "errors": "node error-handling.js"
+  },
+  "dependencies": {
+    "@tenderlift/simap-client": "^0.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

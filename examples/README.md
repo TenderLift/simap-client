@@ -2,6 +2,18 @@
 
 This directory contains practical examples demonstrating how to use the `@tenderlift/simap-client` library.
 
+## Try it Online
+
+You can instantly explore these examples using GitHub Codespaces:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=TenderLift/simap-client-demo)
+
+This will launch a pre-configured development environment in your browser with:
+- Node.js 20+ pre-installed
+- All dependencies ready to use
+- Example files ready to run
+- No local setup required
+
 ## Prerequisites
 
 Before running these examples, make sure you have:
