@@ -67,22 +67,22 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.6",
-    "@cloudflare/vitest-pool-workers": "^0.8.70",
-    "@cloudflare/workers-types": "^4.20250906.0",
-    "@hey-api/openapi-ts": "^0.82.4",
+    "@cloudflare/vitest-pool-workers": "^0.12.11",
+    "@cloudflare/workers-types": "^4.20260210.0",
+    "@hey-api/openapi-ts": "^0.82.5",
     "@size-limit/file": "^11.2.0",
     "@size-limit/preset-small-lib": "^11.2.0",
     "@types/node": "^24.3.1",
     "@vitest/coverage-v8": "3.2.4",
     "lefthook": "^1.12.3",
-    "miniflare": "^4.20250902.0",
+    "miniflare": "^4.20260210.0",
     "msw": "^2.11.1",
     "size-limit": "11.2.0",
     "tsd": "^0.33.0",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4",
-    "xo": "^1.2.2"
+    "xo": "^1.2.3"
   },
   "publishConfig": {
     "access": "public"
@@ -90,5 +90,15 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "pnpm@10.14.0"
+  "packageManager": "pnpm@10.14.0",
+  "pnpm": {
+    "overrides": {
+      "tar": ">=7.5.7",
+      "lodash": ">=4.17.23",
+      "devalue": ">=5.6.2",
+      "glob": ">=10.5.0",
+      "js-yaml": ">=4.1.1",
+      "vite": ">=7.1.11"
+    }
+  }
 }
