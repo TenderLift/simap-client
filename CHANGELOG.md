@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0
+
+### Minor Changes
+
+- f87d56d: Update SIMAP OpenAPI spec and regenerate client
+
 ## 0.1.0
 
 ### Minor Changes
