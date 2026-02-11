@@ -57,11 +57,10 @@ info:
     ### General design decisions:
     * `PUT/POST/PATCH return updated entity`: Can help keeping state in UI consistent.
     * `No toplevel arrays for lists`: The API never returns an array as toplevel element even if the resulting list is unpaged. This keeps the design consistent with paged lists.
-    * `Domain before version: /me/v1 (not /v1/me)`: It's likely that we have to split the Client Services into multiple microservices especially regarding Documents access.Thus we should have the domain/microservice name at the first place, then the version.
-                                                         This also makes it easier for a single backend version to implement two versions at the same time as only the changing part has to be implemented twice.
+    * `Domain before version: /me/v1 (not /v1/me)`. This makes it easier for a single backend version to implement two versions at the same time as only the changing part has to be implemented twice.
 
     ### Timezone
-    All date and time fields defined by the API are meant to be relative to the the time zone `Europe/Zurich` and to the winter-/summertime offsets at the selected date.
+    All date and time fields defined by the API are meant to be relative to the time zone `Europe/Zurich` and to the winter-/summertime offsets at the selected date.
 
     ### Extensions for code-generation
     With the following extension values on an endpoint we improve the code generation, these values are implemented in modified generator templates
@@ -75,8 +74,9 @@ info:
     * `x-streaming-response-body` - code generator advice to support generating streaming based response type like StreamingResponseBody in spring based frameworks
 
     Used custom string formats:
-    * `time`, represents a local time (is mapped to java.time.LocalTime in the backend)
-    * `url`, represents a URL (is mapped to java.net.URL in the backend)
+    * `time`, represents a local time with the following precision `hh:mm` e.g. `13:15`
+    * `url`, represents a URL, needs to comply with regex:
+      `^https?:\/\/(?:www\.)?(?:xn--)?[a-z0-9]+(?:[-.](?:xn--)?[a-z0-9]+){0,100}\.[a-z]{2,63}(?::\d{1,5})?(?:[/?#]\S*)?$`
     * `fileName`, needs to comply with regex: 
       `^(?!(CON|PRN|AUX|NUL|COM0|COM1|COM2|COM3|COM4|COM5|COM6|COM7|COM8|COM9|COM¹|COM²|COM³|LPT0|LPT1|LPT2|LPT3|LPT4|LPT5|LPT6|LPT7|LPT8|LPT9|LPT¹|LPT²|LPT³)(\.|$))([^\x00-\x1F<>:"/\\|?*]){0,198}[^\x00-\x1F<>:"/\\|?* .]$`
       see also https://learn.microsoft.com/en-gb/windows/win32/fileio/naming-a-file?redirectedfrom=MSDN#file-and-directory-names
@@ -88,16 +88,16 @@ info:
     * `npkCode`, string compatible with npkCode regex `^[0-9]{3}$`
     * `oagCode`, string compatible with oagCode regex `^((\d{1,3})(\.|$)){1,3}$`
     * `html`, XHTML-based string, only a very limited set of XHTML tags can be used:
-        * a (including href, rel and target attributes)
-        * ul, ol, li
-        * b, i, u, em, strong
-        * p, br
+        * `a` (including href, rel and target attributes)
+        * `ul`, `ol`, `li`
+        * `b`, `i`, `u`, `em`, `strong`
+        * `p`, `br`
         
-        the following protocols are allowed for a:
-        * http(s)
-        * mailto
-        * tel
-        * callto
+        the following protocols are allowed for `a`:
+        * `http(s)`
+        * `mailto`
+        * `tel`
+        * `callto`
 
     Used custom number formats:
      * `price`, represents a number with the precision of a price (2 digits), i.e `123.65`
@@ -107,12 +107,12 @@ info:
     In the description of those endpoints we refer to the specific model which is compatible to every non-empty json value returned in the response.
     Please see https://github.com/ndjson/ndjson-spec for more details.
 
-    ## Custom Validations
-    - in general, an array is not allowed to contain `null` as entry
+    ### Custom Validations
+    - In general, an array is not allowed to contain `null` as entry.
     - EmailList: each email in the array needs to comply with regex: `^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()\[\].,;:\s@"]+\.)+[^<>()\[\].,;:\s@"]{2,})$`
     - Url: needs to comply with regex: `^https?:\/\/(?:www\.)?(?:xn--)?[a-z0-9]+(?:[-.](?:xn--)?[a-z0-9]+){0,100}\.[a-z]{2,63}(?::\d{1,5})?(?:[/?#]\S*)?$`
     - TedSendableAddress: all required fields need to be set in contrast to partially defined addresses, i.e. if you patch and also send a corresponding address property, then you need to patch all required fields, you cannot reset some of them to null respectively).
-  version: 1.3.0
+  version: 1.5.1
   license:
     name: proprietary software license
     url: https://simap.ch
@@ -196,6 +196,8 @@ tags:
     description: Endpoints for getting metadata of the system
   - name: test
     description: Endpoints to minimise test expenses, providing shortcuts to specific application states
+  - name: sustainability-triggers
+    description: Endpoints for the sustainability triggers management for competence centres
 paths:
   /cantons/v1:
     get:
@@ -694,23 +696,12 @@ paths:
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
-  /institutions/v1:
+  /institutions/v1/institutions:
     get:
-      summary: Get the list of institutions
+      summary: Get the institutions tree as flat list
       operationId: listInstitutions
-      description: |
-        This endpoint returns the tree for the selection / overview of the available institutions.
-        Navigate the tree with the usage of the `parentInstitutionId`, if not set will return the top level institutions.
       tags:
         - institutions
-      parameters:
-        - in: query
-          name: parentInstitutionId
-          schema:
-            type: string
-            format: uuid
-            description: If not set the top level institutions will be returned.
-          required: false
       responses:
         '200':
           description: ok
@@ -718,11 +709,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Institutions'
-        '404':
+        '400':
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
-  /institutions/v1/institution/{institutionId}:
+  /institutions/v1/institutions/{institutionId}:
     parameters:
       - in: path
         name: institutionId
@@ -730,7 +721,7 @@ paths:
           type: string
           format: uuid
         required: true
-        description: Id of the institution, can be obtained by GET on /institutions/v1 or has to be provided on creation
+        description: Id of the institution, can be obtained by GET `/institutions/v1/institutions`
     get:
       summary: Get details for single institution
       operationId: getInstitutionById
@@ -744,49 +735,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Institution'
         '404':
-          $ref: '#/components/responses/ServerError'
-        default:
-          $ref: '#/components/responses/ServerError'
-  /institutions/v1/po/search:
-    get:
-      summary: find procurement offices by name in the institution tree
-      description: |
-        The search will return the found procurement offices as the tree representation, as they would be, if one traversed the institutions tree.
-        ```
-        Possible return result structure:
-        - institution
-          - institution
-            * PO
-            - institution
-              * PO
-              * PO
-          - institution
-            * PO
-        - institution
-          - institution
-            - institution
-              * PO
-        ```
-      operationId: findPOInInstitutionTree
-      tags:
-        - institutions
-      parameters:
-        - in: query
-          name: query
-          schema:
-            type: string
-            example: Gemeinde Bargen
-            minLength: 3
-          description: You can use partial words or names for the query. Requires a minimum of 3 chars
-          required: true
-      responses:
-        '200':
-          description: ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InstitutionSearchResults'
-        '400':
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
@@ -883,6 +831,36 @@ paths:
         '401':
           $ref: '#/components/responses/ServerError'
         '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /users/v1/user/{userId}/unlock:
+    post:
+      operationId: unlockUser
+      summary: simap_admin unlock a temporarily disabled or locked user login
+      x-roles:
+        - simap_admin
+      tags:
+        - user
+      parameters:
+        - name: userId
+          schema:
+            type: string
+            format: uuid
+          in: path
+          required: true
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        '404':
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
@@ -1031,6 +1009,111 @@ paths:
               schema:
                 $ref: '#/components/schemas/ImpersonateTokens'
         '404':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /users/v1/my/history/mutations:
+    get:
+      summary: Get the history of mutations of the own user
+      operationId: getMyHistoryMutations
+      description: |
+        This endpoint returns the own user history of mutations.
+      tags:
+        - user
+      x-roles:
+        - subscription_user
+        - procurement_project_contributor
+        - procurement_user
+        - procurement_admin
+        - vendor_user
+        - vendor_admin
+        - competence_centre_print_user
+        - competence_centre_admin
+        - simap_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHistoryMutations'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /users/v1/my/history/proc-office-memberships:
+    get:
+      summary: Get the history of procurement office memberships of the own user
+      operationId: getMyHistoryProcOfficeMemberships
+      description: |
+        This endpoint returns the own user history of procurement office memberships.
+      tags:
+        - user
+      x-roles:
+        - subscription_user
+        - procurement_project_contributor
+        - procurement_user
+        - procurement_admin
+        - vendor_user
+        - vendor_admin
+        - competence_centre_print_user
+        - competence_centre_admin
+        - simap_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHistoryOrganizationMemberships'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /users/v1/my/history/vendor-memberships:
+    get:
+      summary: Get the history of vendor memberships of the own user
+      operationId: getMyHistoryVendorMemberships
+      description: |
+        This endpoint returns the own user history of vendor memberships.
+      tags:
+        - user
+      x-roles:
+        - subscription_user
+        - procurement_project_contributor
+        - procurement_user
+        - procurement_admin
+        - vendor_user
+        - vendor_admin
+        - competence_centre_print_user
+        - competence_centre_admin
+        - simap_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHistoryOrganizationMemberships'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
@@ -1953,28 +2036,36 @@ paths:
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
-  /procoffices/v1/treeview:
+  /procoffices/v1/po/public:
     get:
-      summary: Get procurement offices for an institution
+      summary: Get the list with the public data of proc offices.
       tags:
         - proc-office
-      operationId: getProcOfficeTreeView
+      operationId: listPublicProcOffices
       parameters:
         - in: query
           name: institutionId
           schema:
             type: string
             format: uuid
-          description: The id of the responsible institution in the tree. Get the id for an institution through `GET /institutions/v1/`.
-          required: true
+          description: Filter proc offices with the id of the institution that oversees them.
+          required: false
+        - in: query
+          name: search
+          schema:
+            type: string
+            example: Gemeinde Bargen
+            minLength: 3
+          description: Search for proc offices by name. You can use partial words or names for the query.
+          required: false
       responses:
         '200':
           description: ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProcOfficeTree'
-        '404':
+                $ref: '#/components/schemas/ProcOfficesPublicData'
+        '400':
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
@@ -3331,6 +3422,303 @@ paths:
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
+  /procoffices/v1/my/projects/{projectId}/history/publications:
+    parameters:
+      - $ref: '#/components/parameters/ParamProjectId'
+    get:
+      summary: Get the publication history of a procurement office project by project id
+      operationId: getProcOfficeProjectPublicationHistory
+      description: |
+        This endpoint returns the publication history of a procurement office project by project id.
+      tags:
+        - proc-office-projects
+      x-roles:
+        - procurement_project_contributor
+        - procurement_user
+        - procurement_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcOfficeProjectHistoryPublications'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /procoffices/v1/my/projects/{projectId}/history/qnas:
+    parameters:
+      - $ref: '#/components/parameters/ParamProjectId'
+    get:
+      summary: Get the qna history of a procurement office project by project id
+      operationId: getProcOfficeProjectQnaHistory
+      description: |
+        This endpoint returns the qna history of a procurement office project by project id.
+      tags:
+        - proc-office-projects
+      x-roles:
+        - procurement_project_contributor
+        - procurement_user
+        - procurement_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcOfficeProjectHistoryQnas'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /procoffices/v1/my/projects/{projectId}/history/qnas/{hid}:
+    parameters:
+      - $ref: '#/components/parameters/ParamProjectId'
+      - $ref: '#/components/parameters/ParamHistoryId'
+    get:
+      summary: Get the qna history of a procurement office project by project id and history id
+      operationId: getProcOfficeProjectQnaHistoryByHid
+      description: |
+        This endpoint returns given qna history entry with the previous entry for the given qna entry based on the history entry.
+      tags:
+        - proc-office-projects
+      x-roles:
+        - procurement_project_contributor
+        - procurement_user
+        - procurement_admin
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcOfficeProjectHistoryQnaWithPrevious'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        '404':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /procoffices/v1/my/projects/{projectId}/history/involvements:
+    parameters:
+      - $ref: '#/components/parameters/ParamProjectId'
+    get:
+      summary: Get the involved vendors history of a procurement office project by project id
+      operationId: getProcOfficeProjectInvolvementHistory
+      description: |
+        This endpoint returns the involved vendors history of a procurement office project by project id.
+      tags:
+        - proc-office-projects
+      x-roles:
+        - procurement_project_contributor
+        - procurement_user
+        - procurement_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectHistoryInvolvements'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /procoffices/v1/my/projects/{projectId}/history/vendor-messages:
+    parameters:
+      - $ref: '#/components/parameters/ParamProjectId'
+    get:
+      summary: Get the vendor message history of a procurement office project by project id
+      operationId: getProcOfficeProjectVendorMessageHistory
+      description: |
+        This endpoint returns the vendor message history of a procurement office project by project id.
+      tags:
+        - proc-office-projects
+      x-roles:
+        - procurement_project_contributor
+        - procurement_user
+        - procurement_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcOfficeProjectHistoryVendorMessages'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /procoffices/v1/my/projects/{projectId}/history/project-contributors:
+    parameters:
+      - $ref: '#/components/parameters/ParamProjectId'
+    get:
+      summary: Get the project contributor history of a procurement office project by project id
+      operationId: getProcOfficeProjectContributorHistory
+      description: |
+        This endpoint returns the project contributor history of a procurement office project by project id.
+      tags:
+        - proc-office-projects
+      x-roles:
+        - procurement_project_contributor
+        - procurement_user
+        - procurement_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcOfficeProjectHistoryProjectContributors'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /procoffices/v1/my/projects/{projectId}/history/document-downloads:
+    parameters:
+      - $ref: '#/components/parameters/ParamProjectId'
+    get:
+      summary: Get the document download history of a procurement office project by project id
+      operationId: getProcOfficeProjectDocumentDownloadHistory
+      description: |
+        This endpoint returns the document download history for the given project.
+      tags:
+        - proc-office-projects
+      x-roles:
+        - procurement_project_contributor
+        - procurement_user
+        - procurement_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectHistoryDocumentDownloads'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /procoffices/v1/my/history/memberships:
+    get:
+      summary: Get the membership-history of the proc office members for procurement_admin
+      operationId: getMyProcOfficeMembershipHistory
+      description: |
+        This endpoint returns the membership-history of procurement office members for procurement-admins.
+      tags:
+        - proc-office
+      x-roles:
+        - procurement_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcOfficeHistoryMemberships'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /procoffices/v1/my/history/base-data:
+    get:
+      summary: Get the base-data-history of the proc office for the procurement_admin
+      operationId: getMyProcOfficeBaseDataHistory
+      description: |
+        This endpoint returns the base-data-history of procurement offices for procurement-admins.
+      tags:
+        - proc-office
+      x-roles:
+        - procurement_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcOfficeHistoryBaseDataEntries'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /procoffices/v1/my/history/address-data:
+    get:
+      summary: Get the address-history of the proc office for the procurement_admin
+      operationId: getMyProcOfficeAddressHistory
+      description: |
+        This endpoint returns the address-history of procurement offices for procurement-admins.
+      tags:
+        - proc-office
+      x-roles:
+        - procurement_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcOfficeHistoryAddressDataEntries'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
   /procoffices/v1/my/projects/{projectId}/involved-vendors/{vendorId}/digital-submissions:
     parameters:
       - $ref: '#/components/parameters/ParamProjectId'
@@ -3394,8 +3782,96 @@ paths:
     get:
       parameters:
         - $ref: '#/components/parameters/ParamVendorLastItem'
-        - $ref: '#/components/parameters/ParamVendorSearch'
-      summary: Find registered vendors by name, UID or DUNS
+        - name: search
+          description: |
+            - Search by `name`, `additionalName`, UID or DUNS
+            - Either empty or requires at least 3 valid characters.
+          schema:
+            type: string
+            pattern: (^$)|.{3,}
+          in: query
+          required: false
+        - name: typeOfServices
+          description: |
+            filter: if defined, vendors are filtered by one of the provided type of service
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/PubOrderType'
+          in: query
+          required: false
+        - name: cpvCodes
+          description: |
+            filter: if defined, vendors are filtered by one of the provided CPV codes
+          schema:
+            type: array
+            items:
+              type: string
+              format: cpvCode
+          in: query
+          required: false
+        - name: bkpCodes
+          description: |
+            filter: if defined, vendors are filtered by one of the provided BKP codes
+          schema:
+            type: array
+            items:
+              type: string
+              format: bkpCode
+          in: query
+          required: false
+        - name: ebkphCodes
+          description: |
+            filter: if defined, vendors are filtered by one of the provided eBKP-h codes
+          schema:
+            type: array
+            items:
+              type: string
+              format: ebkphCode
+          in: query
+          required: false
+        - name: ebkptCodes
+          description: |
+            filter: if defined, vendors are filtered by one of the provided eBKP-t codes
+          schema:
+            type: array
+            items:
+              type: string
+              format: ebkptCode
+          in: query
+          required: false
+        - name: npkCodes
+          description: |
+            filter: if defined, vendors are filtered by one of the provided NPK codes
+          schema:
+            type: array
+            items:
+              type: string
+              format: npkCode
+          in: query
+          required: false
+        - name: oagCodes
+          description: |
+            filter: if defined, vendors are filtered by one of the provided OAG codes
+          schema:
+            type: array
+            items:
+              type: string
+              format: oagCode
+          in: query
+          required: false
+      summary: Find registered vendors by name, UID, DUNS or filters
+      description: |
+        Returns all registered vendors matching the search input and filters
+        Note that you need to specify at least the search input or one of the filters, 
+        a search query without search input nor filter is not allowed.
+        Filters and search input are combined using a logical AND.
+
+        Pagination:
+
+        Rolling pagination:
+        To fetch the next page add the lastItem to the query. The last item can be found in the pagination-information
+        of the first or previous result.
       operationId: findVendors
       tags:
         - vendor
@@ -3410,7 +3886,7 @@ paths:
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
-  /vendors/v1/vendor/{vendorId}:
+  /vendors/v2/vendor/{vendorId}:
     parameters:
       - $ref: '#/components/parameters/ParamVendorId'
     get:
@@ -3545,7 +4021,7 @@ paths:
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
-  /vendors/v1/verify-uid:
+  /vendors/v2/verify-uid:
     post:
       summary: Verify an UID
       description: |
@@ -3587,7 +4063,7 @@ paths:
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
-  /vendors/v1/verify-duns:
+  /vendors/v2/verify-duns:
     post:
       summary: Verify a DUNS number
       description: |
@@ -3646,6 +4122,118 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MyVendor'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /vendors/v1/my/deactivate:
+    delete:
+      summary: Deactivate the vendor of the current user
+      operationId: deactivateMyVendor
+      description: |
+        A vendor admin can deactivate their vendor, the vendor in which they are currently active.
+
+        This action is always possible and not reversible.
+
+        The vendor is flagged as `deactivated`, will no longer be found in the public vendor directory and 
+        members of the vendor can no longer act as a member of the vendor. 
+
+        A Proc Office can't add a deactivated vendor to a project. 
+        But if the vendor was involved in a project prior the deactivation, the proc office has the ability to interact, use the deactivated vendor
+        in publications.
+
+        After the deactivation of the vendor the current role of the executing user will be set to `subscription_user` 
+        as the current role and organisation is no longer valid.
+      tags:
+        - vendor
+      x-roles:
+        - vendor_admin
+      responses:
+        '204':
+          description: deactivated
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /vendors/v1/my/history/memberships:
+    get:
+      summary: Get the membership-history of vendor members for vendor-admins
+      operationId: getMyVendorMembershipHistory
+      description: |
+        This endpoint returns the membership-history of vendor members for vendor-admins.
+      tags:
+        - vendor
+      x-roles:
+        - vendor_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorHistoryMemberships'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /vendors/v1/my/history/base-data:
+    get:
+      summary: Get the base-data-history of vendors for vendor-admins
+      operationId: getMyVendorBaseDataHistory
+      description: |
+        This endpoint returns the base-data-history of vendors for vendor-admins.
+      tags:
+        - vendor
+      x-roles:
+        - vendor_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorHistoryBaseDataEntries'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /vendors/v1/my/history/address-data:
+    get:
+      summary: Get the address-history of vendors for vendor-admins
+      operationId: getMyVendorAddressHistory
+      description: |
+        This endpoint returns the address-history of vendors for vendor-admins.
+      tags:
+        - vendor
+      x-roles:
+        - vendor_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorHistoryAddressDataEntries'
         '401':
           $ref: '#/components/responses/ServerError'
         '403':
@@ -4037,7 +4625,7 @@ paths:
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
-  /vendors/v1/my/projects/{projectId}/my-notification-settings:
+  /vendors/v2/my/projects/{projectId}/my-notification-settings:
     parameters:
       - $ref: '#/components/parameters/ParamProjectId'
     put:
@@ -4114,6 +4702,66 @@ paths:
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
+  /vendors/v1/my/projects/{projectId}/history/involvements:
+    parameters:
+      - $ref: '#/components/parameters/ParamProjectId'
+    get:
+      summary: Get the involved vendors history of a vendor project by project id
+      operationId: getVendorProjectInvolvementHistory
+      description: |
+        This endpoint returns the involved vendors history of a vendor project by project id.
+      tags:
+        - vendor
+      x-roles:
+        - vendor_user
+        - vendor_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectHistoryInvolvements'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /vendors/v1/my/projects/{projectId}/history/document-downloads:
+    parameters:
+      - $ref: '#/components/parameters/ParamProjectId'
+    get:
+      summary: Get the document download history of a vendor project by project id
+      operationId: getVendorProjectDocumentDownloadHistory
+      description: |
+        This endpoint returns the document download history of a vendor project by project id.
+      tags:
+        - vendor
+      x-roles:
+        - vendor_user
+        - vendor_admin
+      parameters:
+        - $ref: '#/components/parameters/QueryParamFrom'
+        - $ref: '#/components/parameters/QueryParamTo'
+        - $ref: '#/components/parameters/QueryParamLastItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectHistoryDocumentDownloads'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
   /vendors/v1/my/documents:
     get:
       summary: Get the list of vendor documents
@@ -4142,7 +4790,7 @@ paths:
         - $ref: '#/components/parameters/QueryParamToken'
       summary: |
         Download a vendor document by id, authenticate via token in query parameter -- token can be obtained by:
-        /vendors/v1/vendor/{vendorId}/documents/{vendorDocumentId}/token
+        /vendors/v1/my/documents/{vendorDocumentId}/token
       operationId: downloadVendorDocument
       tags:
         - vendor-documents
@@ -4314,10 +4962,10 @@ paths:
     parameters:
       - name: search
         description: |
-          Search input, either empty or requires at least 3 valid characters.
+          Search input, either empty or requires between 3 and 1000 valid characters.
         schema:
           type: string
-          pattern: (^$)|.{3,}
+          pattern: (^$)|.{3,1000}
         in: query
         required: false
       - name: lang
@@ -4327,7 +4975,7 @@ paths:
             $ref: '#/components/schemas/SystemLanguage'
         in: query
         required: false
-        description: defines in which languages shall be searched in case of translated fields. In case this property is not defined or an empty array is given, then we we search in all languages
+        description: defines in which languages shall be searched in case of translated fields. In case this property is not defined or an empty array is given, then we search in all languages
       - name: projectSubTypes
         description: |
           quick-filter: if defined then publications need to be one of the given types
@@ -4622,7 +5270,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Subscriptions'
-        '400':
+        '401':
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
@@ -5612,6 +6260,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PubDraftTenderLot'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        '404':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /pub-drafts/v1/tender/{pubDraftId}/lots/{lotId}/order-type:
+    parameters:
+      - $ref: '#/components/parameters/ParamPubDraftId'
+      - name: lotId
+        schema:
+          type: string
+          format: uuid
+        in: path
+        required: true
+    patch:
+      summary: Change the `orderType` of an individual lot in a tender project `with` lots.
+      description: |
+        In tender projects `with` lots and when the process type is `open` or `selective`
+        It's possible to create tenders with mixed `orderType` lots e.g. where one lot is for a `construction` and another for a `supply`. 
+
+        The project retains the main `orderType` that was selected upon creation but individual lots can have a different 
+        type.
+      operationId: changeLotOrderType
+      tags:
+        - pub-draft-tender
+      x-roles:
+        - procurement_project_contributor
+        - procurement_user
+        - procurement_admin
+        - competence_centre_admin
+      x-generic-response-body:
+        model: PubDraftTenderLotInterface
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: PubDraftTenderLotPatchOrderType
+              properties:
+                orderType:
+                  $ref: '#/components/schemas/PubOrderType'
+              required:
+                - orderType
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PubDraftTenderLot'
+        '400':
+          $ref: '#/components/responses/ServerError'
         '401':
           $ref: '#/components/responses/ServerError'
         '403':
@@ -6930,7 +7634,7 @@ paths:
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
-  /pub-drafts/v1/award/{pubDraftId}/sustainability:
+  /pub-drafts/v2/award/{pubDraftId}/sustainability:
     parameters:
       - $ref: '#/components/parameters/ParamPubDraftId'
     get:
@@ -7845,7 +8549,10 @@ paths:
         - $ref: '#/components/parameters/QueryParamLotId'
       operationId: getPastPublishedPubDrafts
       summary: Get past publications for this pub-draft.
-      description: returns the past published pub-drafts
+      description: |
+        Returns the past published pub-drafts based on the given parameters and `submitted` or `to_publish` publications in the case were another draft is open.
+
+        e.g. submitted award revocation and award draft for the revoked award.
       x-roles:
         - procurement_project_contributor
         - procurement_user
@@ -7858,7 +8565,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PastPublications'
+                $ref: '#/components/schemas/PastPublishedPubDrafts'
         '404':
           $ref: '#/components/responses/ServerError'
         default:
@@ -8721,7 +9428,7 @@ paths:
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
-  /statistics/v1/my/sustainability-export:
+  /statistics/v2/my/sustainability-export:
     get:
       parameters:
         - name: from
@@ -8875,7 +9582,21 @@ paths:
             $ref: '#/components/schemas/WTOStatisticsProcOfficeType'
           in: query
           required: false
-          description: consider awards of proc_offices matching the provided proc_office filter type. Only applies if the export is generated by another role than simap_admin.
+          description: |
+            consider awards of proc_offices matching the provided proc_office filter type.
+            There are 3 aggregation modes:
+
+            - Procurement Offices:
+              Aggregation of price totals is performed at the level of individual procurement offices.
+              Applies to the types `central_or_decentral_federation`, `other_federation`, `entire_federal_administration`.
+
+            - Cantons:
+              Aggregation is performed at the canton level. The total prices of all procurement offices under the nodes `cantonal` and `other_cantonal` are combined.
+              Applies to type `cantonal_or_other_cantonal`.
+
+            - Communal Procurement Offices Aggregated by Canton:
+              Corresponds to procurement offices under the nodes where the `ProcOfficeType` is either `communal` or `other_communal`, aggregated per canton.
+              Applies to type `communal_or_other_communal`.
       summary: Get the aggregated wto statistic data based on the provided filters and the current user's role and organization
       operationId: exportWTOStatistics
       tags:
@@ -8955,6 +9676,137 @@ paths:
           $ref: '#/components/responses/ServerError'
         '403':
           $ref: '#/components/responses/ServerError'
+        '404':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /static/v1/article-items/{articleItemId}:
+    parameters:
+      - name: articleItemId
+        schema:
+          type: string
+          format: uuid
+        in: path
+        required: true
+    get:
+      summary: Get the article-item by it's id.
+      operationId: getArticleItemById
+      tags:
+        - static-content
+      x-service-returns-response: true
+      responses:
+        '200':
+          description: Content of article-item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentComponentArticleItem'
+        '404':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+    put:
+      summary: Create an article-item and provide a new id.
+      operationId: createArticleItem
+      tags:
+        - static-content
+      x-roles:
+        - simap_admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContentComponentArticleItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentComponentArticleItem'
+        '400':
+          $ref: '#/components/responses/ServerError'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        '404':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+    patch:
+      summary: Update an article-item with the given request-body
+      operationId: updateArticleItem
+      tags:
+        - static-content
+      x-roles:
+        - simap_admin
+      x-spring-jsonnode-requestbody: true
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/ContentComponentArticleItem'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentComponentArticleItem'
+        '400':
+          $ref: '#/components/responses/ServerError'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        '404':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+    delete:
+      summary: Delete an article-item with the given id
+      operationId: deleteArticleItem
+      tags:
+        - static-content
+      x-roles:
+        - simap_admin
+      x-spring-jsonnode-requestbody: true
+      responses:
+        '204':
+          description: No Content - Deleted
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        '404':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /static/v1/article-items/search/{category}:
+    parameters:
+      - name: category
+        schema:
+          $ref: '#/components/schemas/ContentComponentArticleCategory'
+        in: path
+        required: true
+    get:
+      summary: Get all article-items which have given category.
+      operationId: getArticleItemByCategory
+      tags:
+        - static-content
+      x-service-returns-response: true
+      responses:
+        '200':
+          description: Content of article-item
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentComponentArticleItem'
         '404':
           $ref: '#/components/responses/ServerError'
         default:
@@ -9341,6 +10193,103 @@ paths:
           $ref: '#/components/responses/ServerError'
         default:
           $ref: '#/components/responses/ServerError'
+  /sustainability/v1/triggers:
+    get:
+      summary: get list of current sustainability triggers
+      operationId: getSustainabilityTriggers
+      tags:
+        - sustainability-triggers
+      x-roles:
+        - competence_centre_admin
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SustainabilityTriggers'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /sustainability/v1/triggers/{sustainabilityTriggerId}:
+    parameters:
+      - name: sustainabilityTriggerId
+        schema:
+          type: string
+          format: uuid
+        in: path
+        required: true
+        description: Id of the sustainability trigger
+    put:
+      summary: Create a new sustainability trigger
+      operationId: createSustainabilityTrigger
+      tags:
+        - sustainability-triggers
+      x-roles:
+        - competence_centre_admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SustainabilityTrigger'
+      responses:
+        '201':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SustainabilityTrigger'
+        '400':
+          $ref: '#/components/responses/ServerError'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+    delete:
+      summary: Delete a sustainability trigger
+      operationId: deleteSustainabilityTrigger
+      tags:
+        - sustainability-triggers
+      x-roles:
+        - competence_centre_admin
+      responses:
+        '204':
+          description: No Content - Deleted
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        '404':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /sustainability/v1/product-categories:
+    get:
+      summary: get list of available product categories
+      operationId: getProductCategories
+      tags:
+        - sustainability-triggers
+      x-roles:
+        - competence_centre_admin
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCategories'
+        '401':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/ServerError'
+        default:
+          $ref: '#/components/responses/ServerError'
 components:
   schemas:
     ErrorCode:
@@ -9379,7 +10328,7 @@ components:
         - E0029 = Cannot update non-awarded vendor
         - E0030 = Unsupported content-type
         - E0031 = Trying to update an entity with a lotId not part of the same project
-        - E0032 = Document locked, cannot be updated anymore
+        - E0032 = Document locked, cannot be updated anymore - DEPRECATED, no longer in use
         - E0034 = Cannot define a translation language which corresponds to the creation language
         - E0035 = Cannot show interest as deadline exceeded
         - E0036 = Cannot perform requested operation as vendor is not active anymore
@@ -9422,6 +10371,10 @@ components:
         - E0074 = Content component position duplicate
         - E0075 = Submitting digital submission without documents
         - E0076 = URL-field in the request body either contains invalid characters, is incorrectly escaped, contains no or an unknown protocol
+        - E0077 = Can not directly change type of content component
+        - E0078 = Can not patch items of content-component-articles, must be empty
+        - E0079 = An existing sustainability trigger clashes with the new trigger
+        - E0080 = Cannot change the projectSubType of the given lot.
       enum:
         - E0000
         - E0001
@@ -9494,6 +10447,10 @@ components:
         - E0074
         - E0075
         - E0076
+        - E0077
+        - E0078
+        - E0079
+        - E0080
     ServerErrorAttributes:
       type: object
       properties:
@@ -10126,23 +11083,22 @@ components:
               format: uuid
               nullable: true
               description: The responsible competence centre, if not set see the parent institution.
-            hasInstitutions:
-              type: boolean
+            parentInstitutionId:
+              type: string
+              format: uuid
+              description: The id of the parent institution in the hierarchy tree if the institution has a parent.
+            path:
+              type: string
               description: |
-                If true, this institution supervises one or more institutions.
-                Use the id of this institution as `parentInstitutionId` on the GET request the get these institutions.
-            hasProcOffices:
-              type: boolean
-              description: |
-                If true this institution supervises one or more procurement offices.
-                Get the available offices with `GET /procoffices/v1/treeview`.
+                The path in the institution hierarchy to this node, including the current node.
+                The path consists of the UUIDs of the nodes separated by a dot `.`
+              example: d33e7dbe-a1dc-4376-8019-602997a560f3.9ddd55c3-0db8-4d87-bb87-2609c71f8dc4.5d2f29a9-4e56-4dbc-936d-e493f42f4228
       required:
         - id
         - name
-        - hasInstitutions
-        - hasProcOffices
         - handlesProcOfficesTypes
         - userCanCreateProcOffice
+        - path
     Institutions:
       type: object
       properties:
@@ -10152,72 +11108,22 @@ components:
             $ref: '#/components/schemas/Institution'
       required:
         - institutions
-    InstitutionSearchResult:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/InstitutionMinimal'
-        - type: object
-          properties:
-            compCentreId:
-              type: string
-              format: uuid
-              nullable: true
-              description: The responsible competence centre, if not set see the parent institution.
-            institutions:
-              description: |
-                The list will contain the lower level institutions if they contain procurement offices that matched the search query
-              type: array
-              items:
-                $ref: '#/components/schemas/InstitutionSearchResult'
-            procOffices:
-              description: |
-                The list will contain the procurement offices that matched the search query
-              type: array
-              items:
-                $ref: '#/components/schemas/ProcOfficePublicData'
-      required:
-        - id
-        - name
-        - handlesProcOfficesTypes
-        - userCanCreateProcOffice
-        - institutions
-        - procOffices
-    ProcOfficePublicData:
-      type: object
-      description: Public available procurement office data.
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          maxLength: 400
-        type:
-          $ref: '#/components/schemas/ProcOfficeType'
-        institutionId:
-          type: string
-          format: uuid
-        compCentreId:
-          type: string
-          format: uuid
-      required:
-        - id
-        - name
-        - type
-        - institutionId
-        - compCentreId
-    InstitutionSearchResults:
-      type: object
-      properties:
-        institutions:
-          type: array
-          items:
-            $ref: '#/components/schemas/InstitutionSearchResult'
-      required:
-        - institutions
+    UserLoginStatus:
+      type: string
+      enum:
+        - no_login
+        - active
+        - temporarily_locked
+        - locked
+      description: |
+        A users login status which can differ from the account status  
+
+        - `no_login` - used for invited or deleted user accounts. The user has no login or has not finished setting it up. 
+        - `active` - the user has an active login.
+        - `temporarily_locked` - the user's login is temporarily locked (brute force detection)
+        - `locked` - the user's login is permanently locked (brute force detection)
     User:
       type: object
-      description: The phoneNumber parameter is in the internation format (E.164)
       properties:
         id:
           type: string
@@ -10245,6 +11151,8 @@ components:
         passwordLastChanged:
           type: string
           format: date
+        loginStatus:
+          $ref: '#/components/schemas/UserLoginStatus'
     RollingPagination:
       type: object
       properties:
@@ -10306,9 +11214,11 @@ components:
         firstName:
           x-extra-annotation: '@get:com.unic.simap.clientservices.api.NullableButNotBlankOrEmpty'
           type: string
+          pattern: ^[^<>&\"\v$%!#?§;*~/\\|^=\[\]{}()\p{Cntrl}]+$
         lastName:
           x-extra-annotation: '@get:com.unic.simap.clientservices.api.NullableButNotBlankOrEmpty'
           type: string
+          pattern: ^[^<>&\"\v$%!#?§;*~/\\|^=\[\]{}()\p{Cntrl}]+$
         phoneNumber:
           type: string
           maxLength: 16
@@ -10328,19 +11238,63 @@ components:
         user_id:
           type: string
           format: uuid
-    UserMinimal:
+    AuditOperation:
+      type: string
+      enum:
+        - created
+        - updated
+        - deleted
+    BaseHistory:
       type: object
       properties:
-        id:
+        hid:
           type: string
           format: uuid
-        firstName:
+        changedAt:
           type: string
-        lastName:
-          type: string
-        email:
+          format: date-time
+        changedBy:
           type: string
           format: email
+        changedById:
+          type: string
+          format: uuid
+        impersonatedBy:
+          type: string
+          format: email
+        auditOperation:
+          $ref: '#/components/schemas/AuditOperation'
+      required:
+        - hid
+        - changedAt
+        - changedBy
+        - changedById
+        - auditOperation
+    UserHistoryMutation:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            isOtpRequired:
+              type: boolean
+              description: is true, when One-Time Password should be enabled for this user.
+            isOtpActive:
+              type: boolean
+              description: is true, when One-Time Password is enabled for this user.
+    UserHistoryMutations:
+      type: object
+      properties:
+        userHistoryMutations:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserHistoryMutation'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - userHistoryMutations
+        - pagination
     AssignableRole:
       type: string
       description: list of all assignable roles, listed in expected sort ordering
@@ -10354,6 +11308,57 @@ components:
         - competence_centre_print_user
         - competence_centre_admin
         - simap_admin
+    MembershipStatus:
+      type: string
+      enum:
+        - requested
+        - accepted
+        - rejected
+        - disabled
+    OrganizationMembership:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/OrganizationBase'
+        - type: object
+          properties:
+            role:
+              $ref: '#/components/schemas/AssignableRole'
+            membershipStatus:
+              $ref: '#/components/schemas/MembershipStatus'
+      required:
+        - membershipStatus
+        - membershipType
+        - role
+    UserHistoryOrganizationMembership:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - $ref: '#/components/schemas/OrganizationMembership'
+    UserHistoryOrganizationMemberships:
+      type: object
+      properties:
+        userHistoryOrganizationMemberships:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserHistoryOrganizationMembership'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - userHistoryOrganizationMemberships
+        - pagination
+    UserMinimal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
     UserWithOrgAndRole:
       type: object
       description: User with organization and role
@@ -10388,27 +11393,6 @@ components:
       required:
         - users
         - pagination
-    MembershipStatus:
-      type: string
-      enum:
-        - requested
-        - accepted
-        - rejected
-        - disabled
-    OrganizationMembership:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/OrganizationBase'
-        - type: object
-          properties:
-            role:
-              $ref: '#/components/schemas/AssignableRole'
-            membershipStatus:
-              $ref: '#/components/schemas/MembershipStatus'
-      required:
-        - membershipStatus
-        - membershipType
-        - role
     OrganizationMemberships:
       type: object
       properties:
@@ -10485,7 +11469,7 @@ components:
         - type
         - institutionNameHierarchy
         - createdBy
-        - organizationInContractContact
+        - organizationInContract
         - status
     ProcOfficeSearchResult:
       type: object
@@ -10561,7 +11545,7 @@ components:
             phone:
               type: string
             websiteUrl:
-              x-extra-annotation: '@get:com.unic.simap.clientservices.api.Url'
+              x-extra-annotation: '@get:com.unic.simap.common.domain.Url'
               type: string
               format: url
               maxLength: 400
@@ -10589,22 +11573,22 @@ components:
       type: object
       properties:
         de:
-          x-extra-annotation: '@get:com.unic.simap.clientservices.api.Url'
+          x-extra-annotation: '@get:com.unic.simap.common.domain.Url'
           type: string
           format: url
           maxLength: 400
         en:
-          x-extra-annotation: '@get:com.unic.simap.clientservices.api.Url'
+          x-extra-annotation: '@get:com.unic.simap.common.domain.Url'
           type: string
           format: url
           maxLength: 400
         fr:
-          x-extra-annotation: '@get:com.unic.simap.clientservices.api.Url'
+          x-extra-annotation: '@get:com.unic.simap.common.domain.Url'
           type: string
           format: url
           maxLength: 400
         it:
-          x-extra-annotation: '@get:com.unic.simap.clientservices.api.Url'
+          x-extra-annotation: '@get:com.unic.simap.common.domain.Url'
           type: string
           format: url
           maxLength: 400
@@ -10821,7 +11805,7 @@ components:
         pagination:
           $ref: '#/components/schemas/RollingPagination'
       required:
-        - attachedUser
+        - attachedUsers
         - pagination
     RemediesNoticeType:
       type: string
@@ -10995,6 +11979,19 @@ components:
             $ref: '#/components/schemas/CompCentreUrl'
       required:
         - urls
+    ProjectSubType:
+      type: string
+      enum:
+        - construction
+        - service
+        - supply
+        - project_competition
+        - idea_competition
+        - overall_performance_competition
+        - project_study
+        - idea_study
+        - overall_performance_study
+        - request_for_information
     PublicationNumber:
       type: string
       example: 123-01
@@ -11006,6 +12003,8 @@ components:
       properties:
         projectType:
           $ref: '#/components/schemas/PubProjectType'
+        projectSubType:
+          $ref: '#/components/schemas/ProjectSubType'
         processType:
           $ref: '#/components/schemas/PubProcessType'
         publicationNumber:
@@ -11018,6 +12017,7 @@ components:
             True if this is pub draft is a correction
       required:
         - projectType
+        - projectSubType
         - processType
         - publicationNumber
         - pubType
@@ -11051,7 +12051,6 @@ components:
             - id
             - projectId
             - projectTitle
-            - processType
             - publicationDate
             - editorialDeadline
             - procOfficeName
@@ -11089,7 +12088,31 @@ components:
             $ref: '#/components/schemas/PubDraftPlannedForPublication'
       required:
         - pubDrafts
-    ProcOfficeTree:
+    ProcOfficePublicData:
+      type: object
+      description: Public available procurement office data.
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 400
+        type:
+          $ref: '#/components/schemas/ProcOfficeType'
+        institutionId:
+          type: string
+          format: uuid
+        compCentreId:
+          type: string
+          format: uuid
+      required:
+        - id
+        - name
+        - type
+        - institutionId
+        - compCentreId
+    ProcOfficesPublicData:
       type: object
       properties:
         procOffices:
@@ -11098,6 +12121,42 @@ components:
             $ref: '#/components/schemas/ProcOfficePublicData'
       required:
         - procOffices
+    InternationalPhoneNumber:
+      type: string
+      maxLength: 16
+      pattern: ^\+[0-9]{7,15}$
+      description: Phone number in international format (E.164)
+    BaseProcOffice:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ProcOfficePublicData'
+        - type: object
+          properties:
+            language:
+              $ref: '#/components/schemas/SystemLanguage'
+            mainActivity:
+              $ref: '#/components/schemas/MainActivity'
+            phone:
+              $ref: '#/components/schemas/InternationalPhoneNumber'
+            email:
+              type: string
+              format: email
+              minLength: 1
+              maxLength: 400
+            url:
+              x-extra-annotation: '@get:com.unic.simap.common.domain.Url'
+              type: string
+              format: url
+              maxLength: 400
+            otherInfo:
+              type: string
+              maxLength: 255
+            status:
+              $ref: '#/components/schemas/ProcOfficeStatus'
+            statusComment:
+              type: string
+      required:
+        - id
     Contact:
       type: object
       properties:
@@ -11114,11 +12173,6 @@ components:
         - organization
         - firstName
         - lastName
-    InternationalPhoneNumber:
-      type: string
-      maxLength: 16
-      pattern: ^\+[0-9]{7,15}$
-      description: Phone number in international format (E.164)
     ProcOffice:
       type: object
       description: |
@@ -11131,38 +12185,15 @@ components:
         The char limits follow the TED limits for that field as for publications that are sent to TED require the name and 
         contact information of the office.
       allOf:
-        - $ref: '#/components/schemas/ProcOfficePublicData'
+        - $ref: '#/components/schemas/BaseProcOffice'
         - type: object
           properties:
-            language:
-              $ref: '#/components/schemas/SystemLanguage'
-            mainActivity:
-              $ref: '#/components/schemas/MainActivity'
             organizationInContractContact:
               $ref: '#/components/schemas/Contact'
             address:
               x-extra-annotation: '@get:com.unic.simap.clientservices.api.TedSendableAddress'
               allOf:
                 - $ref: '#/components/schemas/Address'
-            phone:
-              $ref: '#/components/schemas/InternationalPhoneNumber'
-            email:
-              type: string
-              format: email
-              minLength: 1
-              maxLength: 400
-            url:
-              x-extra-annotation: '@get:com.unic.simap.clientservices.api.Url'
-              type: string
-              format: url
-              maxLength: 400
-            otherInfo:
-              type: string
-              maxLength: 255
-            status:
-              $ref: '#/components/schemas/ProcOfficeStatus'
-            statusComment:
-              type: string
             institutionNameHierarchy:
               type: array
               items:
@@ -11303,19 +12334,6 @@ components:
         - revocation
         - abandonment
         - selective_offering_phase
-    ProjectSubType:
-      type: string
-      enum:
-        - construction
-        - service
-        - supply
-        - project_competition
-        - idea_competition
-        - overall_performance_competition
-        - project_study
-        - idea_study
-        - overall_performance_study
-        - request_for_information
     PubLotsType:
       type: string
       enum:
@@ -11407,7 +12425,7 @@ components:
             - lotId
             - lotTitle
             - lotNumber
-            - pubDraftStatus
+            - publicationStatus
     ProcOfficeProjectsOverviewEntry:
       type: object
       allOf:
@@ -11472,18 +12490,30 @@ components:
           type: string
         projectType:
           $ref: '#/components/schemas/PubProjectType'
+        projectSubType:
+          $ref: '#/components/schemas/ProjectSubType'
         processType:
           $ref: '#/components/schemas/PubProcessType'
         orderType:
-          $ref: '#/components/schemas/PubOrderType'
+          deprecated: true
+          description: Deprecated property, use the 'projectSubType'
+          allOf:
+            - $ref: '#/components/schemas/PubOrderType'
         studyType:
-          $ref: '#/components/schemas/PubStudyType'
+          deprecated: true
+          description: Deprecated property, use the 'projectSubType'
+          allOf:
+            - $ref: '#/components/schemas/PubStudyType'
         competitionType:
-          $ref: '#/components/schemas/PubCompetitionType'
+          deprecated: true
+          description: Deprecated property, use the 'projectSubType'
+          allOf:
+            - $ref: '#/components/schemas/PubCompetitionType'
         lotsType:
           $ref: '#/components/schemas/PubLotsType'
       required:
         - projectType
+        - projectSubType
         - projectNumber
         - processType
         - lotsType
@@ -11523,8 +12553,11 @@ components:
           properties:
             lotNumber:
               type: integer
+            projectSubType:
+              $ref: '#/components/schemas/ProjectSubType'
           required:
             - lotNumber
+            - projectSubType
       required:
         - title
     ProcOfficeProjectHeaderDatesNonPublished:
@@ -11544,44 +12577,29 @@ components:
       description: Represents the default header dates model for pub-drafts with additional header date properties.
       allOf:
         - $ref: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalInterface'
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesBase'
+        - type: object
+          properties:
+            qnas:
+              type: array
+              items:
+                $ref: '#/components/schemas/PublicationQna'
+              description: |
+                QNA round dates. 
+                Only available if vendor of logged in user is eligible to see qna rounds or the user belongs to a procurement_office.
+            offerDeadline:
+              type: string
+              format: date-time
+              description: |
+                Can be `null` when the only publication in the project is of type `advanced_notice` as there the value is optional.
+            offerOpening:
+              $ref: '#/components/schemas/DateOptionalTime'
+              description: |
+                Offer opening datetime. Only available for projects with projectType `tender`.
     ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase:
       type: object
       allOf:
         - $ref: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface'
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
-    ProcOfficeProjectHeaderDatesPublishedAdditionalInterface:
-      type: object
-      description: Helper used for code generation, see ProcOfficeProjectHeaderDatesPublishedAdditional for the actual definition
-      allOf:
-        - $ref: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedInterface'
-      discriminator:
-        propertyName: processType
-        mapping:
-          open: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalDefault'
-          selective: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalSelective'
-          invitation: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalDefault'
-          no_process: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalDefault'
-    ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface:
-      type: object
-      description: Helper used for code generation, see ProcOfficeProjectHeaderDatesPublishedAdditionalSelective for the actual definition
-      allOf:
-        - $ref: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalInterface'
-      discriminator:
-        propertyName: pubType
-        mapping:
-          advance_notice: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase'
-          tender: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase'
-          competition: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase'
-          study_contract: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase'
-          selective_offering_phase: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalDefault'
-    PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase:
-      type: object
-      description: |
-        additional dates relevant for publications in the selective process which have additional dates except for 
-        selective_offering_phase which uses the default additional dates.
-      allOf:
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveInterface'
         - $ref: '#/components/schemas/PublicProjectHeaderDatesBase'
         - type: object
           properties:
@@ -11603,100 +12621,11 @@ components:
               $ref: '#/components/schemas/DateOptionalTime'
             offerSubmissionDeadline:
               $ref: '#/components/schemas/DateOptionalTime'
-    PublicProjectHeaderDatesAdditionalDefault:
+    ProcOfficeProjectHeaderDatesPublishedAdditionalInterface:
       type: object
+      description: Helper used for code generation, see ProcOfficeProjectHeaderDatesPublishedAdditional for the actual definition
       allOf:
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalInterface'
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesBase'
-        - type: object
-          properties:
-            qnas:
-              type: array
-              items:
-                $ref: '#/components/schemas/PublicationQna'
-              description: |
-                QNA round dates. 
-                Only available if vendor of logged in user is eligible to see qna rounds or the user belongs to a procurement_office.
-            offerDeadline:
-              type: string
-              format: date-time
-              description: |
-                Can be `null` when the only publication in the project is of type `advanced_notice` as there the value is optional.
-            offerOpening:
-              $ref: '#/components/schemas/DateOptionalTime'
-              description: |
-                Offer opening datetime. Only available for projects with projectType `tender`.
-    PublicProjectHeaderDatesAdditionalSelective:
-      type: object
-      description: |
-        Header dates model for publications in the selective process are again split into two categories based on their 
-        `pubType`. Not all pub-types are listed here because some do not have additional header date properties
-        (see PublicProjectHeaderDates).
-      oneOf:
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
-      discriminator:
-        propertyName: pubType
-        mapping:
-          advance_notice: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
-          tender: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
-          competition: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
-          study_contract: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
-          selective_offering_phase: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
-    PublicProjectHeaderDatesAdditional:
-      type: object
-      description: |
-        Header dates for publications which have additional date properties (see PublicProjectHeaderDates) are split
-        again into two categories, this time based on their `processType`.
-      oneOf:
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelective'
-      discriminator:
-        propertyName: processType
-        mapping:
-          open: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
-          selective: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelective'
-          invitation: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
-          no_process: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
-    PublicProjectHeaderDatesInterface:
-      type: object
-      properties:
-        pubType:
-          $ref: '#/components/schemas/PubType'
-      required:
-        - pubType
-      discriminator:
-        propertyName: pubType
-        mapping:
-          advance_notice: '#/components/schemas/PublicProjectHeaderDatesAdditional'
-          tender: '#/components/schemas/PublicProjectHeaderDatesAdditional'
-          competition: '#/components/schemas/PublicProjectHeaderDatesAdditional'
-          study_contract: '#/components/schemas/PublicProjectHeaderDatesAdditional'
-          selective_offering_phase: '#/components/schemas/PublicProjectHeaderDatesAdditional'
-          request_for_information: '#/components/schemas/PublicProjectHeaderDatesAdditional'
-          abandonment: '#/components/schemas/PublicProjectHeaderDatesDefault'
-          direct_award: '#/components/schemas/PublicProjectHeaderDatesDefault'
-          award: '#/components/schemas/PublicProjectHeaderDatesDefault'
-          revocation: '#/components/schemas/PublicProjectHeaderDatesDefault'
-          participant_selection: '#/components/schemas/PublicProjectHeaderDatesDefault'
-    PublicProjectHeaderDatesBase:
-      type: object
-      properties:
-        publicationDate:
-          type: string
-          format: date
-      required:
-        - publicationDate
-    PublicProjectHeaderDatesDefault:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesInterface'
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesBase'
-    PublicProjectHeaderDatesAdditionalInterface:
-      type: object
-      description: Helper used for code generation, see PublicProjectHeaderDatesAdditional for the actual definition
-      allOf:
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesInterface'
+        - $ref: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedInterface'
         - type: object
           properties:
             processType:
@@ -11706,10 +12635,31 @@ components:
       discriminator:
         propertyName: processType
         mapping:
-          open: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
-          selective: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelective'
-          invitation: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
-          no_process: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
+          open: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalDefault'
+          selective: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalSelective'
+          invitation: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalDefault'
+          no_process: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalDefault'
+    ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface:
+      type: object
+      description: Helper used for code generation, see ProcOfficeProjectHeaderDatesPublishedAdditionalSelective for the actual definition
+      allOf:
+        - $ref: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalInterface'
+      discriminator:
+        propertyName: pubType
+        mapping:
+          advance_notice: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase'
+          tender: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase'
+          competition: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase'
+          study_contract: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase'
+          selective_offering_phase: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedAdditionalDefault'
+    PublicProjectHeaderDatesBase:
+      type: object
+      properties:
+        publicationDate:
+          type: string
+          format: date
+      required:
+        - publicationDate
     PubBaseQna:
       type: object
       properties:
@@ -11725,7 +12675,7 @@ components:
         note:
           $ref: '#/components/schemas/Translation'
         externalLink:
-          x-extra-annotation: '@get:com.unic.simap.clientservices.api.Url'
+          x-extra-annotation: '@get:com.unic.simap.common.domain.Url'
           type: string
           format: url
           maxLength: 400
@@ -11749,19 +12699,6 @@ components:
       required:
         - dateTime
         - ignoreTime
-    PublicProjectHeaderDatesAdditionalSelectiveInterface:
-      type: object
-      description: Helper used for code generation, see PublicProjectHeaderDatesAdditionalSelective for the actual definition
-      allOf:
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalInterface'
-      discriminator:
-        propertyName: pubType
-        mapping:
-          advance_notice: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
-          tender: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
-          competition: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
-          study_contract: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
-          selective_offering_phase: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
     ProcOfficeProjectHeaderDatesPublishedAdditionalSelective:
       type: object
       description: |
@@ -11798,6 +12735,12 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/ProcOfficeProjectHeaderDatesInterface'
+        - type: object
+          properties:
+            pubType:
+              $ref: '#/components/schemas/PubType'
+          required:
+            - pubType
       discriminator:
         propertyName: pubType
         mapping:
@@ -11816,7 +12759,7 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/ProcOfficeProjectHeaderDatesPublishedInterface'
-        - $ref: '#/components/schemas/PublicProjectHeaderDatesDefault'
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesBase'
     ProcOfficeProjectHeaderDatesInterface:
       type: object
       description: Helper used for code generation, see ProcOfficeProjectHeaderDates for the actual definition
@@ -12192,6 +13135,10 @@ components:
         - $ref: '#/components/schemas/VendorMinimal'
         - type: object
           properties:
+            active:
+              type: boolean
+              description: |
+                If the vendor is active, disabled vendors can appeare in the list if they where deactivated after showing interest / were invited.
             lotId:
               type: string
               format: uuid
@@ -12258,6 +13205,7 @@ components:
         - status
         - statusChangedAt
         - address
+        - active
     ProcOfficeVendorActionType:
       type: string
       enum:
@@ -12324,20 +13272,9 @@ components:
             $ref: '#/components/schemas/InvolvedVendorWithActions'
       required:
         - involvedVendors
-    SendMessageRequest:
+    BaseMessage:
       type: object
       properties:
-        search:
-          description: |
-            Optional: search involved vendors by `vendorName` (requires at least 3 characters)
-            Note, that the message cannot be sent to the involved vendor in case it has not defined a contact
-          type: string
-          pattern: (^$)|.{3,}
-        status:
-          $ref: '#/components/schemas/InvolvedVendorStatus'
-          description: |
-            Optional: filter involved vendors by status
-            Note that involved vendors with status interest_withdrawn are excluded in any case
         subject:
           type: string
           minLength: 1
@@ -12365,6 +13302,22 @@ components:
         - subject
         - body
         - language
+    SendMessageRequest:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+      properties:
+        search:
+          description: |
+            Optional: search involved vendors by `vendorName` (requires at least 3 characters)
+            Note, that the message cannot be sent to the involved vendor in case it has not defined a contact
+          type: string
+          pattern: (^$)|.{3,}
+        status:
+          $ref: '#/components/schemas/InvolvedVendorStatus'
+          description: |
+            Optional: filter involved vendors by status
+            Note that involved vendors with status interest_withdrawn are excluded in any case
     QnaRoundState:
       type: string
       enum:
@@ -12445,6 +13398,12 @@ components:
         - type: object
           properties:
             questionAskedAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+            questionAnsweredAt:
               type: string
               format: date-time
             questionNumber:
@@ -12667,6 +13626,21 @@ components:
           type: string
       required:
         - token
+    ProjectDocumentUpdate:
+      type: object
+      properties:
+        languages:
+          type: array
+          items:
+            $ref: '#/components/schemas/SystemLanguage'
+        lotId:
+          type: string
+          format: uuid
+          description: optional reference to a lot
+        note:
+          type: string
+      required:
+        - languages
     BaseDocumentUploadMeta:
       type: object
       properties:
@@ -12678,29 +13652,12 @@ components:
             and only bar.txt is considered as file name.
       required:
         - fileName
-    ProjectDocumentUpdate:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/BaseDocumentUploadMeta'
-        - type: object
-          properties:
-            languages:
-              type: array
-              items:
-                $ref: '#/components/schemas/SystemLanguage'
-            lotId:
-              type: string
-              format: uuid
-              description: optional reference to a lot
-            note:
-              type: string
-          required:
-            - languages
     ProjectDocumentUploadMeta:
       type: object
       description: |
         either pubDraftId or qnaRoundId has to be specified (not both at the same time)
       allOf:
+        - $ref: '#/components/schemas/BaseDocumentUploadMeta'
         - $ref: '#/components/schemas/ProjectDocumentUpdate'
         - type: object
           properties:
@@ -12755,6 +13712,204 @@ components:
           type: string
           nullable: true
           maxLength: 70
+    ProcOfficeProjectHistoryPublicationStatus:
+      type: string
+      enum:
+        - submitted
+        - withdrawn
+    ProcOfficeProjectHistoryPublication:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - $ref: '#/components/schemas/BasePublicationData'
+      properties:
+        status:
+          $ref: '#/components/schemas/ProcOfficeProjectHistoryPublicationStatus'
+    ProcOfficeProjectHistoryPublications:
+      type: object
+      properties:
+        procOfficeProjectHistoryPublications:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcOfficeProjectHistoryPublication'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - procOfficeProjectHistoryPublications
+        - pagination
+    ProcOfficeProjectHistoryQna:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - $ref: '#/components/schemas/Qna'
+    ProcOfficeProjectHistoryQnas:
+      type: object
+      properties:
+        procOfficeProjectHistoryQnas:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcOfficeProjectHistoryQna'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - procOfficeProjectHistoryQnas
+        - pagination
+    ProcOfficeProjectHistoryQnaWithPrevious:
+      type: object
+      properties:
+        current:
+          $ref: '#/components/schemas/ProcOfficeProjectHistoryQna'
+        previous:
+          $ref: '#/components/schemas/ProcOfficeProjectHistoryQna'
+      required:
+        - current
+        - previous
+    ProjectHistoryInvolvement:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - $ref: '#/components/schemas/VendorMinimal'
+        - type: object
+          properties:
+            status:
+              $ref: '#/components/schemas/InvolvedVendorStatus'
+    ProjectHistoryInvolvements:
+      type: object
+      properties:
+        projectHistoryInvolvements:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectHistoryInvolvement'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - projectHistoryInvolvements
+        - pagination
+    ProcOfficeProjectHistoryVendorMessage:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - $ref: '#/components/schemas/BaseMessage'
+        - type: object
+          properties:
+            vendorEmails:
+              type: array
+              items:
+                type: string
+                format: email
+    ProcOfficeProjectHistoryVendorMessages:
+      type: object
+      properties:
+        procOfficeProjectHistoryVendorMessages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcOfficeProjectHistoryVendorMessage'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - procOfficeProjectHistoryVendorMessages
+        - pagination
+    ProcOfficeProjectHistoryProjectContributor:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - type: object
+          properties:
+            email:
+              type: string
+              format: email
+    ProcOfficeProjectHistoryProjectContributors:
+      type: object
+      properties:
+        procOfficeProjectHistoryProjectContributors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcOfficeProjectHistoryProjectContributor'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - procOfficeProjectHistoryProjectContributors
+        - pagination
+    ProjectHistoryDocumentDownload:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - type: object
+          properties:
+            fileName:
+              type: string
+              format: fileName
+    ProjectHistoryDocumentDownloads:
+      type: object
+      properties:
+        projectHistoryDocumentDownloads:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectHistoryDocumentDownload'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - projectHistoryDocumentDownloads
+        - pagination
+    ProcOfficeHistoryMembership:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - $ref: '#/components/schemas/ProcOfficeMember'
+        - type: object
+          properties:
+            justification:
+              type: string
+    ProcOfficeHistoryMemberships:
+      type: object
+      properties:
+        procOfficeHistoryMemberships:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcOfficeHistoryMembership'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - procOfficeHistoryMemberships
+        - pagination
+    ProcOfficeHistoryBaseDataEntry:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - $ref: '#/components/schemas/BaseProcOffice'
+        - type: object
+          properties:
+            deleted:
+              type: boolean
+    ProcOfficeHistoryBaseDataEntries:
+      type: object
+      properties:
+        procOfficeHistoryBaseDataEntries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcOfficeHistoryBaseDataEntry'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - procOfficeHistoryBaseDataEntries
+        - pagination
+    ProcOfficeHistoryAddressDataEntry:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - $ref: '#/components/schemas/Address'
+    ProcOfficeHistoryAddressDataEntries:
+      type: object
+      properties:
+        procOfficeHistoryAddressDataEntries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcOfficeHistoryAddressDataEntry'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - procOfficeHistoryAddressDataEntries
+        - pagination
     BaseProjectInfo:
       type: object
       description: Base project info to be able to identify project
@@ -12787,8 +13942,44 @@ components:
           type: string
           format: date-time
           description: Provided if the digital vendor submission, along with all documents, was deleted due to exceeding the maximum storage duration.
+    PdfSignatureValidationStatus:
+      description: The status of the validation process of the document
+      type: string
+      enum:
+        - no_signatures
+        - processing_error
+        - unchecked
+        - invalid
+        - valid
+    PdfSignatures:
+      type: object
+      description: |
+        Object containing the validation status of the signature validation for the given pdf.
+
+        A pdf is only correctly signed, `valid`, 
+        when the document has at least one signature and only contains valid signatures that are signed with a QES / ZertES compliant certificate.
+
+        When the pdf contains at least one signature that is not QES / ZertES compliant, 
+        the pdf is also considered `invalid` even when that signature itself is valid.
+
+        A pdf can only contain valid QES / ZertES compliant signatures.
+      properties:
+        validationStatus:
+          $ref: '#/components/schemas/PdfSignatureValidationStatus'
+        validationDateTime:
+          type: string
+          format: date-time
+          description: date and time when the document was checked / the signatures where validated.
+      required:
+        - validationStatus
     VendorDigitalSubmissionDocument:
       type: object
+      description: |
+        Submission Document
+
+        The `signature` property is a read-only field that is used for PDF files. 
+        It will contain the validation status and result of the signature validation of the pdf.  
+        If the document is of another `contentType` than pdf the `signature` property will be `null`.
       allOf:
         - $ref: '#/components/schemas/BaseDocument'
         - type: object
@@ -12800,10 +13991,12 @@ components:
             lotId:
               type: string
               format: uuid
-              description: Id of lotId, the submisions is related to or null, if document is for the whole submission.
+              description: Id of lotId, the submissions is related to or null, if document is for the whole submission.
             createdByUser:
               type: string
               format: email
+            signature:
+              $ref: '#/components/schemas/PdfSignatures'
           required:
             - vendorDigitalSubmissionId
             - createdByUser
@@ -12826,10 +14019,13 @@ components:
           type: integer
         title:
           $ref: '#/components/schemas/Translation'
+        projectSubType:
+          $ref: '#/components/schemas/ProjectSubType'
       required:
         - id
         - lotNumber
         - title
+        - projectSubType
     VendorDigitalSubmissionLot:
       type: object
       allOf:
@@ -12869,6 +14065,11 @@ components:
           format: uuid
         vendorDigitalSubmissionType:
           $ref: '#/components/schemas/VendorDigitalSubmissionType'
+        submissionOpenedAt:
+          type: string
+          format: date-time
+        submissionOpenedBy:
+          $ref: '#/components/schemas/UserMinimal'
         actions:
           type: array
           items:
@@ -12877,7 +14078,7 @@ components:
           $ref: '#/components/schemas/VendorDigitalSubmissionDetailInfo'
           description: Detail of vendor digital submission. Only provided if submission was opened
       required:
-        - id
+        - vendorDigitalSubmissionId
         - vendorDigitalSubmissionType
         - actions
     ProcOfficeVendorDigitalSubmissions:
@@ -12949,28 +14150,6 @@ components:
         - small
         - medium
         - large
-    VendorUserPublic:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        firstName:
-          type: string
-        lastName:
-          type: string
-        organizationUnit:
-          type: string
-          nullable: true
-    VendorUser:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/VendorUserPublic'
-        - type: object
-          properties:
-            email:
-              type: string
-              format: email
     LegalFormCode:
       type: string
       description: |
@@ -13054,7 +14233,7 @@ components:
         - '0362'
         - '0441'
         - '0571'
-    Vendor:
+    BaseVendor:
       type: object
       allOf:
         - type: object
@@ -13079,10 +14258,6 @@ components:
               type: string
               description: c/o
               nullable: true
-            address:
-              x-extra-annotation: '@get:com.unic.simap.clientservices.api.TedSendableAddress'
-              allOf:
-                - $ref: '#/components/schemas/Address'
             phone:
               $ref: '#/components/schemas/InternationalPhoneNumber'
             email:
@@ -13091,22 +14266,11 @@ components:
               minLength: 1
               maxLength: 400
             url:
-              x-extra-annotation: '@get:com.unic.simap.clientservices.api.Url'
+              x-extra-annotation: '@get:com.unic.simap.common.domain.Url'
               type: string
               format: url
               maxLength: 400
               nullable: true
-            publicVendorAdmins:
-              type: array
-              description: The publicly visible vendor admins.
-              items:
-                $ref: '#/components/schemas/VendorUser'
-            legalForm:
-              type: string
-              nullable: true
-              readOnly: true
-              description: |
-                Deprecated: replaced with `legalFormCode`. Only existing values are expose read-only. Please map to one of the existing mapping.
             legalFormCode:
               $ref: '#/components/schemas/LegalFormCode'
               nullable: true
@@ -13128,11 +14292,48 @@ components:
       required:
         - id
         - name
-        - address
-    VendorDetail:
+    VendorUserPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        organizationUnit:
+          type: string
+          nullable: true
+    VendorUser:
       type: object
       allOf:
-        - $ref: '#/components/schemas/Vendor'
+        - $ref: '#/components/schemas/VendorUserPublic'
+        - type: object
+          properties:
+            email:
+              type: string
+              format: email
+    Vendor:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseVendor'
+        - type: object
+          properties:
+            address:
+              x-extra-annotation: '@get:com.unic.simap.clientservices.api.TedSendableAddress'
+              allOf:
+                - $ref: '#/components/schemas/Address'
+            publicVendorAdmins:
+              type: array
+              description: The publicly visible vendor admins.
+              items:
+                $ref: '#/components/schemas/VendorUser'
+      required:
+        - address
+    BaseVendorDetail:
+      type: object
+      allOf:
         - type: object
           properties:
             typeOfServices:
@@ -13171,6 +14372,12 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/OAGCode'
+    VendorDetail:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Vendor'
+        - $ref: '#/components/schemas/BaseVendorDetail'
+        - type: object
       required:
         - phone
         - email
@@ -13199,7 +14406,7 @@ components:
               type: string
               nullable: true
             url:
-              x-extra-annotation: '@get:com.unic.simap.clientservices.api.Url'
+              x-extra-annotation: '@get:com.unic.simap.common.domain.Url'
               type: string
               format: url
               maxLength: 400
@@ -13318,14 +14525,6 @@ components:
                 If a vendor is not verified (no DUNS or UID number),
                 this object will contain the notification / cutoff dates and days until the vendor is deactivated.
               default: null
-    VendorJoinRequest:
-      type: object
-      properties:
-        join:
-          type: boolean
-          description: true -> request to join, false -> revoke join Request / leave vendor
-      required:
-        - join
     VendorMembership:
       type: string
       enum:
@@ -13337,18 +14536,6 @@ components:
       enum:
         - vendor_admin
         - vendor_user
-    MyVendorMembership:
-      allOf:
-        - $ref: '#/components/schemas/VendorMinimal'
-        - type: object
-          properties:
-            membership:
-              $ref: '#/components/schemas/VendorMembership'
-            role:
-              $ref: '#/components/schemas/VendorMemberRole'
-          required:
-            - membership
-            - role
     VendorMember:
       type: object
       allOf:
@@ -13371,13 +14558,87 @@ components:
       required:
         - id
         - email
-        - firstName
-        - lastName
         - createdAt
         - updatedAt
         - membership
         - role
         - isPublic
+    VendorHistoryMembership:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - $ref: '#/components/schemas/VendorMember'
+    VendorHistoryMemberships:
+      type: object
+      properties:
+        vendorHistoryMemberships:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorHistoryMembership'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - vendorHistoryMemberships
+        - pagination
+    VendorHistoryBaseDataEntry:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - $ref: '#/components/schemas/BaseVendor'
+        - $ref: '#/components/schemas/BaseVendorDetail'
+        - type: object
+          properties:
+            deleted:
+              type: boolean
+    VendorHistoryBaseDataEntries:
+      type: object
+      properties:
+        vendorHistoryBaseDataEntries:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorHistoryBaseDataEntry'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - vendorHistoryBaseDataEntries
+        - pagination
+    VendorHistoryAddressDataEntry:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseHistory'
+        - $ref: '#/components/schemas/Address'
+    VendorHistoryAddressDataEntries:
+      type: object
+      properties:
+        vendorHistoryAddressDataEntries:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorHistoryAddressDataEntry'
+        pagination:
+          $ref: '#/components/schemas/RollingPagination'
+      required:
+        - vendorHistoryAddressDataEntries
+        - pagination
+    VendorJoinRequest:
+      type: object
+      properties:
+        join:
+          type: boolean
+          description: true -> request to join, false -> revoke join Request / leave vendor
+      required:
+        - join
+    MyVendorMembership:
+      allOf:
+        - $ref: '#/components/schemas/VendorMinimal'
+        - type: object
+          properties:
+            membership:
+              $ref: '#/components/schemas/VendorMembership'
+            role:
+              $ref: '#/components/schemas/VendorMemberRole'
+          required:
+            - membership
+            - role
     VendorMembers:
       type: object
       properties:
@@ -13545,13 +14806,17 @@ components:
           type: boolean
         notifyOnDocumentChanges:
           type: boolean
-        notifyOnSubmitDigitalSubmission:
+        notificationsForDigitalSubmissions:
           type: boolean
+          description: |
+            Receive notifications for the following cases:
+            * When a digital submission is submitted for the project.
+            * When the projects allows digital submission and the submission deadline is in the next 24 hours an there is no submitted submission for the project.
       required:
         - notifyOnNewPublications
         - notifyOnQnaChanges
         - notifyOnDocumentChanges
-        - notifyOnSubmitDigitalSubmission
+        - notificationsForDigitalSubmissions
     VendorDocument:
       type: object
       allOf:
@@ -13716,6 +14981,8 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/OAGCode'
+            cpcCode:
+              $ref: '#/components/schemas/CPCCode'
             constructionType:
               $ref: '#/components/schemas/PubConstructionType'
             constructionCategory:
@@ -13922,6 +15189,9 @@ components:
           $ref: '#/components/schemas/PubProjectType'
         base:
           $ref: '#/components/schemas/PublicationBase'
+        hasProjectDocuments:
+          type: boolean
+          readOnly: true
         ted:
           allOf:
             - $ref: '#/components/schemas/PubTedReference'
@@ -14198,7 +15468,6 @@ components:
         - publicationTed
     PublicationTenderProjectInfoInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PublicationTenderProjectInfoInterface'
     PubAddress:
@@ -14277,7 +15546,7 @@ components:
               type: string
               format: email
             documentsSourceUrl:
-              x-extra-annotation: '@get:com.unic.simap.clientservices.api.Url'
+              x-extra-annotation: '@get:com.unic.simap.common.domain.Url'
               type: string
               format: url
               maxLength: 400
@@ -14698,6 +15967,10 @@ components:
         - $ref: '#/components/schemas/PublicationTenderProcurementInterface'
         - $ref: '#/components/schemas/PublicationBaseCodes'
         - $ref: '#/components/schemas/PubTenderConstructionFields'
+        - type: object
+          properties:
+            cpcCode:
+              $ref: '#/components/schemas/CPCCode'
     PublicationTenderProcurementInterface:
       type: object
       description: |
@@ -14806,7 +16079,6 @@ components:
         - $ref: '#/components/schemas/PubBaseTermsWalkthrough'
     PublicationTenderTermsInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PublicationTenderTermsInterface'
         - $ref: '#/components/schemas/PubBaseTermsWalkthrough'
@@ -15054,7 +16326,6 @@ components:
         - offerValidityNotes
     PublicationTenderDatesInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PublicationTenderDatesInterface'
         - $ref: '#/components/schemas/PubTenderDates'
@@ -15173,7 +16444,6 @@ components:
         - $ref: '#/components/schemas/PublicationBaseCriteriaSelective'
     PublicationTenderCriteriaInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PublicationTenderCriteriaInterface'
     PublicationTenderCriteria:
@@ -15252,7 +16522,6 @@ components:
         - $ref: '#/components/schemas/PublicationBaseProjectInfoSelective'
     PublicationProjectInfoInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PublicationProjectInfoInterface'
     PublicationProjectInfo:
@@ -15310,6 +16579,12 @@ components:
         cpvCode:
           allOf:
             - $ref: '#/components/schemas/CPVCode'
+    PublicationCpcCode:
+      type: object
+      properties:
+        cpcCode:
+          allOf:
+            - $ref: '#/components/schemas/CPCCode'
     PublicationProcurement:
       type: object
       description: |
@@ -15328,6 +16603,7 @@ components:
         - $ref: '#/components/schemas/PublicationBaseCodes'
         - $ref: '#/components/schemas/PublicationOagCodes'
         - $ref: '#/components/schemas/PublicationCpvCode'
+        - $ref: '#/components/schemas/PublicationCpcCode'
         - type: object
           properties:
             processType:
@@ -15371,7 +16647,6 @@ components:
         - $ref: '#/components/schemas/PubBaseTermsOpenSelective'
     PublicationTermsExtendedInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PublicationTermsExtendedInterface'
     VatType:
@@ -15477,7 +16752,6 @@ components:
         - $ref: '#/components/schemas/PublicationBaseDatesSelective'
     PublicationDatesInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PublicationDatesInterface'
         - $ref: '#/components/schemas/PublicationBaseDatesInvitation'
@@ -15526,7 +16800,6 @@ components:
         - $ref: '#/components/schemas/PublicationBaseCriteriaSelective'
     PublicationCriteriaInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PublicationCriteriaInterface'
     PublicationCriteria:
@@ -15906,12 +17179,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/PubBaseCallForBidsDates'
         - $ref: '#/components/schemas/PublicationBaseDatesAppointments'
-    PublicationCpcCode:
-      type: object
-      properties:
-        cpcCode:
-          allOf:
-            - $ref: '#/components/schemas/CPCCode'
     PublicationRfiProcurement:
       type: object
       description: Model for the rfi procurement information
@@ -16167,7 +17434,6 @@ components:
           study_contract: '#/components/schemas/PublicationStudyContractBase'
     PublicationRfiBase:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PublicationBaseInterface'
         - $ref: '#/components/schemas/PublicationCorrectionBase'
@@ -16521,6 +17787,8 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/OAGCode'
+            cpcCode:
+              $ref: '#/components/schemas/CPCCode'
             constructionType:
               $ref: '#/components/schemas/PubConstructionType'
             constructionCategory:
@@ -16643,6 +17911,146 @@ components:
           abandonment: '#/components/schemas/PublicationAbandonmentDetail'
           advance_notice: '#/components/schemas/PublicationAdvanceNoticeDetailDiscriminator'
           request_for_information: '#/components/schemas/PublicationRfiDetail'
+    PublicProjectHeaderDatesAdditionalDefault:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalInterface'
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesBase'
+        - type: object
+          properties:
+            qnas:
+              type: array
+              items:
+                $ref: '#/components/schemas/PublicationQna'
+              description: |
+                QNA round dates. 
+                Only available if vendor of logged in user is eligible to see qna rounds or the user belongs to a procurement_office.
+            offerDeadline:
+              type: string
+              format: date-time
+              description: |
+                Can be `null` when the only publication in the project is of type `advanced_notice` as there the value is optional.
+            offerOpening:
+              $ref: '#/components/schemas/DateOptionalTime'
+              description: |
+                Offer opening datetime. Only available for projects with projectType `tender`.
+    PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase:
+      type: object
+      description: |
+        additional dates relevant for publications in the selective process which have additional dates except for 
+        selective_offering_phase which uses the default additional dates.
+      allOf:
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveInterface'
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesBase'
+        - type: object
+          properties:
+            qnas:
+              type: array
+              items:
+                $ref: '#/components/schemas/PublicationQna'
+              description: |
+                QNA round dates. 
+                Only available if vendor of logged in user showed interest in the project or the user belongs to a procurement_office.
+            participationRequestDeadline:
+              type: string
+              format: date-time
+              description: |
+                Contains the date until which vendors can submit requests to participate at the offer.
+
+                Can be `null` when the only publication in the project is of type `advanced_notice` as there the value is optional.
+            participationRequestOpening:
+              $ref: '#/components/schemas/DateOptionalTime'
+            offerSubmissionDeadline:
+              $ref: '#/components/schemas/DateOptionalTime'
+    PublicProjectHeaderDatesAdditionalInterface:
+      type: object
+      description: Helper used for code generation, see PublicProjectHeaderDatesAdditional for the actual definition
+      allOf:
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesInterface'
+        - type: object
+          properties:
+            processType:
+              $ref: '#/components/schemas/PubProcessType'
+          required:
+            - processType
+      discriminator:
+        propertyName: processType
+        mapping:
+          open: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
+          selective: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelective'
+          invitation: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
+          no_process: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
+    PublicProjectHeaderDatesAdditionalSelectiveInterface:
+      type: object
+      description: Helper used for code generation, see PublicProjectHeaderDatesAdditionalSelective for the actual definition
+      allOf:
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalInterface'
+      discriminator:
+        propertyName: pubType
+        mapping:
+          advance_notice: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
+          tender: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
+          competition: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
+          study_contract: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
+          selective_offering_phase: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
+    PublicProjectHeaderDatesAdditionalSelective:
+      type: object
+      description: |
+        Header dates model for publications in the selective process are again split into two categories based on their 
+        `pubType`. Not all pub-types are listed here because some do not have additional header date properties
+        (see PublicProjectHeaderDates).
+      oneOf:
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
+      discriminator:
+        propertyName: pubType
+        mapping:
+          advance_notice: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
+          tender: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
+          competition: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
+          study_contract: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase'
+          selective_offering_phase: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
+    PublicProjectHeaderDatesAdditional:
+      type: object
+      description: |
+        Header dates for publications which have additional date properties (see PublicProjectHeaderDates) are split
+        again into two categories, this time based on their `processType`.
+      oneOf:
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelective'
+      discriminator:
+        propertyName: processType
+        mapping:
+          open: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
+          selective: '#/components/schemas/PublicProjectHeaderDatesAdditionalSelective'
+          invitation: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
+          no_process: '#/components/schemas/PublicProjectHeaderDatesAdditionalDefault'
+    PublicProjectHeaderDatesInterface:
+      type: object
+      properties:
+        pubType:
+          $ref: '#/components/schemas/PubType'
+      required:
+        - pubType
+      discriminator:
+        propertyName: pubType
+        mapping:
+          advance_notice: '#/components/schemas/PublicProjectHeaderDatesAdditional'
+          tender: '#/components/schemas/PublicProjectHeaderDatesAdditional'
+          competition: '#/components/schemas/PublicProjectHeaderDatesAdditional'
+          study_contract: '#/components/schemas/PublicProjectHeaderDatesAdditional'
+          selective_offering_phase: '#/components/schemas/PublicProjectHeaderDatesAdditional'
+          request_for_information: '#/components/schemas/PublicProjectHeaderDatesAdditional'
+          abandonment: '#/components/schemas/PublicProjectHeaderDatesDefault'
+          direct_award: '#/components/schemas/PublicProjectHeaderDatesDefault'
+          award: '#/components/schemas/PublicProjectHeaderDatesDefault'
+          revocation: '#/components/schemas/PublicProjectHeaderDatesDefault'
+          participant_selection: '#/components/schemas/PublicProjectHeaderDatesDefault'
+    PublicProjectHeaderDatesDefault:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesInterface'
+        - $ref: '#/components/schemas/PublicProjectHeaderDatesBase'
     PublicProjectHeaderDates:
       type: object
       description: |
@@ -16678,9 +18086,13 @@ components:
               $ref: '#/components/schemas/Translation'
             dates:
               $ref: '#/components/schemas/PublicProjectHeaderDates'
+            hasProjectDocuments:
+              type: boolean
+              description: Hint if this publication has project documents attached to it.
           required:
             - id
             - dates
+            - hasProjectDocuments
     VendorDigitalSubmissionStatus:
       type: string
       enum:
@@ -16903,9 +18315,9 @@ components:
       properties:
         search:
           type: string
-          pattern: (^$)|.{3,}
+          pattern: (^$)|.{3,1000}
           description: |
-            Search input, either empty or requires at least 3 valid characters.
+            Search input, either empty or requires between 3 and 1000 valid characters.
         projectSubTypes:
           description: |
             quick-filter: if defined then publications need to be one of the given types
@@ -16922,6 +18334,13 @@ components:
           items:
             type: string
             format: uuid
+        lang:
+          description: |
+            quick-filter: defines in which languages shall be searched in case of translated fields. In case this property is not defined or an empty array is given, then we search in all languages
+          type: array
+          default: []
+          items:
+            $ref: '#/components/schemas/SystemLanguage'
         processTypes:
           description: |
             extended-filter: if defined, projects are filtered by one of the provided projects processTypes
@@ -17256,7 +18675,6 @@ components:
             - $ref: '#/components/schemas/CPVCode'
     PubDraftRfiBase:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PubDraftBaseInterface'
         - $ref: '#/components/schemas/PubDraftCorrectionBase'
@@ -17517,6 +18935,10 @@ components:
               x-extra-annotation: '@get:com.unic.simap.clientservices.api.SimapOagCodeValidation'
               items:
                 $ref: '#/components/schemas/OAGCode'
+            cpcCode:
+              x-extra-annotation: '@get:com.unic.simap.clientservices.api.SimapCpcCodeValidation'
+              allOf:
+                - $ref: '#/components/schemas/CPCCode'
             constructionType:
               $ref: '#/components/schemas/PubConstructionType'
             constructionCategory:
@@ -17712,7 +19134,6 @@ components:
               type: boolean
     PubDraftTenderProjectInfoInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PubDraftTenderProjectInfoInterface'
     PubBaseProjectInfoOpen:
@@ -17872,6 +19293,16 @@ components:
         - $ref: '#/components/schemas/PubDraftBaseProcurement'
         - $ref: '#/components/schemas/PubDraftBaseCriteria'
         - $ref: '#/components/schemas/PubDraftBaseCriteriaSelective'
+        - type: object
+          properties:
+            canLotTypeBeChanged:
+              type: boolean
+              readOnly: true
+              description: |
+                Flag that indicates if a lot type can change. 
+
+                Currently this functionality is only supported for tender lots in the `open` and selective `process`.
+                For all other cases with lots the returned value will be `false`.
     PubDraftTenderLot:
       type: object
       description: |
@@ -17892,6 +19323,12 @@ components:
         - $ref: '#/components/schemas/PubDraftTenderProcurementInterface'
         - $ref: '#/components/schemas/PubDraftBaseCodes'
         - $ref: '#/components/schemas/PubTenderConstructionFields'
+        - type: object
+          properties:
+            cpcCode:
+              x-extra-annotation: '@get:com.unic.simap.clientservices.api.SimapCpcCodeValidation'
+              allOf:
+                - $ref: '#/components/schemas/CPCCode'
     PubDraftTenderProcurementInterface:
       type: object
       description: |
@@ -17992,7 +19429,6 @@ components:
         - $ref: '#/components/schemas/PubBaseTermsWalkthrough'
     PubDraftTenderTermsInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PubDraftTenderTermsInterface'
         - $ref: '#/components/schemas/PubBaseTermsWalkthrough'
@@ -18069,7 +19505,6 @@ components:
         - $ref: '#/components/schemas/PubBaseDatesSelective'
     PubDraftTenderDatesInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PubDraftTenderDatesInterface'
         - $ref: '#/components/schemas/PubTenderDates'
@@ -18172,7 +19607,6 @@ components:
         - $ref: '#/components/schemas/PubDraftBaseCriteriaSelective'
     PubDraftTenderCriteriaInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PubDraftTenderCriteriaInterface'
     PubDraftTenderCriteria:
@@ -18249,7 +19683,6 @@ components:
         - $ref: '#/components/schemas/PubBaseProjectInfoSelective'
     PubDraftProjectInfoInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PubDraftProjectInfoInterface'
     PubDraftProjectInfo:
@@ -18310,6 +19743,7 @@ components:
         - $ref: '#/components/schemas/PubDraftBaseCodes'
         - $ref: '#/components/schemas/PubDraftOagCodes'
         - $ref: '#/components/schemas/PubDraftCpvCode'
+        - $ref: '#/components/schemas/PubDraftCpcCode'
         - type: object
           properties:
             processType:
@@ -18352,7 +19786,6 @@ components:
         - $ref: '#/components/schemas/PubBaseTermsOpenSelective'
     PubDraftTermsExtendedInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PubDraftTermsExtendedInterface'
     PubDraftTermsExtended:
@@ -18402,7 +19835,6 @@ components:
         - $ref: '#/components/schemas/PubBaseDatesSelective'
     PubDraftDatesInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PubDraftDatesInterface'
         - $ref: '#/components/schemas/PubBaseDatesInvitation'
@@ -18449,7 +19881,6 @@ components:
         - $ref: '#/components/schemas/PubDraftBaseCriteriaSelective'
     PubDraftCriteriaInvitation:
       type: object
-      deprecated: true
       allOf:
         - $ref: '#/components/schemas/PubDraftCriteriaInterface'
     PubDraftCriteria:
@@ -18921,6 +20352,10 @@ components:
               x-extra-annotation: '@get:com.unic.simap.clientservices.api.SimapOagCodeValidation'
               items:
                 $ref: '#/components/schemas/OAGCode'
+            cpcCode:
+              x-extra-annotation: '@get:com.unic.simap.clientservices.api.SimapCpcCodeValidation'
+              allOf:
+                - $ref: '#/components/schemas/CPCCode'
             constructionType:
               $ref: '#/components/schemas/PubConstructionType'
             constructionCategory:
@@ -19084,7 +20519,6 @@ components:
           properties:
             isStandardizedService:
               type: boolean
-              default: false
       required:
         - isStandardizedService
     A2ProcurementCharacteristics:
@@ -19121,9 +20555,6 @@ components:
           properties:
             procurementComplexity:
               $ref: '#/components/schemas/A3ProcurementComplexity'
-              default: medium
-      required:
-        - procurementComplexity
     A4:
       type: object
       allOf:
@@ -19134,7 +20565,6 @@ components:
               description: |
                 Award criteria weights are not relevant for 'direct award' and 'competition'
               type: boolean
-              default: true
             priceWeight:
               type: integer
               minimum: 0
@@ -19188,14 +20618,11 @@ components:
           properties:
             checkCriteria:
               $ref: '#/components/schemas/A5CheckCriteria'
-              default: 'yes'
             criteriaTypes:
               type: array
               items:
                 $ref: '#/components/schemas/A5CriteriaTypes'
               minItems: 1
-      required:
-        - checkCriteria
     B1QualityRelatedCriteria:
       type: string
       enum:
@@ -19229,14 +20656,11 @@ components:
           properties:
             qualityRelatedLabelsRequirements:
               $ref: '#/components/schemas/B2QualityRelatedLabelsRequirements'
-              default: 'no'
             qualityRelatedLabels:
               type: string
               description: |
                 List all labels required like Max Havelaar.
                 This field is required if the field qualityRelatedLabelRequirement is set to yes.
-      required:
-        - qualityRelatedLabelsRequirements
     C1:
       type: object
       allOf:
@@ -19245,15 +20669,12 @@ components:
           properties:
             isCountryOfOriginForGoodsAsked:
               type: boolean
-              default: false
             countryOfOriginForGoods:
               type: string
               description: |
                 The ISO 3166 two letter country code. The list with the ids / codes can be get from `GET /api/countries/v1`
             comment:
               type: string
-      required:
-        - isCountryOfOriginForGoodsAsked
     YesNoNotRelevant:
       type: string
       enum:
@@ -19274,7 +20695,6 @@ components:
           properties:
             isOverallProjectLead:
               type: boolean
-              default: true
             isKbobRecommendationPartOfContract:
               type: boolean
             evaluationCriteriaDimensionDefined:
@@ -19283,8 +20703,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/D1EvaluationCriteriaDimensionsDefined'
-      required:
-        - isOverallProjectLead
     D2:
       type: object
       allOf:
@@ -19293,9 +20711,6 @@ components:
           properties:
             isKbobRecommendationPartOfContract:
               type: boolean
-              default: true
-      required:
-        - isKbobRecommendationPartOfContract
     D3:
       type: object
       allOf:
@@ -19304,9 +20719,6 @@ components:
           properties:
             standardsPartOfContract:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'no'
-      required:
-        - standardsPartOfContract
     E1ElementCostsConsidered:
       type: string
       enum:
@@ -19324,7 +20736,6 @@ components:
           properties:
             lifeCycleCostsConsidered:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
             reason:
               type: string
             elementCostsConsidered:
@@ -19365,6 +20776,12 @@ components:
                 $ref: '#/components/schemas/EcologicalSocialSocietalCriteria'
             comment:
               type: string
+    F3EvidencesSocialCriteria:
+      type: string
+      enum:
+        - signed_declaration_bkb
+        - signed_confirmation
+        - following_evidence
     F3:
       type: object
       allOf:
@@ -19374,7 +20791,9 @@ components:
             evidencesSocialCriteriaComplianceProvided:
               type: array
               items:
-                $ref: '#/components/schemas/EcologicalSocialSocietalCriteria'
+                $ref: '#/components/schemas/F3EvidencesSocialCriteria'
+            evidencesSocialCriteriaComplianceProvidedEvidence:
+              type: string
             comment:
               type: string
     F4ClarificationsSocialCriteriaCompliance:
@@ -19390,15 +20809,12 @@ components:
           properties:
             isClarificationSocialCriteriaComplianceDone:
               type: boolean
-              default: false
             clarificationsSocialCriteriaCompliance:
               type: array
               items:
                 $ref: '#/components/schemas/F4ClarificationsSocialCriteriaCompliance'
             otherClarifications:
               type: string
-      required:
-        - isClarificationSocialCriteriaComplianceDone
     F5:
       type: object
       allOf:
@@ -19407,15 +20823,12 @@ components:
           properties:
             isSubcontractorSocialCriteriaComplianceDemanded:
               type: boolean
-              default: true
             subcontractorSocialCriteriaComplianceCommitments:
               type: array
               items:
                 $ref: '#/components/schemas/EcologicalSocialSocietalCriteria'
             comment:
               type: string
-      required:
-        - isSubcontractorSocialCriteriaComplianceDemanded
     F6:
       type: object
       allOf:
@@ -19424,7 +20837,6 @@ components:
           properties:
             isKbobContractAgreementDemanded:
               type: boolean
-              default: true
             isSafetyRegulationComplianceDemanded:
               type: boolean
             isIloCoreAgreementDemanded:
@@ -19433,8 +20845,6 @@ components:
               type: boolean
             isSubcontractorSocialCriteriaComplianceDemanded:
               type: boolean
-      required:
-        - isKbobContractAgreementDemanded
     F7a:
       type: object
       allOf:
@@ -19443,11 +20853,8 @@ components:
           properties:
             standardsDemanded:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
             comment:
               type: string
-      required:
-        - standardsDemanded
     F7b:
       type: object
       allOf:
@@ -19456,11 +20863,8 @@ components:
           properties:
             standardsDemanded:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
             comment:
               type: string
-      required:
-        - standardsDemanded
     F8:
       type: object
       allOf:
@@ -19469,11 +20873,8 @@ components:
           properties:
             standardsDemanded:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
             comment:
               type: string
-      required:
-        - standardsDemanded
     F9:
       type: object
       allOf:
@@ -19482,11 +20883,8 @@ components:
           properties:
             standardsDemanded:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
             comment:
               type: string
-      required:
-        - standardsDemanded
     G1:
       type: object
       allOf:
@@ -19508,9 +20906,22 @@ components:
           properties:
             isEnvironmentalProtectionDemanded:
               type: boolean
-              default: true
-      required:
-        - isEnvironmentalProtectionDemanded
+    G21OtherSustainabilityRequirements:
+      type: string
+      enum:
+        - yes_environmental_impact_assessments
+        - yes_following
+        - 'no'
+    G21:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/SupportedSustainabilityFormTypes'
+        - type: object
+          properties:
+            otherSustainabilityRequirementsBeenMet:
+              $ref: '#/components/schemas/G21OtherSustainabilityRequirements'
+            otherSustainabilityRequirementsBeenMetDescription:
+              type: string
     G3EcologicalCriteriaExpressed:
       type: string
       enum:
@@ -19526,14 +20937,11 @@ components:
           properties:
             hasEcologicalCriteriaExpressed:
               type: boolean
-              default: true
             ecologicalCriteriaExpressed:
               type: array
               items:
                 $ref: '#/components/schemas/G3EcologicalCriteriaExpressed'
               minItems: 1
-      required:
-        - isEcologicalCriteriaExpressed
     G4:
       type: object
       allOf:
@@ -19558,7 +20966,6 @@ components:
               type: string
             isNoEvidence:
               type: boolean
-              default: false
     G6BestFulfilment:
       type: string
       enum:
@@ -19573,9 +20980,6 @@ components:
           properties:
             bestFulfilment:
               $ref: '#/components/schemas/G6BestFulfilment'
-              default: 'no'
-      required:
-        - bestFulfilment
     G7a:
       type: object
       allOf:
@@ -19584,9 +20988,6 @@ components:
           properties:
             standardsDemanded:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
-      required:
-        - standardsDemanded
     G7b:
       type: object
       allOf:
@@ -19595,9 +20996,6 @@ components:
           properties:
             standardsDemanded:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
-      required:
-        - standardsDemanded
     G7c:
       type: object
       allOf:
@@ -19606,9 +21004,6 @@ components:
           properties:
             standardsDemanded:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
-      required:
-        - standardsDemanded
     G7d:
       type: object
       allOf:
@@ -19617,9 +21012,6 @@ components:
           properties:
             standardsDemanded:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
-      required:
-        - standardsDemanded
     G8OtherEcologicalCriteriaSelected:
       type: string
       enum:
@@ -19635,13 +21027,10 @@ components:
           properties:
             otherEcologicalCriteriaDemanded:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
             otherEcologicalCriteriaSelected:
               type: array
               items:
                 $ref: '#/components/schemas/G8OtherEcologicalCriteriaSelected'
-      required:
-        - otherEcologicalCriteriaDemanded
     G9EcologicalTopicsDepicted:
       type: string
       enum:
@@ -19671,10 +21060,21 @@ components:
         - type: object
           properties:
             innovativeSolutionsAvailable:
-              $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'no'
-      required:
-        - innovativeSolutionsAvailable
+              type: boolean
+    YesNoPartly:
+      type: string
+      enum:
+        - 'yes'
+        - 'no'
+        - partly
+    H11:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/SupportedSustainabilityFormTypes'
+        - type: object
+          properties:
+            procurementSuitedForInnovativeSolution:
+              $ref: '#/components/schemas/YesNoPartly'
     H2InnovationSupportingProcurementProcedures:
       type: string
       enum:
@@ -19692,15 +21092,12 @@ components:
           properties:
             innovationSupportingProcurementProcedures:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
             innovationSupportingProcurementProceduresUsed:
               type: array
               items:
                 $ref: '#/components/schemas/H2InnovationSupportingProcurementProcedures'
             otherInnovationSupportingProcurementProceduresUsed:
               type: string
-      required:
-        - innovationSupportingProcurementProcedures
     H3InnovationSupportingServicesCriteria:
       type: string
       enum:
@@ -19716,14 +21113,11 @@ components:
           properties:
             innovationSupportingServicesCriteriaChosen:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
             innovationSupportingServicesCriteria:
               type: array
               items:
                 $ref: '#/components/schemas/H3InnovationSupportingServicesCriteria'
                 minItems: 1
-      required:
-        - innovationSupportingServicesCriteriaChosen
     H4InnovationSupportingProcurementKinds:
       type: string
       enum:
@@ -19760,15 +21154,12 @@ components:
           properties:
             compatibleMeasuresMet:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
             compatibleMeasures:
               type: array
               items:
                 $ref: '#/components/schemas/I1aCompatibleMeasures'
             otherCompatibleMeasures:
               type: string
-      required:
-        - compatibleMeasuresMet
     I1bCompatibleMeasures:
       type: string
       enum:
@@ -19783,15 +21174,12 @@ components:
           properties:
             compatibleMeasuresMet:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
             compatibleMeasures:
               type: array
               items:
                 $ref: '#/components/schemas/I1bCompatibleMeasures'
             otherCompatibleMeasures:
               type: string
-      required:
-        - compatibleMeasuresMet
     I2CompatibleMeasures:
       type: string
       enum:
@@ -19806,7 +21194,6 @@ components:
           properties:
             compatibleMeasuresMet:
               $ref: '#/components/schemas/YesNoNotRelevant'
-              default: 'yes'
             compatibleMeasures:
               type: array
               items:
@@ -19845,7 +21232,6 @@ components:
           properties:
             numberRangeOfEmployees:
               $ref: '#/components/schemas/I4NumberRangeOfEmployees'
-              default: unknown
       required:
         - numberRangeOfEmployees
     J1:
@@ -19856,13 +21242,10 @@ components:
           properties:
             hasRejectedBidders:
               type: boolean
-              default: false
             numberOfRejectedBidders:
               type: integer
             totalNumberOfBidders:
               type: integer
-      required:
-        - hasRejectedBidders
     J2:
       type: object
       allOf:
@@ -19871,13 +21254,10 @@ components:
           properties:
             hasRejectedBidders:
               type: boolean
-              default: false
             numberOfRejectedBidders:
               type: integer
             totalNumberOfBidders:
               type: integer
-      required:
-        - hasRejectedBidders
     PubDraftAwardSustainabilityForm:
       type: object
       properties:
@@ -19939,6 +21319,8 @@ components:
           $ref: '#/components/schemas/G1'
         g2:
           $ref: '#/components/schemas/G2'
+        g21:
+          $ref: '#/components/schemas/G21'
         g3:
           $ref: '#/components/schemas/G3'
         g4:
@@ -19961,6 +21343,8 @@ components:
           $ref: '#/components/schemas/G9'
         h1:
           $ref: '#/components/schemas/H1'
+        h11:
+          $ref: '#/components/schemas/H11'
         h2:
           $ref: '#/components/schemas/H2'
         h3:
@@ -20021,6 +21405,7 @@ components:
         - `publication_ted_requires_price_selection` - Publication send to TED requires that the price is defined
         - `not_specified_not_allowed` - not_specified was chosen but is not allowed for the current publication type
         - `ted_validation` - validation error reported by the TED SDK
+        - `state_contract_requires_wto_language` - Publications with state contract type require a WTO language (FR or EN) to be available
       enum:
         - required
         - must_be_null
@@ -20049,6 +21434,7 @@ components:
         - publication_ted_requires_price_selection
         - not_specified_not_allowed
         - ted_validation
+        - state_contract_requires_wto_language
     ValidationError:
       type: object
       properties:
@@ -20084,6 +21470,27 @@ components:
               $ref: '#/components/schemas/ValidationError'
       required:
         - validationResults
+    PastPublishedPubDraftEntry:
+      type: object
+      description: Past published or for the proc office to be published publication.
+      allOf:
+        - $ref: '#/components/schemas/PastPublicationsEntry'
+        - type: object
+          properties:
+            status:
+              $ref: '#/components/schemas/PubDraftStatus'
+          required:
+            - status
+    PastPublishedPubDrafts:
+      type: object
+      description: Past publications
+      properties:
+        pastPublications:
+          type: array
+          items:
+            $ref: '#/components/schemas/PastPublishedPubDraftEntry'
+      required:
+        - pastPublications
     RoleAndOrganizationChange:
       type: object
       properties:
@@ -20141,9 +21548,13 @@ components:
           format: uuid
         answerState:
           $ref: '#/components/schemas/QnaAnswerState'
+        questionAnsweredAt:
+          type: string
+          format: date-time
       required:
         - id
         - answerState
+        - questionAnsweredAt
     QnaPublishResponses:
       type: object
       description: List of qna's (question answer pair)
@@ -20432,6 +21843,15 @@ components:
       enum:
         - central_or_decentral_federation
         - other_federation
+        - entire_federal_administration
+        - cantonal_or_other_cantonal
+        - communal_or_other_communal
+      description: |
+        - `central_or_decentral_federation` - can be only used by the role `competence_centre_admin`
+        - `other_federation` - can be only used by the role `competence_centre_admin`
+        - `entire_federal_administration` - can be only used by the role `competence_centre_admin`
+        - `cantonal_or_other_cantonal` - can be only used by the role `simap_admin`
+        - `communal_or_other_communal` - can be only used by the role `simap_admin`
     WTOStatisticsOrganizationType:
       type: string
       enum:
@@ -20670,11 +22090,11 @@ components:
         Each page consist of one or many tabs. Each tab further consists of one or many cards/content-components. 
         These are styled differently depending on there content-component-type.
         Following pages are available:
-        * start_page - no tabs/single tab
-        * help - tabs: howto-videos, FAQ
-        * topical - tabs: news, agenda, release notes
-        * procurement - tabs: further information on public procurement, exclusion from public procurement, EU/WTO/EFTA, Instiutions and associations, WTO statistics
-        * about - tabs: organisation, business regulations, statues, GTC
+        * `start_page` - no tabs/single tab
+        * `help` - tabs: edu-videos, frequently asked questions
+        * `topical` - tabs: news, agenda, release notes
+        * `procurement` - tabs: further information on public procurement, exclusion from public procurement, EU/WTO/EFTA, Instiutions and associations, WTO statistics
+        * `about` - tabs: organisation, business regulations, statutes, general terms conditions
       enum:
         - start_page
         - help
@@ -20688,21 +22108,25 @@ components:
         Together with the PageName it defines a predefined structure where content can be located and displayed. 
         Each tab is located within an page. Each tab consist of one or many cards/content-components.
         Following tabs are available:
-        * start_page - pseudo tab where no tabs or only a single tab exists. It exists to fit in the structure with the other static pages.
-        * news - new articles are published on this tab
-        * agenda - important deadlines and events are listed here informing about an important date
-        * release_notes - contains information about the changes made to simap and newly added features from each published release
-        * further_information_on_public_procurement - information about the fundamentals and details all around the subject: public procurements
-        * exclusion_from_public_procurement - information in which scenarios a public procurement isn't mandatory
-        * eu_wto_efta - further links about public procurements within different associations and unions
-        * institutions_and_associations - further links about associations and institutions strongly related to simap
-        * wto_statistics - Links to download the newest wto-statistics
-        * organisation - information about the persons which make simap possible and there roles 
-        * business_regulations - rules and regulations about the simap-organisation
-        * statutes - describes what the purpose of the simap-organisation is, defines terms and how the organisation works 
-        * gtc - general terms and conditions
+        * `start_page` - pseudo tab as there are no tabs on the start-page.
+        * `edu_videos` - A collection of videos which explain various features of the simap-platform 
+        * `frequently_asked_questions` - common questions are answered here
+        * `news` - news articles are published on this tab
+        * `agenda` - list of important deadlines and events
+        * `release_notes` - contains information about the changes made to simap and newly added features for each published release
+        * `further_information_on_public_procurement` - information about the fundamentals and details all around the subject: public procurements
+        * `exclusion_from_public_procurement` - information in which scenarios a public procurement isn't mandatory
+        * `eu_wto_efta` - further links about public procurements within different associations and unions
+        * `institutions_and_associations` - further links about associations and institutions strongly related to simap
+        * `wto_statistics` - Links to download the newest wto-statistics
+        * `organisation` - information about the persons who make simap possible and their roles 
+        * `business_regulations` - rules and regulations about the simap-organisation
+        * `statutes` - describes what the purpose of the simap-organisation is, defines terms and how the organisation works 
+        * `general_terms_conditions` - general terms and conditions
       enum:
         - start_page
+        - edu_videos
+        - frequently_asked_questions
         - news
         - agenda
         - release_notes
@@ -20714,7 +22138,7 @@ components:
         - organisation
         - business_regulations
         - statutes
-        - gtc
+        - general_terms_conditions
     ContentComponent:
       type: object
       description: Basic properties for a content-component. Extra properties are added depending on the discriminator type
@@ -20735,6 +22159,10 @@ components:
         propertyName: componentType
         mapping:
           info_box: '#/components/schemas/ContentComponentInfoBox'
+          text_section: '#/components/schemas/ContentComponentTextSection'
+          links: '#/components/schemas/ContentComponentLinks'
+          videos: '#/components/schemas/ContentComponentVideos'
+          articles: '#/components/schemas/ContentComponentArticles'
     ContentComponentInfoBox:
       type: object
       allOf:
@@ -20745,21 +22173,157 @@ components:
               $ref: '#/components/schemas/TranslationSanitizedHtml'
           required:
             - content
+    ContentComponentTextSection:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ContentComponent'
+        - type: object
+          properties:
+            title:
+              $ref: '#/components/schemas/Translation'
+            content:
+              $ref: '#/components/schemas/TranslationSanitizedHtml'
+          required:
+            - content
+    ContentComponentLinkItemIcon:
+      type: string
+      description: |
+        This icon are used for content-component-link-items.
+        The frontend uses it to display a fitting icon.
+        Following types are available:
+        * web - indicates that this link points to a website
+        * pdf - indicates that this link points to a pdf-file
+      enum:
+        - web
+        - pdf
+    ContentComponentLinkItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        displayText:
+          $ref: '#/components/schemas/Translation'
+        url:
+          $ref: '#/components/schemas/TranslationURL'
+        icon:
+          $ref: '#/components/schemas/ContentComponentLinkItemIcon'
+        index:
+          type: integer
+          minimum: 0
+      required:
+        - id
+        - displayText
+        - url
+        - icon
+        - index
+    ContentComponentLinks:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ContentComponent'
+        - type: object
+          properties:
+            title:
+              $ref: '#/components/schemas/Translation'
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/ContentComponentLinkItem'
+          required:
+            - items
+    ContentComponentYoutubeVideoItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        youtubeVideoId:
+          $ref: '#/components/schemas/Translation'
+        title:
+          $ref: '#/components/schemas/Translation'
+        index:
+          type: integer
+          minimum: 0
+      required:
+        - id
+        - youtubeVideoId
+        - title
+        - index
+    ContentComponentVideos:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ContentComponent'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/ContentComponentYoutubeVideoItem'
+          required:
+            - items
+    ContentComponentArticleCategory:
+      type: string
+      description: |
+        This category are specifically used in conjunction with content-component-articles and article-items.
+        Following categories are available:
+        * `news` - news related to the platform and the association simap.ch
+        * `agenda` - upcoming dates for planned events 
+        * `release_notes` - release notes for the platform simap.ch
+      enum:
+        - news
+        - agenda
+        - release_notes
+    ContentComponentMetadataArticleItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        date:
+          type: string
+          format: date
+          readOnly: true
+        title:
+          $ref: '#/components/schemas/Translation'
+          readOnly: true
+      required:
+        - id
+        - date
+        - title
+    ContentComponentArticles:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ContentComponent'
+        - type: object
+          properties:
+            category:
+              $ref: '#/components/schemas/ContentComponentArticleCategory'
+              description: The category on the articles define which article-items to load.
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/ContentComponentMetadataArticleItem'
+          required:
+            - items
+            - category
     ComponentType:
       type: string
       description: |
         The component-type defines and describes the type of content the component has.
         It's used as discriminator to add different properties. It can be used to present the content in different styles to the user.
         Following types are available:
-        * link - has a url- and text-field. Used in a collection of links for the user to further read about a topic. 
-        * content-news - has a title- and content-field. The title uses a h1-styling while the content is a limited html-text field.
-        * info-box - yellow box with an (i)-icon used to announce and inform the user about maintenance or downtime.
-        * video - youtube-video-id- and title-field. Used in a collection of videos demonstrating simap-functionality.
+        * `text_section` - text component, see model `ContentComponentTextSection`.
+        * `info_box` - info box component for announcements, see model `ContentComponentInfoBox`.
+        * `links` - link component for a collection of links, see model `ContentComponentLinks`. 
+        * `articles` - article component for a collection of entries for the selected topic, see model `ContentComponentArticles`.
+        * `videos` - video component for a collection of videos, see model `ContentComponentVideos`.
       enum:
-        - link
-        - content_news
+        - text_section
         - info_box
-        - video
+        - links
+        - articles
+        - videos
     TabComponent:
       type: object
       properties:
@@ -20787,6 +22351,28 @@ components:
       required:
         - name
         - tabs
+    ContentComponentArticleItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        category:
+          $ref: '#/components/schemas/ContentComponentArticleCategory'
+          description: The category on the article-items define to which category they belong.
+        date:
+          type: string
+          format: date
+        title:
+          $ref: '#/components/schemas/Translation'
+        content:
+          $ref: '#/components/schemas/TranslationSanitizedHtml'
+      required:
+        - id
+        - category
+        - date
+        - title
+        - content
     VendorDigitalSubmission:
       type: object
       allOf:
@@ -20905,6 +22491,79 @@ components:
           description: Optional reference to the lotId if the created vendor digital submission document should be attached to a specific lot only
       required:
         - vendorDocumentId
+    SustainabilityTrigger:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        cpvCodeMatch:
+          type: string
+          description: |
+            The CPV code that this sustainability trigger matches against.
+            Use either an 8 digit code for an exact match or 1-7 digits followed by an asterisk (*) to match
+            a subtree of the cpv-code tree.
+        compCentreId:
+          type: string
+          format: uuid
+          description: The ID of the competence centre that this sustainability trigger belongs to.
+        institutionId:
+          type: string
+          format: uuid
+          description: The ID of the institution that this sustainability trigger applies to.
+        sustainabilityFormTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SustainabilityFormType'
+          description: |
+            SustainabilityFormType the trigger shall apply to.
+            Currently supported is either [nh01] or [nh02, nh03, nh04, nh05].
+        productCategoryId:
+          type: string
+          format: uuid
+          description: |
+            The ID of the product category of this sustainability trigger.
+            GET `/api/sustainability/v1/product-categories` for available categories.
+        productCategoryName:
+          type: string
+          readOnly: true
+          description: |
+            Name of the category, only available in german.
+            Not required for creating a new trigger.
+      required:
+        - id
+        - cpvCodeMatch
+        - description
+        - compCentreId
+        - institutionId
+        - sustainabilityFormTypes
+        - productCategoryId
+    SustainabilityTriggers:
+      type: object
+      properties:
+        sustainabilityTriggers:
+          type: array
+          items:
+            $ref: '#/components/schemas/SustainabilityTrigger'
+    ProductCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: the name of the product category
+      required:
+        - id
+        - name
+    ProductCategories:
+      type: object
+      properties:
+        productCategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCategory'
     PubSteps:
       type: string
       enum:
@@ -21154,11 +22813,26 @@ components:
         would be redundant for every row, this property is set to null for all questions. 
         Use '/sustainability-form/v1/mappings' endpoint to query the form question mapping once for the whole export.
       properties:
+        processType:
+          $ref: '#/components/schemas/PubProcessType'
+        projectNumber:
+          type: string
+        lotNumber:
+          type: integer
         publicationNumber:
           type: string
           example: 123-01
           description: |
             Unique publication number aka "Meldungsnummer".
+        publicationDate:
+          type: string
+          format: date
+        totalPrice:
+          $ref: '#/components/schemas/PriceWithVat'
+        vendorNames:
+          type: array
+          items:
+            type: string
         cpvCode:
           $ref: '#/components/schemas/CPVCode'
         productCategory:
@@ -21171,7 +22845,12 @@ components:
         form:
           $ref: '#/components/schemas/PubDraftAwardSustainabilityForm'
       required:
+        - processType
+        - projectNumber
         - publicationNumber
+        - publicationDate
+        - totalPrice
+        - vendorNames
         - cpvCode
         - productCategory
         - procurementOffice
@@ -21220,6 +22899,29 @@ components:
           schema:
             $ref: '#/components/schemas/ServerErrorAttributes'
   parameters:
+    QueryParamFrom:
+      name: from
+      schema:
+        type: string
+        format: date-time
+      in: query
+      required: false
+      description: filter list of response entries having a changed date bigger or equals to the provided `from` date.
+    QueryParamTo:
+      name: to
+      schema:
+        type: string
+        format: date-time
+      in: query
+      required: false
+      description: filter list of response entries having a changed date smaller or equals to the provided `to` date.
+    QueryParamLastItem:
+      name: lastItem
+      schema:
+        type: string
+      in: query
+      required: false
+      description: The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
     ParamCompCentreId:
       name: compCentreId
       schema:
@@ -21276,6 +22978,14 @@ components:
       in: path
       required: true
       description: Id of a user
+    ParamHistoryId:
+      name: hid
+      schema:
+        type: string
+        format: uuid
+      in: path
+      required: true
+      description: Id of the history entry.
     ParamVendorDigitalSubmissionId:
       name: vendorDigitalSubmissionId
       schema:
@@ -21332,7 +23042,7 @@ components:
         format: uuid
       in: path
       required: true
-      description: Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+      description: Id of the publication draft.
     ParamLotId:
       name: lotId
       schema:

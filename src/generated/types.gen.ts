@@ -34,7 +34,7 @@
  * - E0029 = Cannot update non-awarded vendor
  * - E0030 = Unsupported content-type
  * - E0031 = Trying to update an entity with a lotId not part of the same project
- * - E0032 = Document locked, cannot be updated anymore
+ * - E0032 = Document locked, cannot be updated anymore - DEPRECATED, no longer in use
  * - E0034 = Cannot define a translation language which corresponds to the creation language
  * - E0035 = Cannot show interest as deadline exceeded
  * - E0036 = Cannot perform requested operation as vendor is not active anymore
@@ -77,9 +77,13 @@
  * - E0074 = Content component position duplicate
  * - E0075 = Submitting digital submission without documents
  * - E0076 = URL-field in the request body either contains invalid characters, is incorrectly escaped, contains no or an unknown protocol
+ * - E0077 = Can not directly change type of content component
+ * - E0078 = Can not patch items of content-component-articles, must be empty
+ * - E0079 = An existing sustainability trigger clashes with the new trigger
+ * - E0080 = Cannot change the projectSubType of the given lot.
  *
  */
-export type ErrorCode = 'E0000' | 'E0001' | 'E0002' | 'E0003' | 'E0004' | 'E0005' | 'E0006' | 'E0007' | 'E0008' | 'E0009' | 'E0010' | 'E0011' | 'E0012' | 'E0013' | 'E0014' | 'E0015' | 'E0016' | 'E0017' | 'E0020' | 'E0021' | 'E0022' | 'E0024' | 'E0025' | 'E0027' | 'E0028' | 'E0029' | 'E0030' | 'E0031' | 'E0032' | 'E0034' | 'E0035' | 'E0036' | 'E0037' | 'E0038' | 'E0039' | 'E0040' | 'E0041' | 'E0042' | 'E0043' | 'E0044' | 'E0045' | 'E0046' | 'E0047' | 'E0048' | 'E0049' | 'E0050' | 'E0051' | 'E0052' | 'E0053' | 'E0054' | 'E0055' | 'E0056' | 'E0057' | 'E0059' | 'E0060' | 'E0061' | 'E0062' | 'E0063' | 'E0064' | 'E0065' | 'E0066' | 'E0067' | 'E0068' | 'E0069' | 'E0070' | 'E0071' | 'E0072' | 'E0073' | 'E0074' | 'E0075' | 'E0076';
+export type ErrorCode = 'E0000' | 'E0001' | 'E0002' | 'E0003' | 'E0004' | 'E0005' | 'E0006' | 'E0007' | 'E0008' | 'E0009' | 'E0010' | 'E0011' | 'E0012' | 'E0013' | 'E0014' | 'E0015' | 'E0016' | 'E0017' | 'E0020' | 'E0021' | 'E0022' | 'E0024' | 'E0025' | 'E0027' | 'E0028' | 'E0029' | 'E0030' | 'E0031' | 'E0032' | 'E0034' | 'E0035' | 'E0036' | 'E0037' | 'E0038' | 'E0039' | 'E0040' | 'E0041' | 'E0042' | 'E0043' | 'E0044' | 'E0045' | 'E0046' | 'E0047' | 'E0048' | 'E0049' | 'E0050' | 'E0051' | 'E0052' | 'E0053' | 'E0054' | 'E0055' | 'E0056' | 'E0057' | 'E0059' | 'E0060' | 'E0061' | 'E0062' | 'E0063' | 'E0064' | 'E0065' | 'E0066' | 'E0067' | 'E0068' | 'E0069' | 'E0070' | 'E0071' | 'E0072' | 'E0073' | 'E0074' | 'E0075' | 'E0076' | 'E0077' | 'E0078' | 'E0079' | 'E0080';
 
 export type ServerErrorAttributes = {
     /**
@@ -385,58 +389,32 @@ export type Institution = InstitutionMinimal & {
      */
     compCentreId?: string | null;
     /**
-     * If true, this institution supervises one or more institutions.
-     * Use the id of this institution as `parentInstitutionId` on the GET request the get these institutions.
-     *
+     * The id of the parent institution in the hierarchy tree if the institution has a parent.
      */
-    hasInstitutions: boolean;
+    parentInstitutionId?: string;
     /**
-     * If true this institution supervises one or more procurement offices.
-     * Get the available offices with `GET /procoffices/v1/treeview`.
+     * The path in the institution hierarchy to this node, including the current node.
+     * The path consists of the UUIDs of the nodes separated by a dot `.`
      *
      */
-    hasProcOffices: boolean;
+    path: string;
 };
 
 export type Institutions = {
     institutions: Array<Institution>;
 };
 
-export type InstitutionSearchResult = InstitutionMinimal & {
-    /**
-     * The responsible competence centre, if not set see the parent institution.
-     */
-    compCentreId?: string | null;
-    /**
-     * The list will contain the lower level institutions if they contain procurement offices that matched the search query
-     *
-     */
-    institutions: Array<InstitutionSearchResult>;
-    /**
-     * The list will contain the procurement offices that matched the search query
-     *
-     */
-    procOffices: Array<ProcOfficePublicData>;
-};
-
 /**
- * Public available procurement office data.
+ * A users login status which can differ from the account status
+ *
+ * - `no_login` - used for invited or deleted user accounts. The user has no login or has not finished setting it up.
+ * - `active` - the user has an active login.
+ * - `temporarily_locked` - the user's login is temporarily locked (brute force detection)
+ * - `locked` - the user's login is permanently locked (brute force detection)
+ *
  */
-export type ProcOfficePublicData = {
-    id: string;
-    name: string;
-    type: ProcOfficeType;
-    institutionId: string;
-    compCentreId: string;
-};
+export type UserLoginStatus = 'no_login' | 'active' | 'temporarily_locked' | 'locked';
 
-export type InstitutionSearchResults = {
-    institutions: Array<InstitutionSearchResult>;
-};
-
-/**
- * The phoneNumber parameter is in the internation format (E.164)
- */
 export type User = {
     id?: string;
     email?: string;
@@ -451,6 +429,7 @@ export type User = {
     updatedAt?: string;
     active?: boolean;
     passwordLastChanged?: string;
+    loginStatus?: UserLoginStatus;
 };
 
 export type RollingPagination = {
@@ -498,17 +477,58 @@ export type ImpersonateTokens = {
     user_id?: string;
 };
 
-export type UserMinimal = {
-    id?: string;
-    firstName?: string;
-    lastName?: string;
-    email?: string;
+export type AuditOperation = 'created' | 'updated' | 'deleted';
+
+export type BaseHistory = {
+    hid: string;
+    changedAt: string;
+    changedBy: string;
+    changedById: string;
+    impersonatedBy?: string;
+    auditOperation: AuditOperation;
+};
+
+export type UserHistoryMutation = BaseHistory & User & {
+    /**
+     * is true, when One-Time Password should be enabled for this user.
+     */
+    isOtpRequired?: boolean;
+    /**
+     * is true, when One-Time Password is enabled for this user.
+     */
+    isOtpActive?: boolean;
+};
+
+export type UserHistoryMutations = {
+    userHistoryMutations: Array<UserHistoryMutation>;
+    pagination: RollingPagination;
 };
 
 /**
  * list of all assignable roles, listed in expected sort ordering
  */
 export type AssignableRole = 'subscription_user' | 'procurement_project_contributor' | 'procurement_user' | 'procurement_admin' | 'vendor_user' | 'vendor_admin' | 'competence_centre_print_user' | 'competence_centre_admin' | 'simap_admin';
+
+export type MembershipStatus = 'requested' | 'accepted' | 'rejected' | 'disabled';
+
+export type OrganizationMembership = OrganizationBase & {
+    role: AssignableRole;
+    membershipStatus: MembershipStatus;
+};
+
+export type UserHistoryOrganizationMembership = BaseHistory & OrganizationMembership;
+
+export type UserHistoryOrganizationMemberships = {
+    userHistoryOrganizationMemberships: Array<UserHistoryOrganizationMembership>;
+    pagination: RollingPagination;
+};
+
+export type UserMinimal = {
+    id?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+};
 
 /**
  * User with organization and role
@@ -527,13 +547,6 @@ export type UserWithOrgAndRole = UserMinimal & {
 export type UsersWithOrgAndRoleSearchResult = {
     users: Array<UserWithOrgAndRole>;
     pagination: RollingPagination;
-};
-
-export type MembershipStatus = 'requested' | 'accepted' | 'rejected' | 'disabled';
-
-export type OrganizationMembership = OrganizationBase & {
-    role: AssignableRole;
-    membershipStatus: MembershipStatus;
 };
 
 export type OrganizationMemberships = {
@@ -570,7 +583,7 @@ export type ProcOfficeListEntry = {
      */
     institutionNameHierarchy: Array<Translation>;
     createdBy: UserMinimal;
-    organizationInContract?: boolean;
+    organizationInContract: boolean;
     status: ProcOfficeStatus;
 };
 
@@ -740,7 +753,7 @@ export type AttachedUser = UserMinimal & {
 };
 
 export type AttachedUserSearchResult = {
-    attachedUsers?: Array<AttachedUser>;
+    attachedUsers: Array<AttachedUser>;
     pagination: RollingPagination;
 };
 
@@ -824,6 +837,8 @@ export type CompCentreUrls = {
     urls: Array<CompCentreUrl>;
 };
 
+export type ProjectSubType = 'construction' | 'service' | 'supply' | 'project_competition' | 'idea_competition' | 'overall_performance_competition' | 'project_study' | 'idea_study' | 'overall_performance_study' | 'request_for_information';
+
 /**
  * Unique publication number aka "Meldungsnummer".
  * Confluence: https://projects.unic.com/x/SAKMBg > Meldungsnummer
@@ -833,6 +848,7 @@ export type PublicationNumber = string;
 
 export type BasePublicationData = {
     projectType: PubProjectType;
+    projectSubType: ProjectSubType;
     processType: PubProcessType;
     publicationNumber: PublicationNumber;
     pubType: PubType;
@@ -874,8 +890,35 @@ export type PubDraftsPlannedForPublication = {
     pubDrafts: Array<PubDraftPlannedForPublication>;
 };
 
-export type ProcOfficeTree = {
+/**
+ * Public available procurement office data.
+ */
+export type ProcOfficePublicData = {
+    id: string;
+    name: string;
+    type: ProcOfficeType;
+    institutionId: string;
+    compCentreId: string;
+};
+
+export type ProcOfficesPublicData = {
     procOffices: Array<ProcOfficePublicData>;
+};
+
+/**
+ * Phone number in international format (E.164)
+ */
+export type InternationalPhoneNumber = string;
+
+export type BaseProcOffice = ProcOfficePublicData & {
+    language?: SystemLanguage;
+    mainActivity?: MainActivity;
+    phone?: InternationalPhoneNumber;
+    email?: string;
+    url?: string;
+    otherInfo?: string;
+    status?: ProcOfficeStatus;
+    statusComment?: string;
 };
 
 export type Contact = {
@@ -884,11 +927,6 @@ export type Contact = {
     lastName: string;
     email?: string;
 };
-
-/**
- * Phone number in international format (E.164)
- */
-export type InternationalPhoneNumber = string;
 
 /**
  * If the procurement office is working as `organization in contract` then the `organizationInContractContact`
@@ -901,17 +939,9 @@ export type InternationalPhoneNumber = string;
  * contact information of the office.
  *
  */
-export type ProcOffice = ProcOfficePublicData & {
-    language: SystemLanguage;
-    mainActivity: MainActivity;
+export type ProcOffice = BaseProcOffice & {
     organizationInContractContact?: Contact;
     address: Address;
-    phone: InternationalPhoneNumber;
-    email: string;
-    url?: string;
-    otherInfo?: string;
-    status?: ProcOfficeStatus;
-    statusComment?: string;
     /**
      * Each procurement office is assigned to an institution.
      *
@@ -987,8 +1017,6 @@ export type PubDraftStatus = 'draft' | 'validated' | 'submitted' | 'to_publish' 
  */
 export type ProjectSearchPubTypeFilter = 'advance_notice' | 'request_for_information' | 'tender' | 'competition' | 'study_contract' | 'award_tender' | 'award_study_contract' | 'award_competition' | 'direct_award' | 'participant_selection' | 'revocation' | 'abandonment' | 'selective_offering_phase';
 
-export type ProjectSubType = 'construction' | 'service' | 'supply' | 'project_competition' | 'idea_competition' | 'overall_performance_competition' | 'project_study' | 'idea_study' | 'overall_performance_study' | 'request_for_information';
-
 export type PubLotsType = 'with' | 'without';
 
 /**
@@ -1043,7 +1071,7 @@ export type ProcOfficeProjectsOverviewEntryLot = ProjectsSearchEntryLatestPub & 
      * Status of the latest referencing pub draft or publication like an award.
      *
      */
-    publicationStatus?: PubDraftStatus;
+    publicationStatus: PubDraftStatus;
     /**
      * Editorial deadline of the latest referencing pub draft or publication like an award.
      *
@@ -1083,9 +1111,22 @@ export type PubCompetitionType = 'project_competition' | 'idea_competition' | 'o
 export type ProjectTypeFields = {
     projectNumber: string;
     projectType: PubProjectType;
+    projectSubType: ProjectSubType;
     processType: PubProcessType;
+    /**
+     * Deprecated property, use the 'projectSubType'
+     * @deprecated
+     */
     orderType?: PubOrderType;
+    /**
+     * Deprecated property, use the 'projectSubType'
+     * @deprecated
+     */
     studyType?: PubStudyType;
+    /**
+     * Deprecated property, use the 'projectSubType'
+     * @deprecated
+     */
     competitionType?: PubCompetitionType;
     lotsType: PubLotsType;
 };
@@ -1107,6 +1148,7 @@ export type PubDraftLotDescriptionCreate = PubDraftLotId & {
 
 export type PubDraftLotDescription = PubDraftLotDescriptionCreate & {
     lotNumber: number;
+    projectSubType: ProjectSubType;
 };
 
 export type ProcOfficeProjectHeaderDatesNonPublished = ProcOfficeProjectHeaderDatesInterface & {
@@ -1121,32 +1163,22 @@ export type ProcOfficeProjectHeaderDatesNonPublished = ProcOfficeProjectHeaderDa
  */
 export type ProcOfficeProjectHeaderDatesPublishedAdditionalDefault = ProcOfficeProjectHeaderDatesPublishedAdditionalInterface & {
     processType?: 'open' | 'invitation' | 'no_process';
-} & PublicProjectHeaderDatesAdditionalDefault;
+} & PublicProjectHeaderDatesBase & {
+    /**
+     * QNA round dates.
+     * Only available if vendor of logged in user is eligible to see qna rounds or the user belongs to a procurement_office.
+     *
+     */
+    qnas?: Array<PublicationQna>;
+    /**
+     * Can be `null` when the only publication in the project is of type `advanced_notice` as there the value is optional.
+     *
+     */
+    offerDeadline?: string;
+    offerOpening?: DateOptionalTime;
+};
 
 export type ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingPhase = ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface & {
-    pubType?: 'advance_notice' | 'tender' | 'competition' | 'study_contract';
-} & PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase;
-
-/**
- * Helper used for code generation, see ProcOfficeProjectHeaderDatesPublishedAdditional for the actual definition
- */
-export type ProcOfficeProjectHeaderDatesPublishedAdditionalInterface = ProcOfficeProjectHeaderDatesPublishedInterface & {
-    pubType?: 'ProcOfficeProjectHeaderDatesPublishedAdditionalInterface';
-};
-
-/**
- * Helper used for code generation, see ProcOfficeProjectHeaderDatesPublishedAdditionalSelective for the actual definition
- */
-export type ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface = ProcOfficeProjectHeaderDatesPublishedAdditionalInterface & {
-    processType?: 'ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface';
-};
-
-/**
- * additional dates relevant for publications in the selective process which have additional dates except for
- * selective_offering_phase which uses the default additional dates.
- *
- */
-export type PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase = PublicProjectHeaderDatesAdditionalSelectiveInterface & {
     pubType?: 'advance_notice' | 'tender' | 'competition' | 'study_contract';
 } & PublicProjectHeaderDatesBase & {
     /**
@@ -1166,65 +1198,24 @@ export type PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase = Public
     offerSubmissionDeadline?: DateOptionalTime;
 };
 
-export type PublicProjectHeaderDatesAdditionalDefault = PublicProjectHeaderDatesAdditionalInterface & {
-    processType?: 'open' | 'invitation' | 'no_process';
-} & PublicProjectHeaderDatesBase & {
-    /**
-     * QNA round dates.
-     * Only available if vendor of logged in user is eligible to see qna rounds or the user belongs to a procurement_office.
-     *
-     */
-    qnas?: Array<PublicationQna>;
-    /**
-     * Can be `null` when the only publication in the project is of type `advanced_notice` as there the value is optional.
-     *
-     */
-    offerDeadline?: string;
-    offerOpening?: DateOptionalTime;
+/**
+ * Helper used for code generation, see ProcOfficeProjectHeaderDatesPublishedAdditional for the actual definition
+ */
+export type ProcOfficeProjectHeaderDatesPublishedAdditionalInterface = ProcOfficeProjectHeaderDatesPublishedInterface & {
+    pubType?: 'ProcOfficeProjectHeaderDatesPublishedAdditionalInterface';
+} & {
+    processType: PubProcessType;
 };
 
 /**
- * Header dates model for publications in the selective process are again split into two categories based on their
- * `pubType`. Not all pub-types are listed here because some do not have additional header date properties
- * (see PublicProjectHeaderDates).
- *
+ * Helper used for code generation, see ProcOfficeProjectHeaderDatesPublishedAdditionalSelective for the actual definition
  */
-export type PublicProjectHeaderDatesAdditionalSelective = ({
-    pubType: 'selective_offering_phase';
-} & PublicProjectHeaderDatesAdditionalDefault) | ({
-    pubType: 'advance_notice' | 'tender' | 'competition' | 'study_contract';
-} & PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase);
-
-/**
- * Header dates for publications which have additional date properties (see PublicProjectHeaderDates) are split
- * again into two categories, this time based on their `processType`.
- *
- */
-export type PublicProjectHeaderDatesAdditional = ({
-    processType: 'open' | 'invitation' | 'no_process';
-} & PublicProjectHeaderDatesAdditionalDefault) | ({
-    processType: 'selective';
-} & PublicProjectHeaderDatesAdditionalSelective);
-
-export type PublicProjectHeaderDatesInterface = {
-    pubType: PubType;
+export type ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface = ProcOfficeProjectHeaderDatesPublishedAdditionalInterface & {
+    processType?: 'ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface';
 };
 
 export type PublicProjectHeaderDatesBase = {
     publicationDate: string;
-};
-
-export type PublicProjectHeaderDatesDefault = PublicProjectHeaderDatesInterface & {
-    pubType: 'abandonment' | 'direct_award' | 'award' | 'revocation' | 'participant_selection';
-} & PublicProjectHeaderDatesBase;
-
-/**
- * Helper used for code generation, see PublicProjectHeaderDatesAdditional for the actual definition
- */
-export type PublicProjectHeaderDatesAdditionalInterface = PublicProjectHeaderDatesInterface & {
-    pubType: 'PublicProjectHeaderDatesAdditionalInterface';
-} & {
-    processType: PubProcessType;
 };
 
 export type PubBaseQna = {
@@ -1248,13 +1239,6 @@ export type PublicationQna = PubBaseQna;
 export type DateOptionalTime = {
     dateTime: string;
     ignoreTime: boolean;
-};
-
-/**
- * Helper used for code generation, see PublicProjectHeaderDatesAdditionalSelective for the actual definition
- */
-export type PublicProjectHeaderDatesAdditionalSelectiveInterface = PublicProjectHeaderDatesAdditionalInterface & {
-    processType?: 'PublicProjectHeaderDatesAdditionalSelectiveInterface';
 };
 
 /**
@@ -1282,11 +1266,13 @@ export type ProcOfficeProjectHeaderDatesPublishedAdditional = ({
 
 export type ProcOfficeProjectHeaderDatesPublishedInterface = ProcOfficeProjectHeaderDatesInterface & {
     status: 'ProcOfficeProjectHeaderDatesPublishedInterface';
+} & {
+    pubType: PubType;
 };
 
 export type ProcOfficeProjectHeaderDatesPublishedDefault = ProcOfficeProjectHeaderDatesPublishedInterface & {
     pubType?: 'abandonment' | 'direct_award' | 'award' | 'revocation' | 'participant_selection';
-} & PublicProjectHeaderDatesDefault;
+} & PublicProjectHeaderDatesBase;
 
 /**
  * Helper used for code generation, see ProcOfficeProjectHeaderDates for the actual definition
@@ -1537,6 +1523,11 @@ export type VendorMinimal = {
 
 export type InvolvedVendor = VendorMinimal & {
     /**
+     * If the vendor is active, disabled vendors can appeare in the list if they where deactivated after showing interest / were invited.
+     *
+     */
+    active: boolean;
+    /**
      * Reference to lot in case status is per lot
      */
     lotId?: string;
@@ -1593,14 +1584,7 @@ export type InvolvedVendorSubmissionResult = {
     involvedVendors: Array<InvolvedVendorWithActions>;
 };
 
-export type SendMessageRequest = {
-    /**
-     * Optional: search involved vendors by `vendorName` (requires at least 3 characters)
-     * Note, that the message cannot be sent to the involved vendor in case it has not defined a contact
-     *
-     */
-    search?: string;
-    status?: InvolvedVendorStatus;
+export type BaseMessage = {
     /**
      * subject of the message
      *
@@ -1614,6 +1598,16 @@ export type SendMessageRequest = {
      *
      */
     additionalEmails?: Array<string>;
+};
+
+export type SendMessageRequest = BaseMessage & {
+    /**
+     * Optional: search involved vendors by `vendorName` (requires at least 3 characters)
+     * Note, that the message cannot be sent to the involved vendor in case it has not defined a contact
+     *
+     */
+    search?: string;
+    status?: InvolvedVendorStatus;
 };
 
 export type QnaRoundState = 'created' | 'open' | 'closed';
@@ -1670,6 +1664,8 @@ export type QnaAnswerState = 'draft' | 'published' | 'changed' | 'unanswered';
 
 export type Qna = Question & {
     questionAskedAt: string;
+    updatedAt?: string;
+    questionAnsweredAt?: string;
     /**
      * The number which was been assigned to the question
      *
@@ -1805,6 +1801,15 @@ export type DownloadToken = {
     token: string;
 };
 
+export type ProjectDocumentUpdate = {
+    languages: Array<SystemLanguage>;
+    /**
+     * optional reference to a lot
+     */
+    lotId?: string;
+    note?: string;
+};
+
 export type BaseDocumentUploadMeta = {
     /**
      * Name of the file including the file extension -- if a path is provided e.g. foo/bar.txt then foo is ignored
@@ -1814,20 +1819,11 @@ export type BaseDocumentUploadMeta = {
     fileName: string;
 };
 
-export type ProjectDocumentUpdate = BaseDocumentUploadMeta & {
-    languages: Array<SystemLanguage>;
-    /**
-     * optional reference to a lot
-     */
-    lotId?: string;
-    note?: string;
-};
-
 /**
  * either pubDraftId or qnaRoundId has to be specified (not both at the same time)
  *
  */
-export type ProjectDocumentUploadMeta = ProjectDocumentUpdate & {
+export type ProjectDocumentUploadMeta = BaseDocumentUploadMeta & ProjectDocumentUpdate & {
     /**
      * if document is assigned to a publication
      */
@@ -1862,6 +1858,90 @@ export type ProcOfficeProjectInternalReference = {
     internalReference?: string | null;
 };
 
+export type ProcOfficeProjectHistoryPublicationStatus = 'submitted' | 'withdrawn';
+
+export type ProcOfficeProjectHistoryPublication = BaseHistory & BasePublicationData & {
+    status?: ProcOfficeProjectHistoryPublicationStatus;
+};
+
+export type ProcOfficeProjectHistoryPublications = {
+    procOfficeProjectHistoryPublications: Array<ProcOfficeProjectHistoryPublication>;
+    pagination: RollingPagination;
+};
+
+export type ProcOfficeProjectHistoryQna = BaseHistory & Qna;
+
+export type ProcOfficeProjectHistoryQnas = {
+    procOfficeProjectHistoryQnas: Array<ProcOfficeProjectHistoryQna>;
+    pagination: RollingPagination;
+};
+
+export type ProcOfficeProjectHistoryQnaWithPrevious = {
+    current: ProcOfficeProjectHistoryQna;
+    previous: ProcOfficeProjectHistoryQna;
+};
+
+export type ProjectHistoryInvolvement = BaseHistory & VendorMinimal & {
+    status?: InvolvedVendorStatus;
+};
+
+export type ProjectHistoryInvolvements = {
+    projectHistoryInvolvements: Array<ProjectHistoryInvolvement>;
+    pagination: RollingPagination;
+};
+
+export type ProcOfficeProjectHistoryVendorMessage = BaseHistory & BaseMessage & {
+    vendorEmails?: Array<string>;
+};
+
+export type ProcOfficeProjectHistoryVendorMessages = {
+    procOfficeProjectHistoryVendorMessages: Array<ProcOfficeProjectHistoryVendorMessage>;
+    pagination: RollingPagination;
+};
+
+export type ProcOfficeProjectHistoryProjectContributor = BaseHistory & {
+    email?: string;
+};
+
+export type ProcOfficeProjectHistoryProjectContributors = {
+    procOfficeProjectHistoryProjectContributors: Array<ProcOfficeProjectHistoryProjectContributor>;
+    pagination: RollingPagination;
+};
+
+export type ProjectHistoryDocumentDownload = BaseHistory & {
+    fileName?: string;
+};
+
+export type ProjectHistoryDocumentDownloads = {
+    projectHistoryDocumentDownloads: Array<ProjectHistoryDocumentDownload>;
+    pagination: RollingPagination;
+};
+
+export type ProcOfficeHistoryMembership = BaseHistory & ProcOfficeMember & {
+    justification?: string;
+};
+
+export type ProcOfficeHistoryMemberships = {
+    procOfficeHistoryMemberships: Array<ProcOfficeHistoryMembership>;
+    pagination: RollingPagination;
+};
+
+export type ProcOfficeHistoryBaseDataEntry = BaseHistory & BaseProcOffice & {
+    deleted?: boolean;
+};
+
+export type ProcOfficeHistoryBaseDataEntries = {
+    procOfficeHistoryBaseDataEntries: Array<ProcOfficeHistoryBaseDataEntry>;
+    pagination: RollingPagination;
+};
+
+export type ProcOfficeHistoryAddressDataEntry = BaseHistory & Address;
+
+export type ProcOfficeHistoryAddressDataEntries = {
+    procOfficeHistoryAddressDataEntries: Array<ProcOfficeHistoryAddressDataEntry>;
+    pagination: RollingPagination;
+};
+
 /**
  * Base project info to be able to identify project
  */
@@ -1881,16 +1961,50 @@ export type VendorDigitalSubmissionInfo = {
     deletedAt?: string;
 };
 
+/**
+ * The status of the validation process of the document
+ */
+export type PdfSignatureValidationStatus = 'no_signatures' | 'processing_error' | 'unchecked' | 'invalid' | 'valid';
+
+/**
+ * Object containing the validation status of the signature validation for the given pdf.
+ *
+ * A pdf is only correctly signed, `valid`,
+ * when the document has at least one signature and only contains valid signatures that are signed with a QES / ZertES compliant certificate.
+ *
+ * When the pdf contains at least one signature that is not QES / ZertES compliant,
+ * the pdf is also considered `invalid` even when that signature itself is valid.
+ *
+ * A pdf can only contain valid QES / ZertES compliant signatures.
+ *
+ */
+export type PdfSignatures = {
+    validationStatus: PdfSignatureValidationStatus;
+    /**
+     * date and time when the document was checked / the signatures where validated.
+     */
+    validationDateTime?: string;
+};
+
+/**
+ * Submission Document
+ *
+ * The `signature` property is a read-only field that is used for PDF files.
+ * It will contain the validation status and result of the signature validation of the pdf.
+ * If the document is of another `contentType` than pdf the `signature` property will be `null`.
+ *
+ */
 export type VendorDigitalSubmissionDocument = BaseDocument & {
     /**
      * Id of the vendor digital submission
      */
     vendorDigitalSubmissionId: string;
     /**
-     * Id of lotId, the submisions is related to or null, if document is for the whole submission.
+     * Id of lotId, the submissions is related to or null, if document is for the whole submission.
      */
     lotId?: string;
     createdByUser: string;
+    signature?: PdfSignatures;
 };
 
 export type VendorDigitalSubmissionDocuments = {
@@ -1901,6 +2015,7 @@ export type PublicationLotDescription = {
     id: string;
     lotNumber: number;
     title: Translation;
+    projectSubType: ProjectSubType;
 };
 
 export type VendorDigitalSubmissionLot = PublicationLotDescription & VendorDigitalSubmissionDocuments;
@@ -1918,8 +2033,10 @@ export type VendorDigitalSubmissionDetailInfo = VendorDigitalSubmissionInfo & {
 };
 
 export type ProcOfficeVendorDigitalSubmission = {
-    vendorDigitalSubmissionId?: string;
+    vendorDigitalSubmissionId: string;
     vendorDigitalSubmissionType: VendorDigitalSubmissionType;
+    submissionOpenedAt?: string;
+    submissionOpenedBy?: UserMinimal;
     actions: Array<ProcOfficeVendorDigitalSubmissionActionType>;
     detail?: VendorDigitalSubmissionDetailInfo;
 };
@@ -1952,17 +2069,6 @@ export type VendorSearchResults = {
  * Defines the size of the company, micro (1-10), small (11-50), medium (51-250), large (>250)
  */
 export type CompanySize = 'micro' | 'small' | 'medium' | 'large';
-
-export type VendorUserPublic = {
-    id?: string;
-    firstName?: string;
-    lastName?: string;
-    organizationUnit?: string | null;
-};
-
-export type VendorUser = VendorUserPublic & {
-    email?: string;
-};
 
 /**
  * Defines the legal form of the company.
@@ -2010,7 +2116,7 @@ export type VendorUser = VendorUserPublic & {
  */
 export type LegalFormCode = '0101' | '0103' | '0104' | '0105' | '0106' | '0107' | '0108' | '0109' | '0110' | '0111' | '0113' | '0114' | '0115' | '0116' | '0117' | '0118' | '0119' | '0151' | '0220' | '0221' | '0222' | '0223' | '0224' | '0230' | '0231' | '0232' | '0233' | '0234' | '0302' | '0312' | '0327' | '0328' | '0329' | '0355' | '0361' | '0362' | '0441' | '0571';
 
-export type Vendor = {
+export type BaseVendor = {
     id: string;
     uidNo?: string | null;
     dunsNo?: string | null;
@@ -2021,19 +2127,9 @@ export type Vendor = {
      * c/o
      */
     careOf?: string | null;
-    address: Address;
     phone?: InternationalPhoneNumber;
     email?: string;
     url?: string | null;
-    /**
-     * The publicly visible vendor admins.
-     */
-    publicVendorAdmins?: Array<VendorUser>;
-    /**
-     * Deprecated: replaced with `legalFormCode`. Only existing values are expose read-only. Please map to one of the existing mapping.
-     *
-     */
-    readonly legalForm?: string | null;
     legalFormCode?: LegalFormCode;
     legalFormSinceDate?: string | null;
     businessPurpose?: string | null;
@@ -2042,7 +2138,26 @@ export type Vendor = {
     leadingVendor?: string | null;
 };
 
-export type VendorDetail = Vendor & {
+export type VendorUserPublic = {
+    id?: string;
+    firstName?: string;
+    lastName?: string;
+    organizationUnit?: string | null;
+};
+
+export type VendorUser = VendorUserPublic & {
+    email?: string;
+};
+
+export type Vendor = BaseVendor & {
+    address: Address;
+    /**
+     * The publicly visible vendor admins.
+     */
+    publicVendorAdmins?: Array<VendorUser>;
+};
+
+export type BaseVendorDetail = {
     typeOfServices?: Array<PubOrderType>;
     cpvCodes?: Array<CpvCode>;
     bkpCodes?: Array<BkpCode>;
@@ -2050,6 +2165,10 @@ export type VendorDetail = Vendor & {
     ebkptCodes?: Array<EbkptCode>;
     npkCodes?: Array<NpkCode>;
     oagCodes?: Array<OagCode>;
+};
+
+export type VendorDetail = Vendor & BaseVendorDetail & {
+    [key: string]: unknown;
 };
 
 /**
@@ -2128,21 +2247,9 @@ export type MyVendor = Vendor & {
     missingVerification?: VendorMissingVerification;
 };
 
-export type VendorJoinRequest = {
-    /**
-     * true -> request to join, false -> revoke join Request / leave vendor
-     */
-    join: boolean;
-};
-
 export type VendorMembership = 'requested' | 'accepted' | 'rejected';
 
 export type VendorMemberRole = 'vendor_admin' | 'vendor_user';
-
-export type MyVendorMembership = VendorMinimal & {
-    membership: VendorMembership;
-    role: VendorMemberRole;
-};
 
 export type VendorMember = VendorUser & {
     createdAt: string;
@@ -2153,6 +2260,41 @@ export type VendorMember = VendorUser & {
      * if this member can be seen in the public register, only admins can be publicly visible.
      */
     isPublic: boolean;
+};
+
+export type VendorHistoryMembership = BaseHistory & VendorMember;
+
+export type VendorHistoryMemberships = {
+    vendorHistoryMemberships: Array<VendorHistoryMembership>;
+    pagination: RollingPagination;
+};
+
+export type VendorHistoryBaseDataEntry = BaseHistory & BaseVendor & BaseVendorDetail & {
+    deleted?: boolean;
+};
+
+export type VendorHistoryBaseDataEntries = {
+    vendorHistoryBaseDataEntries: Array<VendorHistoryBaseDataEntry>;
+    pagination: RollingPagination;
+};
+
+export type VendorHistoryAddressDataEntry = BaseHistory & Address;
+
+export type VendorHistoryAddressDataEntries = {
+    vendorHistoryAddressDataEntries: Array<VendorHistoryAddressDataEntry>;
+    pagination: RollingPagination;
+};
+
+export type VendorJoinRequest = {
+    /**
+     * true -> request to join, false -> revoke join Request / leave vendor
+     */
+    join: boolean;
+};
+
+export type MyVendorMembership = VendorMinimal & {
+    membership: VendorMembership;
+    role: VendorMemberRole;
 };
 
 export type VendorMembers = {
@@ -2261,7 +2403,13 @@ export type VendorUserNotificationSettings = {
     notifyOnNewPublications: boolean;
     notifyOnQnaChanges: boolean;
     notifyOnDocumentChanges: boolean;
-    notifyOnSubmitDigitalSubmission: boolean;
+    /**
+     * Receive notifications for the following cases:
+     * * When a digital submission is submitted for the project.
+     * * When the projects allows digital submission and the submission deadline is in the next 24 hours an there is no submitted submission for the project.
+     *
+     */
+    notificationsForDigitalSubmissions: boolean;
 };
 
 export type VendorDocument = BaseDocument & {
@@ -2344,6 +2492,7 @@ export type PublicationDirectAwardTenderProcurementConstruction = PublicationDir
     orderType: 'construction';
 } & PublicationBaseCodes & {
     oagCodes: Array<OagCode>;
+    cpcCode?: CpcCode;
     constructionType?: PubConstructionType;
     constructionCategory?: PubConstructionCategoryOptional;
 };
@@ -2453,6 +2602,7 @@ export type PublicationDetailInterface = {
     type: PubType;
     projectType: PubProjectType;
     base?: PublicationBase;
+    readonly hasProjectDocuments?: boolean;
     /**
      * Reference to the TED publication, set when the publication is published on TED.
      * For published publications, the ted data is only present when the publication was successfully published on TED.
@@ -2617,9 +2767,6 @@ export type PublicationTenderProjectInfoSelective = PublicationTenderProjectInfo
     publicationTed: boolean;
 };
 
-/**
- * @deprecated
- */
 export type PublicationTenderProjectInfoInvitation = PublicationTenderProjectInfoInterface & {
     processType: 'invitation';
 };
@@ -2906,7 +3053,9 @@ export type PublicationTenderLot = ({
 
 export type PublicationTenderProcurementConstruction = PublicationTenderProcurementInterface & {
     orderType?: 'construction';
-} & PublicationBaseCodes & PubTenderConstructionFields;
+} & PublicationBaseCodes & PubTenderConstructionFields & {
+    cpcCode?: CpcCode;
+};
 
 /**
  * Interface / parent that is implemented by the PublicationTenderProcurement* models, used for code generation.
@@ -2972,9 +3121,6 @@ export type PublicationTenderTermsSelective = PublicationTenderTermsInterface & 
     processType: 'selective';
 } & PubBaseTermsOpenSelective & PubBaseTermsWalkthrough;
 
-/**
- * @deprecated
- */
 export type PublicationTenderTermsInvitation = PublicationTenderTermsInterface & {
     processType: 'invitation';
 } & PubBaseTermsWalkthrough;
@@ -3106,9 +3252,6 @@ export type PubBaseDatesInvitation = PubBaseDates & PubBaseDatesOfferValidity & 
 
 export type PublicationBaseDatesInvitation = PubBaseDatesInvitation;
 
-/**
- * @deprecated
- */
 export type PublicationTenderDatesInvitation = PublicationTenderDatesInterface & {
     processType: 'invitation';
 } & PubTenderDates & PublicationBaseDatesInvitation;
@@ -3172,9 +3315,6 @@ export type PublicationTenderCriteriaSelective = PublicationTenderCriteriaInterf
     processType: 'selective';
 } & PublicationBaseCriteriaSelective;
 
-/**
- * @deprecated
- */
 export type PublicationTenderCriteriaInvitation = PublicationTenderCriteriaInterface & {
     processType: 'invitation';
 };
@@ -3219,9 +3359,6 @@ export type PublicationProjectInfoSelective = PublicationProjectInfoInterface & 
     processType: 'selective';
 } & PublicationBaseProjectInfoSelective;
 
-/**
- * @deprecated
- */
 export type PublicationProjectInfoInvitation = PublicationProjectInfoInterface & {
     processType: 'invitation';
 };
@@ -3254,6 +3391,10 @@ export type PublicationCpvCode = {
     cpvCode?: CpvCode;
 };
 
+export type PublicationCpcCode = {
+    cpcCode?: CpcCode;
+};
+
 /**
  * The general procurement of a publication with `lots` has only the `cpvCode`.
  * The following fields are part of the individual lots:
@@ -3267,7 +3408,7 @@ export type PublicationCpvCode = {
  * - `constructionCategory`
  *
  */
-export type PublicationProcurement = PublicationBaseProcurement & PublicationBaseCodes & PublicationOagCodes & PublicationCpvCode & {
+export type PublicationProcurement = PublicationBaseProcurement & PublicationBaseCodes & PublicationOagCodes & PublicationCpvCode & PublicationCpcCode & {
     processType: PubProcessType;
     procurementTopic?: PubProcurementTopic;
     constructionCategory?: PubConstructionCategoryOptional;
@@ -3290,9 +3431,6 @@ export type PublicationTermsExtendedSelective = PublicationTermsExtendedInterfac
     processType: 'selective';
 } & PubBaseTermsOpenSelective;
 
-/**
- * @deprecated
- */
 export type PublicationTermsExtendedInvitation = PublicationTermsExtendedInterface & {
     processType: 'invitation';
 };
@@ -3354,9 +3492,6 @@ export type PublicationDatesSelective = PublicationDatesInterface & {
     processType: 'selective';
 } & PubBaseCallForBidsDates & PublicationBaseDatesSelective;
 
-/**
- * @deprecated
- */
 export type PublicationDatesInvitation = PublicationDatesInterface & {
     processType: 'invitation';
 } & PublicationBaseDatesInvitation;
@@ -3390,9 +3525,6 @@ export type PublicationCriteriaSelective = PublicationCriteriaInterface & {
     processType: 'selective';
 } & PublicationBaseCriteriaSelective;
 
-/**
- * @deprecated
- */
 export type PublicationCriteriaInvitation = PublicationCriteriaInterface & {
     processType: 'invitation';
 };
@@ -3593,10 +3725,6 @@ export type PublicationRfiProjectInfo = PublicationBaseProjectInfo;
  */
 export type PublicationRfiDates = PubBaseCallForBidsDates & PublicationBaseDatesAppointments;
 
-export type PublicationCpcCode = {
-    cpcCode?: CpcCode;
-};
-
 /**
  * Model for the rfi procurement information
  */
@@ -3723,9 +3851,6 @@ export type PublicationAdvanceNoticeDiscriminator = ({
     projectType: 'tender';
 } & PublicationTenderBase);
 
-/**
- * @deprecated
- */
 export type PublicationRfiBase = PublicationBaseInterface & {
     type?: 'request_for_information';
 } & PublicationCorrectionBase & PublicationCpvCode & PublicationCpcCode;
@@ -3926,6 +4051,7 @@ export type PublicationAwardTenderProcurementConstruction = PublicationAwardTend
     orderType: 'construction';
 } & PublicationBaseCodes & {
     oagCodes: Array<OagCode>;
+    cpcCode?: CpcCode;
     constructionType?: PubConstructionType;
     constructionCategory?: PubConstructionCategoryOptional;
 };
@@ -3999,6 +4125,95 @@ export type PublicationDetail = ({
     type: 'request_for_information';
 } & PublicationRfiDetail);
 
+export type PublicProjectHeaderDatesAdditionalDefault = PublicProjectHeaderDatesAdditionalInterface & {
+    processType?: 'open' | 'invitation' | 'no_process';
+} & PublicProjectHeaderDatesBase & {
+    /**
+     * QNA round dates.
+     * Only available if vendor of logged in user is eligible to see qna rounds or the user belongs to a procurement_office.
+     *
+     */
+    qnas?: Array<PublicationQna>;
+    /**
+     * Can be `null` when the only publication in the project is of type `advanced_notice` as there the value is optional.
+     *
+     */
+    offerDeadline?: string;
+    offerOpening?: DateOptionalTime;
+};
+
+/**
+ * additional dates relevant for publications in the selective process which have additional dates except for
+ * selective_offering_phase which uses the default additional dates.
+ *
+ */
+export type PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase = PublicProjectHeaderDatesAdditionalSelectiveInterface & {
+    pubType?: 'advance_notice' | 'tender' | 'competition' | 'study_contract';
+} & PublicProjectHeaderDatesBase & {
+    /**
+     * QNA round dates.
+     * Only available if vendor of logged in user showed interest in the project or the user belongs to a procurement_office.
+     *
+     */
+    qnas?: Array<PublicationQna>;
+    /**
+     * Contains the date until which vendors can submit requests to participate at the offer.
+     *
+     * Can be `null` when the only publication in the project is of type `advanced_notice` as there the value is optional.
+     *
+     */
+    participationRequestDeadline?: string;
+    participationRequestOpening?: DateOptionalTime;
+    offerSubmissionDeadline?: DateOptionalTime;
+};
+
+/**
+ * Helper used for code generation, see PublicProjectHeaderDatesAdditional for the actual definition
+ */
+export type PublicProjectHeaderDatesAdditionalInterface = PublicProjectHeaderDatesInterface & {
+    pubType: 'PublicProjectHeaderDatesAdditionalInterface';
+} & {
+    processType: PubProcessType;
+};
+
+/**
+ * Helper used for code generation, see PublicProjectHeaderDatesAdditionalSelective for the actual definition
+ */
+export type PublicProjectHeaderDatesAdditionalSelectiveInterface = PublicProjectHeaderDatesAdditionalInterface & {
+    processType?: 'PublicProjectHeaderDatesAdditionalSelectiveInterface';
+};
+
+/**
+ * Header dates model for publications in the selective process are again split into two categories based on their
+ * `pubType`. Not all pub-types are listed here because some do not have additional header date properties
+ * (see PublicProjectHeaderDates).
+ *
+ */
+export type PublicProjectHeaderDatesAdditionalSelective = ({
+    pubType: 'selective_offering_phase';
+} & PublicProjectHeaderDatesAdditionalDefault) | ({
+    pubType: 'advance_notice' | 'tender' | 'competition' | 'study_contract';
+} & PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase);
+
+/**
+ * Header dates for publications which have additional date properties (see PublicProjectHeaderDates) are split
+ * again into two categories, this time based on their `processType`.
+ *
+ */
+export type PublicProjectHeaderDatesAdditional = ({
+    processType: 'open' | 'invitation' | 'no_process';
+} & PublicProjectHeaderDatesAdditionalDefault) | ({
+    processType: 'selective';
+} & PublicProjectHeaderDatesAdditionalSelective);
+
+export type PublicProjectHeaderDatesInterface = {
+    pubType: PubType;
+};
+
+export type PublicProjectHeaderDatesDefault = PublicProjectHeaderDatesInterface & {
+    pubType: 'abandonment' | 'direct_award' | 'award' | 'revocation' | 'participant_selection';
+} & PublicProjectHeaderDatesBase;
+
 /**
  * Different header date models are used for publications discriminated by several properties, starting with its
  * `pubType`  because for some additional dates are provided.
@@ -4014,6 +4229,10 @@ export type PublicProjectHeaderPublication = BasePublicationData & {
     id: string;
     title?: Translation;
     dates: PublicProjectHeaderDates;
+    /**
+     * Hint if this publication has project documents attached to it.
+     */
+    hasProjectDocuments: boolean;
 };
 
 export type VendorDigitalSubmissionStatus = 'draft' | 'submitted';
@@ -4154,7 +4373,7 @@ export type NotificationFrequency = 'daily' | 'weekly';
 
 export type SubscriptionFilters = {
     /**
-     * Search input, either empty or requires at least 3 valid characters.
+     * Search input, either empty or requires between 3 and 1000 valid characters.
      *
      */
     search?: string;
@@ -4169,6 +4388,11 @@ export type SubscriptionFilters = {
      *
      */
     issuedByOrganizations?: Array<string>;
+    /**
+     * quick-filter: defines in which languages shall be searched in case of translated fields. In case this property is not defined or an empty array is given, then we search in all languages
+     *
+     */
+    lang?: Array<SystemLanguage>;
     /**
      * extended-filter: if defined, projects are filtered by one of the provided projects processTypes
      *
@@ -4370,9 +4594,6 @@ export type PubDraftCpvCode = {
     cpvCode?: CpvCode;
 };
 
-/**
- * @deprecated
- */
 export type PubDraftRfiBase = PubDraftBaseInterface & {
     type?: 'request_for_information';
 } & PubDraftCorrectionBase & PubDraftCpcCode & PubDraftCpvCode;
@@ -4538,6 +4759,7 @@ export type PubDraftDirectAwardTenderProcurementConstruction = PubDraftDirectAwa
     orderType: 'construction';
 } & PubDraftBaseCodes & {
     oagCodes?: Array<OagCode>;
+    cpcCode?: CpcCode;
     constructionType?: PubConstructionType;
     constructionCategory?: PubConstructionCategoryOptional;
 };
@@ -4649,9 +4871,6 @@ export type PubDraftTenderProjectInfoSelective = PubDraftTenderProjectInfoInterf
     publicationTed?: boolean;
 };
 
-/**
- * @deprecated
- */
 export type PubDraftTenderProjectInfoInvitation = PubDraftTenderProjectInfoInterface & {
     processType: 'invitation';
 };
@@ -4744,7 +4963,16 @@ export type PubDraftBaseCriteriaSelective = PubBaseCriteriaSelective & {
     weightedQualificationCriteria?: Array<PubDraftWeightedQualificationCriterion>;
 };
 
-export type PubDraftBaseLot = PubDraftLotDescription & PubDraftBaseProcurement & PubDraftBaseCriteria & PubDraftBaseCriteriaSelective;
+export type PubDraftBaseLot = PubDraftLotDescription & PubDraftBaseProcurement & PubDraftBaseCriteria & PubDraftBaseCriteriaSelective & {
+    /**
+     * Flag that indicates if a lot type can change.
+     *
+     * Currently this functionality is only supported for tender lots in the `open` and selective `process`.
+     * For all other cases with lots the returned value will be `false`.
+     *
+     */
+    readonly canLotTypeBeChanged?: boolean;
+};
 
 /**
  * Uses the `orderType` to discriminate between the models of the service, supply or construction type.
@@ -4760,7 +4988,9 @@ export type PubDraftTenderLot = ({
 
 export type PubDraftTenderProcurementConstruction = PubDraftTenderProcurementInterface & {
     orderType?: 'construction';
-} & PubDraftBaseCodes & PubTenderConstructionFields;
+} & PubDraftBaseCodes & PubTenderConstructionFields & {
+    cpcCode?: CpcCode;
+};
 
 /**
  * Interface / parent that is implemented by the PubDraftTenderProcurement* models, used for code generation.
@@ -4821,9 +5051,6 @@ export type PubDraftTenderTermsSelective = PubDraftTenderTermsInterface & {
     processType: 'selective';
 } & PubBaseTermsOpenSelective & PubBaseTermsWalkthrough;
 
-/**
- * @deprecated
- */
 export type PubDraftTenderTermsInvitation = PubDraftTenderTermsInterface & {
     processType: 'invitation';
 } & PubBaseTermsWalkthrough;
@@ -4874,9 +5101,6 @@ export type PubDraftTenderDatesSelective = PubDraftTenderDatesInterface & {
     processType: 'selective';
 } & PubBaseCallForBidsDates & PubBaseDatesSelective;
 
-/**
- * @deprecated
- */
 export type PubDraftTenderDatesInvitation = PubDraftTenderDatesInterface & {
     processType: 'invitation';
 } & PubTenderDates & PubBaseDatesInvitation;
@@ -4943,9 +5167,6 @@ export type PubDraftTenderCriteriaSelective = PubDraftTenderCriteriaInterface & 
     processType: 'selective';
 } & PubDraftBaseCriteriaSelective;
 
-/**
- * @deprecated
- */
 export type PubDraftTenderCriteriaInvitation = PubDraftTenderCriteriaInterface & {
     processType: 'invitation';
 };
@@ -4990,9 +5211,6 @@ export type PubDraftProjectInfoSelective = PubDraftProjectInfoInterface & {
     processType: 'selective';
 } & PubBaseProjectInfoSelective;
 
-/**
- * @deprecated
- */
 export type PubDraftProjectInfoInvitation = PubDraftProjectInfoInterface & {
     processType: 'invitation';
 };
@@ -5032,7 +5250,7 @@ export type PubDraftOagCodes = {
  * - `orderDescription`
  *
  */
-export type PubDraftProcurement = PubDraftBaseProcurement & PubDraftBaseCodes & PubDraftOagCodes & PubDraftCpvCode & {
+export type PubDraftProcurement = PubDraftBaseProcurement & PubDraftBaseCodes & PubDraftOagCodes & PubDraftCpvCode & PubDraftCpcCode & {
     processType: PubProcessType;
     procurementTopic?: PubProcurementTopic;
     constructionCategory?: PubConstructionCategoryOptional;
@@ -5055,9 +5273,6 @@ export type PubDraftTermsExtendedSelective = PubDraftTermsExtendedInterface & {
     processType: 'selective';
 } & PubBaseTermsOpenSelective;
 
-/**
- * @deprecated
- */
 export type PubDraftTermsExtendedInvitation = PubDraftTermsExtendedInterface & {
     processType: 'invitation';
 };
@@ -5092,9 +5307,6 @@ export type PubDraftDatesSelective = PubDraftDatesInterface & {
     processType: 'selective';
 } & PubBaseCallForBidsDates & PubBaseDatesSelective;
 
-/**
- * @deprecated
- */
 export type PubDraftDatesInvitation = PubDraftDatesInterface & {
     processType: 'invitation';
 } & PubBaseDatesInvitation;
@@ -5127,9 +5339,6 @@ export type PubDraftCriteriaSelective = PubDraftCriteriaInterface & {
     processType: 'selective';
 } & PubDraftBaseCriteriaSelective;
 
-/**
- * @deprecated
- */
 export type PubDraftCriteriaInvitation = PubDraftCriteriaInterface & {
     processType: 'invitation';
 };
@@ -5377,6 +5586,7 @@ export type PubDraftAwardTenderProcurementConstruction = PubDraftAwardTenderProc
     orderType: 'construction';
 } & PubDraftBaseCodes & {
     oagCodes?: Array<OagCode>;
+    cpcCode?: CpcCode;
     constructionType?: PubConstructionType;
     constructionCategory?: PubConstructionCategoryOptional;
 };
@@ -5496,7 +5706,7 @@ export type A2 = SupportedSustainabilityFormTypes & {
 export type A3ProcurementComplexity = 'small' | 'medium' | 'large';
 
 export type A3 = SupportedSustainabilityFormTypes & {
-    procurementComplexity: A3ProcurementComplexity;
+    procurementComplexity?: A3ProcurementComplexity;
 };
 
 export type A4 = SupportedSustainabilityFormTypes & {
@@ -5519,7 +5729,7 @@ export type A5CheckCriteria = 'yes' | 'no' | 'unknown' | 'not_relevant';
 export type A5CriteriaTypes = 'price' | 'social_criteria' | 'quality' | 'ecology' | 'innovation';
 
 export type A5 = SupportedSustainabilityFormTypes & {
-    checkCriteria: A5CheckCriteria;
+    checkCriteria?: A5CheckCriteria;
     criteriaTypes?: Array<A5CriteriaTypes>;
 };
 
@@ -5532,7 +5742,7 @@ export type B1 = SupportedSustainabilityFormTypes & {
 export type B2QualityRelatedLabelsRequirements = 'yes' | 'no' | 'not_sme_friendly' | 'not_relevant';
 
 export type B2 = SupportedSustainabilityFormTypes & {
-    qualityRelatedLabelsRequirements: B2QualityRelatedLabelsRequirements;
+    qualityRelatedLabelsRequirements?: B2QualityRelatedLabelsRequirements;
     /**
      * List all labels required like Max Havelaar.
      * This field is required if the field qualityRelatedLabelRequirement is set to yes.
@@ -5542,7 +5752,7 @@ export type B2 = SupportedSustainabilityFormTypes & {
 };
 
 export type C1 = SupportedSustainabilityFormTypes & {
-    isCountryOfOriginForGoodsAsked: boolean;
+    isCountryOfOriginForGoodsAsked?: boolean;
     /**
      * The ISO 3166 two letter country code. The list with the ids / codes can be get from `GET /api/countries/v1`
      *
@@ -5556,18 +5766,18 @@ export type YesNoNotRelevant = 'yes' | 'no' | 'not_relevant';
 export type D1EvaluationCriteriaDimensionsDefined = 'society' | 'economy' | 'environment';
 
 export type D1 = SupportedSustainabilityFormTypes & {
-    isOverallProjectLead: boolean;
+    isOverallProjectLead?: boolean;
     isKbobRecommendationPartOfContract?: boolean;
     evaluationCriteriaDimensionDefined?: YesNoNotRelevant;
     evaluationCriteriaDimensionsDefined?: Array<D1EvaluationCriteriaDimensionsDefined>;
 };
 
 export type D2 = SupportedSustainabilityFormTypes & {
-    isKbobRecommendationPartOfContract: boolean;
+    isKbobRecommendationPartOfContract?: boolean;
 };
 
 export type D3 = SupportedSustainabilityFormTypes & {
-    standardsPartOfContract: YesNoNotRelevant;
+    standardsPartOfContract?: YesNoNotRelevant;
 };
 
 export type E1ElementCostsConsidered = 'acquisition' | 'operation' | 'maintenance' | 'disposal' | 'organization' | 'external';
@@ -5590,27 +5800,30 @@ export type F2 = SupportedSustainabilityFormTypes & {
     comment?: string;
 };
 
+export type F3EvidencesSocialCriteria = 'signed_declaration_bkb' | 'signed_confirmation' | 'following_evidence';
+
 export type F3 = SupportedSustainabilityFormTypes & {
-    evidencesSocialCriteriaComplianceProvided?: Array<EcologicalSocialSocietalCriteria>;
+    evidencesSocialCriteriaComplianceProvided?: Array<F3EvidencesSocialCriteria>;
+    evidencesSocialCriteriaComplianceProvidedEvidence?: string;
     comment?: string;
 };
 
 export type F4ClarificationsSocialCriteriaCompliance = 'consulting' | 'inspection';
 
 export type F4 = SupportedSustainabilityFormTypes & {
-    isClarificationSocialCriteriaComplianceDone: boolean;
+    isClarificationSocialCriteriaComplianceDone?: boolean;
     clarificationsSocialCriteriaCompliance?: Array<F4ClarificationsSocialCriteriaCompliance>;
     otherClarifications?: string;
 };
 
 export type F5 = SupportedSustainabilityFormTypes & {
-    isSubcontractorSocialCriteriaComplianceDemanded: boolean;
+    isSubcontractorSocialCriteriaComplianceDemanded?: boolean;
     subcontractorSocialCriteriaComplianceCommitments?: Array<EcologicalSocialSocietalCriteria>;
     comment?: string;
 };
 
 export type F6 = SupportedSustainabilityFormTypes & {
-    isKbobContractAgreementDemanded: boolean;
+    isKbobContractAgreementDemanded?: boolean;
     isSafetyRegulationComplianceDemanded?: boolean;
     isIloCoreAgreementDemanded?: boolean;
     isEvidenceOfSocialCriteriaDemanded?: boolean;
@@ -5618,22 +5831,22 @@ export type F6 = SupportedSustainabilityFormTypes & {
 };
 
 export type F7a = SupportedSustainabilityFormTypes & {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
     comment?: string;
 };
 
 export type F7b = SupportedSustainabilityFormTypes & {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
     comment?: string;
 };
 
 export type F8 = SupportedSustainabilityFormTypes & {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
     comment?: string;
 };
 
 export type F9 = SupportedSustainabilityFormTypes & {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
     comment?: string;
 };
 
@@ -5643,7 +5856,14 @@ export type G1 = SupportedSustainabilityFormTypes & {
 };
 
 export type G2 = SupportedSustainabilityFormTypes & {
-    isEnvironmentalProtectionDemanded: boolean;
+    isEnvironmentalProtectionDemanded?: boolean;
+};
+
+export type G21OtherSustainabilityRequirements = 'yes_environmental_impact_assessments' | 'yes_following' | 'no';
+
+export type G21 = SupportedSustainabilityFormTypes & {
+    otherSustainabilityRequirementsBeenMet?: G21OtherSustainabilityRequirements;
+    otherSustainabilityRequirementsBeenMetDescription?: string;
 };
 
 export type G3EcologicalCriteriaExpressed = 'technical_specifications' | 'award_criteria' | 'combination_of_technical_specifications_and_award_criteria' | 'suitability_criteria';
@@ -5674,29 +5894,29 @@ export type G5 = SupportedSustainabilityFormTypes & {
 export type G6BestFulfilment = 'yes' | 'no' | 'identical';
 
 export type G6 = SupportedSustainabilityFormTypes & {
-    bestFulfilment: G6BestFulfilment;
+    bestFulfilment?: G6BestFulfilment;
 };
 
 export type G7a = SupportedSustainabilityFormTypes & {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
 };
 
 export type G7b = SupportedSustainabilityFormTypes & {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
 };
 
 export type G7c = SupportedSustainabilityFormTypes & {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
 };
 
 export type G7d = SupportedSustainabilityFormTypes & {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
 };
 
 export type G8OtherEcologicalCriteriaSelected = 'suitability_criteria' | 'technical_specifications' | 'award_criteria' | 'service_description';
 
 export type G8 = SupportedSustainabilityFormTypes & {
-    otherEcologicalCriteriaDemanded: YesNoNotRelevant;
+    otherEcologicalCriteriaDemanded?: YesNoNotRelevant;
     otherEcologicalCriteriaSelected?: Array<G8OtherEcologicalCriteriaSelected>;
 };
 
@@ -5707,13 +5927,19 @@ export type G9 = SupportedSustainabilityFormTypes & {
 };
 
 export type H1 = SupportedSustainabilityFormTypes & {
-    innovativeSolutionsAvailable: YesNoNotRelevant;
+    innovativeSolutionsAvailable?: boolean;
+};
+
+export type YesNoPartly = 'yes' | 'no' | 'partly';
+
+export type H11 = SupportedSustainabilityFormTypes & {
+    procurementSuitedForInnovativeSolution?: YesNoPartly;
 };
 
 export type H2InnovationSupportingProcurementProcedures = 'functional_tender' | 'dialogue_procedure' | 'competition_procedure' | 'study_procedure' | 'allowance_of_variants' | 'couvert_method';
 
 export type H2 = SupportedSustainabilityFormTypes & {
-    innovationSupportingProcurementProcedures: YesNoNotRelevant;
+    innovationSupportingProcurementProcedures?: YesNoNotRelevant;
     innovationSupportingProcurementProceduresUsed?: Array<H2InnovationSupportingProcurementProcedures>;
     otherInnovationSupportingProcurementProceduresUsed?: string;
 };
@@ -5721,7 +5947,7 @@ export type H2 = SupportedSustainabilityFormTypes & {
 export type H3InnovationSupportingServicesCriteria = 'suitability_criteria' | 'technical_specifications' | 'award_criteria' | 'service_description';
 
 export type H3 = SupportedSustainabilityFormTypes & {
-    innovationSupportingServicesCriteriaChosen: YesNoNotRelevant;
+    innovationSupportingServicesCriteriaChosen?: YesNoNotRelevant;
     innovationSupportingServicesCriteria?: Array<H3InnovationSupportingServicesCriteria>;
 };
 
@@ -5735,7 +5961,7 @@ export type H4 = SupportedSustainabilityFormTypes & {
 export type I1aCompatibleMeasures = 'division_into_lots' | 'admission_partial_offers' | 'admission_bidding_consortiums' | 'admission_subcontractors';
 
 export type I1a = SupportedSustainabilityFormTypes & {
-    compatibleMeasuresMet: YesNoNotRelevant;
+    compatibleMeasuresMet?: YesNoNotRelevant;
     compatibleMeasures?: Array<I1aCompatibleMeasures>;
     otherCompatibleMeasures?: string;
 };
@@ -5743,7 +5969,7 @@ export type I1a = SupportedSustainabilityFormTypes & {
 export type I1bCompatibleMeasures = 'division_into_lots' | 'admission_bidding_consortiums' | 'processing_individual_service_providers';
 
 export type I1b = SupportedSustainabilityFormTypes & {
-    compatibleMeasuresMet: YesNoNotRelevant;
+    compatibleMeasuresMet?: YesNoNotRelevant;
     compatibleMeasures?: Array<I1bCompatibleMeasures>;
     otherCompatibleMeasures?: string;
 };
@@ -5768,13 +5994,13 @@ export type I4 = SupportedSustainabilityFormTypes & {
 };
 
 export type J1 = SupportedSustainabilityFormTypes & {
-    hasRejectedBidders: boolean;
+    hasRejectedBidders?: boolean;
     numberOfRejectedBidders?: number;
     totalNumberOfBidders?: number;
 };
 
 export type J2 = SupportedSustainabilityFormTypes & {
-    hasRejectedBidders: boolean;
+    hasRejectedBidders?: boolean;
     numberOfRejectedBidders?: number;
     totalNumberOfBidders?: number;
 };
@@ -5809,6 +6035,7 @@ export type PubDraftAwardSustainabilityForm = {
     f9?: F9;
     g1?: G1;
     g2?: G2;
+    g21?: G21;
     g3?: G3;
     g4?: G4;
     g5?: G5;
@@ -5820,6 +6047,7 @@ export type PubDraftAwardSustainabilityForm = {
     g8?: G8;
     g9?: G9;
     h1?: H1;
+    h11?: H11;
     h2?: H2;
     h3?: H3;
     h4?: H4;
@@ -5865,9 +6093,10 @@ export type PubDraftCorrectionInfo = {
  * - `publication_ted_requires_price_selection` - Publication send to TED requires that the price is defined
  * - `not_specified_not_allowed` - not_specified was chosen but is not allowed for the current publication type
  * - `ted_validation` - validation error reported by the TED SDK
+ * - `state_contract_requires_wto_language` - Publications with state contract type require a WTO language (FR or EN) to be available
  *
  */
-export type ValidationErrorReason = 'required' | 'must_be_null' | 'must_be_empty' | 'min' | 'max' | 'sub_selection_invalid' | 'failed_range' | 'invalid_publication_day' | 'past_editorial_deadline' | 'invalid_award_criteria_selection' | 'unsupported_value' | 'awarded_vendors_non_unique_rank' | 'decision_date_after_publication_date' | 'wrong_sustainability_form_selected' | 'duplicate_values' | 'invalid_email_format' | 'invalid_phone_format' | 'invalid_pattern' | 'invalid_size' | 'general_error' | 'invalid_order' | 'past_publication_date' | 'before_previous_publication_date' | 'past_offer_deadline' | 'publication_ted_requires_price_selection' | 'not_specified_not_allowed' | 'ted_validation';
+export type ValidationErrorReason = 'required' | 'must_be_null' | 'must_be_empty' | 'min' | 'max' | 'sub_selection_invalid' | 'failed_range' | 'invalid_publication_day' | 'past_editorial_deadline' | 'invalid_award_criteria_selection' | 'unsupported_value' | 'awarded_vendors_non_unique_rank' | 'decision_date_after_publication_date' | 'wrong_sustainability_form_selected' | 'duplicate_values' | 'invalid_email_format' | 'invalid_phone_format' | 'invalid_pattern' | 'invalid_size' | 'general_error' | 'invalid_order' | 'past_publication_date' | 'before_previous_publication_date' | 'past_offer_deadline' | 'publication_ted_requires_price_selection' | 'not_specified_not_allowed' | 'ted_validation' | 'state_contract_requires_wto_language';
 
 export type ValidationError = {
     /**
@@ -5895,6 +6124,20 @@ export type ValidationResults = {
     validationResults: {
         [key: string]: Array<ValidationError>;
     };
+};
+
+/**
+ * Past published or for the proc office to be published publication.
+ */
+export type PastPublishedPubDraftEntry = PastPublicationsEntry & {
+    status: PubDraftStatus;
+};
+
+/**
+ * Past publications
+ */
+export type PastPublishedPubDrafts = {
+    pastPublications: Array<PastPublishedPubDraftEntry>;
 };
 
 export type RoleAndOrganizationChange = {
@@ -5929,6 +6172,7 @@ export type Publishers = {
 export type QnaPublishResponse = {
     id: string;
     answerState: QnaAnswerState;
+    questionAnsweredAt: string;
 };
 
 /**
@@ -6087,7 +6331,15 @@ export type RevocationTestScenario = TestScenarioBase & AdvanceNoticeBase & PubW
 
 export type RequestForInformationTestScenario = TestScenarioBase & InitialPublicationTestScenarioBase & QnaRoundBase & WithVendorDigitalSubmission;
 
-export type WtoStatisticsProcOfficeType = 'central_or_decentral_federation' | 'other_federation';
+/**
+ * - `central_or_decentral_federation` - can be only used by the role `competence_centre_admin`
+ * - `other_federation` - can be only used by the role `competence_centre_admin`
+ * - `entire_federal_administration` - can be only used by the role `competence_centre_admin`
+ * - `cantonal_or_other_cantonal` - can be only used by the role `simap_admin`
+ * - `communal_or_other_communal` - can be only used by the role `simap_admin`
+ *
+ */
+export type WtoStatisticsProcOfficeType = 'central_or_decentral_federation' | 'other_federation' | 'entire_federal_administration' | 'cantonal_or_other_cantonal' | 'communal_or_other_communal';
 
 export type WtoStatisticsOrganizationType = 'canton' | 'proc_office';
 
@@ -6230,11 +6482,11 @@ export type WtoStatisticsExport = {
  * Each page consist of one or many tabs. Each tab further consists of one or many cards/content-components.
  * These are styled differently depending on there content-component-type.
  * Following pages are available:
- * * start_page - no tabs/single tab
- * * help - tabs: howto-videos, FAQ
- * * topical - tabs: news, agenda, release notes
- * * procurement - tabs: further information on public procurement, exclusion from public procurement, EU/WTO/EFTA, Instiutions and associations, WTO statistics
- * * about - tabs: organisation, business regulations, statues, GTC
+ * * `start_page` - no tabs/single tab
+ * * `help` - tabs: edu-videos, frequently asked questions
+ * * `topical` - tabs: news, agenda, release notes
+ * * `procurement` - tabs: further information on public procurement, exclusion from public procurement, EU/WTO/EFTA, Instiutions and associations, WTO statistics
+ * * `about` - tabs: organisation, business regulations, statutes, general terms conditions
  *
  */
 export type PageName = 'start_page' | 'help' | 'topical' | 'procurement' | 'about';
@@ -6244,22 +6496,24 @@ export type PageName = 'start_page' | 'help' | 'topical' | 'procurement' | 'abou
  * Together with the PageName it defines a predefined structure where content can be located and displayed.
  * Each tab is located within an page. Each tab consist of one or many cards/content-components.
  * Following tabs are available:
- * * start_page - pseudo tab where no tabs or only a single tab exists. It exists to fit in the structure with the other static pages.
- * * news - new articles are published on this tab
- * * agenda - important deadlines and events are listed here informing about an important date
- * * release_notes - contains information about the changes made to simap and newly added features from each published release
- * * further_information_on_public_procurement - information about the fundamentals and details all around the subject: public procurements
- * * exclusion_from_public_procurement - information in which scenarios a public procurement isn't mandatory
- * * eu_wto_efta - further links about public procurements within different associations and unions
- * * institutions_and_associations - further links about associations and institutions strongly related to simap
- * * wto_statistics - Links to download the newest wto-statistics
- * * organisation - information about the persons which make simap possible and there roles
- * * business_regulations - rules and regulations about the simap-organisation
- * * statutes - describes what the purpose of the simap-organisation is, defines terms and how the organisation works
- * * gtc - general terms and conditions
+ * * `start_page` - pseudo tab as there are no tabs on the start-page.
+ * * `edu_videos` - A collection of videos which explain various features of the simap-platform
+ * * `frequently_asked_questions` - common questions are answered here
+ * * `news` - news articles are published on this tab
+ * * `agenda` - list of important deadlines and events
+ * * `release_notes` - contains information about the changes made to simap and newly added features for each published release
+ * * `further_information_on_public_procurement` - information about the fundamentals and details all around the subject: public procurements
+ * * `exclusion_from_public_procurement` - information in which scenarios a public procurement isn't mandatory
+ * * `eu_wto_efta` - further links about public procurements within different associations and unions
+ * * `institutions_and_associations` - further links about associations and institutions strongly related to simap
+ * * `wto_statistics` - Links to download the newest wto-statistics
+ * * `organisation` - information about the persons who make simap possible and their roles
+ * * `business_regulations` - rules and regulations about the simap-organisation
+ * * `statutes` - describes what the purpose of the simap-organisation is, defines terms and how the organisation works
+ * * `general_terms_conditions` - general terms and conditions
  *
  */
-export type TabName = 'start_page' | 'news' | 'agenda' | 'release_notes' | 'further_information_on_public_procurement' | 'exclusion_from_public_procurement' | 'eu_wto_efta' | 'institutions_and_associations' | 'wto_statistics' | 'organisation' | 'business_regulations' | 'statutes' | 'gtc';
+export type TabName = 'start_page' | 'edu_videos' | 'frequently_asked_questions' | 'news' | 'agenda' | 'release_notes' | 'further_information_on_public_procurement' | 'exclusion_from_public_procurement' | 'eu_wto_efta' | 'institutions_and_associations' | 'wto_statistics' | 'organisation' | 'business_regulations' | 'statutes' | 'general_terms_conditions';
 
 /**
  * Basic properties for a content-component. Extra properties are added depending on the discriminator type
@@ -6276,17 +6530,86 @@ export type ContentComponentInfoBox = ContentComponent & {
     content: TranslationSanitizedHtml;
 };
 
+export type ContentComponentTextSection = ContentComponent & {
+    componentType: 'text_section';
+} & {
+    title?: Translation;
+    content: TranslationSanitizedHtml;
+};
+
+/**
+ * This icon are used for content-component-link-items.
+ * The frontend uses it to display a fitting icon.
+ * Following types are available:
+ * * web - indicates that this link points to a website
+ * * pdf - indicates that this link points to a pdf-file
+ *
+ */
+export type ContentComponentLinkItemIcon = 'web' | 'pdf';
+
+export type ContentComponentLinkItem = {
+    id: string;
+    displayText: Translation;
+    url: TranslationUrl;
+    icon: ContentComponentLinkItemIcon;
+    index: number;
+};
+
+export type ContentComponentLinks = ContentComponent & {
+    componentType: 'links';
+} & {
+    title?: Translation;
+    items: Array<ContentComponentLinkItem>;
+};
+
+export type ContentComponentYoutubeVideoItem = {
+    id: string;
+    youtubeVideoId: Translation;
+    title: Translation;
+    index: number;
+};
+
+export type ContentComponentVideos = ContentComponent & {
+    componentType: 'videos';
+} & {
+    items: Array<ContentComponentYoutubeVideoItem>;
+};
+
+/**
+ * This category are specifically used in conjunction with content-component-articles and article-items.
+ * Following categories are available:
+ * * `news` - news related to the platform and the association simap.ch
+ * * `agenda` - upcoming dates for planned events
+ * * `release_notes` - release notes for the platform simap.ch
+ *
+ */
+export type ContentComponentArticleCategory = 'news' | 'agenda' | 'release_notes';
+
+export type ContentComponentMetadataArticleItem = {
+    readonly id: string;
+    readonly date: string;
+    title: Translation;
+};
+
+export type ContentComponentArticles = ContentComponent & {
+    componentType: 'articles';
+} & {
+    category: ContentComponentArticleCategory;
+    items: Array<ContentComponentMetadataArticleItem>;
+};
+
 /**
  * The component-type defines and describes the type of content the component has.
  * It's used as discriminator to add different properties. It can be used to present the content in different styles to the user.
  * Following types are available:
- * * link - has a url- and text-field. Used in a collection of links for the user to further read about a topic.
- * * content-news - has a title- and content-field. The title uses a h1-styling while the content is a limited html-text field.
- * * info-box - yellow box with an (i)-icon used to announce and inform the user about maintenance or downtime.
- * * video - youtube-video-id- and title-field. Used in a collection of videos demonstrating simap-functionality.
+ * * `text_section` - text component, see model `ContentComponentTextSection`.
+ * * `info_box` - info box component for announcements, see model `ContentComponentInfoBox`.
+ * * `links` - link component for a collection of links, see model `ContentComponentLinks`.
+ * * `articles` - article component for a collection of entries for the selected topic, see model `ContentComponentArticles`.
+ * * `videos` - video component for a collection of videos, see model `ContentComponentVideos`.
  *
  */
-export type ComponentType = 'link' | 'content_news' | 'info_box' | 'video';
+export type ComponentType = 'text_section' | 'info_box' | 'links' | 'articles' | 'videos';
 
 export type TabComponent = {
     name: TabName;
@@ -6302,6 +6625,14 @@ export type PageComponent = {
      * Contains the tabs which has editable content components
      */
     readonly tabs: Array<TabComponent>;
+};
+
+export type ContentComponentArticleItem = {
+    id: string;
+    category: ContentComponentArticleCategory;
+    date: string;
+    title: Translation;
+    content: TranslationSanitizedHtml;
 };
 
 export type VendorDigitalSubmission = VendorDigitalSubmissionInfo & {
@@ -6364,6 +6695,59 @@ export type VendorDigitalSubmissionDocumentAddVendorDocument = {
      * Optional reference to the lotId if the created vendor digital submission document should be attached to a specific lot only
      */
     lotId?: string;
+};
+
+export type SustainabilityTrigger = {
+    id: string;
+    /**
+     * The CPV code that this sustainability trigger matches against.
+     * Use either an 8 digit code for an exact match or 1-7 digits followed by an asterisk (*) to match
+     * a subtree of the cpv-code tree.
+     *
+     */
+    cpvCodeMatch: string;
+    /**
+     * The ID of the competence centre that this sustainability trigger belongs to.
+     */
+    compCentreId: string;
+    /**
+     * The ID of the institution that this sustainability trigger applies to.
+     */
+    institutionId: string;
+    /**
+     * SustainabilityFormType the trigger shall apply to.
+     * Currently supported is either [nh01] or [nh02, nh03, nh04, nh05].
+     *
+     */
+    sustainabilityFormTypes: Array<SustainabilityFormType>;
+    /**
+     * The ID of the product category of this sustainability trigger.
+     * GET `/api/sustainability/v1/product-categories` for available categories.
+     *
+     */
+    productCategoryId: string;
+    /**
+     * Name of the category, only available in german.
+     * Not required for creating a new trigger.
+     *
+     */
+    readonly productCategoryName?: string;
+};
+
+export type SustainabilityTriggers = {
+    sustainabilityTriggers?: Array<SustainabilityTrigger>;
+};
+
+export type ProductCategory = {
+    id: string;
+    /**
+     * the name of the product category
+     */
+    name: string;
+};
+
+export type ProductCategories = {
+    productCategories?: Array<ProductCategory>;
 };
 
 /**
@@ -6508,11 +6892,17 @@ export type CallForBidsExport = {
  *
  */
 export type SustainabilityFormExport = {
+    processType: PubProcessType;
+    projectNumber: string;
+    lotNumber?: number;
     /**
      * Unique publication number aka "Meldungsnummer".
      *
      */
     publicationNumber: string;
+    publicationDate: string;
+    totalPrice: PriceWithVat;
+    vendorNames: Array<string>;
     cpvCode: CpvCode;
     productCategory: string;
     procurementOffice: {
@@ -6551,48 +6941,31 @@ export type MainActivityWritable = {
  * contact information of the office.
  *
  */
-export type ProcOfficeWritable = ProcOfficePublicData & {
-    language: SystemLanguage;
-    mainActivity: MainActivityWritable;
+export type ProcOfficeWritable = BaseProcOffice & {
     organizationInContractContact?: Contact;
     address: Address;
-    phone: InternationalPhoneNumber;
-    email: string;
-    url?: string;
-    otherInfo?: string;
-    status?: ProcOfficeStatus;
-    statusComment?: string;
-};
-
-export type VendorWritable = {
-    id: string;
-    uidNo?: string | null;
-    dunsNo?: string | null;
-    companySize?: CompanySize;
-    name: string;
-    additionalName?: string | null;
-    /**
-     * c/o
-     */
-    careOf?: string | null;
-    address: Address;
-    phone?: InternationalPhoneNumber;
-    email?: string;
-    url?: string | null;
-    /**
-     * The publicly visible vendor admins.
-     */
-    publicVendorAdmins?: Array<VendorUser>;
-    legalFormCode?: LegalFormCode;
-    legalFormSinceDate?: string | null;
-    businessPurpose?: string | null;
-    businessDomicile?: string | null;
-    isBiddingConsortium?: boolean;
-    leadingVendor?: string | null;
 };
 
 export type PublisherReferenceWritable = {
     id: string;
+};
+
+export type PublicationDetailInterfaceWritable = {
+    id: string;
+    type: PubType;
+    projectType: PubProjectType;
+    base?: PublicationBase;
+    /**
+     * Reference to the TED publication, set when the publication is published on TED.
+     * For published publications, the ted data is only present when the publication was successfully published on TED.
+     * Else the property is `null`.
+     *
+     */
+    ted?: PubTedReference;
+    /**
+     * List of publishers of this publication
+     */
+    publishers: Array<PublisherReferenceWritable>;
 };
 
 export type PubVendorWithAddressDataWritable = {
@@ -6614,6 +6987,8 @@ export type PublicProjectActionsWritable = {
 export type PubDraftAwardBaseInterfaceWritable = PubDraftBaseInterface & {
     type?: 'PubDraftAwardBaseInterfaceWritable';
 } & PubAwardBaseInterface & AllSubKinds;
+
+export type PubDraftBaseLotWritable = PubDraftLotDescription & PubDraftBaseProcurement & PubDraftBaseCriteria & PubDraftBaseCriteriaSelective;
 
 export type PubDraftTermsRemediesChangedWritable = PubDraftTermsRemedies;
 
@@ -6644,7 +7019,7 @@ export type A2Writable = {
 };
 
 export type A3Writable = {
-    procurementComplexity: A3ProcurementComplexity;
+    procurementComplexity?: A3ProcurementComplexity;
 };
 
 export type A4Writable = {
@@ -6663,7 +7038,7 @@ export type A4Writable = {
 };
 
 export type A5Writable = {
-    checkCriteria: A5CheckCriteria;
+    checkCriteria?: A5CheckCriteria;
     criteriaTypes?: Array<A5CriteriaTypes>;
 };
 
@@ -6672,7 +7047,7 @@ export type B1Writable = {
 };
 
 export type B2Writable = {
-    qualityRelatedLabelsRequirements: B2QualityRelatedLabelsRequirements;
+    qualityRelatedLabelsRequirements?: B2QualityRelatedLabelsRequirements;
     /**
      * List all labels required like Max Havelaar.
      * This field is required if the field qualityRelatedLabelRequirement is set to yes.
@@ -6682,7 +7057,7 @@ export type B2Writable = {
 };
 
 export type C1Writable = {
-    isCountryOfOriginForGoodsAsked: boolean;
+    isCountryOfOriginForGoodsAsked?: boolean;
     /**
      * The ISO 3166 two letter country code. The list with the ids / codes can be get from `GET /api/countries/v1`
      *
@@ -6692,18 +7067,18 @@ export type C1Writable = {
 };
 
 export type D1Writable = {
-    isOverallProjectLead: boolean;
+    isOverallProjectLead?: boolean;
     isKbobRecommendationPartOfContract?: boolean;
     evaluationCriteriaDimensionDefined?: YesNoNotRelevant;
     evaluationCriteriaDimensionsDefined?: Array<D1EvaluationCriteriaDimensionsDefined>;
 };
 
 export type D2Writable = {
-    isKbobRecommendationPartOfContract: boolean;
+    isKbobRecommendationPartOfContract?: boolean;
 };
 
 export type D3Writable = {
-    standardsPartOfContract: YesNoNotRelevant;
+    standardsPartOfContract?: YesNoNotRelevant;
 };
 
 export type E1Writable = {
@@ -6723,24 +7098,25 @@ export type F2Writable = {
 };
 
 export type F3Writable = {
-    evidencesSocialCriteriaComplianceProvided?: Array<EcologicalSocialSocietalCriteria>;
+    evidencesSocialCriteriaComplianceProvided?: Array<F3EvidencesSocialCriteria>;
+    evidencesSocialCriteriaComplianceProvidedEvidence?: string;
     comment?: string;
 };
 
 export type F4Writable = {
-    isClarificationSocialCriteriaComplianceDone: boolean;
+    isClarificationSocialCriteriaComplianceDone?: boolean;
     clarificationsSocialCriteriaCompliance?: Array<F4ClarificationsSocialCriteriaCompliance>;
     otherClarifications?: string;
 };
 
 export type F5Writable = {
-    isSubcontractorSocialCriteriaComplianceDemanded: boolean;
+    isSubcontractorSocialCriteriaComplianceDemanded?: boolean;
     subcontractorSocialCriteriaComplianceCommitments?: Array<EcologicalSocialSocietalCriteria>;
     comment?: string;
 };
 
 export type F6Writable = {
-    isKbobContractAgreementDemanded: boolean;
+    isKbobContractAgreementDemanded?: boolean;
     isSafetyRegulationComplianceDemanded?: boolean;
     isIloCoreAgreementDemanded?: boolean;
     isEvidenceOfSocialCriteriaDemanded?: boolean;
@@ -6748,22 +7124,22 @@ export type F6Writable = {
 };
 
 export type F7aWritable = {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
     comment?: string;
 };
 
 export type F7bWritable = {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
     comment?: string;
 };
 
 export type F8Writable = {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
     comment?: string;
 };
 
 export type F9Writable = {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
     comment?: string;
 };
 
@@ -6773,7 +7149,12 @@ export type G1Writable = {
 };
 
 export type G2Writable = {
-    isEnvironmentalProtectionDemanded: boolean;
+    isEnvironmentalProtectionDemanded?: boolean;
+};
+
+export type G21Writable = {
+    otherSustainabilityRequirementsBeenMet?: G21OtherSustainabilityRequirements;
+    otherSustainabilityRequirementsBeenMetDescription?: string;
 };
 
 export type G3Writable = {
@@ -6800,27 +7181,27 @@ export type G5Writable = {
 };
 
 export type G6Writable = {
-    bestFulfilment: G6BestFulfilment;
+    bestFulfilment?: G6BestFulfilment;
 };
 
 export type G7aWritable = {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
 };
 
 export type G7bWritable = {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
 };
 
 export type G7cWritable = {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
 };
 
 export type G7dWritable = {
-    standardsDemanded: YesNoNotRelevant;
+    standardsDemanded?: YesNoNotRelevant;
 };
 
 export type G8Writable = {
-    otherEcologicalCriteriaDemanded: YesNoNotRelevant;
+    otherEcologicalCriteriaDemanded?: YesNoNotRelevant;
     otherEcologicalCriteriaSelected?: Array<G8OtherEcologicalCriteriaSelected>;
 };
 
@@ -6829,17 +7210,21 @@ export type G9Writable = {
 };
 
 export type H1Writable = {
-    innovativeSolutionsAvailable: YesNoNotRelevant;
+    innovativeSolutionsAvailable?: boolean;
+};
+
+export type H11Writable = {
+    procurementSuitedForInnovativeSolution?: YesNoPartly;
 };
 
 export type H2Writable = {
-    innovationSupportingProcurementProcedures: YesNoNotRelevant;
+    innovationSupportingProcurementProcedures?: YesNoNotRelevant;
     innovationSupportingProcurementProceduresUsed?: Array<H2InnovationSupportingProcurementProcedures>;
     otherInnovationSupportingProcurementProceduresUsed?: string;
 };
 
 export type H3Writable = {
-    innovationSupportingServicesCriteriaChosen: YesNoNotRelevant;
+    innovationSupportingServicesCriteriaChosen?: YesNoNotRelevant;
     innovationSupportingServicesCriteria?: Array<H3InnovationSupportingServicesCriteria>;
 };
 
@@ -6849,13 +7234,13 @@ export type H4Writable = {
 };
 
 export type I1aWritable = {
-    compatibleMeasuresMet: YesNoNotRelevant;
+    compatibleMeasuresMet?: YesNoNotRelevant;
     compatibleMeasures?: Array<I1aCompatibleMeasures>;
     otherCompatibleMeasures?: string;
 };
 
 export type I1bWritable = {
-    compatibleMeasuresMet: YesNoNotRelevant;
+    compatibleMeasuresMet?: YesNoNotRelevant;
     compatibleMeasures?: Array<I1bCompatibleMeasures>;
     otherCompatibleMeasures?: string;
 };
@@ -6874,20 +7259,70 @@ export type I4Writable = {
 };
 
 export type J1Writable = {
-    hasRejectedBidders: boolean;
+    hasRejectedBidders?: boolean;
     numberOfRejectedBidders?: number;
     totalNumberOfBidders?: number;
 };
 
 export type J2Writable = {
-    hasRejectedBidders: boolean;
+    hasRejectedBidders?: boolean;
     numberOfRejectedBidders?: number;
     totalNumberOfBidders?: number;
+};
+
+export type ContentComponentMetadataArticleItemWritable = {
+    [key: string]: unknown;
 };
 
 export type PageComponentWritable = {
     name: PageName;
 };
+
+export type SustainabilityTriggerWritable = {
+    id: string;
+    /**
+     * The CPV code that this sustainability trigger matches against.
+     * Use either an 8 digit code for an exact match or 1-7 digits followed by an asterisk (*) to match
+     * a subtree of the cpv-code tree.
+     *
+     */
+    cpvCodeMatch: string;
+    /**
+     * The ID of the competence centre that this sustainability trigger belongs to.
+     */
+    compCentreId: string;
+    /**
+     * The ID of the institution that this sustainability trigger applies to.
+     */
+    institutionId: string;
+    /**
+     * SustainabilityFormType the trigger shall apply to.
+     * Currently supported is either [nh01] or [nh02, nh03, nh04, nh05].
+     *
+     */
+    sustainabilityFormTypes: Array<SustainabilityFormType>;
+    /**
+     * The ID of the product category of this sustainability trigger.
+     * GET `/api/sustainability/v1/product-categories` for available categories.
+     *
+     */
+    productCategoryId: string;
+};
+
+/**
+ * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+ */
+export type QueryParamFrom = string;
+
+/**
+ * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+ */
+export type QueryParamTo = string;
+
+/**
+ * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+ */
+export type QueryParamLastItem = string;
 
 /**
  * The id of the competence centre, get available competence centres at /compcentres/v1
@@ -6925,6 +7360,11 @@ export type ParamProjectDocumentId = string;
 export type ParamUserId = string;
 
 /**
+ * Id of the history entry.
+ */
+export type ParamHistoryId = string;
+
+/**
  * Id of the vendor digital submission
  */
 export type ParamVendorDigitalSubmissionId = string;
@@ -6959,7 +7399,7 @@ export type QueryParamToken = string;
 export type ParamPublicationId = string;
 
 /**
- * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+ * Id of the publication draft.
  */
 export type ParamPubDraftId = string;
 
@@ -7593,20 +8033,15 @@ export type FindOagCodesResponse = FindOagCodesResponses[keyof FindOagCodesRespo
 export type ListInstitutionsData = {
     body?: never;
     path?: never;
-    query?: {
-        /**
-         * If not set the top level institutions will be returned.
-         */
-        parentInstitutionId?: string;
-    };
-    url: '/institutions/v1';
+    query?: never;
+    url: '/institutions/v1/institutions';
 };
 
 export type ListInstitutionsErrors = {
     /**
      * Server error
      */
-    404: ServerErrorAttributes;
+    400: ServerErrorAttributes;
     /**
      * Server error
      */
@@ -7628,12 +8063,12 @@ export type GetInstitutionByIdData = {
     body?: never;
     path: {
         /**
-         * Id of the institution, can be obtained by GET on /institutions/v1 or has to be provided on creation
+         * Id of the institution, can be obtained by GET `/institutions/v1/institutions`
          */
         institutionId: string;
     };
     query?: never;
-    url: '/institutions/v1/institution/{institutionId}';
+    url: '/institutions/v1/institutions/{institutionId}';
 };
 
 export type GetInstitutionByIdErrors = {
@@ -7657,40 +8092,6 @@ export type GetInstitutionByIdResponses = {
 };
 
 export type GetInstitutionByIdResponse = GetInstitutionByIdResponses[keyof GetInstitutionByIdResponses];
-
-export type FindPoInInstitutionTreeData = {
-    body?: never;
-    path?: never;
-    query: {
-        /**
-         * You can use partial words or names for the query. Requires a minimum of 3 chars
-         */
-        query: string;
-    };
-    url: '/institutions/v1/po/search';
-};
-
-export type FindPoInInstitutionTreeErrors = {
-    /**
-     * Server error
-     */
-    400: ServerErrorAttributes;
-    /**
-     * Server error
-     */
-    default: ServerErrorAttributes;
-};
-
-export type FindPoInInstitutionTreeError = FindPoInInstitutionTreeErrors[keyof FindPoInInstitutionTreeErrors];
-
-export type FindPoInInstitutionTreeResponses = {
-    /**
-     * ok
-     */
-    200: InstitutionSearchResults;
-};
-
-export type FindPoInInstitutionTreeResponse = FindPoInInstitutionTreeResponses[keyof FindPoInInstitutionTreeResponses];
 
 export type SearchUsersData = {
     body?: never;
@@ -7790,6 +8191,45 @@ export type GetUserByIdResponses = {
 };
 
 export type GetUserByIdResponse = GetUserByIdResponses[keyof GetUserByIdResponses];
+
+export type UnlockUserData = {
+    body?: never;
+    path: {
+        userId: string;
+    };
+    query?: never;
+    url: '/users/v1/user/{userId}/unlock';
+};
+
+export type UnlockUserErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type UnlockUserError = UnlockUserErrors[keyof UnlockUserErrors];
+
+export type UnlockUserResponses = {
+    /**
+     * ok
+     */
+    200: User;
+};
+
+export type UnlockUserResponse = UnlockUserResponses[keyof UnlockUserResponses];
 
 export type DeleteMyUserData = {
     body?: never;
@@ -7951,6 +8391,144 @@ export type RefreshTokenImpersonatedUserResponses = {
 };
 
 export type RefreshTokenImpersonatedUserResponse = RefreshTokenImpersonatedUserResponses[keyof RefreshTokenImpersonatedUserResponses];
+
+export type GetMyHistoryMutationsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/users/v1/my/history/mutations';
+};
+
+export type GetMyHistoryMutationsErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetMyHistoryMutationsError = GetMyHistoryMutationsErrors[keyof GetMyHistoryMutationsErrors];
+
+export type GetMyHistoryMutationsResponses = {
+    /**
+     * ok
+     */
+    200: UserHistoryMutations;
+};
+
+export type GetMyHistoryMutationsResponse = GetMyHistoryMutationsResponses[keyof GetMyHistoryMutationsResponses];
+
+export type GetMyHistoryProcOfficeMembershipsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/users/v1/my/history/proc-office-memberships';
+};
+
+export type GetMyHistoryProcOfficeMembershipsErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetMyHistoryProcOfficeMembershipsError = GetMyHistoryProcOfficeMembershipsErrors[keyof GetMyHistoryProcOfficeMembershipsErrors];
+
+export type GetMyHistoryProcOfficeMembershipsResponses = {
+    /**
+     * ok
+     */
+    200: UserHistoryOrganizationMemberships;
+};
+
+export type GetMyHistoryProcOfficeMembershipsResponse = GetMyHistoryProcOfficeMembershipsResponses[keyof GetMyHistoryProcOfficeMembershipsResponses];
+
+export type GetMyHistoryVendorMembershipsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/users/v1/my/history/vendor-memberships';
+};
+
+export type GetMyHistoryVendorMembershipsErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetMyHistoryVendorMembershipsError = GetMyHistoryVendorMembershipsErrors[keyof GetMyHistoryVendorMembershipsErrors];
+
+export type GetMyHistoryVendorMembershipsResponses = {
+    /**
+     * ok
+     */
+    200: UserHistoryOrganizationMemberships;
+};
+
+export type GetMyHistoryVendorMembershipsResponse = GetMyHistoryVendorMembershipsResponses[keyof GetMyHistoryVendorMembershipsResponses];
 
 export type SearchUsersWithOrgAndRoleData = {
     body?: never;
@@ -9150,39 +9728,43 @@ export type SearchProcOfficesResponses = {
 
 export type SearchProcOfficesResponse = SearchProcOfficesResponses[keyof SearchProcOfficesResponses];
 
-export type GetProcOfficeTreeViewData = {
+export type ListPublicProcOfficesData = {
     body?: never;
     path?: never;
-    query: {
+    query?: {
         /**
-         * The id of the responsible institution in the tree. Get the id for an institution through `GET /institutions/v1/`.
+         * Filter proc offices with the id of the institution that oversees them.
          */
-        institutionId: string;
+        institutionId?: string;
+        /**
+         * Search for proc offices by name. You can use partial words or names for the query.
+         */
+        search?: string;
     };
-    url: '/procoffices/v1/treeview';
+    url: '/procoffices/v1/po/public';
 };
 
-export type GetProcOfficeTreeViewErrors = {
+export type ListPublicProcOfficesErrors = {
     /**
      * Server error
      */
-    404: ServerErrorAttributes;
+    400: ServerErrorAttributes;
     /**
      * Server error
      */
     default: ServerErrorAttributes;
 };
 
-export type GetProcOfficeTreeViewError = GetProcOfficeTreeViewErrors[keyof GetProcOfficeTreeViewErrors];
+export type ListPublicProcOfficesError = ListPublicProcOfficesErrors[keyof ListPublicProcOfficesErrors];
 
-export type GetProcOfficeTreeViewResponses = {
+export type ListPublicProcOfficesResponses = {
     /**
      * ok
      */
-    200: ProcOfficeTree;
+    200: ProcOfficesPublicData;
 };
 
-export type GetProcOfficeTreeViewResponse = GetProcOfficeTreeViewResponses[keyof GetProcOfficeTreeViewResponses];
+export type ListPublicProcOfficesResponse = ListPublicProcOfficesResponses[keyof ListPublicProcOfficesResponses];
 
 export type GetMyProcOfficeData = {
     body?: never;
@@ -10904,6 +11486,496 @@ export type PatchInternalReferenceResponses = {
 
 export type PatchInternalReferenceResponse = PatchInternalReferenceResponses[keyof PatchInternalReferenceResponses];
 
+export type GetProcOfficeProjectPublicationHistoryData = {
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/procoffices/v1/my/projects/{projectId}/history/publications';
+};
+
+export type GetProcOfficeProjectPublicationHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetProcOfficeProjectPublicationHistoryError = GetProcOfficeProjectPublicationHistoryErrors[keyof GetProcOfficeProjectPublicationHistoryErrors];
+
+export type GetProcOfficeProjectPublicationHistoryResponses = {
+    /**
+     * ok
+     */
+    200: ProcOfficeProjectHistoryPublications;
+};
+
+export type GetProcOfficeProjectPublicationHistoryResponse = GetProcOfficeProjectPublicationHistoryResponses[keyof GetProcOfficeProjectPublicationHistoryResponses];
+
+export type GetProcOfficeProjectQnaHistoryData = {
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/procoffices/v1/my/projects/{projectId}/history/qnas';
+};
+
+export type GetProcOfficeProjectQnaHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetProcOfficeProjectQnaHistoryError = GetProcOfficeProjectQnaHistoryErrors[keyof GetProcOfficeProjectQnaHistoryErrors];
+
+export type GetProcOfficeProjectQnaHistoryResponses = {
+    /**
+     * ok
+     */
+    200: ProcOfficeProjectHistoryQnas;
+};
+
+export type GetProcOfficeProjectQnaHistoryResponse = GetProcOfficeProjectQnaHistoryResponses[keyof GetProcOfficeProjectQnaHistoryResponses];
+
+export type GetProcOfficeProjectQnaHistoryByHidData = {
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+        /**
+         * Id of the history entry.
+         */
+        hid: string;
+    };
+    query?: never;
+    url: '/procoffices/v1/my/projects/{projectId}/history/qnas/{hid}';
+};
+
+export type GetProcOfficeProjectQnaHistoryByHidErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetProcOfficeProjectQnaHistoryByHidError = GetProcOfficeProjectQnaHistoryByHidErrors[keyof GetProcOfficeProjectQnaHistoryByHidErrors];
+
+export type GetProcOfficeProjectQnaHistoryByHidResponses = {
+    /**
+     * ok
+     */
+    200: ProcOfficeProjectHistoryQnaWithPrevious;
+};
+
+export type GetProcOfficeProjectQnaHistoryByHidResponse = GetProcOfficeProjectQnaHistoryByHidResponses[keyof GetProcOfficeProjectQnaHistoryByHidResponses];
+
+export type GetProcOfficeProjectInvolvementHistoryData = {
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/procoffices/v1/my/projects/{projectId}/history/involvements';
+};
+
+export type GetProcOfficeProjectInvolvementHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetProcOfficeProjectInvolvementHistoryError = GetProcOfficeProjectInvolvementHistoryErrors[keyof GetProcOfficeProjectInvolvementHistoryErrors];
+
+export type GetProcOfficeProjectInvolvementHistoryResponses = {
+    /**
+     * ok
+     */
+    200: ProjectHistoryInvolvements;
+};
+
+export type GetProcOfficeProjectInvolvementHistoryResponse = GetProcOfficeProjectInvolvementHistoryResponses[keyof GetProcOfficeProjectInvolvementHistoryResponses];
+
+export type GetProcOfficeProjectVendorMessageHistoryData = {
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/procoffices/v1/my/projects/{projectId}/history/vendor-messages';
+};
+
+export type GetProcOfficeProjectVendorMessageHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetProcOfficeProjectVendorMessageHistoryError = GetProcOfficeProjectVendorMessageHistoryErrors[keyof GetProcOfficeProjectVendorMessageHistoryErrors];
+
+export type GetProcOfficeProjectVendorMessageHistoryResponses = {
+    /**
+     * ok
+     */
+    200: ProcOfficeProjectHistoryVendorMessages;
+};
+
+export type GetProcOfficeProjectVendorMessageHistoryResponse = GetProcOfficeProjectVendorMessageHistoryResponses[keyof GetProcOfficeProjectVendorMessageHistoryResponses];
+
+export type GetProcOfficeProjectContributorHistoryData = {
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/procoffices/v1/my/projects/{projectId}/history/project-contributors';
+};
+
+export type GetProcOfficeProjectContributorHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetProcOfficeProjectContributorHistoryError = GetProcOfficeProjectContributorHistoryErrors[keyof GetProcOfficeProjectContributorHistoryErrors];
+
+export type GetProcOfficeProjectContributorHistoryResponses = {
+    /**
+     * ok
+     */
+    200: ProcOfficeProjectHistoryProjectContributors;
+};
+
+export type GetProcOfficeProjectContributorHistoryResponse = GetProcOfficeProjectContributorHistoryResponses[keyof GetProcOfficeProjectContributorHistoryResponses];
+
+export type GetProcOfficeProjectDocumentDownloadHistoryData = {
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/procoffices/v1/my/projects/{projectId}/history/document-downloads';
+};
+
+export type GetProcOfficeProjectDocumentDownloadHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetProcOfficeProjectDocumentDownloadHistoryError = GetProcOfficeProjectDocumentDownloadHistoryErrors[keyof GetProcOfficeProjectDocumentDownloadHistoryErrors];
+
+export type GetProcOfficeProjectDocumentDownloadHistoryResponses = {
+    /**
+     * ok
+     */
+    200: ProjectHistoryDocumentDownloads;
+};
+
+export type GetProcOfficeProjectDocumentDownloadHistoryResponse = GetProcOfficeProjectDocumentDownloadHistoryResponses[keyof GetProcOfficeProjectDocumentDownloadHistoryResponses];
+
+export type GetMyProcOfficeMembershipHistoryData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/procoffices/v1/my/history/memberships';
+};
+
+export type GetMyProcOfficeMembershipHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetMyProcOfficeMembershipHistoryError = GetMyProcOfficeMembershipHistoryErrors[keyof GetMyProcOfficeMembershipHistoryErrors];
+
+export type GetMyProcOfficeMembershipHistoryResponses = {
+    /**
+     * ok
+     */
+    200: ProcOfficeHistoryMemberships;
+};
+
+export type GetMyProcOfficeMembershipHistoryResponse = GetMyProcOfficeMembershipHistoryResponses[keyof GetMyProcOfficeMembershipHistoryResponses];
+
+export type GetMyProcOfficeBaseDataHistoryData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/procoffices/v1/my/history/base-data';
+};
+
+export type GetMyProcOfficeBaseDataHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetMyProcOfficeBaseDataHistoryError = GetMyProcOfficeBaseDataHistoryErrors[keyof GetMyProcOfficeBaseDataHistoryErrors];
+
+export type GetMyProcOfficeBaseDataHistoryResponses = {
+    /**
+     * ok
+     */
+    200: ProcOfficeHistoryBaseDataEntries;
+};
+
+export type GetMyProcOfficeBaseDataHistoryResponse = GetMyProcOfficeBaseDataHistoryResponses[keyof GetMyProcOfficeBaseDataHistoryResponses];
+
+export type GetMyProcOfficeAddressHistoryData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/procoffices/v1/my/history/address-data';
+};
+
+export type GetMyProcOfficeAddressHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetMyProcOfficeAddressHistoryError = GetMyProcOfficeAddressHistoryErrors[keyof GetMyProcOfficeAddressHistoryErrors];
+
+export type GetMyProcOfficeAddressHistoryResponses = {
+    /**
+     * ok
+     */
+    200: ProcOfficeHistoryAddressDataEntries;
+};
+
+export type GetMyProcOfficeAddressHistoryResponse = GetMyProcOfficeAddressHistoryResponses[keyof GetMyProcOfficeAddressHistoryResponses];
+
 export type GetProcOfficeVendorDigitalSubmissionsData = {
     body?: never;
     path: {
@@ -11008,19 +12080,53 @@ export type OpenVendorDigitalSubmissionsResponse = OpenVendorDigitalSubmissionsR
 export type FindVendorsData = {
     body?: never;
     path?: never;
-    query: {
+    query?: {
         /**
          * The name of the last vendor in the list - see the `lastItem` field in the `pagination` object.
          *
          */
         lastItem?: string;
         /**
-         * Search by `name`, `additionalName`, UID or DUNS
-         *
-         * Requires at least 3 valid characters.
+         * - Search by `name`, `additionalName`, UID or DUNS
+         * - Either empty or requires at least 3 valid characters.
          *
          */
-        search: string;
+        search?: string;
+        /**
+         * filter: if defined, vendors are filtered by one of the provided type of service
+         *
+         */
+        typeOfServices?: Array<PubOrderType>;
+        /**
+         * filter: if defined, vendors are filtered by one of the provided CPV codes
+         *
+         */
+        cpvCodes?: Array<string>;
+        /**
+         * filter: if defined, vendors are filtered by one of the provided BKP codes
+         *
+         */
+        bkpCodes?: Array<string>;
+        /**
+         * filter: if defined, vendors are filtered by one of the provided eBKP-h codes
+         *
+         */
+        ebkphCodes?: Array<string>;
+        /**
+         * filter: if defined, vendors are filtered by one of the provided eBKP-t codes
+         *
+         */
+        ebkptCodes?: Array<string>;
+        /**
+         * filter: if defined, vendors are filtered by one of the provided NPK codes
+         *
+         */
+        npkCodes?: Array<string>;
+        /**
+         * filter: if defined, vendors are filtered by one of the provided OAG codes
+         *
+         */
+        oagCodes?: Array<string>;
     };
     url: '/vendors/v1';
 };
@@ -11056,7 +12162,7 @@ export type DeleteVendorData = {
         vendorId: string;
     };
     query?: never;
-    url: '/vendors/v1/vendor/{vendorId}';
+    url: '/vendors/v2/vendor/{vendorId}';
 };
 
 export type DeleteVendorErrors = {
@@ -11098,7 +12204,7 @@ export type GetVendorData = {
         vendorId: string;
     };
     query?: never;
-    url: '/vendors/v1/vendor/{vendorId}';
+    url: '/vendors/v2/vendor/{vendorId}';
 };
 
 export type GetVendorErrors = {
@@ -11140,7 +12246,7 @@ export type UpdateVendorData = {
         vendorId: string;
     };
     query?: never;
-    url: '/vendors/v1/vendor/{vendorId}';
+    url: '/vendors/v2/vendor/{vendorId}';
 };
 
 export type UpdateVendorErrors = {
@@ -11178,7 +12284,7 @@ export type CreateVendorData = {
         vendorId: string;
     };
     query?: never;
-    url: '/vendors/v1/vendor/{vendorId}';
+    url: '/vendors/v2/vendor/{vendorId}';
 };
 
 export type CreateVendorErrors = {
@@ -11253,7 +12359,7 @@ export type VerifyVendorUidData = {
     body: VerifyVendorUid;
     path?: never;
     query?: never;
-    url: '/vendors/v1/verify-uid';
+    url: '/vendors/v2/verify-uid';
 };
 
 export type VerifyVendorUidErrors = {
@@ -11290,7 +12396,7 @@ export type VerifyVendorDunsData = {
     body: VerifyVendorDuns;
     path?: never;
     query?: never;
-    url: '/vendors/v1/verify-duns';
+    url: '/vendors/v2/verify-duns';
 };
 
 export type VerifyVendorDunsErrors = {
@@ -11355,6 +12461,177 @@ export type GetMyVendorResponses = {
 };
 
 export type GetMyVendorResponse = GetMyVendorResponses[keyof GetMyVendorResponses];
+
+export type DeactivateMyVendorData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/vendors/v1/my/deactivate';
+};
+
+export type DeactivateMyVendorErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type DeactivateMyVendorError = DeactivateMyVendorErrors[keyof DeactivateMyVendorErrors];
+
+export type DeactivateMyVendorResponses = {
+    /**
+     * deactivated
+     */
+    204: void;
+};
+
+export type DeactivateMyVendorResponse = DeactivateMyVendorResponses[keyof DeactivateMyVendorResponses];
+
+export type GetMyVendorMembershipHistoryData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/vendors/v1/my/history/memberships';
+};
+
+export type GetMyVendorMembershipHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetMyVendorMembershipHistoryError = GetMyVendorMembershipHistoryErrors[keyof GetMyVendorMembershipHistoryErrors];
+
+export type GetMyVendorMembershipHistoryResponses = {
+    /**
+     * ok
+     */
+    200: VendorHistoryMemberships;
+};
+
+export type GetMyVendorMembershipHistoryResponse = GetMyVendorMembershipHistoryResponses[keyof GetMyVendorMembershipHistoryResponses];
+
+export type GetMyVendorBaseDataHistoryData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/vendors/v1/my/history/base-data';
+};
+
+export type GetMyVendorBaseDataHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetMyVendorBaseDataHistoryError = GetMyVendorBaseDataHistoryErrors[keyof GetMyVendorBaseDataHistoryErrors];
+
+export type GetMyVendorBaseDataHistoryResponses = {
+    /**
+     * ok
+     */
+    200: VendorHistoryBaseDataEntries;
+};
+
+export type GetMyVendorBaseDataHistoryResponse = GetMyVendorBaseDataHistoryResponses[keyof GetMyVendorBaseDataHistoryResponses];
+
+export type GetMyVendorAddressHistoryData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/vendors/v1/my/history/address-data';
+};
+
+export type GetMyVendorAddressHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetMyVendorAddressHistoryError = GetMyVendorAddressHistoryErrors[keyof GetMyVendorAddressHistoryErrors];
+
+export type GetMyVendorAddressHistoryResponses = {
+    /**
+     * ok
+     */
+    200: VendorHistoryAddressDataEntries;
+};
+
+export type GetMyVendorAddressHistoryResponse = GetMyVendorAddressHistoryResponses[keyof GetMyVendorAddressHistoryResponses];
 
 export type RequestToJoinVendorData = {
     body: VendorJoinRequest;
@@ -11831,7 +13108,7 @@ export type GetVendorUserNotificationSettingsData = {
         projectId: string;
     };
     query?: never;
-    url: '/vendors/v1/my/projects/{projectId}/my-notification-settings';
+    url: '/vendors/v2/my/projects/{projectId}/my-notification-settings';
 };
 
 export type GetVendorUserNotificationSettingsErrors = {
@@ -11869,7 +13146,7 @@ export type UpdateVendorUserNotificationSettingsData = {
         projectId: string;
     };
     query?: never;
-    url: '/vendors/v1/my/projects/{projectId}/my-notification-settings';
+    url: '/vendors/v2/my/projects/{projectId}/my-notification-settings';
 };
 
 export type UpdateVendorUserNotificationSettingsErrors = {
@@ -11935,6 +13212,108 @@ export type ArchiveVendorProjectResponses = {
 };
 
 export type ArchiveVendorProjectResponse = ArchiveVendorProjectResponses[keyof ArchiveVendorProjectResponses];
+
+export type GetVendorProjectInvolvementHistoryData = {
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/vendors/v1/my/projects/{projectId}/history/involvements';
+};
+
+export type GetVendorProjectInvolvementHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetVendorProjectInvolvementHistoryError = GetVendorProjectInvolvementHistoryErrors[keyof GetVendorProjectInvolvementHistoryErrors];
+
+export type GetVendorProjectInvolvementHistoryResponses = {
+    /**
+     * ok
+     */
+    200: ProjectHistoryInvolvements;
+};
+
+export type GetVendorProjectInvolvementHistoryResponse = GetVendorProjectInvolvementHistoryResponses[keyof GetVendorProjectInvolvementHistoryResponses];
+
+export type GetVendorProjectDocumentDownloadHistoryData = {
+    body?: never;
+    path: {
+        /**
+         * Id of the project, available projects can be seen by GET on /procoffices/v1/my/projects/projects-overview
+         */
+        projectId: string;
+    };
+    query?: {
+        /**
+         * filter list of response entries having a changed date bigger or equals to the provided `from` date.
+         */
+        from?: string;
+        /**
+         * filter list of response entries having a changed date smaller or equals to the provided `to` date.
+         */
+        to?: string;
+        /**
+         * The name of the last history entry in the list - see the `lastItem` field in the `pagination` object.
+         */
+        lastItem?: string;
+    };
+    url: '/vendors/v1/my/projects/{projectId}/history/document-downloads';
+};
+
+export type GetVendorProjectDocumentDownloadHistoryErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetVendorProjectDocumentDownloadHistoryError = GetVendorProjectDocumentDownloadHistoryErrors[keyof GetVendorProjectDocumentDownloadHistoryErrors];
+
+export type GetVendorProjectDocumentDownloadHistoryResponses = {
+    /**
+     * ok
+     */
+    200: ProjectHistoryDocumentDownloads;
+};
+
+export type GetVendorProjectDocumentDownloadHistoryResponse = GetVendorProjectDocumentDownloadHistoryResponses[keyof GetVendorProjectDocumentDownloadHistoryResponses];
 
 export type ListVendorDocumentsData = {
     body?: never;
@@ -12226,12 +13605,12 @@ export type GetPublicProjectSearchData = {
     path?: never;
     query?: {
         /**
-         * Search input, either empty or requires at least 3 valid characters.
+         * Search input, either empty or requires between 3 and 1000 valid characters.
          *
          */
         search?: string;
         /**
-         * defines in which languages shall be searched in case of translated fields. In case this property is not defined or an empty array is given, then we we search in all languages
+         * defines in which languages shall be searched in case of translated fields. In case this property is not defined or an empty array is given, then we search in all languages
          */
         lang?: Array<SystemLanguage>;
         /**
@@ -12491,7 +13870,7 @@ export type GetMySubscriptionErrors = {
     /**
      * Server error
      */
-    400: ServerErrorAttributes;
+    401: ServerErrorAttributes;
     /**
      * Server error
      */
@@ -12635,7 +14014,7 @@ export type DeletePubDraftData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -12677,7 +14056,7 @@ export type GetPubDraftBaseData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -12719,7 +14098,7 @@ export type CreatePubDraftBaseData = {
     body: PubDraftCreationRequest;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -12761,7 +14140,7 @@ export type CopyPubDraftData = {
     body: PubDraftCopyRequest;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -12803,7 +14182,7 @@ export type GetPubDraftDetailData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -12845,7 +14224,7 @@ export type GetWizardStateData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -12879,7 +14258,7 @@ export type UpdateWizardStateData = {
     body: WizardState;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -12917,7 +14296,7 @@ export type SubmitPubDraftData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -12963,7 +14342,7 @@ export type WithdrawSubmittedPubDraftData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13005,7 +14384,7 @@ export type PatchPubDraftTranslationLanguagesData = {
     body: PubDraftTranslationLanguages;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13043,7 +14422,7 @@ export type ReorderPubDraftLotsData = {
     body: PubDraftLotsReorder;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13089,7 +14468,7 @@ export type DeletePubDraftLotData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
         /**
@@ -13139,7 +14518,7 @@ export type GetPubDraftTenderProjectInfoData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13181,7 +14560,7 @@ export type PatchPubDraftTenderProjectInfoData = {
     body: PubDraftTenderProjectInfo;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13223,7 +14602,7 @@ export type GetPubDraftTenderDatesData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13265,7 +14644,7 @@ export type PatchPubDraftTenderDatesData = {
     body: PubDraftTenderDates;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13307,7 +14686,7 @@ export type GetPubDraftTenderProcurementData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13349,7 +14728,7 @@ export type PatchPubDraftTenderProcurementData = {
     body: PubDraftTenderProcurement;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13391,7 +14770,7 @@ export type GetPubDraftTenderCriteriaData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13433,7 +14812,7 @@ export type PatchPubDraftTenderCriteriaData = {
     body: PubDraftTenderCriteria;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13475,7 +14854,7 @@ export type GetPubDraftTenderTermsData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13517,7 +14896,7 @@ export type PatchPubDraftTenderTermsData = {
     body: PubDraftTenderTerms;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13559,7 +14938,7 @@ export type GetPubDraftTenderLotData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
         lotId: string;
@@ -13602,7 +14981,7 @@ export type PatchPubDraftTenderLotData = {
     body: PubDraftTenderLot;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
         lotId: string;
@@ -13645,7 +15024,7 @@ export type CreatePubDraftTenderLotData = {
     body: PubDraftLotDescriptionCreate;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
         lotId: string;
@@ -13680,11 +15059,63 @@ export type CreatePubDraftTenderLotResponses = {
 
 export type CreatePubDraftTenderLotResponse = CreatePubDraftTenderLotResponses[keyof CreatePubDraftTenderLotResponses];
 
+export type ChangeLotOrderTypeData = {
+    /**
+     * PubDraftTenderLotPatchOrderType
+     */
+    body: {
+        orderType: PubOrderType;
+    };
+    path: {
+        /**
+         * Id of the publication draft.
+         */
+        pubDraftId: string;
+        lotId: string;
+    };
+    query?: never;
+    url: '/pub-drafts/v1/tender/{pubDraftId}/lots/{lotId}/order-type';
+};
+
+export type ChangeLotOrderTypeErrors = {
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type ChangeLotOrderTypeError = ChangeLotOrderTypeErrors[keyof ChangeLotOrderTypeErrors];
+
+export type ChangeLotOrderTypeResponses = {
+    /**
+     * ok
+     */
+    200: PubDraftTenderLot;
+};
+
+export type ChangeLotOrderTypeResponse = ChangeLotOrderTypeResponses[keyof ChangeLotOrderTypeResponses];
+
 export type GetPubDraftTenderInvitedVendorsData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13726,7 +15157,7 @@ export type PatchPubDraftTenderInvitedVendorsData = {
     body: PubInvitedVendorsPatch;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13768,7 +15199,7 @@ export type GetPubDraftCompetitionProjectInfoData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13810,7 +15241,7 @@ export type PatchPubDraftCompetitionProjectInfoData = {
     body: PubDraftProjectInfo;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13852,7 +15283,7 @@ export type GetPubDraftCompetitionDatesData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13894,7 +15325,7 @@ export type PatchPubDraftCompetitionDatesData = {
     body: PubDraftDates;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13936,7 +15367,7 @@ export type GetPubDraftCompetitionProcurementData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -13978,7 +15409,7 @@ export type PatchPubDraftCompetitionProcurementData = {
     body: PubDraftProcurement;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14020,7 +15451,7 @@ export type GetPubDraftCompetitionCriteriaData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14062,7 +15493,7 @@ export type PatchPubDraftCompetitionCriteriaData = {
     body: PubDraftCriteria;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14104,7 +15535,7 @@ export type GetPubDraftCompetitionTermsData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14146,7 +15577,7 @@ export type PatchPubDraftCompetitionTermsData = {
     body: PubDraftTermsExtended;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14188,7 +15619,7 @@ export type GetPubDraftCompetitionLotData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
         lotId: string;
@@ -14231,7 +15662,7 @@ export type PatchPubDraftCompetitionLotData = {
     body: PubDraftCompetitionLot;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
         lotId: string;
@@ -14274,7 +15705,7 @@ export type CreatePubDraftCompetitionLotData = {
     body: PubDraftLotDescriptionCreate;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
         lotId: string;
@@ -14313,7 +15744,7 @@ export type GetPubDraftCompetitionInvitedVendorsData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14355,7 +15786,7 @@ export type PatchPubDraftCompetitionInvitedVendorsData = {
     body: PubInvitedVendorsPatch;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14397,7 +15828,7 @@ export type GetPubDraftStudyContractProjectInfoData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14439,7 +15870,7 @@ export type PatchPubDraftStudyContractProjectInfoData = {
     body: PubDraftProjectInfo;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14481,7 +15912,7 @@ export type GetPubDraftStudyContractDatesData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14523,7 +15954,7 @@ export type PatchPubDraftStudyContractDatesData = {
     body: PubDraftDates;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14565,7 +15996,7 @@ export type GetPubDraftStudyContractProcurementData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14607,7 +16038,7 @@ export type PatchPubDraftStudyContractProcurementData = {
     body: PubDraftProcurement;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14649,7 +16080,7 @@ export type GetPubDraftStudyContractCriteriaData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14691,7 +16122,7 @@ export type PatchPubDraftStudyContractCriteriaData = {
     body: PubDraftCriteria;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14733,7 +16164,7 @@ export type GetPubDraftStudyContractTermsData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14775,7 +16206,7 @@ export type PatchPubDraftStudyContractTermsData = {
     body: PubDraftTermsExtended;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14817,7 +16248,7 @@ export type GetPubDraftStudyContractLotData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
         /**
@@ -14863,7 +16294,7 @@ export type PatchPubDraftStudyContractLotData = {
     body: PubDraftStudyContractLot;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
         /**
@@ -14909,7 +16340,7 @@ export type CreatePubDraftStudyContractLotData = {
     body: PubDraftLotDescriptionCreate;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
         /**
@@ -14951,7 +16382,7 @@ export type GetPubDraftStudyContractInvitedVendorsData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -14993,7 +16424,7 @@ export type PatchPubDraftStudyContractInvitedVendorsData = {
     body: PubInvitedVendorsPatch;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15035,7 +16466,7 @@ export type GetPubDraftAwardProjectInfoData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15077,7 +16508,7 @@ export type PatchPubDraftAwardProjectInfoData = {
     body: PubDraftAwardProjectInfo;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15119,7 +16550,7 @@ export type GetPubDraftAwardProcurementData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15161,7 +16592,7 @@ export type PatchPubDraftAwardProcurementData = {
     body: PubDraftDirectAwardProcurement;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15203,7 +16634,7 @@ export type GetPubDraftAwardDecisionData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15245,7 +16676,7 @@ export type PatchPubDraftAwardDecisionData = {
     body: PubDraftAwardDecisionStep;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15287,7 +16718,7 @@ export type GetPubDraftAwardStatisticsData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15329,7 +16760,7 @@ export type PatchPubDraftAwardStatisticsData = {
     body: PubDraftAwardStatistics;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15371,12 +16802,12 @@ export type GetPubDraftAwardSustainabilityFormData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
     query?: never;
-    url: '/pub-drafts/v1/award/{pubDraftId}/sustainability';
+    url: '/pub-drafts/v2/award/{pubDraftId}/sustainability';
 };
 
 export type GetPubDraftAwardSustainabilityFormErrors = {
@@ -15413,12 +16844,12 @@ export type PatchPubDraftAwardSustainabilityFormData = {
     body: PubDraftAwardSustainabilityForm;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
     query?: never;
-    url: '/pub-drafts/v1/award/{pubDraftId}/sustainability';
+    url: '/pub-drafts/v2/award/{pubDraftId}/sustainability';
 };
 
 export type PatchPubDraftAwardSustainabilityFormErrors = {
@@ -15455,7 +16886,7 @@ export type GetPubDraftRfiProjectInfoData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15497,7 +16928,7 @@ export type PatchPubDraftRfiProjectInfoData = {
     body: PubDraftRfiProjectInfo;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15539,7 +16970,7 @@ export type GetPubDraftRfiDatesData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15581,7 +17012,7 @@ export type PatchPubDraftRfiDatesData = {
     body: PubDraftRfiDates;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15623,7 +17054,7 @@ export type GetPubDraftRfiProcurementData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15665,7 +17096,7 @@ export type PatchPubDraftRfiProcurementData = {
     body: PubDraftRfiProcurement;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15707,7 +17138,7 @@ export type GetPubDraftRfiTermsData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15749,7 +17180,7 @@ export type PatchPubDraftRfiTermsData = {
     body: PubDraftRfiTerms;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15791,7 +17222,7 @@ export type GetPubDraftAbandonmentInfoData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15833,7 +17264,7 @@ export type PatchPubDraftAbandonmentInfoData = {
     body: PubDraftAbandonmentInfo;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15879,7 +17310,7 @@ export type GetPubDraftRevocationData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15921,7 +17352,7 @@ export type PatchPubDraftRevocationData = {
     body: PubDraftRevocationInfo;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -15967,7 +17398,7 @@ export type GetPubDraftCorrectionInfoData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16009,7 +17440,7 @@ export type PatchPubDraftCorrectionInfoData = {
     body: PubDraftCorrectionInfo;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16055,7 +17486,7 @@ export type GetPubDraftParticipantSelectionProjectInfoData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16097,7 +17528,7 @@ export type PatchPubDraftParticipantSelectionProjectInfoData = {
     body: PubBaseProjectInfoAddress;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16139,7 +17570,7 @@ export type GetPubDraftParticipantSelectionData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16181,7 +17612,7 @@ export type PatchPubDraftParticipantSelectionData = {
     body: PubDraftParticipantSelectionInfo;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16227,7 +17658,7 @@ export type GetPubDraftSelectiveOfferingPhaseNoticeData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16269,7 +17700,7 @@ export type PatchPubDraftSelectiveOfferingPhaseNoticeData = {
     body: PubDraftSelectiveOfferingPhaseNotice;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16315,7 +17746,7 @@ export type GetPubDraftSelectiveOfferingPhaseDatesData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16357,7 +17788,7 @@ export type PatchPubDraftSelectiveOfferingPhaseDatesData = {
     body: PubDraftSelectiveOfferingPhaseDates;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16399,7 +17830,7 @@ export type GetPubDraftSelectiveOfferingPhaseCriteriaData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16441,7 +17872,7 @@ export type PatchPubDraftSelectiveOfferingPhaseCriteriaData = {
     body: PubDraftSelectiveOfferingPhaseCriteria;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16483,7 +17914,7 @@ export type ValidatePubDraftData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16530,7 +17961,7 @@ export type GetPastPublishedPubDraftsData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -16560,7 +17991,7 @@ export type GetPastPublishedPubDraftsResponses = {
     /**
      * ok
      */
-    200: PastPublications;
+    200: PastPublishedPubDrafts;
 };
 
 export type GetPastPublishedPubDraftsResponse = GetPastPublishedPubDraftsResponses[keyof GetPastPublishedPubDraftsResponses];
@@ -16569,7 +18000,7 @@ export type GetPastPublishedPubDraftActionsData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -17086,7 +18517,7 @@ export type PublishPubDraftData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -17128,7 +18559,7 @@ export type MarkAsToPublishData = {
     body?: never;
     path: {
         /**
-         * Id of the publication draft, can be obtained by a GET on /pub-drafts/v1
+         * Id of the publication draft.
          */
         pubDraftId: string;
     };
@@ -17599,7 +19030,7 @@ export type ExportSustainabilityFormData = {
          */
         to: string;
     };
-    url: '/statistics/v1/my/sustainability-export';
+    url: '/statistics/v2/my/sustainability-export';
 };
 
 export type ExportSustainabilityFormErrors = {
@@ -17707,7 +19138,21 @@ export type ExportWtoStatisticsData = {
          */
         usdExchangeRate: number;
         /**
-         * consider awards of proc_offices matching the provided proc_office filter type. Only applies if the export is generated by another role than simap_admin.
+         * consider awards of proc_offices matching the provided proc_office filter type.
+         * There are 3 aggregation modes:
+         *
+         * - Procurement Offices:
+         * Aggregation of price totals is performed at the level of individual procurement offices.
+         * Applies to the types `central_or_decentral_federation`, `other_federation`, `entire_federal_administration`.
+         *
+         * - Cantons:
+         * Aggregation is performed at the canton level. The total prices of all procurement offices under the nodes `cantonal` and `other_cantonal` are combined.
+         * Applies to type `cantonal_or_other_cantonal`.
+         *
+         * - Communal Procurement Offices Aggregated by Canton:
+         * Corresponds to procurement offices under the nodes where the `ProcOfficeType` is either `communal` or `other_communal`, aggregated per canton.
+         * Applies to type `communal_or_other_communal`.
+         *
          */
         procOfficeTypeFilter?: WtoStatisticsProcOfficeType;
     };
@@ -17827,6 +19272,193 @@ export type PatchContentByPageNameResponses = {
 };
 
 export type PatchContentByPageNameResponse = PatchContentByPageNameResponses[keyof PatchContentByPageNameResponses];
+
+export type DeleteArticleItemData = {
+    body?: never;
+    path: {
+        articleItemId: string;
+    };
+    query?: never;
+    url: '/static/v1/article-items/{articleItemId}';
+};
+
+export type DeleteArticleItemErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type DeleteArticleItemError = DeleteArticleItemErrors[keyof DeleteArticleItemErrors];
+
+export type DeleteArticleItemResponses = {
+    /**
+     * No Content - Deleted
+     */
+    204: void;
+};
+
+export type DeleteArticleItemResponse = DeleteArticleItemResponses[keyof DeleteArticleItemResponses];
+
+export type GetArticleItemByIdData = {
+    body?: never;
+    path: {
+        articleItemId: string;
+    };
+    query?: never;
+    url: '/static/v1/article-items/{articleItemId}';
+};
+
+export type GetArticleItemByIdErrors = {
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetArticleItemByIdError = GetArticleItemByIdErrors[keyof GetArticleItemByIdErrors];
+
+export type GetArticleItemByIdResponses = {
+    /**
+     * Content of article-item
+     */
+    200: ContentComponentArticleItem;
+};
+
+export type GetArticleItemByIdResponse = GetArticleItemByIdResponses[keyof GetArticleItemByIdResponses];
+
+export type UpdateArticleItemData = {
+    body: ContentComponentArticleItem;
+    path: {
+        articleItemId: string;
+    };
+    query?: never;
+    url: '/static/v1/article-items/{articleItemId}';
+};
+
+export type UpdateArticleItemErrors = {
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type UpdateArticleItemError = UpdateArticleItemErrors[keyof UpdateArticleItemErrors];
+
+export type UpdateArticleItemResponses = {
+    /**
+     * ok
+     */
+    200: ContentComponentArticleItem;
+};
+
+export type UpdateArticleItemResponse = UpdateArticleItemResponses[keyof UpdateArticleItemResponses];
+
+export type CreateArticleItemData = {
+    body: ContentComponentArticleItem;
+    path: {
+        articleItemId: string;
+    };
+    query?: never;
+    url: '/static/v1/article-items/{articleItemId}';
+};
+
+export type CreateArticleItemErrors = {
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type CreateArticleItemError = CreateArticleItemErrors[keyof CreateArticleItemErrors];
+
+export type CreateArticleItemResponses = {
+    /**
+     * ok
+     */
+    200: ContentComponentArticleItem;
+};
+
+export type CreateArticleItemResponse = CreateArticleItemResponses[keyof CreateArticleItemResponses];
+
+export type GetArticleItemByCategoryData = {
+    body?: never;
+    path: {
+        category: ContentComponentArticleCategory;
+    };
+    query?: never;
+    url: '/static/v1/article-items/search/{category}';
+};
+
+export type GetArticleItemByCategoryErrors = {
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetArticleItemByCategoryError = GetArticleItemByCategoryErrors[keyof GetArticleItemByCategoryErrors];
+
+export type GetArticleItemByCategoryResponses = {
+    /**
+     * Content of article-item
+     */
+    200: Array<ContentComponentArticleItem>;
+};
+
+export type GetArticleItemByCategoryResponse = GetArticleItemByCategoryResponses[keyof GetArticleItemByCategoryResponses];
 
 export type GetVendorDigitalSubmissionsData = {
     body?: never;
@@ -18448,6 +20080,156 @@ export type GetVendorDigitalSubmissionDocumentDownloadTokenResponses = {
 };
 
 export type GetVendorDigitalSubmissionDocumentDownloadTokenResponse = GetVendorDigitalSubmissionDocumentDownloadTokenResponses[keyof GetVendorDigitalSubmissionDocumentDownloadTokenResponses];
+
+export type GetSustainabilityTriggersData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/sustainability/v1/triggers';
+};
+
+export type GetSustainabilityTriggersErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetSustainabilityTriggersError = GetSustainabilityTriggersErrors[keyof GetSustainabilityTriggersErrors];
+
+export type GetSustainabilityTriggersResponses = {
+    /**
+     * ok
+     */
+    200: SustainabilityTriggers;
+};
+
+export type GetSustainabilityTriggersResponse = GetSustainabilityTriggersResponses[keyof GetSustainabilityTriggersResponses];
+
+export type DeleteSustainabilityTriggerData = {
+    body?: never;
+    path: {
+        /**
+         * Id of the sustainability trigger
+         */
+        sustainabilityTriggerId: string;
+    };
+    query?: never;
+    url: '/sustainability/v1/triggers/{sustainabilityTriggerId}';
+};
+
+export type DeleteSustainabilityTriggerErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    404: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type DeleteSustainabilityTriggerError = DeleteSustainabilityTriggerErrors[keyof DeleteSustainabilityTriggerErrors];
+
+export type DeleteSustainabilityTriggerResponses = {
+    /**
+     * No Content - Deleted
+     */
+    204: void;
+};
+
+export type DeleteSustainabilityTriggerResponse = DeleteSustainabilityTriggerResponses[keyof DeleteSustainabilityTriggerResponses];
+
+export type CreateSustainabilityTriggerData = {
+    body: SustainabilityTriggerWritable;
+    path: {
+        /**
+         * Id of the sustainability trigger
+         */
+        sustainabilityTriggerId: string;
+    };
+    query?: never;
+    url: '/sustainability/v1/triggers/{sustainabilityTriggerId}';
+};
+
+export type CreateSustainabilityTriggerErrors = {
+    /**
+     * Server error
+     */
+    400: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type CreateSustainabilityTriggerError = CreateSustainabilityTriggerErrors[keyof CreateSustainabilityTriggerErrors];
+
+export type CreateSustainabilityTriggerResponses = {
+    /**
+     * ok
+     */
+    201: SustainabilityTrigger;
+};
+
+export type CreateSustainabilityTriggerResponse = CreateSustainabilityTriggerResponses[keyof CreateSustainabilityTriggerResponses];
+
+export type GetProductCategoriesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/sustainability/v1/product-categories';
+};
+
+export type GetProductCategoriesErrors = {
+    /**
+     * Server error
+     */
+    401: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    403: ServerErrorAttributes;
+    /**
+     * Server error
+     */
+    default: ServerErrorAttributes;
+};
+
+export type GetProductCategoriesError = GetProductCategoriesErrors[keyof GetProductCategoriesErrors];
+
+export type GetProductCategoriesResponses = {
+    /**
+     * ok
+     */
+    200: ProductCategories;
+};
+
+export type GetProductCategoriesResponse = GetProductCategoriesResponses[keyof GetProductCategoriesResponses];
 
 export type ClientOptions = {
     baseUrl: `${string}://${string}/api` | (string & {});

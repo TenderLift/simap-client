@@ -3,9 +3,9 @@ import {defineConfig} from 'vitest/config';
 export default defineConfig({
 	test: {
 		include: ['test/**/*.test.ts'],
-		exclude: ['test/**/*.worker.test.ts'],
+		exclude: ['test/**/*.worker.test.ts', 'test/**/*.e2e.test.ts'],
 		environment: 'node',
-		setupFiles: ['test/vitest.setup.ts'],
+		setupFiles: ['test/polyfill-localstorage.ts', 'test/vitest.setup.ts'],
 		coverage: {
 			enabled: false, // Only enable when --coverage flag is used
 			reporter: ['text', 'lcov', 'html', 'clover'],
