@@ -32,26 +32,22 @@ jobs:
           node-version: 24
           cache: 'pnpm'
 
-      - name: Debug versions
-        run: |
-          node --version
-          npm --version
-          which npm
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
 
       - name: Create Release Pull Request or Publish
         id: changesets
         uses: changesets/action@v1.7.0
         with:
-          publish: pnpm changeset publish
+          publish: npm publish --provenance --access public
           title: 'chore: release'
           commit: 'chore: release'
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
 
       - name: Send release notification
         if: steps.changesets.outputs.published == 'true'
