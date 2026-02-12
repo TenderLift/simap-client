@@ -38,6 +38,23 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Debug OIDC environment
+        run: |
+          echo "Node: $(node -v)"
+          echo "npm: $(npm -v)"
+          echo "OIDC token URL set: ${ACTIONS_ID_TOKEN_REQUEST_URL:+yes}"
+          echo "OIDC token set: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+yes}"
+          echo "NPM_CONFIG_USERCONFIG: ${NPM_CONFIG_USERCONFIG:-not set}"
+          echo "NODE_AUTH_TOKEN set: ${NODE_AUTH_TOKEN:+yes}"
+          echo "--- npm config ---"
+          npm config list
+          echo "--- .npmrc files ---"
+          cat "$HOME/.npmrc" 2>/dev/null || echo "No ~/.npmrc"
+          cat .npmrc 2>/dev/null || echo "No ./.npmrc"
+          if [ -n "$NPM_CONFIG_USERCONFIG" ]; then
+            cat "$NPM_CONFIG_USERCONFIG" 2>/dev/null || echo "No userconfig file"
+          fi
+
       - name: Create Release Pull Request or Publish
         id: changesets
         uses: changesets/action@v1.7.0
@@ -48,6 +65,7 @@ jobs:
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: 'true'
 
       - name: Send release notification
         if: steps.changesets.outputs.published == 'true'
