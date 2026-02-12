@@ -44,16 +44,11 @@ jobs:
           echo "npm: $(npm -v)"
           echo "OIDC token URL set: ${ACTIONS_ID_TOKEN_REQUEST_URL:+yes}"
           echo "OIDC token set: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+yes}"
-          echo "NPM_CONFIG_USERCONFIG: ${NPM_CONFIG_USERCONFIG:-not set}"
-          echo "NODE_AUTH_TOKEN set: ${NODE_AUTH_TOKEN:+yes}"
-          echo "--- npm config ---"
-          npm config list
-          echo "--- .npmrc files ---"
-          cat "$HOME/.npmrc" 2>/dev/null || echo "No ~/.npmrc"
-          cat .npmrc 2>/dev/null || echo "No ./.npmrc"
-          if [ -n "$NPM_CONFIG_USERCONFIG" ]; then
-            cat "$NPM_CONFIG_USERCONFIG" 2>/dev/null || echo "No userconfig file"
-          fi
+          echo "--- npm config ls -l (auth related) ---"
+          npm config ls -l 2>&1 | grep -i -E "(registry|auth|token|oidc|provenance)" || true
+          echo "--- Attempting direct npm publish with verbose logging ---"
+          npm publish --provenance --access public --loglevel verbose 2>&1 || true
+          echo "--- Exit code: $? ---"
 
       - name: Create Release Pull Request or Publish
         id: changesets
