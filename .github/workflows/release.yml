@@ -29,14 +29,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'pnpm'
-      
+          registry-url: 'https://registry.npmjs.org'
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Configure npm for OIDC trusted publishing
-        run: echo "registry=https://registry.npmjs.org/" > "$HOME/.npmrc"
 
       - name: Create Release Pull Request or Publish
         id: changesets
@@ -49,20 +47,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
-      
+
       - name: Send release notification
         if: steps.changesets.outputs.published == 'true'
         run: |
-          echo "🎉 New version published!"
+          echo "New version published!"
           echo "Published packages: ${{ steps.changesets.outputs.publishedPackages }}"
-      
-      # Optional: Send Slack notification on release
-      # - name: Notify Slack on Release
-      #   if: steps.changesets.outputs.published == 'true'
-      #   uses: 8398a7/action-slack@v3
-      #   with:
-      #     status: success
-      #     text: '🚀 @tenderlift/simap-client has been released!'
-      #     webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
