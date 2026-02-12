@@ -38,18 +38,6 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Debug OIDC environment
-        run: |
-          echo "Node: $(node -v)"
-          echo "npm: $(npm -v)"
-          echo "OIDC token URL set: ${ACTIONS_ID_TOKEN_REQUEST_URL:+yes}"
-          echo "OIDC token set: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+yes}"
-          echo "--- npm config ls -l (auth related) ---"
-          npm config ls -l 2>&1 | grep -i -E "(registry|auth|token|oidc|provenance)" || true
-          echo "--- Attempting direct npm publish with verbose logging ---"
-          npm publish --provenance --access public --loglevel verbose 2>&1 || true
-          echo "--- Exit code: $? ---"
-
       - name: Create Release Pull Request or Publish
         id: changesets
         uses: changesets/action@v1.7.0
