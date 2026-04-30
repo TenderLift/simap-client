@@ -23,7 +23,10 @@ export class HttpError extends Error {
 		this.name = 'HttpError';
 	}
 }
-export async function ensureOk<T>(res: {response: Response; data: T}) {
-	if (!res.response.ok) throw new HttpError(res.response.status, res.data);
+export async function ensureOk<T>(res: {response?: Response; data: T}) {
+	if (!res.response?.ok) {
+		throw new HttpError(res.response?.status ?? 0, res.data);
+	}
+
 	return res.data;
 }

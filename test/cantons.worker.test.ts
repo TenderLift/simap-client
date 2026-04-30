@@ -1,22 +1,31 @@
-import {beforeAll, afterEach, it, expect, describe} from 'vitest';
-import {fetchMock} from 'cloudflare:test';
-
-// Import the client and functions from source
+import {afterEach, it, expect, describe, vi} from 'vitest';
 import {client, listCantons, ensureOk, HttpError} from '../src/index';
 
-// --- Arrange: enable request mocking in Workers runtime
-beforeAll(() => {
-	fetchMock.activate();
-	fetchMock.disableNetConnect(); // Fail if anything tries real network
-});
+function mockFetch(
+	expectedStatus: number,
+	body: unknown,
+	checkRequest?: (request: Request) => void,
+) {
+	const fetchSpy = vi.fn(
+		async (input: RequestInfo | URL, init?: RequestInit) => {
+			const request = new Request(input, init);
+			checkRequest?.(request);
+			return new Response(JSON.stringify(body), {
+				status: expectedStatus,
+				headers: {'Content-Type': 'application/json'},
+			});
+		},
+	);
+	vi.stubGlobal('fetch', fetchSpy);
+	return fetchSpy;
+}
 
 afterEach(() => {
-	fetchMock.assertNoPendingInterceptors();
+	vi.restoreAllMocks();
 });
 
 describe('SIMAP API Client - Cantons', () => {
 	it('lists cantons from SIMAP (stubbed)', async () => {
-		// Fixture based on expected SIMAP response structure
 		const fixture = {
 			cantons: [
 				{code: 'TI', name: 'Ticino'},
@@ -25,37 +34,22 @@ describe('SIMAP API Client - Cantons', () => {
 			],
 		};
 
-		// Mock the outbound request the SDK makes
-		fetchMock
-			.get('https://www.simap.ch')
-			.intercept({path: '/api/cantons/v1'})
-			.reply(200, JSON.stringify(fixture), {
-				headers: {'content-type': 'application/json'},
-			});
+		const fetchSpy = mockFetch(200, fixture);
 
-		// Configure client to point at SIMAP
 		client.setConfig({
 			baseUrl: 'https://www.simap.ch/api',
-			// No auth token needed for public endpoints
 		});
 
-		// Call the generated function
 		const res = await listCantons();
 
-		// Assert the response
-		expect(res.response.ok).toBe(true);
+		expect(fetchSpy).toHaveBeenCalledOnce();
+		expect(res.response!.ok).toBe(true);
 		expect(res.data).toEqual(fixture);
 	});
 
 	it('handles HTTP errors gracefully', async () => {
-		// Mock a 401 Unauthorized response
 		const errorResponse = {error: 'Unauthorized'};
-		fetchMock
-			.get('https://www.simap.ch')
-			.intercept({path: '/api/cantons/v1'})
-			.reply(401, JSON.stringify(errorResponse), {
-				headers: {'content-type': 'application/json'},
-			});
+		mockFetch(401, errorResponse);
 
 		client.setConfig({
 			baseUrl: 'https://www.simap.ch/api',
@@ -63,38 +57,35 @@ describe('SIMAP API Client - Cantons', () => {
 
 		const res = await listCantons();
 
-		// Response should not be ok
-		expect(res.response.ok).toBe(false);
-		expect(res.response.status).toBe(401);
+		expect(res.response!.ok).toBe(false);
+		expect(res.response!.status).toBe(401);
 
-		// EnsureOk should throw on non-2xx
 		try {
 			await ensureOk(res);
-			// Should not reach here
 			expect.fail('ensureOk should have thrown');
 		} catch (error) {
 			expect(error).toBeInstanceOf(HttpError);
 			if (error instanceof HttpError) {
 				expect(error.status).toBe(401);
-				// The body will be the error response from the API
-				// Since the generated client handles error responses, check what's actually there
-				// The actual body might be undefined or the parsed error
 			}
 		}
 	});
 
 	it('handles network errors', async () => {
-		// Mock a network failure
-		fetchMock
-			.get('https://www.simap.ch')
-			.intercept({path: '/api/cantons/v1'})
-			.replyWithError(new Error('Network error'));
+		vi.stubGlobal(
+			'fetch',
+			vi.fn(async () => {
+				throw new Error('Network error');
+			}),
+		);
 
 		client.setConfig({
 			baseUrl: 'https://www.simap.ch/api',
 		});
 
-		// This should throw
-		await expect(listCantons()).rejects.toThrow('Network error');
+		const res = await listCantons();
+
+		expect(res.response).toBeUndefined();
+		expect(res.error).toBeInstanceOf(Error);
 	});
 });

@@ -27,8 +27,8 @@ describe('Error Handling Integration Tests', () => {
 
 			const result = await getPublicProjectSearch({query: {}});
 
-			expect(result.response.ok).toBe(false);
-			expect(result.response.status).toBe(401);
+			expect(result.response!.ok).toBe(false);
+			expect(result.response!.status).toBe(401);
 			// SDK returns undefined for data on error responses
 			expect(result.data).toBeUndefined();
 			expect(result.error).toBeDefined();
@@ -39,8 +39,8 @@ describe('Error Handling Integration Tests', () => {
 
 			const result = await listCantons();
 
-			expect(result.response.ok).toBe(false);
-			expect(result.response.status).toBe(403);
+			expect(result.response!.ok).toBe(false);
+			expect(result.response!.status).toBe(403);
 			// SDK returns undefined for data on error responses
 			expect(result.data).toBeUndefined();
 			expect(result.error).toBeDefined();
@@ -55,8 +55,8 @@ describe('Error Handling Integration Tests', () => {
 				},
 			});
 
-			expect(result.response.ok).toBe(false);
-			expect(result.response.status).toBe(404);
+			expect(result.response!.ok).toBe(false);
+			expect(result.response!.status).toBe(404);
 			// SDK returns undefined for data on error responses
 			expect(result.data).toBeUndefined();
 			expect(result.error).toBeDefined();
@@ -67,9 +67,9 @@ describe('Error Handling Integration Tests', () => {
 
 			const result = await getPublicProjectSearch({query: {}});
 
-			expect(result.response.ok).toBe(false);
-			expect(result.response.status).toBe(429);
-			expect(result.response.headers.get('Retry-After')).toBe('60');
+			expect(result.response!.ok).toBe(false);
+			expect(result.response!.status).toBe(429);
+			expect(result.response!.headers.get('Retry-After')).toBe('60');
 			// SDK returns undefined for data on error responses
 			expect(result.data).toBeUndefined();
 			expect(result.error).toBeDefined();
@@ -84,8 +84,8 @@ describe('Error Handling Integration Tests', () => {
 				},
 			});
 
-			expect(result.response.ok).toBe(false);
-			expect(result.response.status).toBe(400);
+			expect(result.response!.ok).toBe(false);
+			expect(result.response!.status).toBe(400);
 			// SDK returns undefined for data on error responses
 			expect(result.data).toBeUndefined();
 			expect(result.error).toBeDefined();
@@ -98,8 +98,8 @@ describe('Error Handling Integration Tests', () => {
 
 			const result = await getPublicProjectSearch({query: {}});
 
-			expect(result.response.ok).toBe(false);
-			expect(result.response.status).toBe(500);
+			expect(result.response!.ok).toBe(false);
+			expect(result.response!.status).toBe(500);
 			// SDK returns undefined for data on error responses
 			expect(result.data).toBeUndefined();
 			expect(result.error).toBeDefined();
@@ -110,8 +110,8 @@ describe('Error Handling Integration Tests', () => {
 
 			const result = await listCantons();
 
-			expect(result.response.ok).toBe(false);
-			expect(result.response.status).toBe(502);
+			expect(result.response!.ok).toBe(false);
+			expect(result.response!.status).toBe(502);
 			// SDK returns undefined for data on error responses
 			expect(result.data).toBeUndefined();
 			expect(result.error).toBeDefined();
@@ -122,9 +122,9 @@ describe('Error Handling Integration Tests', () => {
 
 			const result = await getPublicProjectSearch({query: {}});
 
-			expect(result.response.ok).toBe(false);
-			expect(result.response.status).toBe(503);
-			expect(result.response.headers.get('Retry-After')).toBe('7200');
+			expect(result.response!.ok).toBe(false);
+			expect(result.response!.status).toBe(503);
+			expect(result.response!.headers.get('Retry-After')).toBe('7200');
 			// SDK returns undefined for data on error responses
 			expect(result.data).toBeUndefined();
 			expect(result.error).toBeDefined();
@@ -135,17 +135,18 @@ describe('Error Handling Integration Tests', () => {
 		it('should handle network errors', async () => {
 			server.use(errorHandlers.networkError);
 
-			// Network errors throw, not return error response
-			await expect(getPublicProjectSearch({query: {}})).rejects.toThrow();
+			const result = await getPublicProjectSearch({query: {}});
+
+			expect(result.response).toBeUndefined();
+			expect(result.error).toBeInstanceOf(TypeError);
 		});
 
 		it('should handle invalid JSON responses', async () => {
 			server.use(errorHandlers.invalidJson);
 
-			// Invalid JSON causes the SDK to throw
-			await expect(getPublicProjectSearch({query: {}})).rejects.toThrow(
-				'Unexpected token',
-			);
+			const result = await getPublicProjectSearch({query: {}});
+
+			expect(result.error).toBeInstanceOf(SyntaxError);
 		});
 
 		it('should handle empty 204 responses', async () => {
@@ -153,7 +154,7 @@ describe('Error Handling Integration Tests', () => {
 
 			const result = await getPublicProjectSearch({query: {}});
 
-			expect(result.response.status).toBe(204);
+			expect(result.response!.status).toBe(204);
 			// SDK behavior: returns null for 204 responses with null body
 			// This is correct behavior as the response body is actually null
 			expect(result.data).toBeNull();
@@ -171,14 +172,14 @@ describe('Error Handling Integration Tests', () => {
 
 			// First request - rate limited
 			const firstResult = await getPublicProjectSearch({query: {}});
-			expect(firstResult.response.status).toBe(429);
+			expect(firstResult.response!.status).toBe(429);
 
 			// Reset handler to success
 			server.resetHandlers();
 
 			// Second request - should succeed
 			const secondResult = await getPublicProjectSearch({query: {}});
-			expect(secondResult.response.ok).toBe(true);
+			expect(secondResult.response!.ok).toBe(true);
 		});
 
 		it('should preserve error details for debugging', async () => {
@@ -191,8 +192,8 @@ describe('Error Handling Integration Tests', () => {
 				},
 			});
 
-			expect(result.response.ok).toBe(false);
-			expect(result.response.status).toBe(500);
+			expect(result.response!.ok).toBe(false);
+			expect(result.response!.status).toBe(500);
 
 			// SDK returns undefined for data on error responses
 			expect(result.data).toBeUndefined();
@@ -230,7 +231,7 @@ describe('Error Handling Integration Tests', () => {
 
 				// SDK returns undefined for data on error responses
 				expect(result.data).toBeUndefined();
-				expect(result.response.status).toBe(testCase.expectedStatus);
+				expect(result.response!.status).toBe(testCase.expectedStatus);
 				expect(result.error).toBeDefined();
 			}
 		});
@@ -253,7 +254,7 @@ describe('Error Handling Integration Tests', () => {
 
 				// SDK returns undefined for data on error responses
 				expect(result.data).toBeUndefined();
-				expect(result.response.status).toBe(testCase.expectedStatus);
+				expect(result.response!.status).toBe(testCase.expectedStatus);
 				expect(result.error).toBeDefined();
 			}
 		});
