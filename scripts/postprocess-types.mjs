@@ -21,12 +21,21 @@ const fieldToType = {
 };
 
 const discriminantRe =
-	/(?<=\b(pubType|type|projectType|processType|status)\??: )'[A-Z][A-Za-z]+'/g;
+	/(?<=\b(pubType|type|projectType|processType|status)\??: )'[A-Z][A-Za-z\d]+'/g;
 
+let discriminantFixCount = 0;
 source = source.replaceAll(discriminantRe, (match, field) => {
+	discriminantFixCount++;
 	fixCount++;
 	return fieldToType[field];
 });
+
+if (discriminantFixCount === 0) {
+	console.error(
+		'postprocess-types: no discriminant literal replacements found — codegen output may have changed',
+	);
+	process.exit(1);
+}
 
 // Fix 2: Advance_notice discriminator types (issue #30).
 // Each reuses member types whose `type` literal conflicts with the parent

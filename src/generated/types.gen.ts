@@ -8337,7 +8337,7 @@ export type SustainabilityFormExportWritable = {
 export type PublicationAwardDetailInterfaceWritable2 = Omit<PublicationDetailInterface, 'type'> & PublicationDetailWithLotReference & {
     'project-info': PublicationAwardProjectInfo;
     decision: PublicationAwardDecision;
-    type: 'PublicationAwardDetailInterfaceWritable2';
+    type: PubType;
 };
 
 export type PublicationDetailInterfaceWritable2 = {
@@ -8364,7 +8364,7 @@ export type PublicationDetailInterfaceWritable2 = {
  *
  */
 export type PublicationDirectAwardTenderProcurementInterfaceWritable2 = Omit<PublicationDirectAwardProcurementInterface, 'projectType'> & {
-    projectType: 'PublicationDirectAwardTenderProcurementInterfaceWritable2';
+    projectType: PubProjectType;
 };
 
 export type PublicationDirectAwardProcurementInterfaceWritable2 = PubDirectAwardProcurement & {
@@ -8376,7 +8376,7 @@ export type PublicationDirectAwardProcurementInterfaceWritable2 = PubDirectAward
  *
  */
 export type PublicationAwardTenderProcurementInterfaceWritable2 = PublicationAwardProcurementInterface & {
-    projectType: 'PublicationAwardTenderProcurementInterfaceWritable2';
+    projectType: PubProjectType;
 };
 
 export type PublicationAwardProcurementInterfaceWritable2 = PubAwardProcurement & {
@@ -8410,14 +8410,14 @@ export type PubDraftAwardBaseInterfaceWritable2 = PubDraftBaseInterface & PubAwa
      *
      */
     readonly sustainabilityFormTypes?: Array<SustainabilityFormType>;
-    type?: 'PubDraftAwardBaseInterfaceWritable2';
+    type?: PubType;
 };
 
 export type PubDraftAwardDetailInterfaceWritable2 = Omit<PubDraftDetailInterface, 'type'> & PubDraftDetailWithLotReference & {
     'project-info': PubDraftAwardProjectInfo;
     decision: PubDraftAwardDecisionDetail;
     statistics: PubDraftAwardStatistics;
-    type: 'PubDraftAwardDetailInterfaceWritable2';
+    type: PubType;
 };
 
 /**
@@ -8440,7 +8440,7 @@ export type PubDraftDetailInterfaceWritable2 = {
  *
  */
 export type PubDraftDirectAwardTenderProcurementInterfaceWritable2 = Omit<PubDraftDirectAwardProcurementInterface, 'projectType'> & {
-    projectType: 'PubDraftDirectAwardTenderProcurementInterfaceWritable2';
+    projectType: PubProjectType;
 };
 
 export type PubDraftDirectAwardProcurementInterfaceWritable2 = PubDirectAwardProcurement & {
@@ -8493,7 +8493,7 @@ export type PubDraftDatesInterfaceWritable2 = PubDraftBaseDatesAppointments & {
  *
  */
 export type PubDraftAwardTenderProcurementInterfaceWritable2 = PubDraftAwardProcurementInterface & {
-    projectType?: 'PubDraftAwardTenderProcurementInterfaceWritable2';
+    projectType?: PubProjectType;
 };
 
 export type PubDraftAwardProcurementInterfaceWritable2 = PubAwardProcurement & {
