@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+### Patch Changes
+
+- 17e0c60: Fix discriminant literal types that used schema names instead of enum type references, breaking TypeScript discriminated union narrowing on PublicationDetail, PubDraftDetail, and PublicProjectHeaderDates unions
+
 ## 0.2.0
 
 ### Minor Changes
@@ -13,7 +19,6 @@
 - 61a3ebd: Initial release of the SIMAP TypeScript client library
 
   ## Features
-
   - 🚀 Full TypeScript support with comprehensive type definitions
   - 🌐 Multi-runtime compatibility (Node.js 18+, Cloudflare Workers, Edge environments)
   - 📦 Lightweight bundle size (<10KB gzipped)
@@ -23,7 +28,6 @@
   - ✅ Comprehensive test coverage (85+ tests)
 
   ## Endpoints Supported
-
   - Canton/region reference data
   - Country and language lookups
   - Project search and filtering
@@ -31,7 +35,6 @@
   - CPV/CPC/BKP code classifications
 
   ## Quality
-
   - XO linting with Prettier formatting
   - Pre-commit hooks with Lefthook
   - Automated CI/CD with GitHub Actions
