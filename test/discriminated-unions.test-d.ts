@@ -1,10 +1,12 @@
-import {expectAssignable, expectNever} from 'tsd';
+import {expectAssignable, expectNever, expectNotType} from 'tsd';
 import type {
 	PublicationDetail,
 	PublicationAwardDetail,
 	PublicationDirectAwardDetail,
+	PublicationAdvanceNoticeDetailDiscriminator,
 	PubDraftDetail,
 	PubDraftAwardDetail,
+	PubDraftAdvanceNoticeDetailDiscriminator,
 	PublicProjectHeaderDates,
 	PublicProjectHeaderDatesAdditional,
 	PublicProjectHeaderDatesDefault,
@@ -24,6 +26,18 @@ if (pub.type === 'direct_award') {
 declare const draft: PubDraftDetail;
 if (draft.type === 'award') {
 	expectAssignable<PubDraftAwardDetail>(draft);
+}
+
+// PublicationDetail: narrowing on type === 'advance_notice' must not produce never
+if (pub.type === 'advance_notice') {
+	expectAssignable<PublicationAdvanceNoticeDetailDiscriminator>(pub);
+	expectNotType<never>(pub);
+}
+
+// PubDraftDetail: advance_notice narrowing works for draft variants
+if (draft.type === 'advance_notice') {
+	expectAssignable<PubDraftAdvanceNoticeDetailDiscriminator>(draft);
+	expectNotType<never>(draft);
 }
 
 // PublicProjectHeaderDates: narrowing on pubType works

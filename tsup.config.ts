@@ -9,6 +9,7 @@ export default defineConfig({
 		compilerOptions: {
 			composite: false,
 			skipLibCheck: true,
+			ignoreDeprecations: '6.0',
 		},
 	},
 	sourcemap: true,

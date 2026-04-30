@@ -1,16 +1,27 @@
-import {beforeAll, afterEach, it, expect, describe} from 'vitest';
-import {fetchMock} from 'cloudflare:test';
-
-// Import auth helper
+import {afterEach, it, expect, describe, vi} from 'vitest';
 import {withAuth, client} from '../src/index';
 
-beforeAll(() => {
-	fetchMock.activate();
-	fetchMock.disableNetConnect();
-});
+function mockFetch(
+	expectedStatus: number,
+	body: unknown,
+	checkRequest?: (request: Request) => void,
+) {
+	const fetchSpy = vi.fn(
+		async (input: RequestInfo | URL, init?: RequestInit) => {
+			const request = new Request(input, init);
+			checkRequest?.(request);
+			return new Response(JSON.stringify(body), {
+				status: expectedStatus,
+				headers: {'Content-Type': 'application/json'},
+			});
+		},
+	);
+	vi.stubGlobal('fetch', fetchSpy);
+	return fetchSpy;
+}
 
 afterEach(() => {
-	fetchMock.assertNoPendingInterceptors();
+	vi.restoreAllMocks();
 });
 
 describe('Authentication Helper', () => {
@@ -54,24 +65,16 @@ describe('Authentication Helper', () => {
 		const token = 'secret-token';
 		const fixture = {protected: 'data'};
 
-		// Mock protected endpoint
-		fetchMock
-			.get('https://www.simap.ch')
-			.intercept({
-				path: '/api/protected',
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			})
-			.reply(200, JSON.stringify(fixture), {
-				headers: {'content-type': 'application/json'},
-			});
+		const fetchSpy = mockFetch(200, fixture, (request) => {
+			expect(request.headers.get('Authorization')).toBe(
+				`Bearer ${token}`,
+			);
+		});
 
 		client.setConfig({
 			baseUrl: 'https://www.simap.ch/api',
 		});
 
-		// Make authenticated request
 		const response = await client.get({
 			url: '/protected',
 			headers: {
@@ -79,7 +82,8 @@ describe('Authentication Helper', () => {
 			},
 		});
 
-		expect(response.response.ok).toBe(true);
+		expect(fetchSpy).toHaveBeenCalledOnce();
+		expect(response.response!.ok).toBe(true);
 		expect(response.data).toEqual(fixture);
 	});
 });

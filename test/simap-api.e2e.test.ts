@@ -28,7 +28,7 @@ describe('SIMAP API Client E2E Tests - Production', () => {
 
 			// Validate response structure
 			expect(response.data).toBeDefined();
-			expect(response.response.ok).toBe(true);
+			expect(response.response!.ok).toBe(true);
 
 			const searchResult = response.data!;
 
@@ -258,7 +258,7 @@ describe('SIMAP API Client E2E Tests - Production', () => {
 				},
 			});
 
-			expect(headerResponse.response.ok).toBe(true);
+			expect(headerResponse.response!.ok).toBe(true);
 			expect(headerResponse.data).toBeDefined();
 
 			const header = headerResponse.data!;
@@ -293,7 +293,7 @@ describe('SIMAP API Client E2E Tests - Production', () => {
 					},
 				});
 
-				expect(detailResponse.response.ok).toBe(true);
+				expect(detailResponse.response!.ok).toBe(true);
 				expect(detailResponse.data).toBeDefined();
 
 				const detail = detailResponse.data!;
