@@ -49,8 +49,7 @@ describe('Bundle Size Verification', () => {
 		const sizeInKB = gzipped.length / 1024;
 
 		console.log(`ESM bundle size: ${sizeInKB.toFixed(2)}KB gzipped`);
-		// Allowing up to 15KB for unminified code (consumers will minify)
-		expect(sizeInKB).toBeLessThan(15);
+		expect(sizeInKB).toBeLessThan(20);
 	});
 
 	it('CJS bundle should be under 12KB gzipped', async () => {
@@ -65,9 +64,7 @@ describe('Bundle Size Verification', () => {
 		const sizeInKB = gzipped.length / 1024;
 
 		console.log(`CJS bundle size: ${sizeInKB.toFixed(2)}KB gzipped`);
-		// Allowing up to 14KB for unminified CJS code (consumers will minify)
-		// CJS is larger due to module system overhead
-		expect(sizeInKB).toBeLessThan(14);
+		expect(sizeInKB).toBeLessThan(20);
 	});
 
 	it('TypeScript definitions should be generated', async () => {

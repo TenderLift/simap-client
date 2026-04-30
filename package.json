@@ -48,7 +48,7 @@
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "gen": "openapi-ts -f openapi-ts.config.ts",
+    "gen": "openapi-ts -f openapi-ts.config.ts && node scripts/postprocess-types.mjs",
     "lint": "xo",
     "lint:fix": "xo --fix",
     "test": "pnpm test:node && pnpm test:workers",
