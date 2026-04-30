@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0
+
+### Minor Changes
+
+- 403b14a: Fix advance_notice discriminator narrowing (issue #30) and bump all devDependencies
+
+  - Fix `PublicationAdvanceNoticeDetailDiscriminator` and 3 siblings producing `never` when narrowed on `type === 'advance_notice'`
+  - Postprocessor regex now catches discriminant literals with numeric suffixes
+  - Bump TypeScript 5→6, Vitest 3→4, openapi-ts 0.82→0.97, Cloudflare pool-workers 0.12→0.15
+  - Minimum Node version bumped from 20 to 22
+
 ## 0.2.1
 
 ### Patch Changes
@@ -19,6 +30,7 @@
 - 61a3ebd: Initial release of the SIMAP TypeScript client library
 
   ## Features
+
   - 🚀 Full TypeScript support with comprehensive type definitions
   - 🌐 Multi-runtime compatibility (Node.js 18+, Cloudflare Workers, Edge environments)
   - 📦 Lightweight bundle size (<10KB gzipped)
@@ -28,6 +40,7 @@
   - ✅ Comprehensive test coverage (85+ tests)
 
   ## Endpoints Supported
+
   - Canton/region reference data
   - Country and language lookups
   - Project search and filtering
@@ -35,6 +48,7 @@
   - CPV/CPC/BKP code classifications
 
   ## Quality
+
   - XO linting with Prettier formatting
   - Pre-commit hooks with Lefthook
   - Automated CI/CD with GitHub Actions
