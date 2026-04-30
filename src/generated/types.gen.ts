@@ -1202,7 +1202,7 @@ export type ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveNotOfferingP
  * Helper used for code generation, see ProcOfficeProjectHeaderDatesPublishedAdditional for the actual definition
  */
 export type ProcOfficeProjectHeaderDatesPublishedAdditionalInterface = ProcOfficeProjectHeaderDatesPublishedInterface & {
-    pubType?: 'ProcOfficeProjectHeaderDatesPublishedAdditionalInterface';
+    pubType?: PubType;
 } & {
     processType: PubProcessType;
 };
@@ -1211,7 +1211,7 @@ export type ProcOfficeProjectHeaderDatesPublishedAdditionalInterface = ProcOffic
  * Helper used for code generation, see ProcOfficeProjectHeaderDatesPublishedAdditionalSelective for the actual definition
  */
 export type ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface = ProcOfficeProjectHeaderDatesPublishedAdditionalInterface & {
-    processType?: 'ProcOfficeProjectHeaderDatesPublishedAdditionalSelectiveInterface';
+    processType?: PubProcessType;
 };
 
 export type PublicProjectHeaderDatesBase = {
@@ -1265,7 +1265,7 @@ export type ProcOfficeProjectHeaderDatesPublishedAdditional = ({
 } & ProcOfficeProjectHeaderDatesPublishedAdditionalSelective);
 
 export type ProcOfficeProjectHeaderDatesPublishedInterface = ProcOfficeProjectHeaderDatesInterface & {
-    status: 'ProcOfficeProjectHeaderDatesPublishedInterface';
+    status: PubDraftStatus;
 } & {
     pubType: PubType;
 };
@@ -2454,7 +2454,7 @@ export type PublicationAwardDetail = PublicationAwardDetailInterface & {
 };
 
 export type PublicationAwardDetailInterface = PublicationDetailInterface & {
-    type: 'PublicationAwardDetailInterface';
+    type: PubType;
 } & PublicationDetailWithLotReference & {
     'project-info': PublicationAwardProjectInfo;
     decision: PublicationAwardDecision;
@@ -3751,7 +3751,7 @@ export type PublicationAwardBase = PublicationAwardBaseInterface & {
 } & PubAwardBase;
 
 export type PublicationAwardBaseInterface = PublicationBaseInterface & {
-    type?: 'PublicationAwardBaseInterface';
+    type?: PubType;
 } & PubAwardBaseInterface;
 
 export type PubDirectAwardBase = {
@@ -4171,7 +4171,7 @@ export type PublicProjectHeaderDatesAdditionalSelectiveNotOfferingPhase = Public
  * Helper used for code generation, see PublicProjectHeaderDatesAdditional for the actual definition
  */
 export type PublicProjectHeaderDatesAdditionalInterface = PublicProjectHeaderDatesInterface & {
-    pubType: 'PublicProjectHeaderDatesAdditionalInterface';
+    pubType: PubType;
 } & {
     processType: PubProcessType;
 };
@@ -4180,7 +4180,7 @@ export type PublicProjectHeaderDatesAdditionalInterface = PublicProjectHeaderDat
  * Helper used for code generation, see PublicProjectHeaderDatesAdditionalSelective for the actual definition
  */
 export type PublicProjectHeaderDatesAdditionalSelectiveInterface = PublicProjectHeaderDatesAdditionalInterface & {
-    processType?: 'PublicProjectHeaderDatesAdditionalSelectiveInterface';
+    processType?: PubProcessType;
 };
 
 /**
@@ -4485,7 +4485,7 @@ export type Subscriptions = {
  *
  */
 export type PubDraftAwardBaseInterface = PubDraftBaseInterface & {
-    type?: 'PubDraftAwardBaseInterface';
+    type?: PubType;
 } & PubAwardBaseInterface & AllSubKinds & {
     /**
      * Sustainability forms, the procurement office can choose from in an award publication.
@@ -4522,7 +4522,7 @@ export type PubDraftTenderBase = PubDraftCallForBidsBaseInterface & {
  *
  */
 export type PubDraftCallForBidsBaseInterface = PubDraftBaseInterface & {
-    type?: 'PubDraftCallForBidsBaseInterface';
+    type?: PubType;
 } & PubDraftCorrectionBase;
 
 export type PubDraftLotLimitationData = {
@@ -4732,7 +4732,7 @@ export type PubDraftAwardDetail = PubDraftAwardDetailInterface & {
 };
 
 export type PubDraftAwardDetailInterface = PubDraftDetailInterface & {
-    type: 'PubDraftAwardDetailInterface';
+    type: PubType;
 } & PubDraftDetailWithLotReference & {
     'project-info': PubDraftAwardProjectInfo;
     decision: PubDraftAwardDecisionDetail;
@@ -4750,7 +4750,7 @@ export type PubDraftDirectAwardTenderProcurementService = PubDraftDirectAwardTen
  *
  */
 export type PubDraftDirectAwardTenderProcurementInterface = PubDraftDirectAwardProcurementInterface & {
-    projectType?: 'PubDraftDirectAwardTenderProcurementInterface';
+    projectType?: PubProjectType;
 };
 
 export type PubDraftBaseCodes = PubBaseCodes;
@@ -5579,7 +5579,7 @@ export type PubDraftAwardTenderProcurementService = PubDraftAwardTenderProcureme
  *
  */
 export type PubDraftAwardTenderProcurementInterface = PubDraftAwardProcurementInterface & {
-    projectType?: 'PubDraftAwardTenderProcurementInterface';
+    projectType?: PubProjectType;
 };
 
 export type PubDraftAwardTenderProcurementConstruction = PubDraftAwardTenderProcurementInterface & {
